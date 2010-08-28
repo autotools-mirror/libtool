@@ -191,7 +191,7 @@ func_lo2o ()
 # func_xform libobj-or-source
 func_xform ()
 {
-    func_xform_result=`$ECHO "${1}" | $SED 's/\.[[^.]]*$/.lo/'`
+    func_xform_result=`$ECHO "${1}" | $SED 's/\.[^.]*$/.lo/'`
 } # func_xform may be replaced by extended shell implementation
 
 
@@ -545,6 +545,37 @@ func_source ()
     esac
 }
 
+
+# func_resolve_sysroot PATH
+# Replace a leading = in PATH with a sysroot.  Store the result into
+# func_resolve_sysroot_result
+func_resolve_sysroot ()
+{
+  func_resolve_sysroot_result=$1
+  case $func_resolve_sysroot_result in
+  =*)
+    func_stripname '=' '' "$func_resolve_sysroot_result"
+    func_resolve_sysroot_result=$lt_sysroot$func_stripname_result
+    ;;
+  esac
+}
+
+# func_replace_sysroot PATH
+# If PATH begins with the sysroot, replace it with = and
+# store the result into func_replace_sysroot_result.
+func_replace_sysroot ()
+{
+  case "$lt_sysroot:$1" in
+  ?*:"$lt_sysroot"*)
+    func_stripname "$lt_sysroot" '' "$1"
+    func_replace_sysroot_result="=$func_stripname_result"
+    ;;
+  *)
+    # Including no sysroot.
+    func_replace_sysroot_result=$1
+    ;;
+  esac
+}
 
 # func_infer_tag arg
 # Infer tagged configuration to use if any are available and
@@ -1691,6 +1722,9 @@ func_mode_execute ()
       dir=
       case $file in
       *.la)
+	func_resolve_sysroot "$file"
+	file=$func_resolve_sysroot_result
+
 	# Check to see that this really is a libtool archive.
 	func_lalib_unsafe_p "$file" \
 	  || func_fatal_help "\`$lib' is not a valid libtool archive"
@@ -1808,15 +1842,52 @@ test "$opt_mode" = execute && func_mode_execute ${1+"$@"}
 func_mode_finish ()
 {
     $opt_debug
-    libdirs="$nonopt"
+    libs=
+    libdirs=
     admincmds=
 
-    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
-      for dir
-      do
-	func_append libdirs " $dir"
-      done
+    for opt in "$nonopt" ${1+"$@"}
+    do
+      if test -d "$opt"; then
+	func_append libdirs " $opt"
 
+      elif test -f "$opt"; then
+	if func_lalib_unsafe_p "$opt"; then
+	  func_append libs " $opt"
+	else
+	  func_warning "\`$opt' is not a valid libtool archive"
+	fi
+
+      else
+	func_fatal_error "invalid argument \`$opt'"
+      fi
+    done
+
+    if test -n "$libs"; then
+      if test -n "$lt_sysroot"; then
+        sysroot_regex=`$ECHO "$lt_sysroot" | $SED "$sed_make_literal_regex"`
+        sysroot_cmd="s/\([ ']\)$sysroot_regex/\1/g;"
+      else
+        sysroot_cmd=
+      fi
+
+      # Remove sysroot references
+      if $opt_dry_run; then
+        for lib in $libs; do
+          echo "removing references to $lt_sysroot and \`=' prefixes from $lib"
+        done
+      else
+        tmpdir=`func_mktempdir`
+        for lib in $libs; do
+	  sed -e "${sysroot_cmd} s/\([ ']-[LR]\)=/\1/g; s/\([ ']\)=/\1/g" $lib \
+	    > $tmpdir/tmp-la
+	  mv -f $tmpdir/tmp-la $lib
+	done
+        ${RM}r "$tmpdir"
+      fi
+    fi
+
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
@@ -1835,49 +1906,51 @@ func_mode_finish ()
     # Exit here if they wanted silent mode.
     $opt_silent && exit $EXIT_SUCCESS
 
-    echo "----------------------------------------------------------------------"
-    echo "Libraries have been installed in:"
-    for libdir in $libdirs; do
-      $ECHO "   $libdir"
-    done
-    echo
-    echo "If you ever happen to want to link against installed libraries"
-    echo "in a given directory, LIBDIR, you must either use libtool, and"
-    echo "specify the full pathname of the library, or use the \`-LLIBDIR'"
-    echo "flag during linking and do at least one of the following:"
-    if test -n "$shlibpath_var"; then
-      echo "   - add LIBDIR to the \`$shlibpath_var' environment variable"
-      echo "     during execution"
-    fi
-    if test -n "$runpath_var"; then
-      echo "   - add LIBDIR to the \`$runpath_var' environment variable"
-      echo "     during linking"
-    fi
-    if test -n "$hardcode_libdir_flag_spec"; then
-      libdir=LIBDIR
-      eval flag=\"$hardcode_libdir_flag_spec\"
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
+      echo "----------------------------------------------------------------------"
+      echo "Libraries have been installed in:"
+      for libdir in $libdirs; do
+	$ECHO "   $libdir"
+      done
+      echo
+      echo "If you ever happen to want to link against installed libraries"
+      echo "in a given directory, LIBDIR, you must either use libtool, and"
+      echo "specify the full pathname of the library, or use the \`-LLIBDIR'"
+      echo "flag during linking and do at least one of the following:"
+      if test -n "$shlibpath_var"; then
+	echo "   - add LIBDIR to the \`$shlibpath_var' environment variable"
+	echo "     during execution"
+      fi
+      if test -n "$runpath_var"; then
+	echo "   - add LIBDIR to the \`$runpath_var' environment variable"
+	echo "     during linking"
+      fi
+      if test -n "$hardcode_libdir_flag_spec"; then
+	libdir=LIBDIR
+	eval flag=\"$hardcode_libdir_flag_spec\"
 
-      $ECHO "   - use the \`$flag' linker flag"
-    fi
-    if test -n "$admincmds"; then
-      $ECHO "   - have your system administrator run these commands:$admincmds"
-    fi
-    if test -f /etc/ld.so.conf; then
-      echo "   - have your system administrator add LIBDIR to \`/etc/ld.so.conf'"
-    fi
-    echo
+	$ECHO "   - use the \`$flag' linker flag"
+      fi
+      if test -n "$admincmds"; then
+	$ECHO "   - have your system administrator run these commands:$admincmds"
+      fi
+      if test -f /etc/ld.so.conf; then
+	echo "   - have your system administrator add LIBDIR to \`/etc/ld.so.conf'"
+      fi
+      echo
 
-    echo "See any operating system documentation about shared libraries for"
-    case $host in
-      solaris2.[6789]|solaris2.1[0-9])
-        echo "more information, such as the ld(1), crle(1) and ld.so(8) manual"
-	echo "pages."
-	;;
-      *)
-        echo "more information, such as the ld(1) and ld.so(8) manual pages."
-        ;;
-    esac
-    echo "----------------------------------------------------------------------"
+      echo "See any operating system documentation about shared libraries for"
+      case $host in
+	solaris2.[6789]|solaris2.1[0-9])
+	  echo "more information, such as the ld(1), crle(1) and ld.so(8) manual"
+	  echo "pages."
+	  ;;
+	*)
+	  echo "more information, such as the ld(1) and ld.so(8) manual pages."
+	  ;;
+      esac
+      echo "----------------------------------------------------------------------"
+    fi
     exit $EXIT_SUCCESS
 }
 
@@ -2042,6 +2115,9 @@ func_mode_install ()
 	;;
 
       *.la)
+	func_resolve_sysroot "$file"
+	file=$func_resolve_sysroot_result
+
 	# Check to see that this really is a libtool archive.
 	func_lalib_unsafe_p "$file" \
 	  || func_fatal_help "\`$file' is not a valid libtool archive"
@@ -2388,6 +2464,18 @@ extern \"C\" {
 #pragma GCC diagnostic ignored \"-Wstrict-prototypes\"
 #endif
 
+/* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
+#if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN32_WCE)
+/* DATA imports from DLLs on WIN32 con't be const, because runtime
+   relocations are performed -- see ld's documentation on pseudo-relocs.  */
+# define LT_DLSYM_CONST
+#elif defined(__osf__)
+/* This system does not cope well with relocations in const data.  */
+# define LT_DLSYM_CONST
+#else
+# define LT_DLSYM_CONST const
+#endif
+
 /* External symbol declarations for the compiler. */\
 "
 
@@ -2529,26 +2617,9 @@ typedef struct {
   const char *name;
   void *address;
 } lt_dlsymlist;
-"
-	  case $host in
-	  *cygwin* | *mingw* | *cegcc* )
-	    echo >> "$output_objdir/$my_dlsyms" "\
-/* DATA imports from DLLs on WIN32 con't be const, because
-   runtime relocations are performed -- see ld's documentation
-   on pseudo-relocs.  */"
-	    lt_dlsym_const= ;;
-	  *osf5*)
-	    echo >> "$output_objdir/$my_dlsyms" "\
-/* This system does not cope well with relocations in const data */"
-	    lt_dlsym_const= ;;
-	  *)
-	    lt_dlsym_const=const ;;
-	  esac
-
-	  echo >> "$output_objdir/$my_dlsyms" "\
-extern $lt_dlsym_const lt_dlsymlist
+extern LT_DLSYM_CONST lt_dlsymlist
 lt_${my_prefix}_LTX_preloaded_symbols[];
-$lt_dlsym_const lt_dlsymlist
+LT_DLSYM_CONST lt_dlsymlist
 lt_${my_prefix}_LTX_preloaded_symbols[] =
 {\
   { \"$my_originator\", (void *) 0 },"
@@ -3405,7 +3476,7 @@ void lt_dump_script (FILE *f);
 EOF
 
 	    cat <<EOF
-const char * MAGIC_EXE = "$magic_exe";
+volatile const char * MAGIC_EXE = "$magic_exe";
 const char * LIB_PATH_VARNAME = "$shlibpath_var";
 EOF
 
@@ -4642,15 +4713,16 @@ func_mode_link ()
 	;;
 
       -L*)
-	func_stripname '-L' '' "$arg"
-	dir=$func_stripname_result
-	if test -z "$dir"; then
+	func_stripname "-L" '' "$arg"
+	if test -z "$func_stripname_result"; then
 	  if test "$#" -gt 0; then
 	    func_fatal_error "require no space between \`-L' and \`$1'"
 	  else
 	    func_fatal_error "need path for \`-L' option"
 	  fi
 	fi
+	func_resolve_sysroot "$func_stripname_result"
+	dir=$func_resolve_sysroot_result
 	# We need an absolute path.
 	case $dir in
 	[\\/]* | [A-Za-z]:[\\/]*) ;;
@@ -4662,9 +4734,15 @@ func_mode_link ()
 	  ;;
 	esac
 	case "$deplibs " in
-	*" -L$dir "*) ;;
+	*" -L$dir "* | *" $arg "*)
+	  # Will only happen for absolute or sysroot arguments
+	  ;;
 	*)
-	  func_append deplibs " -L$dir"
+	  # Preserve sysroot, but never include relative directories
+	  case $dir in
+	    [\\/]* | [A-Za-z]:[\\/]* | =*) func_append deplibs " $arg" ;;
+	    *) func_append deplibs " -L$dir" ;;
+	  esac
 	  func_append lib_search_path " $dir"
 	  ;;
 	esac
@@ -4735,7 +4813,7 @@ func_mode_link ()
       # Tru64 UNIX uses -model [arg] to determine the layout of C++
       # classes, name mangling, and exception handling.
       # Darwin uses the -arch flag to determine output architecture.
-      -model|-arch|-isysroot)
+      -model|-arch|-isysroot|--sysroot)
 	func_append compiler_flags " $arg"
 	func_append compile_command " $arg"
 	func_append finalize_command " $arg"
@@ -4816,6 +4894,10 @@ func_mode_link ()
 	# We need an absolute path.
 	case $dir in
 	[\\/]* | [A-Za-z]:[\\/]*) ;;
+	=*)
+	  func_stripname '=' '' "$dir"
+	  dir=$lt_sysroot$func_stripname_result
+	  ;;
 	*)
 	  func_fatal_error "only absolute run-paths are allowed"
 	  ;;
@@ -4932,8 +5014,9 @@ func_mode_link ()
       # -p, -pg, --coverage, -fprofile-*  profiling flags for GCC
       # @file                GCC response files
       # -tp=*                Portland pgcc target processor selection
+      # --sysroot=*          for sysroot support
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*)
+      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
         func_append compile_command " $arg"
@@ -5046,16 +5129,17 @@ func_mode_link ()
       *.la)
 	# A libtool-controlled library.
 
+	func_resolve_sysroot "$arg"
 	if test "$prev" = dlfiles; then
 	  # This library was specified with -dlopen.
-	  func_append dlfiles " $arg"
+	  func_append dlfiles " $func_resolve_sysroot_result"
 	  prev=
 	elif test "$prev" = dlprefiles; then
 	  # The library was specified with -dlpreopen.
-	  func_append dlprefiles " $arg"
+	  func_append dlprefiles " $func_resolve_sysroot_result"
 	  prev=
 	else
-	  func_append deplibs " $arg"
+	  func_append deplibs " $func_resolve_sysroot_result"
 	fi
 	continue
 	;;
@@ -5209,8 +5293,9 @@ func_mode_link ()
 	for lib in $dlprefiles; do
 	  # Ignore non-libtool-libs
 	  dependency_libs=
+	  func_resolve_sysroot "$lib"
 	  case $lib in
-	  *.la)	func_source "$lib" ;;
+	  *.la)	func_source "$func_resolve_sysroot_result" ;;
 	  esac
 
 	  # Collect preopened libtool deplibs, except any this library
@@ -5343,7 +5428,8 @@ func_mode_link ()
 	    test "$pass" = conv && continue
 	    newdependency_libs="$deplib $newdependency_libs"
 	    func_stripname '-L' '' "$deplib"
-	    func_append newlib_search_path " $func_stripname_result"
+	    func_resolve_sysroot "$func_stripname_result"
+	    func_append newlib_search_path " $func_resolve_sysroot_result"
 	    ;;
 	  prog)
 	    if test "$pass" = conv; then
@@ -5357,7 +5443,8 @@ func_mode_link ()
 	      finalize_deplibs="$deplib $finalize_deplibs"
 	    fi
 	    func_stripname '-L' '' "$deplib"
-	    func_append newlib_search_path " $func_stripname_result"
+	    func_resolve_sysroot "$func_stripname_result"
+	    func_append newlib_search_path " $func_resolve_sysroot_result"
 	    ;;
 	  *)
 	    func_warning "\`-L' is ignored for archives/objects"
@@ -5368,7 +5455,8 @@ func_mode_link ()
 	-R*)
 	  if test "$pass" = link; then
 	    func_stripname '-R' '' "$deplib"
-	    dir=$func_stripname_result
+	    func_resolve_sysroot "$func_stripname_result"
+	    dir=$func_resolve_sysroot_result
 	    # Make sure the xrpath contains only unique directories.
 	    case "$xrpath " in
 	    *" $dir "*) ;;
@@ -5378,7 +5466,10 @@ func_mode_link ()
 	  deplibs="$deplib $deplibs"
 	  continue
 	  ;;
-	*.la) lib="$deplib" ;;
+	*.la)
+	  func_resolve_sysroot "$deplib"
+	  lib=$func_resolve_sysroot_result
+	  ;;
 	*.$libext)
 	  if test "$pass" = conv; then
 	    deplibs="$deplib $deplibs"
@@ -5575,14 +5666,14 @@ func_mode_link ()
 
 	# Find the relevant object directory and library name.
 	if test "X$installed" = Xyes; then
-	  if test ! -f "$libdir/$linklib" && test -f "$abs_ladir/$linklib"; then
+	  if test ! -f "$lt_sysroot$libdir/$linklib" && test -f "$abs_ladir/$linklib"; then
 	    func_warning "library \`$lib' was moved."
 	    dir="$ladir"
 	    absdir="$abs_ladir"
 	    libdir="$abs_ladir"
 	  else
-	    dir="$libdir"
-	    absdir="$libdir"
+	    dir="$lt_sysroot$libdir"
+	    absdir="$lt_sysroot$libdir"
 	  fi
 	  test "X$hardcode_automatic" = Xyes && avoidtemprpath=yes
 	else
@@ -5676,7 +5767,8 @@ func_mode_link ()
 	  for deplib in $dependency_libs; do
 	    case $deplib in
 	    -L*) func_stripname '-L' '' "$deplib"
-	         func_append newlib_search_path " $func_stripname_result"
+	         func_resolve_sysroot "$func_stripname_result"
+	         func_append newlib_search_path " $func_resolve_sysroot_result"
 		 ;;
 	    esac
 	    # Need to link against all dependency_libs?
@@ -6077,12 +6169,18 @@ func_mode_link ()
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    newdependency_libs="$deplib $newdependency_libs"
+	    case $deplib in
+              -L*) func_stripname '-L' '' "$deplib"
+                   func_resolve_sysroot "$func_stripname_result";;
+              *) func_resolve_sysroot "$deplib" ;;
+            esac
 	    if $opt_preserve_dup_deps ; then
 	      case "$tmp_libs " in
-	      *" $deplib "*) func_append specialdeplibs " $deplib" ;;
+	      *" $func_resolve_sysroot_result "*)
+                func_append specialdeplibs " $func_resolve_sysroot_result" ;;
 	      esac
 	    fi
-	    func_append tmp_libs " $deplib"
+	    func_append tmp_libs " $func_resolve_sysroot_result"
 	  done
 
 	  if test "$link_all_deplibs" != no; then
@@ -6092,8 +6190,10 @@ func_mode_link ()
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
+	        func_resolve_sysroot "$deplib"
+	        deplib=$func_resolve_sysroot_result
 	        func_dirname "$deplib" "" "."
-		dir="$func_dirname_result"
+		dir=$func_dirname_result
 		# We need an absolute path.
 		case $dir in
 		[\\/]* | [A-Za-z]:[\\/]*) absdir="$dir" ;;
@@ -6638,7 +6738,8 @@ func_mode_link ()
 	# If the user specified any rpath flags, then add them.
 	temp_xrpath=
 	for libdir in $xrpath; do
-	  func_append temp_xrpath " -R$libdir"
+	  func_replace_sysroot "$libdir"
+	  func_append temp_xrpath " -R$func_replace_sysroot_result"
 	  case "$finalize_rpath " in
 	  *" $libdir "*) ;;
 	  *) func_append finalize_rpath " $libdir" ;;
@@ -7096,6 +7197,8 @@ EOF
 	  for libdir in $rpath; do
 	    if test -n "$hardcode_libdir_flag_spec"; then
 	      if test -n "$hardcode_libdir_separator"; then
+		func_replace_sysroot "$libdir"
+		libdir=$func_replace_sysroot_result
 		if test -z "$hardcode_libdirs"; then
 		  hardcode_libdirs="$libdir"
 		else
@@ -8304,7 +8407,17 @@ EOF
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$deplib' is not a valid libtool archive"
-		func_append newdependency_libs " $libdir/$name"
+		func_append newdependency_libs " ${lt_sysroot:+=}$libdir/$name"
+		;;
+	      -L*)
+		func_stripname -L '' "$deplib"
+		func_replace_sysroot "$func_stripname_result"
+		func_append newdependency_libs " -L$func_replace_sysroot_result"
+		;;
+	      -R*)
+		func_stripname -R '' "$deplib"
+		func_replace_sysroot "$func_stripname_result"
+		func_append newdependency_libs " -R$func_replace_sysroot_result"
 		;;
 	      *) func_append newdependency_libs " $deplib" ;;
 	      esac
@@ -8320,7 +8433,7 @@ EOF
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $lib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$lib' is not a valid libtool archive"
-		func_append newdlfiles " $libdir/$name"
+		func_append newdlfiles " ${lt_sysroot:+=}$libdir/$name"
 		;;
 	      *) func_append newdlfiles " $lib" ;;
 	      esac
@@ -8339,7 +8452,7 @@ EOF
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $lib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$lib' is not a valid libtool archive"
-		func_append newdlprefiles " $libdir/$name"
+		func_append newdlprefiles " ${lt_sysroot:+=}$libdir/$name"
 		;;
 	      esac
 	    done

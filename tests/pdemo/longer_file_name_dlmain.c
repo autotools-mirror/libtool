@@ -34,7 +34,7 @@ typedef struct
   lt_ptr_t address;
 } lt_dlsymlist;
 
-extern const lt_dlsymlist lt_preloaded_symbols[];
+extern LT_DLSYM_CONST lt_dlsymlist lt_preloaded_symbols[];
 
 int
 main (int argc, char **argv)

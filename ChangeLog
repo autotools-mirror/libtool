@@ -39,7 +39,179 @@
 	(func_convert_path_msys_to_cygwin): New function.
 	(func_convert_path_nix_to_cygwin): New function.
 
+2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix symlist variable path to use _WIN32 instead of __WINDOWS__.
+	* libltdl/config/ltmain.m4sh, libltdl/libltdl/lt_system.h,
+	libltdl/m4/libtool.m4, tests/demo/foo.h, tests/pdemo/foo.h:
+	Change __WINDOWS__ to _WIN32.
+	Report by Charles Wilson.
+
+	Add $pic_flag to archive_cmds and archive_expsym_cmds.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	<archive_cmds, archive_expsym_cmds>
+	[GNU ld, netbsd]: Add $pic_flag if ELF.
+	[GNU ld, solaris]: Likewise.
+	[GNU ld, default case]: Likewise.
+	[!GNU ld, freebsd, dragonfly]: Add $pic_flag.
+	[!GNU ld, GCC, hpux9]: Add $pic_flag.
+	[!GNU ld, GCC, hpux10]: Replace -fPIC with $pic_flag
+	[!GNU ld, GCC, hpux11, !hppa*64]: Replace -fPIC with $pic_flag.
+	[!GNU ld, GCC, irix5, irix6, nonstopux]: Add $pic_flag.
+	[!GNU ld, GCC, osf4, osf5]: Likewise.
+	[!GNU ld, GCC, solaris]: Likewise.
+	(_LT_LANG_CXX_CONFIG) <archive_cmds, archive_expsym_cmds>
+	[hpux9]: Add $pic_flag if $GXX.
+	[hpux10, hpux11, !hppa*64]: Replace -fPIC with $pic_flag.
+	[irix5, irix6]: Add $pic_flag if $GXX.
+	[osf4, osf5]: Likewise.
+	[solaris]: Add $pic_flag if $GXX and not GCC 2.7.
+
+	Uniform const'ness of symlist variable lt_preloaded_symbols.
+	On some systems, lt_preloaded_symbols may not be declared
+	const due to relocation issues.  C99 requires qualification to
+	match for compatible declarations, so ensure we declare
+	const'ness in the same way everywhere; link-time optimization
+	may otherwise rightfully complain about inconsistencies.
+	Since ltdl.h may not depend upon config.h, rely on system
+	defines for choosing const'ness.
+	* NEWS: Update.
+	* doc/libtool.texi (Dlpreopening): Document this issue.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms):
+	[__WINDOWS__, __CYGWIN__, _WIN32_WCE]: Define LT_DLSYM_CONST
+	according to system defines.  Remove old shell cruft.  Use
+	LT_DLSYM_CONST for lt_${my_prefix}_LTX_preloaded_symbols.
+	* libltdl/libltdl/lt_system.h (LT_DLSYM_CONST): Likewise,
+	define LT_DLSYM_CONST according to system defines.
+	* tests/demo/foo.h (LT_DLSYM_CONST): Likewise.
+	* tests/pdemo/foo.h (LT_DLSYM_CONST): Likewise.
+	* tests/demo/dlmain.c (lt_dlsymlist): Use LT_DLSYM_CONST.
+	* tests/pdemo/longer_file_name_dlmain.c (lt_dlsymlist):
+	Likewise.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Likewise
+	for configure test code.
+	* libltdl/ltdl.c (preloaded_symbols): Use LT_DLSYM_CONST.
+	* libltdl/ltdl.h (LTDL_SET_PRELOADED_SYMBOLS): Likewise.
+
+2010-08-28  Dave Korn  <dave.korn.cygwin@googlemail.com>
+
+	Ensure cwrapper magic string is not optimized away.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src):
+	Declare MAGIC_EXE as volatile.
+	Report by Charles Wilson.
+
+2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix quoting in non-XSI func_xform, for IRIX sh.
+	* libltdl/config/ltmain.m4sh (func_xform): Remove spurious extra
+	M4 quotes.
+
+	Fix response file test for unreliable exit status of IRIX ar.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): IRIX ar will not fail
+	over a command-line argument specifying a nonexistent file (such
+	as `@FILE'), so ensure failure with a reponse file containing
+	a nonexistent file.  Also, use lt_* variable prefix for
+	temporary variables.
+
+	Fix AC_LANG_PROGRAM warnings from git Autoconf.
+	* libltdl/m4/libtool.m4 (_LT_SYS_MODULE_PATH_AIX): Fix
+	underquoted AC_LANG_PROGRAM call.
+	(LT_PROG_AR): Use AC_LANG_PROGRAM.
+	(_LT_LINKER_SHLIBS) [irix, GCC]: Use the right source for the
+	given language.
+	* NEWS: Update.
+
+2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	fix AIX testsuite regression
+	* libltdl/config/ltmain.m4sh (func_resolve_sysroot): Partly
+	revert v2.2.10-83-gc45a288: Do not absolutize path here, only do
+	sysroot replacement.
+	(func_mode_link): Adjust.
+
+2010-08-22  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	fix --mode=finish
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Invert then/else
+	blocks of the "if $opt_dry_run" conditional.
+
+2010-08-15  Paolo Bonzini  <bonzini@gnu.org>
+
+	improve code for sysroot --mode=finish
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Change sysroot_regex
+	and sysroot_cmd delimiter from pipe to slash.  Wrap the entire for
+	loop with "if $opt_dry_run...fi" and print an explanatory message
+	for the --dry-run case.
+
+2010-08-12  Paolo Bonzini  <bonzini@gnu.org>
+
+	add libtool --mode=finish mode for sysroot
+	* doc/libtool.texi (Finish mode): Document behavior when *.la files
+	are passed.
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Eliminate sysroot
+	or `=' signs representing it from files in $libs.
+	* tests/sysroot.at (SYSROOT_TESTS): Test for presence of sysroot
+	references before running libtool --mode=finish, and for absence
+	afterwards.
+
+	reorganize parsing of --mode=finish arguments
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Split arguments for
+	directories and *.la files.
+
+	fix sysroot handling for deplibs of preopened libtool libs
+	* libltdl/config/ltmain.m4sh: Pass $dependency_libs of preopened libtool
+	through func_resolve_sysroot.
+
+	fix sysroot tests to pass on Fedora 13
+	* tests/sysroot.at: Link $prefix/include into the sysroot as well, as
+	required by newer GCC.
+
+2010-07-29  Paolo Bonzini  <bonzini@gnu.org>
+
+	initial version of the NEWS entry
+	* NEWS: Document sysroot support.
+
+	add sysroot test
+	* Makefile.am (TESTSUITE_AT): Add tests/sysroot.at.
+	* tests/sysroot.at: New.
+
+	emit sysrooted paths when installing .la files
+	* libltdl/config/ltmain.m4sh (func_replace_sysroot): New.
+	(func_mode_link): Prepend paths in $libdir with the sysroot.  Further,
+	replace the sysroot with = (using func_replace_sysroot) whenever
+	such a path is written in a .la file.
+
+	process postdeps to include sysrooted paths
+	* libltdl/m4/libtool.m4 (_LT_FUNC_STRIPNAME_CNF): New (from Charles Wilson).
+	(_LT_SYS_HIDDEN_LIBDEPS): Require it.  Use func_stripname_cnf to convert
+	sysroot (-L= and -R=) usage in postdeps.  Adjust the code because -L, -R
+	and -l flags will now always be separated from the rest of the argument.
+
+	handle sysrooted paths when reading dependencies to la files
+	* libltdl/config/ltmain.m4sh (func_mode_execute, func_mode_install,
+	func_mode_link): Whenever a .la file occurs in another .la file,
+	expand the sysroot path in it.
+
+2010-07-28  Paolo Bonzini  <bonzini@gnu.org>
+
+	teach libtool -L= and -R=
+	* libltdl/config/ltmain.m4sh (func_resolve_sysroot): New.
+	(func_mode_link): Always pass result of stripping -L and -R to
+	func_resolve_sysroot before using it.  Remove absolute path expansion
+	when func_resolve_sysroot subsumes it.  Expand sysroot in -rpath.
+	When processing dependent libraries also resolve sysroot paths there.
+
+	add --with-sysroot
+	* libltdl/m4/libtool.m4 (_LT_HOST_NONCANONICAL, _LT_WITH_SYSROOT): New.
+	(LT_SETUP): Require _LT_WITH_SYSROOT.
+
+	handle sysroot flags
+	* libltdl/config/ltmain.m4sh (func_mode_link): Recognize --sysroot
+	option.
+
 2010-08-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* NEWS: Only bootstrapping needs new Automake and Autoconf.
 
 	check-interactive and check-noninteractive for both testsuites.
 	* Makefile.am (COMMON_TESTS, TESTS): Split into ...
