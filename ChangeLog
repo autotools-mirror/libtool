@@ -1,5 +1,12 @@
 2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix response file test for unreliable exit status of IRIX ar.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): IRIX ar will not fail
+	over a command-line argument specifying a nonexistent file (such
+	as `@FILE'), so ensure failure with a reponse file containing
+	a nonexistent file.  Also, use lt_* variable prefix for
+	temporary variables.
+
 	Fix AC_LANG_PROGRAM warnings from git Autoconf.
 	* libltdl/m4/libtool.m4 (_LT_SYS_MODULE_PATH_AIX): Fix
 	underquoted AC_LANG_PROGRAM call.

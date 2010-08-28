@@ -1359,10 +1359,15 @@ AC_CACHE_CHECK([for archiver @FILE support], [lt_cv_ar_at_file],
   [lt_cv_ar_at_file=no
    AC_COMPILE_IFELSE([AC_LANG_PROGRAM],
      [echo conftest.$ac_objext > conftest.lst
-      am_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst'
-      AC_TRY_EVAL([am_ar_try])
+      lt_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst'
+      AC_TRY_EVAL([lt_ar_try])
       if test "$ac_status" -eq 0; then
-        lt_cv_ar_at_file=@
+	# Ensure the archiver fails upon bogus file names.
+	rm -f conftest.$ac_objext libconftest.a
+	AC_TRY_EVAL([lt_ar_try])
+	if test "$ac_status" -ne 0; then
+          lt_cv_ar_at_file=@
+        fi
       fi
       rm -f conftest.* libconftest.a
      ])
