@@ -1,3 +1,91 @@
+2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	fix AIX testsuite regression
+	* libltdl/config/ltmain.m4sh (func_resolve_sysroot): Partly
+	revert v2.2.10-83-gc45a288: Do not absolutize path here, only do
+	sysroot replacement.
+	(func_mode_link): Adjust.
+
+2010-08-22  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	fix --mode=finish
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Invert then/else
+	blocks of the "if $opt_dry_run" conditional.
+
+2010-08-15  Paolo Bonzini  <bonzini@gnu.org>
+
+	improve code for sysroot --mode=finish
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Change sysroot_regex
+	and sysroot_cmd delimiter from pipe to slash.  Wrap the entire for
+	loop with "if $opt_dry_run...fi" and print an explanatory message
+	for the --dry-run case.
+
+2010-08-12  Paolo Bonzini  <bonzini@gnu.org>
+
+	add libtool --mode=finish mode for sysroot
+	* doc/libtool.texi (Finish mode): Document behavior when *.la files
+	are passed.
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Eliminate sysroot
+	or `=' signs representing it from files in $libs.
+	* tests/sysroot.at (SYSROOT_TESTS): Test for presence of sysroot
+	references before running libtool --mode=finish, and for absence
+	afterwards.
+
+	reorganize parsing of --mode=finish arguments
+	* libltdl/config/ltmain.m4sh (func_mode_finish): Split arguments for
+	directories and *.la files.
+
+	fix sysroot handling for deplibs of preopened libtool libs
+	* libltdl/config/ltmain.m4sh: Pass $dependency_libs of preopened libtool
+	through func_resolve_sysroot.
+
+	fix sysroot tests to pass on Fedora 13
+	* tests/sysroot.at: Link $prefix/include into the sysroot as well, as
+	required by newer GCC.
+
+2010-07-29  Paolo Bonzini  <bonzini@gnu.org>
+
+	initial version of the NEWS entry
+	* NEWS: Document sysroot support.
+
+	add sysroot test
+	* Makefile.am (TESTSUITE_AT): Add tests/sysroot.at.
+	* tests/sysroot.at: New.
+
+	emit sysrooted paths when installing .la files
+	* libltdl/config/ltmain.m4sh (func_replace_sysroot): New.
+	(func_mode_link): Prepend paths in $libdir with the sysroot.  Further,
+	replace the sysroot with = (using func_replace_sysroot) whenever
+	such a path is written in a .la file.
+
+	process postdeps to include sysrooted paths
+	* libltdl/m4/libtool.m4 (_LT_FUNC_STRIPNAME_CNF): New (from Charles Wilson).
+	(_LT_SYS_HIDDEN_LIBDEPS): Require it.  Use func_stripname_cnf to convert
+	sysroot (-L= and -R=) usage in postdeps.  Adjust the code because -L, -R
+	and -l flags will now always be separated from the rest of the argument.
+
+	handle sysrooted paths when reading dependencies to la files
+	* libltdl/config/ltmain.m4sh (func_mode_execute, func_mode_install,
+	func_mode_link): Whenever a .la file occurs in another .la file,
+	expand the sysroot path in it.
+
+2010-07-28  Paolo Bonzini  <bonzini@gnu.org>
+
+	teach libtool -L= and -R=
+	* libltdl/config/ltmain.m4sh (func_resolve_sysroot): New.
+	(func_mode_link): Always pass result of stripping -L and -R to
+	func_resolve_sysroot before using it.  Remove absolute path expansion
+	when func_resolve_sysroot subsumes it.  Expand sysroot in -rpath.
+	When processing dependent libraries also resolve sysroot paths there.
+
+	add --with-sysroot
+	* libltdl/m4/libtool.m4 (_LT_HOST_NONCANONICAL, _LT_WITH_SYSROOT): New.
+	(LT_SETUP): Require _LT_WITH_SYSROOT.
+
+	handle sysroot flags
+	* libltdl/config/ltmain.m4sh (func_mode_link): Recognize --sysroot
+	option.
+
 2010-08-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* NEWS: Only bootstrapping needs new Automake and Autoconf.
