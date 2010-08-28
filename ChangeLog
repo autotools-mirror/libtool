@@ -1,5 +1,7 @@
 2010-08-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* NEWS: Only bootstrapping needs new Automake and Autoconf.
+
 	check-interactive and check-noninteractive for both testsuites.
 	* Makefile.am (COMMON_TESTS, TESTS): Split into ...
 	(NONINTERACTIVE_TESTS, INTERACTIVE_TESTS): ... these new

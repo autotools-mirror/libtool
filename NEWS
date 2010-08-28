@@ -12,9 +12,9 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
 
 * Important incompatible changes:
 
-  - Autoconf 2.62 and Automake 1.11.1 or newer are now required for building
-    Libtool.  For using Libtool in your own projects, Autoconf 2.59 and
-    Automake 1.9.6 should still work.
+  - Autoconf 2.62 and Automake 1.11.1 or newer are now required for
+    bootstrapping Libtool.  For using Libtool in your own projects,
+    Autoconf 2.59 and Automake 1.9.6 should still work.
 
 * Changes in supported systems or compilers:
 
