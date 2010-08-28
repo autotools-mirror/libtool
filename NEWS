@@ -37,6 +37,9 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
 
   - The `check-interactive' and `check-noninteractive' convenience make
     targets now also work for the old testsuite.
+  - Warnings from Autoconf v2.67-36-g1e604ec about incomplete programs
+    passed to AC_*_IFELSE tests have been fixed.
+  - On IRIX, the test for -Wl,-exported_symbol now also works with gfortran.
 
 New in 2.2.10 2010-06-10: git version 2.2.9a, Libtool team:
 

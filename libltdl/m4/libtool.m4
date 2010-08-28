@@ -1083,7 +1083,7 @@ m4_defun([_LT_DARWIN_LINKER_FEATURES],
 m4_defun([_LT_SYS_MODULE_PATH_AIX],
 [m4_require([_LT_DECL_SED])dnl
 AC_CACHE_VAL([lt_cv_aix_libpath],
-[AC_LINK_IFELSE(AC_LANG_PROGRAM,[
+[AC_LINK_IFELSE([AC_LANG_PROGRAM],[
 lt_aix_libpath_sed='
     /Import File Strings/,/^$/ {
 	/^0/ {
@@ -1357,7 +1357,7 @@ _LT_DECL([], [AR_FLAGS], [1], [Flags to create an archive])
 
 AC_CACHE_CHECK([for archiver @FILE support], [lt_cv_ar_at_file],
   [lt_cv_ar_at_file=no
-   AC_COMPILE_IFELSE([[int some_variable = 0;]],
+   AC_COMPILE_IFELSE([AC_LANG_PROGRAM],
      [echo conftest.$ac_objext > conftest.lst
       am_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst'
       AC_TRY_EVAL([am_ar_try])
@@ -5163,9 +5163,18 @@ _LT_EOF
 	# implicitly export all symbols.
         save_LDFLAGS="$LDFLAGS"
         LDFLAGS="$LDFLAGS -shared ${wl}-exported_symbol ${wl}foo ${wl}-update_registry ${wl}/dev/null"
-        AC_LINK_IFELSE(int foo(void) {},
+        AC_LINK_IFELSE(
+          [AC_LANG_SOURCE(
+	     [AC_LANG_CASE([C], [[int foo (void) { return 0; }]],
+			   [C++], [[int foo (void) { return 0; }]],
+			   [Fortran 77], [[
+       subroutine foo
+       end]],
+			   [Fortran], [[
+       subroutine foo
+       end]])])], [
           _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && func_echo_all "${wl}-set_version ${wl}$verstring"` ${wl}-update_registry ${wl}${output_objdir}/so_locations ${wl}-exports_file ${wl}$export_symbols -o $lib'
-        )
+        ])
         LDFLAGS="$save_LDFLAGS"
       else
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -soname $soname `test -n "$verstring" && func_echo_all "-set_version $verstring"` -update_registry ${output_objdir}/so_locations -o $lib'

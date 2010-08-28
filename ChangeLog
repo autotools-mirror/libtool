@@ -1,3 +1,13 @@
+2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix AC_LANG_PROGRAM warnings from git Autoconf.
+	* libltdl/m4/libtool.m4 (_LT_SYS_MODULE_PATH_AIX): Fix
+	underquoted AC_LANG_PROGRAM call.
+	(LT_PROG_AR): Use AC_LANG_PROGRAM.
+	(_LT_LINKER_SHLIBS) [irix, GCC]: Use the right source for the
+	given language.
+	* NEWS: Update.
+
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	fix AIX testsuite regression
