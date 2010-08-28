@@ -1,3 +1,9 @@
+2010-08-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Minor sysroot fixups.
+	* libltdl/m4/libtool.m4 (_LT_WITH_SYSROOT): Fix typo.
+	* tests/sysroot.at: Search also for crt0.o to accommodate cygwin.
+
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	fix AIX testsuite regression

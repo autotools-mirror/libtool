@@ -1182,7 +1182,7 @@ lt_sysroot=
 case ${with_sysroot} in #(
  yes)
    if test "$GCC" = yes; then
-     lt_sysroot=`$GCC --print-sysroot 2>/dev/null`
+     lt_sysroot=`$CC --print-sysroot 2>/dev/null`
    fi
    ;; #(
  /*)
