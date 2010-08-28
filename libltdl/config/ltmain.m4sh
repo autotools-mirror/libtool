@@ -3181,7 +3181,7 @@ void lt_dump_script (FILE *f);
 EOF
 
 	    cat <<EOF
-const char * MAGIC_EXE = "$magic_exe";
+volatile const char * MAGIC_EXE = "$magic_exe";
 const char * LIB_PATH_VARNAME = "$shlibpath_var";
 EOF
 

@@ -1,3 +1,10 @@
+2010-08-28  Dave Korn  <dave.korn.cygwin@googlemail.com>
+
+	Ensure cwrapper magic string is not optimized away.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src):
+	Declare MAGIC_EXE as volatile.
+	Report by Charles Wilson.
+
 2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix quoting in non-XSI func_xform, for IRIX sh.
