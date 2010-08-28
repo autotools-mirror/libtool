@@ -1,5 +1,11 @@
 2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix symlist variable path to use _WIN32 instead of __WINDOWS__.
+	* libltdl/config/ltmain.m4sh, libltdl/libltdl/lt_system.h,
+	libltdl/m4/libtool.m4, tests/demo/foo.h, tests/pdemo/foo.h:
+	Change __WINDOWS__ to _WIN32.
+	Report by Charles Wilson.
+
 	Add $pic_flag to archive_cmds and archive_expsym_cmds.
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
 	<archive_cmds, archive_expsym_cmds>
