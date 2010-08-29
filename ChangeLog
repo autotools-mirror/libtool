@@ -1,3 +1,8 @@
+2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Silence order-only configure test for AIX make.
+	* configure.ac: Also drop standard output, for AIX 5.1 make.
+
 2010-08-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* NEWS: Only bootstrapping needs new Automake and Autoconf.

@@ -209,7 +209,7 @@ a b c:
 	touch $[]@
 END
    touch c
-   if ${MAKE-make} -s -q -f confmk 2>/dev/null; then
+   if ${MAKE-make} -s -q -f confmk >/dev/null 2>&1; then
      lt_cv_make_order_only=yes
    else
      lt_cv_make_order_only=no
