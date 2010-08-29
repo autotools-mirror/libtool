@@ -1,3 +1,9 @@
+2010-08-29  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix typo when renaming path conversion functions.
+	* tests/testsuite.at: Ensure to_host_file_cmd is passed as a
+	variable setting on the configure line for (new testsuite) tests.
+
 2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Work around yet another shell quoting portability issue.
