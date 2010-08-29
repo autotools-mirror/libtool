@@ -1,5 +1,11 @@
 2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Disable GCC LTO for verbose library extraction.
+	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Temporarily
+	append -fno-lto or -fno-whopr to CFLAGS if CC or CFLAGS (which
+	are substituted with the per-language variables here) contain
+	-flto or match -fwhopr*, respectively.
+
 	Save and restore CFLAGS properly inside libtool.m4 macros.
 	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Use different
 	temporary variables for saved and restored values of $LIBS,
