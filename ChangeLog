@@ -1,5 +1,15 @@
 2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Save and restore CFLAGS properly inside libtool.m4 macros.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Use different
+	temporary variables for saved and restored values of $LIBS,
+	$CFLAGS, to avoid overlap with the *_CONFIG macros.
+	(_LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG)
+	(_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Also save and restore
+	$CFLAGS, and override it with per-language flags, so that in
+	case output_verbose_link_cmd uses $CFLAGS, the right flags are
+	used.
+
 	Work around yet another shell quoting portability issue.
 	* configure.ac: Avoid nonportable quoted alternate variable
 	value in unquoted here document, so Solaris 10 sh and Tru64
