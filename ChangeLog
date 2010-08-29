@@ -1,5 +1,17 @@
 2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Support GCC LTO on GNU/Linux.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Allow through
+	flags matching -O*, -flto*, -fwhopr, -fuse-linker-plugin.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Drop symbols
+	starting with __gnu_lto.
+	(_LT_LINKER_SHLIBS) [linux] <archive_cmds, archive_expsyms_cmds>:
+	Add $pic_flag for GCC.
+	(_LT_LANG_CXX_CONFIG) [linux] <archive_cmds, archive_expsyms_cmds>:
+	Likewise.
+	(_LT_SYS_HIDDEN_LIBDEPS): Ignore files matching *.lto.o.
+	* NEWS: Update.
+
 	Disable GCC LTO for verbose library extraction.
 	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Temporarily
 	append -fno-lto or -fno-whopr to CFLAGS if CC or CFLAGS (which

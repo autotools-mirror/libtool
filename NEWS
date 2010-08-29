@@ -97,6 +97,7 @@ New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
   - With binutils 2.19.50+, shared libraries can be built on AIX.
   - Initial support for the Cuda Compiler Driver on GNU/Linux.
   - Support for Haiku (i586-pc-haiku).
+  - Initial support for GCC link-time optimization (LTO) flags.
 
 * Bug fixes:
 
