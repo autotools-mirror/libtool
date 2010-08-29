@@ -1,5 +1,10 @@
 2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Work around yet another shell quoting portability issue.
+	* configure.ac: Avoid nonportable quoted alternate variable
+	value in unquoted here document, so Solaris 10 sh and Tru64
+	ksh do not print spurious extra quotes.
+
 	Silence order-only configure test for AIX make.
 	* configure.ac: Also drop standard output, for AIX 5.1 make.
 
