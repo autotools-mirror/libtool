@@ -1,5 +1,12 @@
 2010-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	tests: skip -Wall -Werror with Tru64 cc in cwrapper test.
+	* tests/cwrapper.at (cwrapper for uninstalled executables):
+	Use a link test rather than a compile test to flesh out unknown
+	compiler flags starting with -W; Tru64/OSF1 cc will happily
+	accept `-Wall -Werror' as indication to pass flags on to
+	subprocesses.
+
 	tests: avoid getopt-m4sh failures when autom4te is not available.
 	* tests/getopt-m4sh.at (_LT_AT_GETOPT_M4SH_SETUP):
 	Check $M4SH --version, skip on failure.

@@ -1,6 +1,6 @@
 # cwrapper.at -- test cwrapper compliance with standards -*- Autotest -*-
 
-#   Copyright (C) 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 #   Written by Charles Wilson, 2009
 #
 #   This file is part of GNU Libtool.
@@ -61,10 +61,10 @@ for restrictive_flags in '-Wall -Werror' '-std=c89 -Wall -Werror' '-std=c99 -Wal
   chmod +x libtool
   LIBTOOL=./libtool
 
-  # make sure $restrictive_flags do not cause a failure
+  # Make sure $restrictive_flags do not cause a failure
   # themselves (e.g. because a non-gcc compiler doesn't
-  # understand them)
-  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c trivial.c || continue
+  # understand them).  Tru64 cc only fails when linking.
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS trivial.c || continue
 
   AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
            [], [ignore], [ignore])
@@ -111,10 +111,10 @@ for debugwrapper_flags in '-DLT_DEBUGWRAPPER'; do
     < "$orig_LIBTOOL" > ./libtool
   LIBTOOL=./libtool
 
-  # make sure $debugwrapper_flags do not cause a failure
+  # Make sure $debugwrapper_flags do not cause a failure
   # themselves (e.g. because a non-gcc compiler doesn't
-  # understand them)
-  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c trivial.c || continue
+  # understand them).  Tru64 cc only fails when linking.
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS trivial.c || continue
 
   AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
            [], [ignore], [ignore])
