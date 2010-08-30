@@ -1,5 +1,9 @@
 2010-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	tests: avoid getopt-m4sh failures when autom4te is not available.
+	* tests/getopt-m4sh.at (_LT_AT_GETOPT_M4SH_SETUP):
+	Check $M4SH --version, skip on failure.
+
 	tests: mark 'syntax of .la files' as XFAIL, expose failure.
 	* tests/lalib-syntax.at (syntax of .la files): Assert that the
 	string returned by lt_dlerror after a failure is non-NULL, so
