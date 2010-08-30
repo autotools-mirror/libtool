@@ -1,3 +1,12 @@
+2010-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	tests: mark 'syntax of .la files' as XFAIL, expose failure.
+	* tests/lalib-syntax.at (syntax of .la files): Assert that the
+	string returned by lt_dlerror after a failure is non-NULL, so
+	the failure shows up on systems other than Solaris.  Mark test
+	as expected to fail.
+	Suggested by Bob Friesenhahn.
+
 2010-08-30  Eric Blake  <eblake@redhat.com>
 
 	Simplify recent configure quoting portability workaround.
