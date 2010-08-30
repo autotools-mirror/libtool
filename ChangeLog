@@ -1,3 +1,10 @@
+2010-08-30  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Update path conversion warning messages
+	* libltdl/config/ltmain.m4sh (func_convert_file_check): Update
+	comments and warning message.
+	(func_convert_path_check): Update warning message.
+
 2010-08-29  Peter Rosin  <peda@lysator.liu.se>
 
 	Fix typo when renaming path conversion functions.
