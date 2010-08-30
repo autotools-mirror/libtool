@@ -113,10 +113,7 @@ case $lt_alpha in
     TIMESTAMP=
     ;;
 esac
-timestamp_string=
-if test -n "$TIMESTAMP"; then
-  timestamp_string=" (Build:$TIMESTAMP)"
-fi
+timestamp_string="${TIMESTAMP:+ (Build:$TIMESTAMP)}"
 AS_BOX([Configuring AC_PACKAGE_TARNAME$timestamp_string AC_PACKAGE_VERSION])
 echo
 AC_SUBST([TIMESTAMP])

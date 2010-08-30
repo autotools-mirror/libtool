@@ -1,3 +1,8 @@
+2010-08-30  Eric Blake  <eblake@redhat.com>
+
+	Simplify recent configure quoting portability workaround.
+	* configure.ac: Simplify setting of timestamp_string.
+
 2010-08-30  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Update path conversion warning messages
