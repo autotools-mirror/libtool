@@ -1,3 +1,12 @@
+2010-08-31  Peter Rosin  <peda@lysator.liu.se>
+
+	Extract the archive name from the .la file and use $AR (not ar).
+	* Makefile.am: Pass AR through to the testsuite.
+	* tests/archive-in-archive.at: Bump copyright year. Extract archive
+	name from the .la file instead of hardcoding the name, and allow
+	different archivers. Also clarify that the tested functionality is
+	currently broken.
+
 2010-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: skip -Wall -Werror with Tru64 cc in cwrapper test.
