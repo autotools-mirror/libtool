@@ -1,5 +1,10 @@
 2010-08-31  Peter Rosin  <peda@lysator.liu.se>
 
+	Dump archiver output to the log when testing @file support.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): Redirect stdout to config.log
+	when testing for @file support.
+	Suggested by Ralf Wildenhues.
+
 	Silence archiver output when testing @file support.
 	* libltdl/m4/libtool.m4 (_LT_PROG_AR): Redirect stdout and stderr
 	to the bit bucket when testing for @file support.
