@@ -1,3 +1,9 @@
+2010-08-31  Peter Rosin  <peda@lysator.liu.se>
+
+	Silence archiver output when testing @file support.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): Redirect stdout and stderr
+	to the bit bucket when testing for @file support.
+
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
 	Remove double `Generated from foo.m4sh' lines.
