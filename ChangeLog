@@ -1,5 +1,10 @@
 2010-08-31  Peter Rosin  <peda@lysator.liu.se>
 
+	archive-in-archive.at passes with Microsoft lib.
+	* tests/archive-in-archive.at: Tighten test to check that the desired
+	object files are indeed part of the archive. Microsoft lib still
+	passes, so remove the expected failure for that case.
+
 	Dump archiver output to the log when testing @file support.
 	* libltdl/m4/libtool.m4 (_LT_PROG_AR): Redirect stdout to config.log
 	when testing for @file support.

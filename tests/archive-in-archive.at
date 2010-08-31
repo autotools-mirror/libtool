@@ -26,7 +26,8 @@
 AT_SETUP([static library contains static library])
 AT_KEYWORDS([libtool])
 
-AT_XFAIL_IF([:]) dnl This is currently broken
+# This test passes with MS lib.
+AT_XFAIL_IF([case $AR in ar-lib\ * | *[[/\\]]ar-lib\ *) false;; *) :;; esac])
 
 AT_DATA([foo.c],
 [
@@ -53,4 +54,6 @@ AT_CHECK([$LIBTOOL --mode=install cp libbar.la $thisdir], [], [ignore], [ignore]
 eval `$EGREP '^(old_library)=' < libbar.la`
 libbar=$old_library
 AT_CHECK([$AR -t $libbar | grep $libfoo],[1],[ignore],[ignore])
+AT_CHECK([$AR -t $libbar | grep foo.$OBJEXT],[],[ignore],[ignore])
+AT_CHECK([$AR -t $libbar | grep bar.$OBJEXT],[],[ignore],[ignore])
 AT_CLEANUP
