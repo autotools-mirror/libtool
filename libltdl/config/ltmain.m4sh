@@ -1,6 +1,5 @@
 m4_define([_m4_divert(SCRIPT)], 100)
-m4_divert_push([SCRIPT])# @configure_input@
-
+m4_divert_push([SCRIPT])
 # libtool (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 

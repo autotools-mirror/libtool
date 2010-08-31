@@ -1,6 +1,4 @@
-AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
-# @configure_input@
-
+AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # announce-gen (GNU @PACKAGE@) version 1.0
 # Written by Gary V. Vaughan 
 # based on a perl script by Jim Meyering

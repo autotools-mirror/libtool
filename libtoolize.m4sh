@@ -1,7 +1,5 @@
 m4_pattern_allow([dnl])
-AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
-# @configure_input@
-
+AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
 

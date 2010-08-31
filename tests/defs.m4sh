@@ -1,5 +1,4 @@
-AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
-# @configure_input@
+AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # defs -- Defines for Libtool testing environment.
 #
 #   Copyright (C) 2003, 2004, 2005, 2007, 2008, 2009, 2010 Free Software
