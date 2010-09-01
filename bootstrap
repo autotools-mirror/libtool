@@ -186,14 +186,4 @@ for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do
   else :; fi
 done
 
-# Commit script caveat:
-cat <<EOF
-WARNING: You might want to regenerate \`$auxdir/mailnotify'
-WARNING: after you have run \`configure' to discover the real whereabouts
-WARNING: of \`sed', \`grep' etc. like this:
-WARNING:
-WARNING:      rm -f commit $auxdir/mailnotify
-WARNING:      make -f Makefile.maint ./commit ./$auxdir/mailnotify
-EOF
-
 exit 0

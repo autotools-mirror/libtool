@@ -1,5 +1,20 @@
 2010-09-01  Gary V. Vaughan  <gary@gnu.org>
 
+	Remove announce-gen.m4sh and mailnotify.m4sh.
+	* libltdl/config/announce-gen.m4sh: Removed.  This script has
+	no apparent connection to libtool functionality, and mostly
+	duplicates the better maintained gnulib announce-gen script.
+	* libltdl/config/mailnotify.sh: Removed. This script was used
+	by only clcommit.m4sh and announce-gen.m4sh, both of which are
+	now removed too.
+	* Makefile.maint (announce-gen, libltdl/config/mailnotify):
+	Targets removed.
+	* bootstrap: Remove the mailnotify regeneration warning.
+	* HACKING (Release Procedure): Remove references to
+	announce-gen.
+	(Alpha release note template, Full release note template):
+	Reinstated from before announce-gen was introduced.
+
 	Remove clcommit.m4sh.
 	* clcommit.m4sh: Removed. This script was written to help keep
 	ChangeLog and commit messages in sync when committing to CVS,
