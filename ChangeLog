@@ -1,5 +1,11 @@
 2010-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	tests: fix localization test for GCC on HP-UX 11.00.
+	* tests/localization.at (localized compiler messages): Be sure
+	to switch the locale only for the actual compiler commands, so
+	we don't pick up warnings from helper tools such as diff which
+	may not have the locale installed.
+
 	Avoid leaking make flags into testsuite results.
 	* tests/defs.m4sh: Unset MFLAGS, MAKEFLAGS, MAKELEVEL, __MKLVL__
 	and MAKE_JOBS_FIFO.
