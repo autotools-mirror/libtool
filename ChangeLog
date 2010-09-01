@@ -1,3 +1,13 @@
+2010-09-01  Gary V. Vaughan  <gary@gnu.org>
+
+	Remove clcommit.m4sh.
+	* clcommit.m4sh: Removed. This script was written to help keep
+	ChangeLog and commit messages in sync when committing to CVS,
+	and is an anachronism now that Libtool uses git.
+	* Makefile.maint (commit): Target removed.
+	* bootstrap: Don't generate commit.
+	* HACKING (Release Procedure): Adjusted.
+
 2010-08-31  Peter Rosin  <peda@lysator.liu.se>
 
 	archive-in-archive.at passes with Microsoft lib.

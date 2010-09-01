@@ -647,7 +647,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
   and `make distcheck CC=g++'
   If there are any problems, fix them and start again.
 
-* Run `./commit -p' from the source tree.
+* Run `git commit' from the source tree.
 
 * Run `make -fMakefile.maint git-dist' (or `make -f../Makefile.maint
   git-dist' if you are running from a VPATH build directory, where `../'
@@ -676,7 +676,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 * Update NEWS, ChangeLog.
 
-* Run `./commit -p --tags', to push the new changes and tags to origin.
+* Run `git commit'.
+
+* Run `git push --tags', to push the new changes and tags to origin.
 
 * Update the webpages, libtool.html will need to indicate the latest
   release number.

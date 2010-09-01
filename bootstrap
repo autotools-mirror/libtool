@@ -140,11 +140,6 @@ $MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 \
     AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO" \
     GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
-test -f clcommit.m4sh && $MAKE -f Makefile.maint ./commit \
-    srcdir=. top_srcdir=. PACKAGE="$PACKAGE" VERSION="$VERSION" \
-    M4SH="$AUTOM4TE -l m4sh" \
-    SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
-
 rm -f Makefile
 
 # Make a dummy libtoolize script for autoreconf:
@@ -193,7 +188,7 @@ done
 
 # Commit script caveat:
 cat <<EOF
-WARNING: You might want to regenerate \`commit' and \`$auxdir/mailnotify'
+WARNING: You might want to regenerate \`$auxdir/mailnotify'
 WARNING: after you have run \`configure' to discover the real whereabouts
 WARNING: of \`sed', \`grep' etc. like this:
 WARNING:
