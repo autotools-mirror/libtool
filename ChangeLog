@@ -1,3 +1,13 @@
+2010-08-31  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: rearrange Makefile.am in preparation for a follow-up patch.
+	* Makefile.am (Libtool scripts.): Move this section below the
+	`Bootstrap.' section...
+	(libtoolize.in): ...except this one which is generated at
+	bootstrap time, and was added into the `Bootstrap.' section.
+	(Libltdl.): Move this section below the `Libtool scripts.'
+	section.
+
 2010-09-23  Peter Rosin  <peda@lysator.liu.se>
 
 	msvc: don't try to export import descriptors.
