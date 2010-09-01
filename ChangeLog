@@ -1,5 +1,10 @@
 2010-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	tests: avoid spurious pic_flag test failure on HP-UX 10.20.
+	* tests/pic_flag.at (override pic_flag at configure time):
+	Match HP-UX 10.20 cc warning about unknown options, to skip
+	the test.
+
 	tests: fix localization test for GCC on HP-UX 11.00.
 	* tests/localization.at (localized compiler messages): Be sure
 	to switch the locale only for the actual compiler commands, so
