@@ -1,3 +1,15 @@
+2010-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid leaking make flags into testsuite results.
+	* tests/defs.m4sh: Unset MFLAGS, MAKEFLAGS, MAKELEVEL, __MKLVL__
+	and MAKE_JOBS_FIFO.
+	* tests/testsuite.at: Likewise.
+	Fixes warnings in test logs when the user uses 'make -jN check'
+	and inner $MAKE invocations can't connect to the job server.
+	Fixes spurious failures of configure-iface.at and of
+	demo-noinst-link tests with BSD and Tru64 make if the user uses
+	'make -k', as the exit status of the latter is not reliable.
+
 2010-09-01  Gary V. Vaughan  <gary@gnu.org>
 
 	Remove announce-gen.m4sh and mailnotify.m4sh.

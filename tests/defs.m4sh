@@ -346,6 +346,11 @@ m4dir=$srcdir/libltdl/m4
 auxdir=$srcdir/libltdl/config
 scripts="$auxdir/ltmain.m4sh $srcdir/libtoolize.m4sh"
 
+# Unset some MAKE... variables that may cause $MAKE to act like a
+# recursively invoked sub-make.  Any $MAKE invocation in a test is
+# conceptually an independent invocation.
+unset MFLAGS MAKEFLAGS MAKELEVEL __MKLVL__ MAKE_JOBS_FIFO
+
 # On AIX, shared libraries remain loaded in memory after use if they
 # are world-readable, until root issues slibclean.  On NFS, this causes
 # a testsuite rerun to fail to clean up test group directories.  Avoid
