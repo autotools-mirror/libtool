@@ -1360,7 +1360,7 @@ AC_CACHE_CHECK([for archiver @FILE support], [lt_cv_ar_at_file],
   [lt_cv_ar_at_file=no
    AC_COMPILE_IFELSE([AC_LANG_PROGRAM],
      [echo conftest.$ac_objext > conftest.lst
-      lt_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst'
+      lt_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst >&AS_MESSAGE_LOG_FD'
       AC_TRY_EVAL([lt_ar_try])
       if test "$ac_status" -eq 0; then
 	# Ensure the archiver fails upon bogus file names.

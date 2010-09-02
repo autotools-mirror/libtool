@@ -9,4 +9,3 @@ depcomp
 compile
 config.guess
 config.sub
-mailnotify

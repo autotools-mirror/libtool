@@ -37,7 +37,7 @@ for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
 done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
 eval `$LIBTOOL --config | grep '^EGREP='`
-eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_path_cmd)='`
+eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_file_cmd)='`
 configure_options=--prefix=/nonexistent
 if test -n "$host_alias"; then
   configure_options="$configure_options --host $host_alias"
@@ -60,6 +60,11 @@ case $lt_INSTALL in
     lt_INSTALL=$abs_top_srcdir/libltdl/config/install-sh
     ;;
 esac
+
+# Unset some MAKE... variables that may cause $MAKE to act like a
+# recursively invoked sub-make.  Any $MAKE invocation in a test is
+# conceptually an independent invocation.
+unset MFLAGS MAKEFLAGS MAKELEVEL __MKLVL__ MAKE_JOBS_FIFO
 
 # On AIX, shared libraries remain loaded in memory after use if they
 # are world-readable, until root issues slibclean.  On NFS, this causes

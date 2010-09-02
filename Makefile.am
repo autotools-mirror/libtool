@@ -70,7 +70,6 @@ bin_SCRIPTS = libtoolize libtool
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	rm -f libtoolize.tmp libtoolize
 	$(timestamp); \
-	input="libtoolize.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e 's,@aclocal_DATA\@,$(aclocalfiles),g' \
 		-e "s,@pkgltdl_files\@,$(ltdldatafiles),g" \
@@ -137,8 +136,7 @@ edit = sed \
 	-e 's,@datadir\@,$(datadir),g' \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
-	-e 's,@prefix\@,$(prefix),g' \
-	-e "s,@configure_input\@,Generated from $$input.,g"
+	-e 's,@prefix\@,$(prefix),g'
 
 sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
 EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
@@ -176,7 +174,6 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	  cd $(srcdir); \
 	  rm -f $(m4dir)/ltversion.tmp; \
 	  serial=`echo "$$correctver" | sed 's,^1[.],,g'`; \
-	  input="ltversion.in"; \
 	  echo $(edit) -e "s,@MACRO_REVISION\@,$$correctver,g" \
 	    -e "s,@MACRO_SERIAL\@,$$serial,g" \
 	    $(srcdir)/$(m4dir)/ltversion.in \> $(srcdir)/$(m4dir)/ltversion.m4; \
@@ -216,7 +213,6 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	    \> $(auxdir)/ltmain.in; \
 	  $(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
 	    > $(auxdir)/ltmain.in; \
-	  input="ltmain.m4sh"; \
 	  echo $(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 	    -e "s,@package_revision\@,$$correctver," \
 	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
@@ -513,6 +509,7 @@ EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	AR="$(AR)" \
 	M4SH="$(M4SH)" SED="$(SED)" STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
 	MANIFEST_TOOL="$(MANIFEST_TOOL)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" \
@@ -896,7 +893,6 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 check-recursive: tests/defs
 tests/defs: $(srcdir)/tests/defs.in
 	rm -f tests/defs.tmp tests/defs; \
-	input="defs.m4sh"; \
 	$(edit) $(srcdir)/tests/defs.in > tests/defs.tmp; \
 	mv -f tests/defs.tmp tests/defs
 

@@ -36,47 +36,8 @@ Makefile:
 
 TEXI2HTML = texi2html
 
-$(srcdir)/commit: $(srcdir)/$(auxdir)/mailnotify clcommit.m4sh
-	$(timestamp); \
-	cd $(srcdir); \
-	rm -f commit commit.in commit.tmp; \
-	$(M4SH) -B $(auxdir) clcommit.m4sh > commit.in; \
-	input="clcommit.m4sh"; \
-	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" commit.in > commit.tmp; \
-	chmod a+x commit.tmp; \
-	chmod a-w commit.tmp; \
-	mv -f commit.tmp commit; \
-	rm -f commit.in
-
-announce-gen: $(auxdir)/announce-gen.m4sh $(auxdir)/getopt.m4sh
-	$(timestamp); \
-	rm -f announce-gen announce-gen.in announce-gen.tmp; \
-	$(M4SH) -B $(top_srcdir)/$(auxdir) $(top_srcdir)/$(auxdir)/announce-gen.m4sh > announce-gen.in; \
-	input="announce-gen.m4sh"; \
-	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
-		-e "s,@LASTRELEASE\@,$(LASTRELEASE),g" \
-		-e "s,@top_srcdir\@,$(top_srcdir),g" \
-		announce-gen.in > announce-gen.tmp; \
-	chmod a+x announce-gen.tmp; \
-	chmod a-w announce-gen.tmp; \
-	mv -f announce-gen.tmp announce-gen; \
-	rm -f announce-gen.in
-
-$(srcdir)/$(auxdir)/mailnotify: $(auxdir)/mailnotify.m4sh
-	$(timestamp); \
-	cd $(srcdir)/$(auxdir); \
-	rm -f mailnotify mailnotify.in mailnotify.tmp; \
-	$(M4SH) -B . mailnotify.m4sh > mailnotify.in; \
-	input="mailnotify.m4sh"; \
-	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
-		mailnotify.in > mailnotify.tmp; \
-	chmod a+x mailnotify.tmp; \
-	chmod a-w mailnotify.tmp; \
-	mv -f mailnotify.tmp mailnotify; \
-	rm -f mailnotify.in
-
 .PHONY: git-release
-git-release: version-check prev-tarball check-news fetch git-commit git-dist diffs web-manual
+git-release: version-check prev-tarball check-news fetch git-dist diffs web-manual
 	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
 	lzmaname="$(PACKAGE)-$(VERSION).tar.lzma"; \
 	diffname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
@@ -162,10 +123,6 @@ fetch:
 
 
 GPG = gpg # set it to `:' to avoid gpg operations
-
-.PHONY: git-commit
-git-commit: check-news
-	cd $(srcdir) && $(SHELL) ./commit
 
 .PHONY: git-dist
 git-dist: check-news check-commit

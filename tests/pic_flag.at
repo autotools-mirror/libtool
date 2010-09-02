@@ -37,6 +37,7 @@ AT_CHECK([$CC $CPPFLAGS $CFLAGS $C_pic_flag -c foo.c || exit 77],
 	 [], [stdout], [stderr])
 # The configure test for the PIC flag also checks for warnings.
 AT_CHECK([grep fpic stdout stderr && exit 77], [1])
+AT_CHECK([[grep '[uU]nknown.*option' stdout stderr && exit 77]], [1])
 
 CXX_pic_flag='-fpic -DPIC'
 if $CXX $CPPFLAGS $CXXFLAGS $CXX_pic_flag -c foo.cpp; then :; else

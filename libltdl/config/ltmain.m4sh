@@ -1,6 +1,5 @@
 m4_define([_m4_divert(SCRIPT)], 100)
-m4_divert_push([SCRIPT])# @configure_input@
-
+m4_divert_push([SCRIPT])
 # libtool (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
@@ -794,14 +793,14 @@ func_convert_core_msys_to_w32 ()
 
 
 # func_convert_file_check ARG1 ARG2
-# Verify that ARG1 (a path in $build format) was converted to $host format in
-# ARG2. Otherwise, emit an error message, but continue (resetting
+# Verify that ARG1 (a file name in $build format) was converted to $host
+# format in ARG2. Otherwise, emit an error message, but continue (resetting
 # func_to_host_file_result to ARG1).
 func_convert_file_check ()
 {
   $opt_debug
   if test -z "$2" && test -n "$1" ; then
-    func_error "Could not determine host path corresponding to"
+    func_error "Could not determine host file name corresponding to"
     func_error "  \`$1'"
     func_error "Continuing, but uninstalled executables may not work."
     # Fallback:
@@ -819,7 +818,7 @@ func_convert_path_check ()
 {
   $opt_debug
   if test -z "$4" && test -n "$3"; then
-    func_error "Could not determine the host path(s) corresponding to"
+    func_error "Could not determine the host path corresponding to"
     func_error "  \`$3'"
     func_error "Continuing, but uninstalled executables may not work."
     # Fallback.  This is a deliberately simplistic "conversion" and

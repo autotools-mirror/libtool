@@ -48,6 +48,7 @@ M4SH_GETOPTS(
 ]])
 m4_pattern_forbid([m4_include])
 m4_pattern_forbid([AS_INIT])
+AT_CHECK([$M4SH --version || exit 77], [], [ignore], [ignore])
 AT_CHECK([$M4SH -B $abs_top_srcdir/libltdl/config options.m4sh > t-options],
 	 [], [], [], [AT_CHECK([test $at_status -eq 63 && exit 77])])
 $SED "s,@LN_S\@,$LN_S,g;s,@SED\@,$SED,g" t-options > options

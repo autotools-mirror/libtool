@@ -1,7 +1,6 @@
 # localization.at -- libtool and locales                -*- Autotest -*-
 #
-#   Copyright (C) 2008, 2009 Free Software Foundation, Inc.
-#   Written by Ralf Wildenhues, 2008
+#   Copyright (C) 2008, 2009, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -26,10 +25,8 @@ AT_SETUP([localized compiler messages])
 AT_KEYWORDS([libtool])
 
 # Let's try German locale.  :-)
-LANG=de_DE
-LANGUAGE=de_DE
-LC_ALL=de_DE
-export LANG LANGUAGE LC_ALL
+m4_pushdef([lt_localize],
+[LANG=de_DE LANGUAGE=de_DE LC_ALL=de_DE])
 
 AT_DATA([a.c],
 [[int x[-1];
@@ -39,13 +36,15 @@ AT_DATA([b.c],
 ]])
 
 # First see if setting a locale is accepted at all.
-AT_CHECK([$CC $CPPFLAGS $CFLAGS -c b.c || exit 77], [], [stdout], [stderr])
+AT_CHECK([(lt_localize $CC $CPPFLAGS $CFLAGS -c b.c) || exit 77],
+	 [], [stdout], [stderr])
 
 # Find out about expected output.
-AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c || exit 1], [1], [stdout], [stderr])
+AT_CHECK([(lt_localize $CC $CPPFLAGS $CFLAGS -c a.c) || exit 1],
+	 [1], [stdout], [stderr])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stdout], [expected-stdout])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stderr], [expected-stderr])
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c || exit 1],
+AT_CHECK([(lt_localize $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c) || exit 1],
 	 [1], [stdout], [stderr])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stdout], [libtool-stdout])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stderr], [libtool-stderr])
@@ -63,10 +62,12 @@ AT_CHECK([diff expected-stderr libtool-stderr])
 AT_CHECK([diff expected-stdout libtool-stdout])
 
 # check that we get our quoting right.
-LANGUAGE='a; nosuchprogram " '\''  & $x /#+*(){}|,:`\ !%'
-export LANGUAGE
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c b.c],
+m4_define([lt_localize],
+[[LANGUAGE='a; nosuchprogram " '\''  & $x /#+*(){}|,:`\ !%']])
+AT_CHECK([(lt_localize $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c b.c)],
 	 [0], [stdout], [stderr])
 AT_CHECK([grep nosuchprogram stdout stderr], [1])
+
+m4_popdef([lt_localize])
 
 AT_CLEANUP

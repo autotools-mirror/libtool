@@ -1,6 +1,6 @@
 # lalib-syntax.at -- parsing .la files robustly  -*- Autotest -*-
 #
-#   Copyright (C) 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -25,9 +25,12 @@ AT_SETUP([syntax of .la files])
 AT_KEYWORDS([libtool])
 AT_KEYWORDS([libltdl])
 
+AT_XFAIL_IF([:]) dnl libltdl does not consistently return non-NULL lt_dlerror
+
 AT_DATA([main.c],
 [[#include <ltdl.h>
 #include <stdio.h>
+#include <assert.h>
 
 int
 main (int argc, char* argv[])
@@ -50,7 +53,9 @@ main (int argc, char* argv[])
     }
   else
     {
-      printf ("plugin failed to open: %s\n", lt_dlerror());
+      const char *error = lt_dlerror ();
+      assert (error != NULL);
+      printf ("plugin failed to open: %s\n", error);
       err = 1;
     }
   lt_dlexit ();
