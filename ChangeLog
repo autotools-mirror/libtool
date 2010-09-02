@@ -1,3 +1,22 @@
+2010-08-30  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: simplify and improve safety of bootstrap process.
+	* Makefile.am (bootstrap_files): List files that need to be
+	generated at bootstrap time before `./configure && make' can
+	work.  It turns out that this is considerably fewer files than we
+	had thought necessary previously.
+	(bootstrap-deps-prep): Ensure minimum set of required substitution
+	variables are non-empty.
+	(bootstrap-deps): Depend on `bootstrap' files.
+	* bootstrap (Generate bootstrap dependencies): Now that
+	`Makefile.am' is entirely responsible for rebuilding files at
+	bootstrap time, we need only specify the new `bootstrap-deps'
+	target, and supply values for the substitutions checked by
+	`bootstrap-deps-prep'.
+	* configure.ac (AC_CONFIG_SRCDIR): `libtoolize.in' is not here yet
+	right after running `bootstrap'.  So rely on the presence of
+	`libtoolize.m4sh', which is always there.
+
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
 	build: eliminate superfluous temporary files from `Makefile.am'.

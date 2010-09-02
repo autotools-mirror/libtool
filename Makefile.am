@@ -193,6 +193,47 @@ $(lt_Makefile_am): $(lt_Makefile_inc)
 	       -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > $@
 	chmod a-w $@
 
+## Document the make macros that are needed to build bootstrap-deps
+## dependencies when called from `bootstrap' (developer's machine),
+## where the Makefile.am is fed to make in its raw format before
+## `configure' has found the correct values (on the build machine).
+bootstrap_files = \
+    $(lt_Makefile_am) \
+    $(ltmain_sh) \
+    $(ltversion_m4)
+
+.PHONY: bootstrap-deps bootstrap-deps-prep
+bootstrap-deps: bootstrap-deps-prep $(bootstrap_files)
+bootstrap-deps-prep:
+## The following variables are substituted by `bootstrap-dep-preps'
+	@exit_cmd=:; \
+	test -z "$(srcdir)" \
+	    && echo "ERROR: don't call $(MAKE) with srcdir unset." \
+	    && exit_cmd=exit; \
+	test -z "$(M4SH)" \
+	    && echo "ERROR: don't call $(MAKE) with M4SH unset." \
+	    && exit_cmd=exit; \
+	test -z "$(PACKAGE)" \
+	    && echo "ERROR: don't call $(MAKE) with PACKAGE unset." \
+	    && exit_cmd=exit; \
+	test -z "$(PACKAGE_BUGREPORT)" \
+	    && echo "ERROR: don't call $(MAKE) with PACKAGE_BUGREPORT unset." \
+	    && exit_cmd=exit; \
+	test -z "$(PACKAGE_NAME)" \
+	    && echo "ERROR: don't call $(MAKE) with PACKAGE_NAME unset." \
+	    && exit_cmd=exit; \
+	test -z "$(PACKAGE_URL)" \
+	    && echo "ERROR: don't call $(MAKE) with PACKAGE_URL unset." \
+	    && exit_cmd=exit; \
+	test -z "$(SED)" \
+	    && echo "ERROR: don't call $(MAKE) with SED unset." \
+	    && exit_cmd=exit; \
+	test -z "$(VERSION)" \
+	    && echo "ERROR: don't call $(MAKE) with VERSION unset." \
+	    && exit_cmd=exit; \
+	$$exit_cmd 1
+	rm -f $(bootstrap_files)
+
 
 ## Unfortunately, all this bogeyness means that we have to manually
 ## keep the generated files in libltdl up to date.

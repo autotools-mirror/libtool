@@ -35,7 +35,7 @@ AC_INIT([GNU Libtool], [2.4.3a], [bug-libtool@gnu.org])
 m4_ifndef([AC_PACKAGE_URL],
 	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/software/libtool/])])
 AC_CONFIG_HEADERS([config.h:config-h.in])
-AC_CONFIG_SRCDIR([libtoolize.in])
+AC_CONFIG_SRCDIR([libtoolize.m4sh])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
 AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_MACRO_DIR([libltdl/m4])
