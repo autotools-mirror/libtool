@@ -5,6 +5,12 @@
 	install mode, the latter will not overwrite an existing library
 	with mode 555.
 
+2010-09-01  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Path conversion documentation
+	* doc/libtool.texi (Platform quirks): Add new subsections
+	'Cross compiling' and 'File name conversion'.
+
 2010-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: avoid spurious pic_flag test failure on HP-UX 10.20.

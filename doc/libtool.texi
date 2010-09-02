@@ -223,6 +223,8 @@ Platform quirks
 * Reloadable objects::          Binding object files together.
 * Multiple dependencies::       Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
+* Cross compiling::             Issues that arise when cross compiling.
+* File name conversion::        Converting file names between platforms.
 
 @end detailmenu
 @end menu
@@ -5750,6 +5752,8 @@ write your own.
 * Reloadable objects::          Binding object files together.
 * Multiple dependencies::       Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
+* Cross compiling::             Issues that arise when cross compiling.
+* File name conversion::        Converting file names between platforms.
 @end menu
 
 @node References
@@ -5874,6 +5878,420 @@ On all known systems, if there is a program named @command{ranlib}, then it
 must be used to ``bless'' the created library before linking against it,
 with the @kbd{ranlib lib@var{name}.a} command.  Some systems, like Irix,
 use the @code{ar ts} command, instead.
+
+@node Cross compiling
+@subsection Cross compiling
+@cindex cross compile
+
+Most build systems support the ability to compile libraries and applications
+on one platform for use on a different platform, provided a compiler capable
+of generating the appropriate output is available.  In such cross compiling
+scenarios, the platform on which the libraries or applications are compiled
+is called the @dfn{build platform}, while the platform on which the libraries
+or applications are intended to be used or executed is called the
+@dfn{host platform}.
+@ref{GNU Build System,, The GNU Build System, automake, The Automake Manual},
+of which libtool is a part, supports cross compiling via arguments passed to
+the configure script: @option{--build=...} and @option{--host=...}. However,
+when the build platform and host platform are very different, libtool is
+required to make certain accommodations to support these scenarios.
+
+In most cases, because the build platform and host platform differ, the
+cross-compiled libraries and executables can't be executed or tested on the
+build platform where they were compiled.  The testsuites of most build systems
+will often skip any tests that involve executing such foreign executables when
+cross-compiling.  However, if the build platform and host platform are
+sufficiently similar, it is often possible to run cross-compiled applications.
+Libtool's own testsuite often attempts to execute cross-compiled tests, but
+will mark any failures as @emph{skipped} since the failure might simply be due
+to the differences between the two platforms.
+
+In addition to cases where the host platform and build platform are extremely
+similar (e.g. @samp{i586-pc-linux-gnu} and @samp{i686-pc-linux-gnu}), there is
+another case in which cross-compiled host applications may be executed on the
+build platform.  This is possible when the build platform supports an emulation
+or API-enhanced environment for the host platform.  One example of this
+situation would be if the build platform were MinGW, and the host platform were
+Cygwin (or vice versa).  Both of these platforms can actually operate within a
+single Windows instance, so Cygwin applications can be launched from a MinGW
+context, and vice versa---provided certain care is taken.  Another example
+would be if the build platform were GNU/Linux on an x86 32bit processor, and
+the host platform were MinGW.  In this situation, the
+@uref{http://www.winehq.org/, Wine} environment can be used to launch Windows
+applications from the GNU/Linux operating system; again, provided certain care
+is taken.
+
+One particular issue occurs when a Windows platform such as MinGW, Cygwin, or
+MSYS is the host or build platform, while the other platform is a Unix-style
+system.  In these cases, there are often conflicts between the format of the
+file names and paths expected within host platform libraries and executables,
+and those employed on the build platform.
+
+This situation is best described using a concrete example: suppose the build
+platform is GNU/Linux with canonical triplet @samp{i686-pc-linux-gnu}.  Suppose
+further that the host platform is MinGW with canonical triplet
+@samp{i586-pc-mingw32}.  On the GNU/Linux platform there is a cross compiler
+following the usual naming conventions of such compilers, where the compiler
+name is prefixed by the host canonical triplet (or suitable alias).  (For more
+information concerning canonical triplets and platform aliases, see
+@ref{Specifying Target Triplets,, Specifying Target Triplets, autoconf,
+The Autoconf Manual} and @ref{Canonicalizing,, Canonicalizing, autoconf,
+The Autoconf Manual})  In this case, the C compiler is named
+@samp{i586-pc-mingw32-gcc}.
+
+As described in @ref{Wrapper executables}, for the MinGW host platform libtool
+uses a wrapper executable to set various environment variables before launching
+the actual program executable.  Like the program executable, the wrapper
+executable is cross-compiled for the host platform (that is, for MinGW).  As
+described above, ordinarily a host platform executable cannot be executed on
+the build platform, but in this case the Wine environment could be used to
+launch the MinGW application from GNU/Linux.  However, the wrapper executable,
+as a host platform (MinGW) application, must set the @env{PATH} variable so
+that the true application's dependent libraries can be located---but the
+contents of the @env{PATH} variable must be structured for MinGW.  Libtool
+must use the Wine file name mapping facilities to determined the correct value
+so that the wrapper executable can set the @env{PATH} variable to point to the
+correct location.
+
+For example, suppose we are compiling an application in @file{/var/tmp} on
+GNU/Linux, using separate source code and build directories:
+
+@example
+@multitable @columnfractions 0.5 0.5
+@item @file{/var/tmp/foo-1.2.3/app/} @tab (application source code)
+@item @file{/var/tmp/foo-1.2.3/lib/} @tab (library source code)
+@item @file{/var/tmp/BUILD/app/} @tab (application build objects here)
+@item @file{/var/tmp/BUILD/lib/} @tab (library build objects here)
+@end multitable
+@end example
+
+Since the library will be built in @file{/var/tmp/BUILD/lib}, the wrapper
+executable (which will be in @file{/var/tmp/BUILD/app}) must add that
+directory to @env{PATH} (actually, it must add the directory named
+@var{objdir} under @file{/var/tmp/BUILD/lib}, but we'll ignore that detail
+for now).  However, Windows does not have a concept of Unix-style file or
+directory names such as @file{/var/tmp/BUILD/lib}.  Therefore, Wine provides
+a mapping from Windows file names such as @file{C:\Program Files} to specific
+Unix-style file names.  Wine also provides a utility that can be used to map
+Unix-style file names to Windows file names.
+
+In this case, the wrapper executable should actually add the value
+
+@example
+Z:\var\tmp\BUILD\lib
+@end example
+
+@noindent
+to the @env{PATH}.  libtool contains support for path conversions of this
+type, for a certain limited set of build and host platform combinations. In
+this case, libtool will invoke Wine's @command{winepath} utility to ensure that
+the correct @env{PATH} value is used.  For more information, see
+@pxref{File name conversion}.
+
+@node File name conversion
+@subsection File name conversion
+@cindex file name conversion
+@cindex path conversion
+
+In certain situations, libtool must convert file names and paths between
+formats appropriate to different platforms.  Usually this occurs when
+cross-compiling, and affects only the ability to launch host platform
+executables on the build platform using an emulation or API-enhancement
+environment such as Wine.  Failure to convert paths
+(@pxref{File Name Conversion Failure}) will cause a warning to be issued, but
+rarely causes the build to fail---and should have no affect on the compiled
+products, once installed properly on the host platform.  For more information,
+@pxref{Cross compiling}.
+
+However, file name conversion may also occur in another scenario: when using a
+Unix emulation system on Windows (such as Cygwin or MSYS), combined with a
+native Windows compiler such as MinGW or MSVC.  Only a limited set of such
+scenarios are currently supported; in other cases file name conversion is
+skipped.  The lack of file name conversion usually means that uninstalled
+executables can't be launched, but only rarely causes the build to fail
+(@pxref{File Name Conversion Failure}).
+
+libtool supports file name conversion in the following scenarios:
+
+@multitable @columnfractions .25 .25 .5
+@headitem build platform @tab host platform @tab Notes
+@item MinGW (MSYS) @tab MinGW (Windows)
+@tab @pxref{Native MinGW File Name Conversion}
+
+@item Cygwin @tab MinGW (Windows)
+@tab @pxref{Cygwin/Windows File Name Conversion}
+
+@item Unix + Wine @tab MinGW (Windows)
+@tab Requires Wine. @pxref{Unix/Windows File Name Conversion}
+
+@item MinGW (MSYS) @tab Cygwin
+@tab Requires @env{LT_CYGPATH}. @pxref{LT_CYGPATH}. Provided for testing
+purposes only.
+
+@item Unix + Wine @tab Cygwin
+@tab Requires both Wine and @env{LT_CYGPATH}, but does not yet work with
+Cygwin 1.7.7 and Wine-1.2.
+See @pxref{Unix/Windows File Name Conversion} and @pxref{LT_CYGPATH}.
+@end multitable
+
+@menu
+* File Name Conversion Failure::        What happens when file name conversion fails
+* Native MinGW File Name Conversion::   MSYS file name conversion idiosyncrasies
+* Cygwin/Windows File Name Conversion:: Using @command{cygpath} to convert Cygwin file names
+* Unix/Windows File Name Conversion::   Using Wine to convert Unix paths
+* LT_CYGPATH::                          Invoking @command{cygpath} from other environments
+* Cygwin to MinGW Cross::               Other notes concerning MinGW cross
+@end menu
+
+@node File Name Conversion Failure
+@subsubsection File Name Conversion Failure
+@cindex File Name Conversion - Failure
+@cindex Path Conversion - Failure
+
+In most cases, file name conversion is not needed or attempted.  However, when
+libtool detects that a specific combination of build and host platform does
+require file name conversion, it is possible that the conversion may fail.
+In these cases, you may see a warning such as the following:
+
+@example
+Could not determine the host file name corresponding to
+  `... a file name ...'
+Continuing, but uninstalled executables may not work.
+@end example
+
+@noindent
+or
+
+@example
+Could not determine the host path corresponding to
+  `... a path ...'
+Continuing, but uninstalled executables may not work.
+@end example
+
+@noindent
+This should not cause the build to fail.  At worst, it means that the wrapper
+executable will specify file names or paths appropriate for the build platform.
+Since those are not appropriate for the host platform, the uninstalled
+executables would not operate correctly, even when the wrapper executable is
+launched via the appropriate emulation or API-enhancement (e.g. Wine).  Simply
+install the executables on the host platform, and execute them there.
+
+@node Native MinGW File Name Conversion
+@subsubsection Native MinGW File Name Conversion
+@cindex File Name Conversion - MinGW
+@cindex Path Conversion - MinGW
+@cindex MSYS
+
+MSYS is a Unix emulation environment for Windows, and is specifically designed
+such that in normal usage it @emph{pretends} to be MinGW or native Windows,
+but understands Unix-style file names and paths, and supports standard Unix
+tools and shells.  Thus, ``native'' MinGW builds are actually an odd sort of
+cross-compile, from an MSYS Unix emulation environment ``pretending'' to be
+MinGW, to actual native Windows.
+
+When an MSYS shell launches a native Windows executable (as opposed to other
+@emph{MSYS} executables), it uses a system of heuristics to detect any
+command-line arguments that contain file names or paths.  It automatically
+converts these file names from the MSYS (Unix-like) format, to the
+corresponding Windows file name, before launching the executable.  However,
+this auto-conversion facility is only available when using the MSYS runtime
+library.  The wrapper executable itself is a MinGW application (that is, it
+does not use the MSYS runtime library).  The wrapper executable must set
+@env{PATH} to, and call @code{_spawnv} with, values that have already been
+converted from MSYS format to Windows.  Thus, when libtool writes the source
+code for the wrapper executable, it must manually convert MSYS paths to
+Windows format, so that the Windows values can be hard-coded into the wrapper
+executable.
+
+@node Cygwin/Windows File Name Conversion
+@subsubsection Cygwin/Windows File Name Conversion
+@cindex File Name Conversion - Cygwin to Windows
+@cindex Path Conversion - Cygwin to Windows
+
+Cygwin provides a Unix emulation environment for Windows.  As part of that
+emulation, it provides a file system mapping that presents the Windows file
+system in a Unix-compatible manner.  Cygwin also provides a utility
+@command{cygpath} that can be used to convert file names and paths between
+the two representations.  In a correctly configured Cygwin installation,
+@command{cygpath} is always present, and is in the @env{PATH}.
+
+Libtool uses @command{cygpath} to convert from Cygwin (Unix-style) file names
+and paths to Windows format when the build platform is Cygwin and the host
+platform is MinGW.
+
+When the host platform is Cygwin, but the build platform is MSYS or some Unix
+system, libtool also uses @command{cygpath} to convert from Windows to Cygwin
+format (after first converting from the build platform format to Windows format;
+see @pxref{Native MinGW File Name Conversion} and
+@pxref{Unix/Windows File Name Conversion}).  Because the build platform is not
+Cygwin, @command{cygpath} is not (and should not be) in the @env{PATH}.
+Therefore, in this configuration the environment variable @env{LT_CYGPATH} is
+required. @xref{LT_CYGPATH}.
+
+@node Unix/Windows File Name Conversion
+@subsubsection Unix/Windows File Name Conversion
+@cindex File Name Conversion - Unix to Windows
+@cindex Path Conversion - Unix to Windows
+
+
+@uref{http://www.winehq.org/, Wine} provides an interpretation environment for
+some Unix platforms in which Windows applications can be executed.  It provides
+a mapping between the Unix file system and a virtual Windows file system used
+by the Windows programs.  For the file name conversion to work, Wine must be
+installed and properly configured on the build platform, and the
+@command{winepath} application must be in the build platform's @env{PATH}.  In
+addition, on 32bit GNU/Linux it is usually helpful if the binfmt extension is
+enabled.
+
+@node LT_CYGPATH
+@subsubsection LT_CYGPATH
+@cindex LT_CYGPATH
+
+For some cross-compile configurations (where the host platform is Cygwin), the
+@command{cygpath} program is used to convert file names from the build platform
+notation to the Cygwin form (technically, this conversion is from Windows
+notation to Cygwin notation; the conversion from the build platform format
+to Windows notation is performed via other means).  However, because the
+@command{cygpath} program is not (and should not be) in the @env{PATH} on
+the build platform, @env{LT_CYGPATH} must specify the full build platform
+file name (that is, the full Unix or MSYS file name) of the @command{cygpath}
+program.
+
+The reason @command{cygpath} should not be in the build platform @env{PATH} is
+twofold: first, @command{cygpath} is usually installed in the same directory as
+many other Cygwin executables, such as @command{sed}, @command{cp}, etc.  If
+the build platform environment had this directory in its @env{PATH}, then these
+Cygwin versions of common Unix utilities might be used in preference to the
+ones provided by the build platform itself, with deleterious effects.  Second,
+especially when Cygwin-1.7 or later is used, multiple Cygwin installations can
+coexist within the same Windows instance.  Each installation will have separate
+``mount tables'' specified in @file{@var{CYGROOT-N}/etc/fstab}.  These
+@dfn{mount tables} control how that instance of Cygwin will map Windows file
+names and paths to Cygwin form.  Each installation's @command{cygpath} utility
+automatically deduces the appropriate @file{/etc/fstab} file.  Since each
+@file{@var{CYGROOT-N}/etc/fstab} mount table may specify different mappings, it
+matters which @command{cygpath} is used.
+
+Note that @command{cygpath} is a Cygwin application; to execute this tool from
+Unix requires a working and properly configured Wine installation, as well
+as enabling the GNU/Linux @code{binfmt} extension.  Furthermore, the Cygwin
+@command{setup.exe} tool should have been used, via Wine, to properly install
+Cygwin into the Wine file system (and registry).
+
+Unfortunately, Wine support for Cygwin is intermittent.  Recent releases of
+Cygwin (1.7 and above) appear to require more Windows API support than Wine
+provides (as of Wine version 1.2); most Cygwin applications fail to execute.
+This includes @command{cygpath} itself.  Hence, it is best @emph{not} to use
+the LT_CYGPATH machinery in libtool when performing Unix to Cygwin
+cross-compiles.  Similarly, it is best @emph{not} to enable the GNU/Linux binfmt
+support in this configuration, because while Wine will fail to execute the
+compiled Cygwin applications, it will still exit with status zero.  This tends
+to confuse build systems and test suites (including libtool's own testsuite,
+resulting in spurious reported failures).  Wine support for the older
+Cygwin-1.5 series appears satisfactory, but the Cygwin team no longer supports
+Cygwin-1.5.  It is hoped that Wine will eventually be improved such that
+Cygwin-1.7 will again operate correctly under Wine.  Until then, libtool will
+report warnings as described in @pxref{File Name Conversion Failure} in these
+scenarios.
+
+However, @env{LT_CYGPATH} is also used for the MSYS to Cygwin cross compile
+scenario, and operates as expected.
+
+@node Cygwin to MinGW Cross
+@subsubsection Cygwin to MinGW Cross
+@cindex Cygwin to MinGW Cross
+
+There are actually three different scenarios that could all legitimately be
+called a ``Cygwin to MinGW'' cross compile.  The current (and standard)
+definition is when there is a compiler that produces native Windows libraries
+and applications, but which itself is a Cygwin application, just as would be
+expected in any other cross compile setup.
+
+However, historically there were two other definitions, which we will refer
+to as the @emph{fake} one, and the @emph{lying} one.
+
+In the @emph{fake} Cygwin to MinGW cross compile case, you actually use a
+native MinGW compiler, but you do so from within a Cygwin environment:
+
+@example
+@kbd{export PATH="/c/MinGW/bin:$@{PATH@}"}
+@kbd{configure --build=i686-pc-cygwin \
+	--host=mingw32 \
+	NM=/c/MinGW/bin/nm.exe}
+@end example
+
+In this way, the build system ``knows'' that you are cross compiling, and the
+file name conversion logic will be used.  However, because the tools
+(@command{mingw32-gcc}, @command{nm}, @command{ar}) used are actually native
+Windows applications, they will not understand any Cygwin (that is, Unix-like)
+absolute file names passed as command line arguments (and, unlike MSYS, Cygwin
+does not automatically convert such arguments).  However, so long as only
+relative file names are used in the build system, and non-Windows-supported
+Unix idioms such as symlinks and mount points are avoided, this scenario should
+work.
+
+In the @emph{lying} Cygwin to MinGW cross compile case, you lie to the
+build system:
+
+@example
+@kbd{export PATH="/c/MinGW/bin:$@{PATH@}"}
+@kbd{configure --build=i686-pc-mingw32 \
+	--host=i686-pc-mingw32 \
+	--disable-dependency-tracking}
+@end example
+
+@noindent
+and claim that the build platform is MinGW, even though you are actually
+running under @emph{Cygwin} and not MinGW.  In this case, libtool does
+@emph{not} know that you are performing a cross compile, and thinks instead
+that you are performing a native MinGW build.  However, as described in
+(@pxref{Native MinGW File Name Conversion}), that scenario triggers an ``MSYS
+to Windows'' file name conversion.  This, of course, is the wrong conversion
+since we are actually running under Cygwin.  To force the correct file name
+conversion in this situation, you should do the following @emph{before}
+running configure:
+
+@example
+@kbd{export lt_cv_to_host_file_cmd=func_convert_file_cygwin_to_w32}
+@end example
+@cindex lt_cv_to_host_file_cmd
+@cindex func_convert_file_cygwin_to_w32
+
+Note that this relies on internal implementation details of libtool, and
+is subject to change.  Also, @code{--disable-dependency-tracking} is required,
+because otherwise the MinGW GCC will generate dependency files that contain
+Windows file names.  This, in turn, will confuse the Cygwin @command{make}
+program, which does not accept Windows file names:
+
+@example
+Makefile:1: *** target pattern contains no `%'.  Stop.
+@end example
+
+There have also always been a number of other details required for the
+@emph{lying} case to operate correctly, such as the use of so-called
+@dfn{identity mounts}:
+
+@example
+# @var{cygwin-root}/etc/fstab
+D:/foo    /foo     some_fs binary 0 0
+D:/bar    /bar     some_fs binary 0 0
+E:/grill  /grill   some_fs binary 0 0
+@end example
+
+In this way, top-level directories of each drive are available using
+identical names within Cygwin.
+
+Note that you also need to ensure that the standard Unix directories
+(like @file{/bin}, @file{/lib}, @file{/usr}, @file{/etc}) appear in the root
+of a drive.  This means that you must install Cygwin itself into the @file{C:/}
+root directory (or @file{D:/}, or @file{E:/}, etc)---instead of the
+recommended installation into @file{C:/cygwin/}.  In addition, all file names
+used in the build system must be relative, symlinks should not be used within
+the source or build directory trees, and all @option{-M*} options to
+@command{gcc} except @option{-MMD} must be avoided.
+
+This is quite a fragile setup, but it has been in historical use, and so is
+documented here.
 
 @node libtool script contents
 @section @code{libtool} script contents
