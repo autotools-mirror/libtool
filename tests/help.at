@@ -161,7 +161,7 @@ for trace in '' --debug; do
 
   # Hypothesis: --debug should be passed to relink mode if (and only if)
   # it was passed at link mode.
-  AT_CHECK([$orig_LIBTOOL --mode=install cp liba.la libb.la $libdir],
+  AT_CHECK([$orig_LIBTOOL --mode=install $lt_INSTALL liba.la libb.la $libdir],
 	   [], [stdout], [stderr])
   if grep ': relinking ' stdout stderr; then
     if test "X$trace" = X--debug; then

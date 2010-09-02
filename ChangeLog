@@ -1,3 +1,10 @@
+2010-09-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	tests: avoid spurious test failure due to library mode on HP-UX.
+	* tests/help.at (debug tracing): Use $lt_INSTALL not cp for
+	install mode, the latter will not overwrite an existing library
+	with mode 555.
+
 2010-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: avoid spurious pic_flag test failure on HP-UX 10.20.
