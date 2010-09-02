@@ -126,19 +126,10 @@ $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes > Makefile
 
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.
-# We don't have all the substitution values to build ltmain.sh from this
-# script yet, but we need config/ltmain.sh for the libtool commands in
-# configure, and ltversion.m4 to generate configure in the first place:
-rm -f $auxdir/ltmain.sh $m4dir/ltversion.m4
-
-$MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 \
-    ./libtoolize.in ./tests/defs.in ./tests/package.m4 \
-    ./tests/testsuite ./libltdl/Makefile.am ./doc/notes.txt \
-    srcdir=. top_srcdir=. PACKAGE="$PACKAGE" VERSION="$VERSION" \
-    PACKAGE_NAME="$PACKAGE_NAME" PACKAGE_URL="$PACKAGE_URL" \
-    PACKAGE_BUGREPORT="bug-$PACKAGE@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
-    AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO" \
-    GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
+$MAKE bootstrap-deps  \
+    M4SH="$AUTOM4TE --language=m4sh" PACKAGE="$PACKAGE" \
+    PACKAGE_BUGREPORT="bug-$PACKAGE@gnu.org" PACKAGE_NAME="$PACKAGE_NAME" \
+    PACKAGE_URL="$PACKAGE_URL" SED="$SED" srcdir=. VERSION="$VERSION"
 
 rm -f Makefile
 
