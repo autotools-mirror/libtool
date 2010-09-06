@@ -7486,10 +7486,13 @@ EOF
 	    echo 'INPUT (' > $output
 	    for obj in $save_libobjs
 	    do
-	      $ECHO "$obj" >> $output
+	      func_to_tool_file "$obj"
+	      $ECHO "$func_to_tool_file_result" >> $output
 	    done
 	    echo ')' >> $output
 	    func_append delfiles " $output"
+	    func_to_tool_file "$output"
+	    output=$func_to_tool_file_result
 	  elif test -n "$save_libobjs" && test "X$skipped_export" != "X:" && test "X$file_list_spec" != X; then
 	    output=${output_objdir}/${output_la}.lnk
 	    func_verbose "creating linker input file list: $output"
@@ -7503,10 +7506,12 @@ EOF
 	    fi
 	    for obj
 	    do
-	      $ECHO "$obj" >> $output
+	      func_to_tool_file "$obj"
+	      $ECHO "$func_to_tool_file_result" >> $output
 	    done
 	    func_append delfiles " $output"
-	    output=$firstobj\"$file_list_spec$output\"
+	    func_to_tool_file "$output"
+	    output=$firstobj\"$file_list_spec$func_to_tool_file_result\"
 	  else
 	    if test -n "$save_libobjs"; then
 	      func_verbose "creating reloadable object files..."
