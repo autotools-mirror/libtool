@@ -25,6 +25,8 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
   - Autoconf 2.62 and Automake 1.11.1 or newer are now required for
     bootstrapping Libtool.  For using Libtool in your own projects,
     Autoconf 2.59 and Automake 1.9.6 should still work.
+  - The fix_srcfile_path variable has been replaced by a more thorough
+    mechanism triggered by the to_tool_file_cmd variable.
 
 * Changes in supported systems or compilers:
 

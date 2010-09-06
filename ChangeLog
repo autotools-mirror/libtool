@@ -1,5 +1,13 @@
 2010-09-06  Peter Rosin  <peda@lysator.liu.se>
 
+	Use func_to_tool_file instead of fix_srcfile_path.
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Replace the
+	fix_srcfile_path hook with a call to func_to_tool_file.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [cygwin,mingw,pw32]
+	[cegcc]: Drop fix_srcfile_path.
+	* doc/libtool.texi (libtool script contents): Likewise.
+	* NEWS: Mention that fix_srcfile_path has been replaced.
+
 	Convert file names to toolchain format in $NM and $AR @files.
 	* libltdl/config/ltmain.m4sh (func_mode_link): When listing
 	symbols and when creating archives using command files (or

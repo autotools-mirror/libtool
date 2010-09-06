@@ -5036,7 +5036,6 @@ _LT_EOF
 	_LT_TAGVAR(old_archive_from_new_cmds, $1)='true'
 	# FIXME: Should let the user specify the lib program.
 	_LT_TAGVAR(old_archive_cmds, $1)='lib -OUT:$oldlib$oldobjs$old_deplibs'
-	_LT_TAGVAR(fix_srcfile_path, $1)='`cygpath -w "$srcfile"`'
 	_LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
 	;;
       esac
@@ -5571,8 +5570,6 @@ _LT_TAGDECL([], [inherit_rpath], [0],
     to runtime path list])
 _LT_TAGDECL([], [link_all_deplibs], [0],
     [Whether libtool must link a program against all its dependency libraries])
-_LT_TAGDECL([], [fix_srcfile_path], [1],
-    [Fix the shell variable $srcfile for the compiler])
 _LT_TAGDECL([], [always_export_symbols], [0],
     [Set to "yes" if exported symbols are required])
 _LT_TAGDECL([], [export_symbols_cmds], [2],

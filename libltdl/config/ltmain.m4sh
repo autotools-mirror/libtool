@@ -1376,9 +1376,8 @@ compiler."
     func_append removelist " $lockfile"
     trap '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE' 1 2 15
 
-    if test -n "$fix_srcfile_path"; then
-      eval srcfile=\"$fix_srcfile_path\"
-    fi
+    func_to_tool_file "$srcfile"
+    srcfile=$func_to_tool_file_result
     func_quote_for_eval "$srcfile"
     qsrcfile=$func_quote_for_eval_result
 

@@ -6546,10 +6546,6 @@ specific directory.
 Same as @code{finish_cmds}, except the commands are not displayed.
 @end defvar
 
-@defvar fix_srcfile_path
-Expression to fix the shell variable @samp{$srcfile} for the compiler.
-@end defvar
-
 @defvar global_symbol_pipe
 A pipeline that takes the output of @code{NM}, and produces a listing of
 raw symbols followed by their C names.  For example:
