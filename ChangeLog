@@ -1,5 +1,13 @@
 2010-09-06  Peter Rosin  <peda@lysator.liu.se>
 
+	Convert file names to toolchain format in $NM and $AR @files.
+	* libltdl/config/ltmain.m4sh (func_mode_link): When listing
+	symbols and when creating archives using command files (or
+	response files), make sure that both the name of the command
+	file and the content are made up of file names in a format
+	appropriate for the tool. Fixes stresstest.at on MSYS when
+	run with low command line length.
+
 	Convert file names to toolchain format when linking.
 	* libltdl/config/ltmain.m4sh (func_mode_link): When exporting
 	symbols and when linking using command files (or response

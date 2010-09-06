@@ -7337,11 +7337,13 @@ EOF
 		save_libobjs=$libobjs
 		save_output=$output
 		output=${output_objdir}/${output_la}.nm
-		libobjs=$nm_file_list_spec$output
+		func_to_tool_file "$output"
+		libobjs=$nm_file_list_spec$func_to_tool_file_result
 		func_append delfiles " $output"
 		func_verbose "creating $NM input file list: $output"
 		for obj in $save_libobjs; do
-		  $ECHO "$obj"
+		  func_to_tool_file "$obj"
+		  $ECHO "$func_to_tool_file_result"
 		done > "$output"
 		eval cmd=\"$cmd1\"
 		func_show_eval "$cmd" 'exit $?'
@@ -8323,9 +8325,11 @@ EOF
 	  func_verbose "using command file archive linking..."
 	  for obj in $oldobjs
 	  do
-	    $ECHO "$obj"
+	    func_to_tool_file "$obj"
+	    $ECHO "$func_to_tool_file_result"
 	  done > $output_objdir/$libname.libcmd
-	  oldobjs=" $archiver_list_spec$output_objdir/$libname.libcmd"
+	  func_to_tool_file "$output_objdir/$libname.libcmd"
+	  oldobjs=" $archiver_list_spec$func_to_tool_file_result"
 	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts
