@@ -518,7 +518,8 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	F77="$(F77)" FFLAGS="$(FFLAGS)" \
 	FC="$(FC)" FCFLAGS="$(FCFLAGS)" \
 	GCJ="$(GCJ)" GCJFLAGS="$(GCJFLAGS)" \
-	lt_cv_to_host_file_cmd="$(to_host_file_cmd)"
+	lt_cv_to_host_file_cmd="$(to_host_file_cmd)" \
+	lt_cv_to_tool_file_cmd="$(to_tool_file_cmd)"
 
 BUILDCHECK_ENVIRONMENT = _lt_pkgdatadir="$(abs_top_srcdir)" \
 	LIBTOOLIZE="$(abs_top_builddir)/libtoolize" \

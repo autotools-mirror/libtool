@@ -6230,6 +6230,16 @@ relative file names are used in the build system, and non-Windows-supported
 Unix idioms such as symlinks and mount points are avoided, this scenario should
 work.
 
+If you must use absolute file names, you will have to force Libtool to convert
+file names for the toolchain in this case, by doing the following before you
+run configure:
+
+@example
+@kbd{export lt_cv_to_tool_file_cmd=func_convert_file_cygwin_to_w32}
+@end example
+@cindex lt_cv_to_tool_file_cmd
+@cindex func_convert_file_cygwin_to_w32
+
 In the @emph{lying} Cygwin to MinGW cross compile case, you lie to the
 build system:
 
@@ -6247,14 +6257,18 @@ running under @emph{Cygwin} and not MinGW.  In this case, libtool does
 that you are performing a native MinGW build.  However, as described in
 (@pxref{Native MinGW File Name Conversion}), that scenario triggers an ``MSYS
 to Windows'' file name conversion.  This, of course, is the wrong conversion
-since we are actually running under Cygwin.  To force the correct file name
-conversion in this situation, you should do the following @emph{before}
+since we are actually running under Cygwin.  Also, the toolchain is expecting
+Windows file names (not Cygwin) but unless told so Libtool will feed Cygwin
+file names to the toolchain in this case.  To force the correct file name
+conversions in this situation, you should do the following @emph{before}
 running configure:
 
 @example
 @kbd{export lt_cv_to_host_file_cmd=func_convert_file_cygwin_to_w32}
+@kbd{export lt_cv_to_tool_file_cmd=func_convert_file_cygwin_to_w32}
 @end example
 @cindex lt_cv_to_host_file_cmd
+@cindex lt_cv_to_tool_file_cmd
 @cindex func_convert_file_cygwin_to_w32
 
 Note that this relies on internal implementation details of libtool, and
@@ -6799,6 +6813,14 @@ as @option{-L} also augment the search path.
 @defvar thread_safe_flag_spec
 Linker flag (passed through the C compiler) used to generate thread-safe
 libraries.
+@end defvar
+
+@defvar to_tool_file_cmd
+If the toolchain is not native to the build system (e.g.@: if you are using
+some Unix to drive the scripting together with a Windows toolchain running
+in Wine) this variable describes how to convert file names from the format
+used by the build system to the format used by the toolchain.  Normally set
+to @samp{func_convert_file_noop}.
 @end defvar
 
 @defvar version_type

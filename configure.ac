@@ -203,6 +203,7 @@ LT_LANG(Windows Resource)
 # Ensure the correct file name (and path) conversion function
 # is available to the test suite.
 AC_SUBST([to_host_file_cmd])dnl
+AC_SUBST([to_tool_file_cmd])dnl
 
 ## --------------------------- ##
 ## Work out which tests to run ##

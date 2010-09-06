@@ -1,3 +1,20 @@
+2010-09-06  Peter Rosin  <peda@lysator.liu.se>
+
+	Add file name conversion from $build to toolchain.
+	* configure.ac: Ensure to_tool_file_cmd is available to Makefile.
+	* libltdl/m4/libtool.m4 (_LT_PATH_CONVERSION_FUNCTIONS): Add
+	cache variable lt_cv_to_tool_file_cmd that describes how to
+	convert file names from $build to toolchain format.
+	* libltdl/config/ltmain.m4sh (func_to_tool_file): New function
+	that utilizes the above.
+	* Makefile.am: Ensure to_tool_file_cmd is included in
+	TEST_ENVIRONMENT so that it is passed to (old testsuite) tests.
+	* testsuite.at: Ensure to_tool_file_cmd is passed as a variable
+	setting on the configure line for (new testsuite) tests.
+	* doc/libtool.texi (libtool script content): Update with
+	to_tool_file_cmd description.
+	(Cygwin to MinGW Cross): Update to mention lt_cv_to_tool_file_cmd.
+
 2010-09-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: avoid spurious test failure due to library mode on HP-UX.

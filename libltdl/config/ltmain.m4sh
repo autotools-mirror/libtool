@@ -873,6 +873,18 @@ func_to_host_file ()
 # end func_to_host_file
 
 
+# func_to_tool_file ARG
+# converts the file name ARG from $build format to toolchain format. Return
+# result in func_to_tool_file_result.
+func_to_tool_file ()
+{
+  $opt_debug
+  $to_tool_file_cmd "$1"
+  func_to_tool_file_result=$func_to_host_file_result
+}
+# end func_to_tool_file
+
+
 # func_convert_file_noop ARG
 # Copy ARG to func_to_host_file_result.
 func_convert_file_noop ()
