@@ -6747,11 +6747,12 @@ Commands run after uninstalling a shared or static library, respectively.
 
 @defvar postlink_cmds
 Commands necessary for finishing linking programs. @code{postlink_cmds}
-are executed immediately after the program is linked. Any occurance of
+are executed immediately after the program is linked.  Any occurrence of
 the string @code{@@OUTPUT@@} in @code{postlink_cmds} is replaced by the
-name of the created executable (i.e. not the wrapper, if a wrapper is
-generated) prior to execution. Normally disabled (i.e.
-@code{postlink_cmds} empty).
+name of the created executable (i.e.@: not the wrapper, if a wrapper is
+generated) prior to execution.  Similarly, @code{@@TOOL_OUTPUT@@} is
+replaced by the toolchain format of @{@@OUTPUT@@}.  Normally disabled
+(i.e.@: @code{postlink_cmds} empty).
 @end defvar
 
 @defvar reload_cmds

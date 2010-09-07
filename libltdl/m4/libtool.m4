@@ -5004,7 +5004,7 @@ _LT_EOF
 	  else
 	    sed -e 's/\\\\\\\(.*\\\\\\\)/-link\\\ -EXPORT:\\\\\\\1/' < $export_symbols > $output_objdir/$soname.exp;
 	  fi~
-	  $CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs @$output_objdir/$soname.exp -Wl,-DLL~
+	  $CC -o $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" -Wl,-DLL~
 	  linknames='
 	# The linker will not automatically build a static lib if we build a DLL.
 	# _LT_TAGVAR(old_archive_from_new_cmds, $1)='true'
@@ -5013,12 +5013,16 @@ _LT_EOF
 	# Don't use ranlib
 	_LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	_LT_TAGVAR(postlink_cmds, $1)='lt_outputfile="@OUTPUT@"~
+	  lt_tool_outputfile="@TOOL_OUTPUT@"~
 	  case $lt_outputfile in
 	    *.exe|*.EXE) ;;
-	    *) lt_outputfile="$lt_outputfile.exe" ;;
+	    *)
+	      lt_outputfile="$lt_outputfile.exe"
+	      lt_tool_outputfile="$lt_tool_outputfile.exe"
+	      ;;
 	  esac~
 	  if test "$MANIFEST_TOOL" != ":" && test -f "$lt_outputfile.manifest"; then
-	    $MANIFEST_TOOL -manifest "$lt_outputfile.manifest" -outputresource:"$lt_outputfile" || exit 1;
+	    $MANIFEST_TOOL -manifest "$lt_tool_outputfile.manifest" -outputresource:"$lt_tool_outputfile" || exit 1;
 	    $RM "$lt_outputfile.manifest";
 	  fi'
 	;;
@@ -5999,7 +6003,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    else
 	      $SED -e 's/\\\\\\\(.*\\\\\\\)/-link\\\ -EXPORT:\\\\\\\1/' < $export_symbols > $output_objdir/$soname.exp;
 	    fi~
-	    $CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs @$output_objdir/$soname.exp -Wl,-DLL~
+	    $CC -o $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" -Wl,-DLL~
 	    linknames='
 	  # The linker will not automatically build a static lib if we build a DLL.
 	  # _LT_TAGVAR(old_archive_from_new_cmds, $1)='true'
@@ -6007,12 +6011,17 @@ if test "$_lt_caught_CXX_error" != yes; then
 	  # Don't use ranlib
 	  _LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	  _LT_TAGVAR(postlink_cmds, $1)='lt_outputfile="@OUTPUT@"~
+	    lt_tool_outputfile="@TOOL_OUTPUT@"~
 	    case $lt_outputfile in
 	      *.exe|*.EXE) ;;
-	      *) lt_outputfile="$lt_outputfile.exe" ;;
+	      *)
+		lt_outputfile="$lt_outputfile.exe"
+		lt_tool_outputfile="$lt_tool_outputfile.exe"
+		;;
 	    esac~
+	    func_to_tool_file "$lt_outputfile"~
 	    if test "$MANIFEST_TOOL" != ":" && test -f "$lt_outputfile.manifest"; then
-	      $MANIFEST_TOOL -manifest "$lt_outputfile.manifest" -outputresource:"$lt_outputfile" || exit 1;
+	      $MANIFEST_TOOL -manifest "$lt_tool_outputfile.manifest" -outputresource:"$lt_tool_outputfile" || exit 1;
 	      $RM "$lt_outputfile.manifest";
 	    fi'
 	  ;;

@@ -1,3 +1,20 @@
+2010-09-07  Peter Rosin  <peda@lysator.liu.se>
+
+	Convert POSIX file names to toolchain format for MSVC
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
+	[cygwin, mingw, pw32, cegcc] <cl*, postlink_cmds>: Make
+	sure the -outputresource: file name for the manifest tool is
+	in w32 format.
+	<cl*, archive_expsym_cmds>: Likewise for the MSVC command file
+	containing the exports and the output file name.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Precalculate the
+	toolchain format of the output_objdir file name and store it in
+	the tool_output_objdir variable. Also replace any occurrence of
+	@TOOL_OUTPUT@ in postlink_cmds with the toolchain version of the
+	@OUTPUT@ content.
+	* doc/libtool.texi (libtool script content): Update description
+	of postlink_cmds to mention @TOOL_OUTPUT@.
+
 2010-09-06  Peter Rosin  <peda@lysator.liu.se>
 
 	Use func_to_tool_file instead of fix_srcfile_path.
