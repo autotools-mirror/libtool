@@ -1,5 +1,14 @@
 2010-09-07  Peter Rosin  <peda@lysator.liu.se>
 
+	Adjust naming of MSVC import libraries.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [mingw, cygwin]
+	[pw32, cegcc] <cl*, library_names_spec>: Adjust naming of the
+	import library from foo-<major-version>.lib to foo.dll.lib, to
+	avoid clashes with the static library for unversioned libraries.
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [mingw, cygwin, pw32]
+	[cegcc] <cl*, archive_expsym_cmds>: Explicitely name the import
+	library to match the above.
+
 	Fixup texi typo in previous.
 	* doc/libtool.texi (libtool script content) <postlink_cmds>:
 	Add missing 'code' command.
