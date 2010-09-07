@@ -1,5 +1,9 @@
 2010-09-07  Peter Rosin  <peda@lysator.liu.se>
 
+	Fixup texi typo in previous.
+	* doc/libtool.texi (libtool script content) <postlink_cmds>:
+	Add missing 'code' command.
+
 	Convert POSIX file names to toolchain format for MSVC
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
 	[cygwin, mingw, pw32, cegcc] <cl*, postlink_cmds>: Make
