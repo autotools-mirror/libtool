@@ -1,7 +1,3 @@
-atconfig
-defs.in
-defs
-package.m4
-testsuite
-testsuite.dir
-testsuite.log
+/defs
+/defs.in
+/package.m4

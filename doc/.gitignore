@@ -1,9 +1,5 @@
-stamp-vti
-version.texi
-notes.txt
-*.dvi
-*.info*
-*.html
-*.ps
-*.pdf
-*.1
+/*.1
+/*.html
+/gendocs_template
+/notes.txt
+/version.texi
