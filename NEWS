@@ -33,7 +33,9 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
   - Initial support for the Microsoft C/C++ Compiler, with help from
     the compile script in unreleased Automake 1.12. Override the manifest
     tool used to embed the manifest resource through the environment
-    variable MANIFEST_TOOL.
+    variable MANIFEST_TOOL. Please note that the import library naming
+    has changed (from foo-2.lib to foo.dll.lib) from when the code lived
+    in its own git branch.
 
 * Bug fixes:
 

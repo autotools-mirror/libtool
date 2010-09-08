@@ -1,3 +1,8 @@
+2010-09-08  Peter Rosin  <peda@lysator.liu.se>
+
+	Mention adjustment of naming of MSVC import libraries in NEWS.
+	* NEWS: Mention the change in import library naming on MSVC.
+
 2010-09-07  Peter Rosin  <peda@lysator.liu.se>
 
 	Adjust naming of MSVC import libraries.
