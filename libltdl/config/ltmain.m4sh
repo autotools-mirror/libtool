@@ -873,14 +873,22 @@ func_to_host_file ()
 # end func_to_host_file
 
 
-# func_to_tool_file ARG
+# func_to_tool_file ARG LAZY
 # converts the file name ARG from $build format to toolchain format. Return
-# result in func_to_tool_file_result.
+# result in func_to_tool_file_result.  If the conversion in use is listed
+# in (the comma separated) LAZY, no conversion takes place.
 func_to_tool_file ()
 {
   $opt_debug
-  $to_tool_file_cmd "$1"
-  func_to_tool_file_result=$func_to_host_file_result
+  case ,$2, in
+    *,"$to_tool_file_cmd",*)
+      func_to_tool_file_result=$1
+      ;;
+    *)
+      $to_tool_file_cmd "$1"
+      func_to_tool_file_result=$func_to_host_file_result
+      ;;
+  esac
 }
 # end func_to_tool_file
 
@@ -1376,7 +1384,7 @@ compiler."
     func_append removelist " $lockfile"
     trap '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE' 1 2 15
 
-    func_to_tool_file "$srcfile"
+    func_to_tool_file "$srcfile" func_convert_file_msys_to_w32
     srcfile=$func_to_tool_file_result
     func_quote_for_eval "$srcfile"
     qsrcfile=$func_quote_for_eval_result

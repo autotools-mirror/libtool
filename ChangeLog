@@ -1,3 +1,14 @@
+2010-09-09  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix dependency tracking for MSYS/MinGW.
+	* libltdl/config/ltmain.m4sh (func_to_tool_file): Add lazy
+	argument which allows the user to specify conversions that are
+	not desired.
+	(func_mode_compile): Don't convert source files on MSYS, as
+	MSYS does it for us. This fixes a regression introduced by
+	"Use func_to_tool_file instead of fix_srcfile_path".
+	Reported by Charles Wilson.
+
 2010-09-08  Peter Rosin  <peda@lysator.liu.se>
 
 	Mention adjustment of naming of MSVC import libraries in NEWS.
