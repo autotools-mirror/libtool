@@ -28,7 +28,8 @@ ACLOCAL_AMFLAGS  	= -I libltdl/m4
 AM_CPPFLAGS		=
 AM_LDFLAGS		=
 
-DIST_SUBDIRS		= .
+SUBDIRS			= .
+DIST_SUBDIRS		= $(SUBDIRS)
 EXTRA_DIST		=
 
 BUILT_SOURCES		= libtool libtoolize

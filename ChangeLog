@@ -1,3 +1,11 @@
+2010-08-27  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: add gnulib submodule.
+	* configure.ac (GL_INIT, GL_EARLY): Initialise gnulib, and expand
+	its configure time checks.
+	* .gitmodules (gnulib): New file with configuration for our
+	gnulib git submodule.
+
 2010-09-01  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: don't run help2man on programs not-yet-built.
