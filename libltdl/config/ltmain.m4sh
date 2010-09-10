@@ -2505,8 +2505,9 @@ extern \"C\" {
 	  # Add our own program objects to the symbol list.
 	  progfiles=`$ECHO "$objs$old_deplibs" | $SP2NL | $SED "$lo2o" | $NL2SP`
 	  for progfile in $progfiles; do
-	    func_verbose "extracting global C symbols from \`$progfile'"
-	    $opt_dry_run || eval "$NM $progfile | $global_symbol_pipe >> '$nlist'"
+	    func_to_tool_file "$progfile" func_convert_file_msys_to_w32
+	    func_verbose "extracting global C symbols from \`$func_to_tool_file_result'"
+	    $opt_dry_run || eval "$NM $func_to_tool_file_result | $global_symbol_pipe >> '$nlist'"
 	  done
 
 	  if test -n "$exclude_expsyms"; then
@@ -2581,20 +2582,23 @@ extern \"C\" {
 	            func_warning "Could not compute DLL name from $name"
 	            eval '$ECHO ": $name " >> "$nlist"'
 	          fi
-	          eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe |
+	          func_to_tool_file "$dlprefile" func_convert_file_msys_to_w32
+	          eval "$NM \"$func_to_tool_file_result\" 2>/dev/null | $global_symbol_pipe |
 	            $SED -e '/I __imp/d' -e 's/I __nm_/D /;s/_nm__//' >> '$nlist'"
 	        }
 	      else # not an import lib
 	        $opt_dry_run || {
 	          eval '$ECHO ": $name " >> "$nlist"'
-	          eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe >> '$nlist'"
+	          func_to_tool_file "$dlprefile" func_convert_file_msys_to_w32
+	          eval "$NM \"$func_to_tool_file_result\" 2>/dev/null | $global_symbol_pipe >> '$nlist'"
 	        }
 	      fi
 	    ;;
 	    *)
 	      $opt_dry_run || {
 	        eval '$ECHO ": $name " >> "$nlist"'
-	        eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe >> '$nlist'"
+	        func_to_tool_file "$dlprefile" func_convert_file_msys_to_w32
+	        eval "$NM \"$func_to_tool_file_result\" 2>/dev/null | $global_symbol_pipe >> '$nlist'"
 	      }
 	    ;;
           esac
@@ -2756,7 +2760,8 @@ func_win32_libid ()
     # Keep the egrep pattern in sync with the one in _LT_CHECK_MAGIC_METHOD.
     if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null |
        $EGREP 'file format (pei*-i386(.*architecture: i386)?|pe-arm-wince|pe-x86-64)' >/dev/null; then
-      win32_nmres=`eval $NM -f posix -A $1 |
+      func_to_tool_file "$1" func_convert_file_msys_to_w32
+      win32_nmres=`eval $NM -f posix -A \"$func_to_tool_file_result\" |
 	$SED -n -e '
 	    1,100{
 		/ I /{
@@ -2868,7 +2873,8 @@ func_cygming_dll_for_implib_fallback_core ()
 func_cygming_gnu_implib_p ()
 {
   $opt_debug
-  func_cygming_gnu_implib_tmp=`$NM $1 | eval "$global_symbol_pipe" | $EGREP ' (_head_[A-Za-z0-9_]+_[ad]l*|[A-Za-z0-9_]+_[ad]l*_iname)$'`
+  func_to_tool_file "$1" func_convert_file_msys_to_w32
+  func_cygming_gnu_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $EGREP ' (_head_[A-Za-z0-9_]+_[ad]l*|[A-Za-z0-9_]+_[ad]l*_iname)$'`
   test -n "$func_cygming_gnu_implib_tmp"
 }
 
@@ -2879,7 +2885,8 @@ func_cygming_gnu_implib_p ()
 func_cygming_ms_implib_p ()
 {
   $opt_debug
-  func_cygming_ms_implib_tmp=`$NM $1 | eval "$global_symbol_pipe" | $GREP '_NULL_IMPORT_DESCRIPTOR'`
+  func_to_tool_file "$1" func_convert_file_msys_to_w32
+  func_cygming_ms_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $GREP '_NULL_IMPORT_DESCRIPTOR'`
   test -n "$func_cygming_ms_implib_tmp"
 }
 

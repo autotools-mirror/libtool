@@ -1,3 +1,14 @@
+2010-09-10  Peter Rosin  <peda@lysator.liu.se>
+
+	Convert file name to toolchain format when invoking $NM.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms)
+	(func_win32_libid, func_cygming_gnu_implib_p)
+	(func_cygming_ms_implib_p): When using the name lister to find
+	symbols in files, convert the file names to a format appropriate
+	for the tool. Fixes testsuite issues in mdemo-static-make.test
+	and mdemo-make.test when doing a cross from Cygwin/Wine to MinGW
+	using MinGW native tools (a.k.a. a "faked" cross).
+
 2010-09-09  Peter Rosin  <peda@lysator.liu.se>
 
 	Fix dependency tracking for MSYS/MinGW.
