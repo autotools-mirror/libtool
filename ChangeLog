@@ -1,3 +1,10 @@
+2010-09-11  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Correct typo: $sharedlib_from_linklib_cmd missing '_cmd'
+
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms): Fix obvious
+	typo, $sharedlib_from_linklib_cmd missing '_cmd'.
+
 2010-09-10  Peter Rosin  <peda@lysator.liu.se>
 
 	Convert file name to toolchain format when invoking $NM.

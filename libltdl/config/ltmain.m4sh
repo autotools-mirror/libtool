@@ -2571,7 +2571,7 @@ extern \"C\" {
 	            dlprefile_dlbasename="$func_basename_result"
 	          else
 	            # no lafile. user explicitly requested -dlpreopen <import library>.
-	            $sharedlib_from_linklib "$dlprefile"
+	            $sharedlib_from_linklib_cmd "$dlprefile"
 	            dlprefile_dlbasename=$sharedlib_from_linklib_result
 	          fi
 	        fi
