@@ -1,3 +1,11 @@
+2010-09-12  Jürgen Reuter  <juergen.reuter@physik.uni-freiburg.de>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Initial support for the NAG Fortran compiler on GNU/Linux.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [linux] <nagfor>:
+	New set of entries, for NAG Fortran 5.1 and 5.2.
+	* NEWS: Update.
+
 2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix getopt.m4sh to require Autoconf 2.62 or newer.

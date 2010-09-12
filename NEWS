@@ -36,6 +36,7 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
     variable MANIFEST_TOOL. Please note that the import library naming
     has changed (from foo-2.lib to foo.dll.lib) from when the code lived
     in its own git branch.
+  - Initial support for the NAG Fortran compiler on GNU/Linux.
 
 * Bug fixes:
 
