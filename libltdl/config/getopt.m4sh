@@ -50,11 +50,11 @@ m4_pattern_forbid([^_?m4go_])
 ## --------------------------- ##
 
 # We prefer m4sugar.m4 from Autoconf-2.64, but have fallbacks in this
-# section that work back as far as Autoconf-2.61.  This file is used
+# section that work back as far as Autoconf-2.62.  This file is used
 # at bootstrap time to generate the shell processing loop for ltmain.sh
 # and libtoolize.in, so it's okay for the requirement to be tighter
 # than the configure time Autoconf prerequisite version.
-m4_version_prereq([2.61])
+m4_version_prereq([2.62])
 
 # m4_chomp(STRING)
 # ----------------

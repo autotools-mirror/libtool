@@ -1,3 +1,9 @@
+2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix getopt.m4sh to require Autoconf 2.62 or newer.
+	* libltdl/config/getopt.m4sh (m4_version_prereq): Require 2.62,
+	not 2.61.
+
 2010-09-11  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Correct typo: $sharedlib_from_linklib_cmd missing '_cmd'
