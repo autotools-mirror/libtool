@@ -1,3 +1,10 @@
+2010-09-12  Peter Rosin  <peda@lysator.liu.se>
+
+	Adjust to moved auxiliary files and add compile.
+	* HACKING (Maintenance Notes): Adjust to moved files.  Add the
+	compile script.
+	* Makefile.maint (fetch): Also fetch the compile script.
+
 2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: avoid empty AT_DATA contents, for zsh.

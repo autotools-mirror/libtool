@@ -88,6 +88,7 @@ WGET_CGIT = $(WGET) 'http://git.savannah.gnu.org/cgit/config.git/plain'
 ## FIXME should be a lot more here
 FETCHFILES = \
 ./INSTALL \
+$(auxdir)/compile \
 $(auxdir)/install-sh \
 $(auxdir)/config.guess \
 $(auxdir)/config.sub \
@@ -101,6 +102,7 @@ fetch:
 ## If a get fails then that is a problem.
 	(cd Fetchdir && \
 	$(WGET_GIT)'gnulib.git;f=doc/INSTALL' -O INSTALL && \
+	$(WGET_GIT)'automake.git;f=lib/compile' -O compile && \
 	$(WGET_GIT)'automake.git;f=lib/install-sh' -O install-sh && \
 	$(WGET_CGIT)/config.guess -O config.guess && \
 	$(WGET_CGIT)/config.sub -O config.sub && \

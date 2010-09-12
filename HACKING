@@ -28,7 +28,12 @@ and is not part of a release distribution.
   files should never be edited here.  These files are:
 	COPYING
 	INSTALL
-	config/
+	doc/
+	    + fdl.texi
+	libltdl/
+	    + COPYING.LIB
+	libltdl/config/
+	    + compile
 	    + config.guess
 	    + config.sub
 	    + depcomp
@@ -36,10 +41,6 @@ and is not part of a release distribution.
 	    + mdate-sh
 	    + missing
 	    + texinfo.tex
-	doc/
-	    + fdl.texi
-	libltdl/
-	    + COPYING.LIB
   The ones that are important for a release can be udated with,
   `make -fMakefile.maint fetch' (or `make -f../Makefile.maint fetch'
   if you are running from a VPATH build directory, where `../' is the
