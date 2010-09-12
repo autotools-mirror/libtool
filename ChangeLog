@@ -1,3 +1,12 @@
+2010-09-12  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	When assigning $linklib value, honor [-all]-static[-libtool-libs]
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): When prefer_static_libs
+	and static library exists, ensure old_library name is used as $linklib.
+	Fixes failure on mingw when both static and shared libraries are
+	present.
+
 2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: work around zsh use of $options variable.

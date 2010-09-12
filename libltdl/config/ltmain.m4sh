@@ -5652,9 +5652,15 @@ func_mode_link ()
 
 	# Get the name of the library we link against.
 	linklib=
-	for l in $old_library $library_names; do
-	  linklib="$l"
-	done
+	if test -n "$old_library" &&
+	   { test "$prefer_static_libs" = yes ||
+	     test "$prefer_static_libs,$installed" = "built,no"; }; then
+	  linklib=$old_library
+	else
+	  for l in $old_library $library_names; do
+	    linklib="$l"
+	  done
+	fi
 	if test -z "$linklib"; then
 	  func_fatal_error "cannot find name of link library for \`$lib'"
 	fi
