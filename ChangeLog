@@ -1,3 +1,12 @@
+2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	tests: avoid empty AT_DATA contents, for zsh.
+	* tests/libtoolize.at (libtoolize macro serial update)
+	(libtoolize config files serial update, LIBTOOLIZE_OPTIONS):
+	Do not create empty files with AT_DATA, the latter is documented
+	to require a final newline.  Fixes testsuite failures with zsh
+	4.3.10.
+
 2010-09-12  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	When assigning $linklib value, honor [-all]-static[-libtool-libs]

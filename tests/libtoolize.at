@@ -155,7 +155,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 ## Next, a second update attempt with everything now updated. ##
 ## ---------------------------------------------------------- ##
 
-AT_DATA(expout, [[]])
+: >expout
 
 AT_DATA(experr,
 [[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
@@ -187,7 +187,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
 ## A final update attempt with everything previously force updated. ##
 ## ---------------------------------------------------------------- ##
 
-AT_DATA(expout, [[]])
+: >expout
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 
@@ -232,7 +232,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
 ## Next, a second update attempt with everything now updated. ##
 ## ---------------------------------------------------------- ##
 
-AT_DATA(expout, [[]])
+: >expout
 
 AT_DATA(experr,
 [[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
@@ -267,7 +267,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --force --install], 0, expout)
 ## A final update attempt with everything previously force updated. ##
 ## ---------------------------------------------------------------- ##
 
-AT_DATA(expout, [[]])
+: >expout
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout)
 
@@ -978,7 +978,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, [ignore], experr)
 LIBTOOLIZE_OPTIONS=--no-warn,--no-such-option
 export LIBTOOLIZE_OPTIONS
 
-AT_DATA(experr, [[]])
+: >experr
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, [ignore], experr)
 
