@@ -3615,6 +3615,7 @@ for ac_symprfx in "" "_"; do
   else
     lt_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[[	 ]]\($symcode$symcode*\)[[	 ]][[	 ]]*$ac_symprfx$sympat$opt_cr$/$symxfrm/p'"
   fi
+  lt_cv_sys_global_symbol_pipe="$lt_cv_sys_global_symbol_pipe | sed '/ __gnu_lto/d'"
 
   # Check to see that the pipe works correctly.
   pipe_works=no
@@ -3697,15 +3698,15 @@ static const void *lt_preloaded_setup() {
 _LT_EOF
 	  # Now try linking the two files.
 	  mv conftest.$ac_objext conftstm.$ac_objext
-	  lt_save_LIBS="$LIBS"
-	  lt_save_CFLAGS="$CFLAGS"
+	  lt_globsym_save_LIBS=$LIBS
+	  lt_globsym_save_CFLAGS=$CFLAGS
 	  LIBS="conftstm.$ac_objext"
 	  CFLAGS="$CFLAGS$_LT_TAGVAR(lt_prog_compiler_no_builtin_flag, $1)"
 	  if AC_TRY_EVAL(ac_link) && test -s conftest${ac_exeext}; then
 	    pipe_works=yes
 	  fi
-	  LIBS="$lt_save_LIBS"
-	  CFLAGS="$lt_save_CFLAGS"
+	  LIBS=$lt_globsym_save_LIBS
+	  CFLAGS=$lt_globsym_save_CFLAGS
 	else
 	  echo "cannot find nm_test_func in $nlist" >&AS_MESSAGE_LOG_FD
 	fi
@@ -4664,7 +4665,7 @@ _LT_EOF
       if $LD --help 2>&1 | $EGREP ': supported targets:.* elf' > /dev/null \
 	 && test "$tmp_diet" = no
       then
-	tmp_addflag=
+	tmp_addflag=' $pic_flag'
 	tmp_sharedflag='-shared'
 	case $cc_basename,$host_cpu in
         pgcc*)				# Portland Group C compiler
@@ -5749,6 +5750,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
   # Allow CC to be a program name with arguments.
   lt_save_CC=$CC
+  lt_save_CFLAGS=$CFLAGS
   lt_save_LD=$LD
   lt_save_GCC=$GCC
   GCC=$GXX
@@ -5766,6 +5768,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   fi
   test -z "${LDCXX+set}" || LD=$LDCXX
   CC=${CXX-"c++"}
+  CFLAGS=$CXXFLAGS
   compiler=$CC
   _LT_TAGVAR(compiler, $1)=$CC
   _LT_CC_BASENAME([$compiler])
@@ -5787,8 +5790,8 @@ if test "$_lt_caught_CXX_error" != yes; then
       # Check if GNU C++ uses GNU ld as the underlying linker, since the
       # archiving commands below assume that GNU ld is being used.
       if test "$with_gnu_ld" = yes; then
-        _LT_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
-        _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+        _LT_TAGVAR(archive_cmds, $1)='$CC $pic_flag -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
+        _LT_TAGVAR(archive_expsym_cmds, $1)='$CC $pic_flag -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 
         _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
         _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
@@ -6739,6 +6742,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   fi # test -n "$compiler"
 
   CC=$lt_save_CC
+  CFLAGS=$lt_save_CFLAGS
   LDCXX=$LD
   LD=$lt_save_LD
   GCC=$lt_save_GCC
@@ -6835,6 +6839,13 @@ public class foo {
 };
 _LT_EOF
 ])
+
+_lt_libdeps_save_CFLAGS=$CFLAGS
+case "$CC $CFLAGS " in #(
+*\ -flto\ *) CFLAGS="$CFLAGS -fno-lto" ;;
+*\ -fwhopr*\ *) CFLAGS="$CFLAGS -fno-whopr" ;;
+esac
+
 dnl Parse the compiler output and extract the necessary
 dnl objects, libraries and library flags.
 if AC_TRY_EVAL(ac_compile); then
@@ -6893,6 +6904,7 @@ if AC_TRY_EVAL(ac_compile); then
        prev=
        ;;
 
+    *.lto.$objext) ;; # Ignore GCC LTO objects
     *.$objext)
        # This assumes that the test object file only shows up
        # once in the compiler output.
@@ -6928,6 +6940,7 @@ else
 fi
 
 $RM -f confest.$objext
+CFLAGS=$_lt_libdeps_save_CFLAGS
 
 # PORTME: override above test on systems where it is broken
 m4_if([$1], [CXX],
@@ -7077,7 +7090,9 @@ if test "$_lt_disable_F77" != yes; then
   # Allow CC to be a program name with arguments.
   lt_save_CC="$CC"
   lt_save_GCC=$GCC
+  lt_save_CFLAGS=$CFLAGS
   CC=${F77-"f77"}
+  CFLAGS=$FFLAGS
   compiler=$CC
   _LT_TAGVAR(compiler, $1)=$CC
   _LT_CC_BASENAME([$compiler])
@@ -7131,6 +7146,7 @@ if test "$_lt_disable_F77" != yes; then
 
   GCC=$lt_save_GCC
   CC="$lt_save_CC"
+  CFLAGS="$lt_save_CFLAGS"
 fi # test "$_lt_disable_F77" != yes
 
 AC_LANG_POP
@@ -7207,7 +7223,9 @@ if test "$_lt_disable_FC" != yes; then
   # Allow CC to be a program name with arguments.
   lt_save_CC="$CC"
   lt_save_GCC=$GCC
+  lt_save_CFLAGS=$CFLAGS
   CC=${FC-"f95"}
+  CFLAGS=$FCFLAGS
   compiler=$CC
   GCC=$ac_cv_fc_compiler_gnu
 
@@ -7263,7 +7281,8 @@ if test "$_lt_disable_FC" != yes; then
   fi # test -n "$compiler"
 
   GCC=$lt_save_GCC
-  CC="$lt_save_CC"
+  CC=$lt_save_CC
+  CFLAGS=$lt_save_CFLAGS
 fi # test "$_lt_disable_FC" != yes
 
 AC_LANG_POP
@@ -7300,10 +7319,12 @@ _LT_COMPILER_BOILERPLATE
 _LT_LINKER_BOILERPLATE
 
 # Allow CC to be a program name with arguments.
-lt_save_CC="$CC"
+lt_save_CC=$CC
+lt_save_CFLAGS=$CFLAGS
 lt_save_GCC=$GCC
 GCC=yes
 CC=${GCJ-"gcj"}
+CFLAGS=$GCJFLAGS
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
 _LT_TAGVAR(LD, $1)="$LD"
@@ -7334,7 +7355,8 @@ fi
 AC_LANG_RESTORE
 
 GCC=$lt_save_GCC
-CC="$lt_save_CC"
+CC=$lt_save_CC
+CFLAGS=$lt_save_CFLAGS
 ])# _LT_LANG_GCJ_CONFIG
 
 
@@ -7369,9 +7391,11 @@ _LT_LINKER_BOILERPLATE
 
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
+lt_save_CFLAGS=$CFLAGS
 lt_save_GCC=$GCC
 GCC=
 CC=${RC-"windres"}
+CFLAGS=
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
 _LT_CC_BASENAME([$compiler])
@@ -7384,7 +7408,8 @@ fi
 
 GCC=$lt_save_GCC
 AC_LANG_RESTORE
-CC="$lt_save_CC"
+CC=$lt_save_CC
+CFLAGS=$lt_save_CFLAGS
 ])# _LT_LANG_RC_CONFIG
 
 

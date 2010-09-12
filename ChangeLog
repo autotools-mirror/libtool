@@ -245,6 +245,34 @@
 
 2010-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Support GCC LTO on GNU/Linux.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Allow through
+	flags matching -O*, -flto*, -fwhopr, -fuse-linker-plugin.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Drop symbols
+	starting with __gnu_lto.
+	(_LT_LINKER_SHLIBS) [linux] <archive_cmds, archive_expsyms_cmds>:
+	Add $pic_flag for GCC.
+	(_LT_LANG_CXX_CONFIG) [linux] <archive_cmds, archive_expsyms_cmds>:
+	Likewise.
+	(_LT_SYS_HIDDEN_LIBDEPS): Ignore files matching *.lto.o.
+	* NEWS: Update.
+
+	Disable GCC LTO for verbose library extraction.
+	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Temporarily
+	append -fno-lto or -fno-whopr to CFLAGS if CC or CFLAGS (which
+	are substituted with the per-language variables here) contain
+	-flto or match -fwhopr*, respectively.
+
+	Save and restore CFLAGS properly inside libtool.m4 macros.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Use different
+	temporary variables for saved and restored values of $LIBS,
+	$CFLAGS, to avoid overlap with the *_CONFIG macros.
+	(_LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG)
+	(_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Also save and restore
+	$CFLAGS, and override it with per-language flags, so that in
+	case output_verbose_link_cmd uses $CFLAGS, the right flags are
+	used.
+
 	Work around yet another shell quoting portability issue.
 	* configure.ac: Avoid nonportable quoted alternate variable
 	value in unquoted here document, so Solaris 10 sh and Tru64
