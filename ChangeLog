@@ -1,5 +1,7 @@
 2010-09-12  Peter Rosin  <peda@lysator.liu.se>
 
+	* .gitignore: Ignore *.obj files for MSVC (and w32 in general).
+
 	Adjust to moved auxiliary files and add compile.
 	* HACKING (Maintenance Notes): Adjust to moved files.  Add the
 	compile script.
