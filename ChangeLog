@@ -1,3 +1,11 @@
+2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix AC_NO_EXECUTABLES test failure on IRIX 6.5.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [irix]: Cache result
+	of link check for -Wl,-exported_symbol.
+	* tests/no-executables.at (AC_NO_EXECUTABLES): Set
+	lt_cv_irix_exported_symbol, to avoid link check.
+
 2010-09-12  Jürgen Reuter  <juergen.reuter@physik.uni-freiburg.de>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
