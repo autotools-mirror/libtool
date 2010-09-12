@@ -1,5 +1,9 @@
 2010-09-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	tests: work around zsh use of $options variable.
+	* tests/getopt-m4sh.at: Rename $options to $opts, the former is
+	special for zsh 4.3.10.
+
 	Fix AC_NO_EXECUTABLES test failure on IRIX 6.5.
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [irix]: Cache result
 	of link check for -Wl,-exported_symbol.

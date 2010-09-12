@@ -37,14 +37,14 @@ AT_DATA([options.m4sh],
 nl='
 '
 list=
-options=
+opts=
 M4SH_GETOPTS(
   [a!],	[--append],	[],	[func_append list "$optarg$nl"],
-  [f],	[--force],	[],	[options="$options force"],
-  [i],	[--install],	[],	[options="$options install"],
-  [v],	[--verbose],	[],	[options="$options verbose"],
-  [!],	[--ltdl],	[false],[options="$options ltdl=$optarg"],
-[echo "$list" $options])
+  [f],	[--force],	[],	[opts="$opts force"],
+  [i],	[--install],	[],	[opts="$opts install"],
+  [v],	[--verbose],	[],	[opts="$opts verbose"],
+  [!],	[--ltdl],	[false],[opts="$opts ltdl=$optarg"],
+[echo "$list" $opts])
 ]])
 m4_pattern_forbid([m4_include])
 m4_pattern_forbid([AS_INIT])
