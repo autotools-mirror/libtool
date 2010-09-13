@@ -7349,10 +7349,23 @@ EOF
 	    save_ifs="$IFS"; IFS='~'
 	    for cmd1 in $cmds; do
 	      IFS="$save_ifs"
-	      eval cmd=\"$cmd1\"
-	      func_len " $cmd"
-	      len=$func_len_result
-	      if test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	      # Take the normal branch if the nm_file_list_spec branch
+	      # doesn't work or if tool conversion is not needed.
+	      case $nm_file_list_spec~$to_tool_file_cmd in
+		*~func_convert_file_noop | *~func_convert_file_msys_to_w32 | ~*)
+		  try_normal_branch=yes
+		  eval cmd=\"$cmd1\"
+		  func_len " $cmd"
+		  len=$func_len_result
+		  ;;
+		*)
+		  try_normal_branch=no
+		  ;;
+	      esac
+	      if test $try_normal_branch = yes \
+		 && { test "$len" -lt "$max_cmd_len" \
+		      || test "$max_cmd_len" -le -1; }
+	      then
 		func_show_eval "$cmd" 'exit $?'
 		skipped_export=false
 	      elif test -n "$nm_file_list_spec"; then

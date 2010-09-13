@@ -1,3 +1,14 @@
+2010-09-13  Peter Rosin  <peda@lysator.liu.se>
+
+	Prefer $NM @file when the toolchain isn't native to $build.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Avoid calculating
+	the command line length and take the @file branch *if* the file
+	names needs to be converted for the toolchain and the @file
+	branch works.  Fixes problems in stresstest.at when doing a cross
+	from Cygwin to MinGW using MinGW native tools (a.k.a. a "faked"
+	cross), and for the specific case of MSVC on Cygwin it makes the
+	test pass.
+
 2010-09-14  Eric Blake  <eblake@redhat.com>
 
 	maint: ship .xz, not .lzma
