@@ -1,5 +1,17 @@
 2010-09-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	doc: avoid long lines in input and output, indexing fixes.
+	* doc/libtool.texi (Linking libraries)
+	(Module loaders for libltdl): Manually line-wrap examples, to
+	avoid long lines.
+	(Libltdl interface, User defined module data)
+	(Module loaders for libltdl): Wrap long @deftypefun input lines
+	using trailing '@'.  Use @deftypefun rather than @deftp where
+	appropriate, and add spaces in @deftypefun lines to fix the
+	index entries generated from these lines.
+	(Cheap tricks): Use @smallexample rather than @example, to avoid
+	long lines.
+
 	docs: @file and @option markup fixes.
 	* doc/libtool.texi (Creating object files, Linking libraries)
 	(Linking executables, Link mode, Finish mode, Autoconf macros)

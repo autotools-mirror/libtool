@@ -636,8 +636,8 @@ libtool are the same ones you would use to produce an executable named
 
 @example
 a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.o hello.o}
-*** Warning: Linking the shared library libhello.la against the non-libtool
-*** objects  foo.o hello.o is not portable!
+*** Warning: Linking the shared library libhello.la against the
+*** non-libtool objects foo.o hello.o is not portable!
 ar cru .libs/libhello.a
 ranlib .libs/libhello.a
 creating libhello.la
@@ -4039,7 +4039,7 @@ Replace the current user-defined library search path with
 by @code{LT_PATHSEP_CHAR}.  Return 0 on success.
 @end deftypefun
 
-@deftypefun {const char *}lt_dlgetsearchpath (void)
+@deftypefun {const char *} lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
 @end deftypefun
 
@@ -4175,7 +4175,10 @@ Some of the internal information about each loaded module that is
 maintained by libltdl is available to the user, in the form of this
 structure:
 
-@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @w{int @var{is_resident};} @w{int @var{is_symglobal};} @w{int @var{is_symlocal};}@}
+@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @
+  @w{char *@var{name};} @w{int @var{ref_count};} @
+  @w{int @var{is_resident};} @w{int @var{is_symglobal};} @
+  @w{int @var{is_symlocal};}@}
 @code{lt_dlinfo} is used to store information about a module.
 The @var{filename} attribute is a null-terminated character string of
 the real module file name.  If the module is a libtool module then
@@ -4205,7 +4208,8 @@ The opaque type used to hold the module interface details for each
 registered libltdl client.
 @end deftp
 
-@deftp {Type} int lt_dlhandle_interface (@w{lt_dlhandle @var{handle},} @w{const char *@var{id_string}})
+@deftypefn {Type} int lt_dlhandle_interface (@w{lt_dlhandle @var{handle},} @
+  @w{const char *@var{id_string}})
 Functions of this type are called to check that a handle conforms to a
 library's expected module interface when iterating over the global
 handle list.  You should be careful to write a callback function of
@@ -4238,9 +4242,10 @@ my_interface_cb (lt_dlhandle handle, const char *id_string)
   return 0;
 @}
 @end example
-@end deftp
+@end deftypefn
 
-@deftypefun lt_dlinterface_id lt_dlinterface_register (@w{const char *@var{id_string}}, @w{lt_dlhandle_interface *@var{iface}})
+@deftypefun lt_dlinterface_id lt_dlinterface_register @
+  (@w{const char *@var{id_string}}, @w{lt_dlhandle_interface *@var{iface}})
 Use this function to register your interface validator with libltdl,
 and in return obtain a unique key to store and retrieve per-module data.
 You supply an @var{id_string} and @var{iface} so that the resulting
@@ -4253,7 +4258,9 @@ all modules will be matched.
 Release the data associated with @var{iface}.
 @end deftypefun
 
-@deftypefun int lt_dlhandle_map (@w{lt_dlinterface_id @var{iface}}, @w{int (*@var{func}) (lt_dlhandle @var{handle}, void * @var{data})}, @w{void * @var{data}})
+@deftypefun int lt_dlhandle_map (@w{lt_dlinterface_id @var{iface}}, @
+  @w{int (*@var{func}) (lt_dlhandle @var{handle}, void * @var{data})}, @
+  @w{void * @var{data}})
 For each module that matches @var{iface}, call the function
 @var{func}.  When writing the @var{func} callback function, the
 argument @var{handle} is the handle of a loaded module, and
@@ -4264,7 +4271,8 @@ return that non-zero value.  Otherwise 0 is eventually returned when
 @var{func} has been successfully called for all matching modules.
 @end deftypefun
 
-@deftypefun lt_dlhandle lt_dlhandle_iterate (@w{lt_dlinterface_id @var{iface}}, @w{lt_dlhandle @var{place}})
+@deftypefun lt_dlhandle lt_dlhandle_iterate (@w{lt_dlinterface_id @
+  @var{iface}}, @w{lt_dlhandle @var{place}})
 Iterate over the module handles loaded by @var{iface}, returning the
 first matching handle in the list if @var{place} is @code{NULL}, and
 the next one on subsequent calls.  If @var{place} is the last element
@@ -4455,7 +4463,8 @@ register_myloader (void)
   dlloader.dlloader_data = (lt_user_data)myloader_function;
 
   /* Add my loader as the default module loader. */
-  if (lt_dlloader_add (lt_dlloader_next (NULL), &dlloader, "myloader") != 0)
+  if (lt_dlloader_add (lt_dlloader_next (NULL), &dlloader,
+                       "myloader") != 0)
     return ERROR;
 
   return OK;
@@ -4475,7 +4484,8 @@ during the initialisation phase.
 libltdl provides the following functions for writing your own module
 loaders:
 
-@deftypefun int lt_dlloader_add (@w{lt_dlloader *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
+@deftypefun int lt_dlloader_add (@w{lt_dlloader *@var{place},} @
+  @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
 Add a new module loader to the list of all loaders, either as the
 last loader (if @var{place} is @code{NULL}), else immediately before the
 loader passed as @var{place}.  @var{loader_name} will be returned by
@@ -4504,7 +4514,7 @@ if (lt_dlloader_remove ("myloader") != 0)
 @end example
 @end deftypefun
 
-@deftypefun {lt_dlloader *}lt_dlloader_next (@w{lt_dlloader *@var{place}})
+@deftypefun {lt_dlloader *} lt_dlloader_next (@w{lt_dlloader *@var{place}})
 Iterate over the module loaders, returning the first loader if @var{place} is
 @code{NULL}, and the next one on subsequent calls.  The handle is for use with
 @code{lt_dlloader_add}.
@@ -4516,7 +4526,7 @@ if (lt_dlloader_add (lt_dlloader_next (NULL), myloader) != 0)
 @end example
 @end deftypefun
 
-@deftypefun {lt_dlloader *}lt_dlloader_find (@w{const char *@var{loader_name}})
+@deftypefun {lt_dlloader *} lt_dlloader_find (@w{const char *@var{loader_name}})
 Return the first loader with a matching @var{loader_name} identifier, or else
 @code{NULL}, if the identifier is not found.
 
@@ -4533,14 +4543,14 @@ if (lt_dlloader_add (lt_dlloader_find ("dlopen"), myloader) != 0)
 @end example
 @end deftypefun
 
-@deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader *@var{place}})
+@deftypefun {const char *} lt_dlloader_name (@w{lt_dlloader *@var{place}})
 Return the identifying name of @var{place}, as obtained from
 @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
 @end deftypefun
 
-@deftypefun {lt_user_data *}lt_dlloader_data (@w{lt_dlloader *@var{place}})
+@deftypefun {lt_user_data *} lt_dlloader_data (@w{lt_dlloader *@var{place}})
 Return the address of the @code{dlloader_data} of @var{place}, as
 obtained from @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If
 this function fails, it will return @code{NULL} and set an error for
@@ -6875,7 +6885,7 @@ tree, @code{/home/src/libtool/libtool} is a libtool script that has been
 configured for your platform, and @code{~/bin} is a directory in your
 @env{PATH}:
 
-@example
+@smallexample
 trick$ cd ~/bin
 trick$ sed 's%^\(macro_version=\).*$%\1@@VERSION@@%;
             s%^\(macro_revision=\).*$%\1@@package_revision@@%;
@@ -6889,7 +6899,7 @@ Copyright (C) 2010 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 trick$
-@end example
+@end smallexample
 @end itemize
 
 The output of the final @samp{libtool --version} command shows that the
