@@ -1,3 +1,14 @@
+2010-09-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	docs: @file and @option markup fixes.
+	* doc/libtool.texi (Creating object files, Linking libraries)
+	(Linking executables, Link mode, Finish mode, Autoconf macros)
+	(Using Automake, Inter-library dependencies, Dlpreopening)
+	(Linking with dlopened modules, Finding the dlname)
+	(Libltdl interface, Test descriptions, Multiple dependencies):
+	Add @option where needed, replace @samp with @file as
+	appropriate.
+
 2010-09-12  Peter Rosin  <peda@lysator.liu.se>
 
 	* .gitignore: Ignore *.obj files for MSVC (and w32 in general).

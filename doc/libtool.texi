@@ -510,11 +510,11 @@ to the compiler to tell it to generate PIC rather than the standard
 position-dependent code.
 
 @cindex library object file
-@cindex @samp{.lo} files
+@cindex @file{.lo} files
 @cindex object files, library
 Since this is a library implementation detail, libtool hides the
 complexity of PIC compiler flags and uses separate library object files
-(the PIC one lives in the @samp{@value{objdir}} subdirectory and the
+(the PIC one lives in the @file{@value{objdir}} subdirectory and the
 static one lives in the current directory).  On systems without shared
 libraries, the PIC library object files are not created, whereas on
 systems where all code is PIC, such as AIX, the static ones are not
@@ -533,7 +533,7 @@ a23$
 @end example
 
 Note that libtool silently creates an additional control file on each
-@samp{compile} invocation.  The @samp{.lo} file is the libtool object,
+@samp{compile} invocation.  The @file{.lo} file is the libtool object,
 which Libtool uses to determine what object file may be built into a
 shared library.  On @samp{a23}, only static libraries are supported so
 the library objects look like this:
@@ -564,7 +564,7 @@ gcc -g -O -c foo.c -o foo.o >/dev/null 2>&1
 burger$
 @end example
 
-Note that Libtool automatically created @samp{@value{objdir}} directory
+Note that Libtool automatically created @file{@value{objdir}} directory
 upon its first execution, where PIC library object files will be stored.
 
 Since @samp{burger} supports shared libraries, and requires PIC
@@ -585,7 +585,7 @@ pic_object='@value{objdir}/foo.o'
 non_pic_object='foo.o'
 @end example
 
-@cindex -no-suppress, libtool compile mode option
+@cindex @option{-no-suppress}, libtool compile mode option
 Notice that the second run of GCC has its output discarded.  This is
 done so that compiler warnings aren't annoyingly duplicated.  If you
 need to see both sets of warnings (you might have conditional code
@@ -628,9 +628,9 @@ shared libraries, libtool simply acts as a wrapper for the system
 @command{ar} (and possibly @code{ranlib}) commands.
 
 @cindex libtool libraries
-@cindex @samp{.la} files
-Again, the libtool control file name (@samp{.la} suffix) differs from
-the standard library name (@samp{.a} suffix).  The arguments to
+@cindex @file{.la} files
+Again, the libtool control file name (@file{.la} suffix) differs from
+the standard library name (@file{.a} suffix).  The arguments to
 libtool are the same ones you would use to produce an executable named
 @file{libhello.la} with your compiler (@pxref{Link mode}):
 
@@ -646,7 +646,7 @@ a23$
 @end example
 
 Aha!  Libtool caught a common error@dots{} trying to build a library
-from standard objects instead of special @samp{.lo} object files.  This
+from standard objects instead of special @file{.lo} object files.  This
 doesn't matter so much for static libraries, but on shared library
 systems, it is of great importance.  (Note that you may replace
 @file{libhello.la} with @file{libhello.a} in which case libtool won't
@@ -700,7 +700,7 @@ make it easier to clean up the build directory, and to help ensure that
 other programs fail horribly if you accidentally forget to use libtool
 when you should.
 
-Again, you may want to have a look at the @samp{.la} file in order
+Again, you may want to have a look at the @file{.la} file in order
 to see what Libtool stores in it.  In particular, you will see that
 Libtool uses this file to remember the destination directory for the
 library (the argument to @option{-rpath}) as well as the dependency
@@ -742,7 +742,7 @@ burger$
 
 Libtool's way is almost the same@footnote{However, you should avoid using
 @option{-L} or @option{-l} flags to link against an uninstalled libtool
-library.  Just specify the relative path to the @samp{.la} file, such as
+library.  Just specify the relative path to the @file{.la} file, such as
 @file{../intl/libintl.la}.  This is a design decision to eliminate any
 ambiguity when linking against uninstalled shared libraries.}
 (@pxref{Link mode}):
@@ -1481,7 +1481,7 @@ Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 
 @item -export-symbols @var{symfile}
 Tells the linker to export only the symbols listed in @var{symfile}.
-The symbol file should end in @samp{.sym} and must contain the name of one
+The symbol file should end in @file{.sym} and must contain the name of one
 symbol per line.  This option has no effect on some platforms.
 By default all symbols are exported.
 
@@ -1545,9 +1545,9 @@ If @var{output-file} is a library, it will eventually be installed in
 the run-time path of the program.  On platforms that don't support
 hardcoding library paths into executables and only search PATH for
 shared libraries, such as when @var{output-file} is a Windows (or
-other PE platform) DLL, the @samp{.la} control file will be installed in
+other PE platform) DLL, the @file{.la} control file will be installed in
 @var{libdir}, but see @option{-bindir} above for the eventual destination
-of the @samp{.dll} or other library file itself.
+of the @file{.dll} or other library file itself.
 
 @item -R @var{libdir}
 If @var{output-file} is a program, add @var{libdir} to its run-time
@@ -1616,18 +1616,18 @@ Pass a linker-specific flag directly to the linker.
 Pass a link-specific flag to the compiler driver (@code{CC}) during linking.
 @end table
 
-If the @var{output-file} ends in @samp{.la}, then a libtool library is
-created, which must be built only from library objects (@samp{.lo} files).
+If the @var{output-file} ends in @file{.la}, then a libtool library is
+created, which must be built only from library objects (@file{.lo} files).
 The @option{-rpath} option is required.  In the current implementation,
 libtool libraries may not depend on other uninstalled libtool libraries
 (@pxref{Inter-library dependencies}).
 
-If the @var{output-file} ends in @samp{.a}, then a standard library is
+If the @var{output-file} ends in @file{.a}, then a standard library is
 created using @code{ar} and possibly @code{ranlib}.
 
 @cindex partial linking
 @cindex linking, partial
-If @var{output-file} ends in @samp{.o} or @samp{.lo}, then a reloadable object
+If @var{output-file} ends in @file{.o} or @file{.lo}, then a reloadable object
 file is created from the input files (generally using @samp{ld -r}).
 This method is often called @dfn{partial linking}.
 
@@ -1736,7 +1736,7 @@ compilation environment after they were built in a cross-compilation
 environment.  Cross-compilation environments may rely on recent libtool
 features, and running libtool in finish mode will make it easier to
 work with older versions of libtool.  This task is performed whenever
-the @var{mode-arg} is a @samp{.la} file.
+the @var{mode-arg} is a @file{.la} file.
 
 @node Uninstall mode
 @section Uninstall mode
@@ -1875,7 +1875,7 @@ default library search path.
 Define the preprocessor symbol @samp{LT_MODULE_EXT} to the extension
 used for runtime loadable modules.  If you use libltdl to open
 modules, then you can simply use the libtool library extension,
-@samp{.la}.
+@file{.la}.
 @end defmac
 
 @defmac LT_SYS_MODULE_PATH
@@ -1959,7 +1959,7 @@ hell_static_LDFLAGS = -static
 @end example
 
 You may use the @samp{program_LDFLAGS} variable to stuff in any flags
-you want to pass to libtool while linking @samp{program} (such as
+you want to pass to libtool while linking @file{program} (such as
 @option{-static} to avoid linking uninstalled shared libtool libraries).
 
 Building a libtool library is almost as trivial@dots{} note the use of
@@ -3264,7 +3264,7 @@ library systems and simple dynamic library systems.
 Some platforms, such as AIX, do not even allow you this
 flexibility.  In order to build a shared library, it must be entirely
 self-contained (that is, have references only to symbols that are found
-in the @samp{.lo} files or the specified @samp{-l} libraries), and you
+in the @file{.lo} files or the specified @samp{-l} libraries), and you
 need to specify the @option{-no-undefined} flag.  By default, libtool
 builds only static libraries on these kinds of platforms.
 
@@ -3480,7 +3480,7 @@ module opened in this way, call @var{func}.
 
 @noindent
 To open all of the modules preloaded into @file{libhell.la}
-(presumably from within the @samp{libhell.a} initialisation code):
+(presumably from within the @file{libhell.a} initialisation code):
 
 @example
 #define preloaded_symbols lt_libhell_LTX_preloaded_symbols
@@ -3609,7 +3609,7 @@ intrinsics_la_LIBADD    = ../libloader/libinterface.la
         cd ../libloader && $(MAKE) $(AM_MAKEFLAGS) libinterface.la
 @end example
 
-@cindex -weak option
+@cindex @option{-weak} option
 For a more complex example, see the sources of @file{libltdl} in the
 Libtool distribution, which is built with the help of the @option{-weak}
 option.
@@ -3625,7 +3625,7 @@ Unfortunately, because of the variation in library names,
 your package needs to determine the correct file to dlopen.
 
 The most straightforward and flexible implementation is to determine the
-name at runtime, by finding the installed @samp{.la} file, and searching
+name at runtime, by finding the installed @file{.la} file, and searching
 it for the following lines:
 
 @example
@@ -3880,8 +3880,8 @@ If the file with the file name @var{filename} cannot be found
 libltdl tries to append the following extensions:
 
 @enumerate 1
-@item the libtool archive extension @samp{.la}
-@item the extension used for native dynamically loadable modules on the host platform, e.g., @samp{.so}, @samp{.sl}, etc.
+@item the libtool archive extension @file{.la}
+@item the extension used for native dynamically loadable modules on the host platform, e.g., @file{.so}, @file{.sl}, etc.
 @end enumerate
 
 This lookup strategy was designed to allow programs that don't
@@ -5315,7 +5315,7 @@ library works properly.
 
 @item link-2.test
 @pindex link-2.test
-This test makes sure that files ending in @samp{.lo} are never linked
+This test makes sure that files ending in @file{.lo} are never linked
 directly into a program file.
 
 @item nomode.test
@@ -5354,7 +5354,7 @@ shell scripts.
 @item suffix.test
 @pindex suffix.test
 When other programming languages are used with libtool (@pxref{Other
-languages}), the source files may end in suffixes other than @samp{.c}.
+languages}), the source files may end in suffixes other than @file{.c}.
 This test validates that libtool can handle suffixes for all the file
 types that it supports, and that it fails when the suffix is invalid.
 
@@ -5871,7 +5871,7 @@ in cases where it is necessary.
 
 On all known systems, building a static library can be accomplished by
 running @kbd{ar cru lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
-where the @samp{.a} file is the output library, and each @samp{.o} file is an
+where the @file{.a} file is the output library, and each @file{.o} file is an
 object file.
 
 On all known systems, if there is a program named @command{ranlib}, then it
