@@ -1,6 +1,6 @@
 ## Makefile.maint -- Makefile rules for libtool maintainers -*-Makefile-*-
 ##
-##   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+##   Copyright (C) 2004, 2005, 2010 Free Software Foundation, Inc.
 ##   Written by Scott James Remnant, 2004
 ##
 ##   This file is part of GNU Libtool.
@@ -39,11 +39,11 @@ TEXI2HTML = texi2html
 .PHONY: git-release
 git-release: version-check prev-tarball check-news fetch git-dist diffs web-manual
 	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
-	lzmaname="$(PACKAGE)-$(VERSION).tar.lzma"; \
+	xzname="$(PACKAGE)-$(VERSION).tar.xz"; \
 	diffname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
 	echo " *** Upload $$tarname, $$tarname.sig,";\
-	echo " *** $$tarname.directive.asc, $$lzmaname,";\
-	echo " *** $$lzmaname.sig, $$lzmaname.directive.asc,";\
+	echo " *** $$tarname.directive.asc, $$xzname,";\
+	echo " *** $$xzname.sig, $$xzname.directive.asc,";\
 	echo " *** $$diffname, $$diffname.sig";\
 	echo " ***  and $$diffname.directive.asc to either"; \
 	echo " *** /incoming/alpha or /incoming/ftp on ftp-upload.gnu.org."
@@ -134,7 +134,7 @@ git-dist: check-news check-commit
 	cd $(srcdir) \
 	  && $(GIT) tag -s "v$(VERSION)"
 ## Generate signatures and directives for FSF ftp-upload:
-	for suffix in gz lzma; do \
+	for suffix in gz xz; do \
 	  ofile="$(PACKAGE)-$(VERSION).tar.$$suffix"; \
 	  $(GPG) --detach-sign $$ofile \
 	  && echo "version: 1.1" > $$ofile.directive \
@@ -151,7 +151,7 @@ prev-tarball:
 		then echo "LASTRELEASE is not set"; exit 1; fi
 	@ofile="$(PACKAGE)-$(LASTRELEASE).tar.gz"; \
 	if test -f $$ofile; then :; \
-	else ofile="$(PACKAGE)-$(LASTRELEASE).tar.lzma"; \
+	else ofile="$(PACKAGE)-$(LASTRELEASE).tar.xz"; \
           if test -f $$ofile; then :; \
           else echo "Cannot make diffs without $$ofile"; exit 1; fi; fi
 
@@ -160,7 +160,7 @@ new-tarball:
 ## Make sure we have the new release tarball in the tree.
 	@ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
 	if test -f $$ofile; then :; \
-	else ofile="$(PACKAGE)-$(VERSION).tar.lzma"; \
+	else ofile="$(PACKAGE)-$(VERSION).tar.xz"; \
           if test -f $$ofile; then :; \
           else echo "Cannot make diffs without $$ofile"; exit 1; fi; fi
 
@@ -179,8 +179,8 @@ diffs: prev-tarball new-tarball
 	ntar="../$(PACKAGE)-$(VERSION).tar"; \
 	test -f "$$otar.gz" && otar="$$otar.gz" && ounpack="gzip"; \
 	test -f "$$ntar.gz" && ntar="$$ntar.gz" && nunpack="gzip"; \
-	test -f "$$otar.lzma" && otar="$$otar.lzma" && ounpack="lzma"; \
-	test -f "$$ntar.lzma" && ntar="$$ntar.lzma" && nunpack="zlma"; \
+	test -f "$$otar.xz" && otar="$$otar.xz" && ounpack="xz"; \
+	test -f "$$ntar.xz" && ntar="$$ntar.xz" && nunpack="xz"; \
 	$$ounpack -c -d "$$otar" | tar xf - \
 	&& $$nunpack -c -d "$$ntar" | tar xf - \
 	&& $(DIFF) $(DIFF_OPTIONS) \

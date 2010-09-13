@@ -602,7 +602,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
   (esp. bug-libtool) for outstanding bug reports also in the list of
   pending moderation requests.
 
-* Make sure you have wget, lzma, and autobuild installed.  aclocal should be
+* Make sure you have wget, xz, and autobuild installed.  aclocal should be
   able to find autobuild.m4; or you can install it into the tree with
          aclocal -I libltdl/m4 --install
 

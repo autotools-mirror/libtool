@@ -1,3 +1,12 @@
+2010-09-14  Eric Blake  <eblake@redhat.com>
+
+	maint: ship .xz, not .lzma
+	* configure.ac (AM_INIT_AUTOMAKE): Prefer better file format.
+	* Makefile.maint (git-release, git-dist, prev-tarball)
+	(new-tarball, diffs): Use correct extension.
+	* HACKING: Update instructions.
+	* .gitignore: Ignore .xz files.
+
 2010-09-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	doc: avoid long lines in input and output, indexing fixes.

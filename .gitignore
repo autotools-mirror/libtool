@@ -43,6 +43,7 @@ libtool
 libtool-*.tar.bz2
 libtool-*.tar.gz
 libtool-*.tar.lzma
+libtool-*.tar.xz
 libtoolize
 libtoolize.in
 manual.html
