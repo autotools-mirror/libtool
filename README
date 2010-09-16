@@ -113,7 +113,51 @@ If you wish to report test failures to the libtool list, you need to
 send the file `tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
 
-4. Version Numbering
+4. Obtaining the Latest Sources
+===============================
+
+* The master libtool repository is stored in git.
+
+  If you are a member of the savannah group for GNU Libtool, a writable
+  copy of the libtool repository can be obtained by:
+
+    git clone <savannah-user>@git.sv.gnu.org:/srv/git/libtool.git
+
+  If you are behind a firewall that blocks the git protocol, you may
+  find it useful to use
+
+    git config --global url.http://git.sv.gnu.org/r/.insteadof \
+      git://git.sv.gnu.org/
+
+  to force git to transparently rewrite all savannah git references to
+  use http.
+
+  If you are not a member of the savannah group for GNU Libtool, you can
+  still fetch a read-only copy with either:
+
+    git clone git://git.sv.gnu.org/libtool.git
+
+  or using the CVS pserver protocol:
+
+    cvs -d:pserver:anonymous@pserver.git.sv.gnu.org:/srv/git/libtool.git \
+        co -d libtool HEAD
+
+* Before you can build from git, you need to bootstrap.  This requires:
+  - Autoconf 2.62 or later
+  - Automake 1.11.1 or later
+  - Help2man 1.29 or later
+  - Xz 4.999.8beta or later (from <http://tukaani.org/xz>)
+  - Texinfo 4.8 or later
+  - Any prerequisites of the above (such as m4, perl, tex)
+
+  Note that these bootstrapping dependencies are much stricter than
+  those required to use a destributed release for your own packages.
+  After installation, GNU Libtool is designed to work either standalone,
+  or optionally with:
+  - Autoconf 2.59 or later
+  - Automake 1.9.6 or later
+
+5. Version Numbering
 ====================
 
 People have complained that they find the version numbering scheme under
@@ -168,7 +212,6 @@ things:
 For more details about version numbers, see:
 
     http://www.gnu.org/software/libtool/contribute.html
-
 -- 
   Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
   Foundation, Inc.

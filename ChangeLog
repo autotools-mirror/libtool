@@ -58,6 +58,15 @@
 	cross), and for the specific case of MSVC on Cygwin it makes the
 	test pass.
 
+2010-09-15  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: improve README instructions for fetching latest version.
+	* README, README-alpha (Obtaining the Latest Sources): New
+	section, describing use of savannah repositories and bootstrap.
+	* README.alpha (Reporting Bugs): Remove git instructions in
+	favour of a reference to the new `Obtaining the Latest Sources'
+	section.
+
 2010-09-14  Eric Blake  <eblake@redhat.com>
 
 	maint: ship .xz, not .lzma
