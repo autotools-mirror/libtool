@@ -1,3 +1,11 @@
+2010-09-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	tests: avoid localization failure due to unstable compiler messages.
+	* tests/testsuite.at (LT_AT_NORMALIZE_COMPILER_OUTPUT):
+	Attempt to normalize temporary file names in error messages.
+	Fixes 'localized compiler messages' test failure on Darwin when
+	creating fat (multi-ABI) libraries.
+
 2010-09-13  Peter Rosin  <peda@lysator.liu.se>
 
 	Prefer $NM @file when the toolchain isn't native to $build.

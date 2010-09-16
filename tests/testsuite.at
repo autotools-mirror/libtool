@@ -240,10 +240,13 @@ esac])
 # - distcc process numbers,
 # - ccache file location,
 # - newline encoding,
-# - location of the libtool script.
+# - location of the libtool script,
+# - error messages involving unstable temporary file names.
 m4_define([LT_AT_NORMALIZE_COMPILER_OUTPUT],
 [_ltbase=`$ECHO "$LIBTOOL" | sed 's,^.*/,,'`
-[sed "/^distcc\[[0-9]*\]/d; /^$_ltbase: compile/d" < $1 > $1.t]
+[sed "/^distcc\[[0-9]*\]/d
+      /^$_ltbase: compile/d
+      s/\(tmp\/\{1,\}cc\)\([a-zA-Z0-9_]\{1,\}\)/\1-normalized-tmpname/g" < $1 > $1.t]
 LT_AT_UNIFY_NL([$1.t], [m4_default([$2], [$1])])[]dnl
 ])
 
