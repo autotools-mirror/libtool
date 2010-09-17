@@ -1,3 +1,10 @@
+2010-09-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	LTO: consistently accept -fwhopr* and -flto* for GCC.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Accept -fwhopr*.
+	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Also match
+	-flto*.
+
 2010-09-17  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Fix order of PATH manipulation in cwrapper and shwrapper
