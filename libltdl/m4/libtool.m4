@@ -6836,7 +6836,7 @@ _LT_EOF
 
 _lt_libdeps_save_CFLAGS=$CFLAGS
 case "$CC $CFLAGS " in #(
-*\ -flto\ *) CFLAGS="$CFLAGS -fno-lto" ;;
+*\ -flto*\ *) CFLAGS="$CFLAGS -fno-lto" ;;
 *\ -fwhopr*\ *) CFLAGS="$CFLAGS -fno-whopr" ;;
 esac
 
