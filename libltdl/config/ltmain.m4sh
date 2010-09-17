@@ -7362,7 +7362,7 @@ EOF
 		  try_normal_branch=no
 		  ;;
 	      esac
-	      if test $try_normal_branch = yes \
+	      if test "$try_normal_branch" = yes \
 		 && { test "$len" -lt "$max_cmd_len" \
 		      || test "$max_cmd_len" -le -1; }
 	      then

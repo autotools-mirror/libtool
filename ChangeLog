@@ -1,3 +1,9 @@
+2010-09-16  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Fix sh.test failure introduced in 72064249
+	* libltdl/config/ltmain.m4sh (func_mode_link): Avoid poor
+	syntax.
+
 2010-09-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	tests: avoid localization failure due to unstable compiler messages.
