@@ -2,8 +2,8 @@
 # sh.test - check for some nonportable or dubious or undesired shell
 #           constructs in shell scripts.
 #
-#   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008 Free Software
-#   Foundation, Inc.
+#   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2010 Free
+#   Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -31,7 +31,7 @@
 status=$EXIT_SUCCESS
 
 # Check for bad binary operators.
-if $EGREP -n -e 'if[ 	]+["'\'']?\\$[^ 	]+[ 	]+(=|-[lg][te]|-eq|-ne)' $scripts; then
+if $EGREP -n -e 'if[ 	]+["'\'']?\$[^ 	]+[ 	]+(=|-[lg][te]|-eq|-ne)' $scripts; then
   echo "use \`if test \$something =' instead of \`if \$something ='"
   status=$EXIT_FAILURE
 fi

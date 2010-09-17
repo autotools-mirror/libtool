@@ -1,5 +1,8 @@
 2010-09-17  Peter Rosin  <peda@lysator.liu.se>
 
+	tests: actually detect missing 'test' in 'if "$foo" = ...'.
+	* tests/sh.test: Remove extra backslash in regex.
+
 	Copy over DLL_EXPORT handling from C to C++ for non-GCC on w32.
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [mingw, cygwin, os2]
 	[pw32, cegcc]: Copy over the DLL_EXPORT handling from C to C++.
