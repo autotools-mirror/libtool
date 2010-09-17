@@ -6822,11 +6822,21 @@ Linker flag (passed through the C compiler) used to generate thread-safe
 libraries.
 @end defvar
 
+@defvar to_host_file_cmd
+If the toolchain is not native to the build platform (e.g.@: if you are using
+MSYS to drive the scripting, but are using the MinGW native Windows compiler)
+this variable describes how to convert file names from the format used by the
+build platform to the format used by host platform.  Normally set to
+@samp{func_convert_file_noop}, libtool will autodetect most cases in which
+other values should be used.  On rare occasions, it may be necessary to override
+the autodetected value (@pxref{Cygwin to MinGW Cross}).
+@end defvar
+
 @defvar to_tool_file_cmd
-If the toolchain is not native to the build system (e.g.@: if you are using
+If the toolchain is not native to the build platform (e.g.@: if you are using
 some Unix to drive the scripting together with a Windows toolchain running
 in Wine) this variable describes how to convert file names from the format
-used by the build system to the format used by the toolchain.  Normally set
+used by the build platform to the format used by the toolchain.  Normally set
 to @samp{func_convert_file_noop}.
 @end defvar
 
