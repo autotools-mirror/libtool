@@ -3873,6 +3873,12 @@ m4_if([$1], [CXX], [
 	  ;;
 	esac
 	;;
+      mingw* | cygwin* | os2* | pw32* | cegcc*)
+	# This hack is so that the source file can tell whether it is being
+	# built for inclusion in a dll (and should export symbols for example).
+	m4_if([$1], [GCJ], [],
+	  [_LT_TAGVAR(lt_prog_compiler_pic, $1)='-DDLL_EXPORT'])
+	;;
       dgux*)
 	case $cc_basename in
 	  ec++*)

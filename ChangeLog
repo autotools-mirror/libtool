@@ -1,3 +1,9 @@
+2010-09-17  Peter Rosin  <peda@lysator.liu.se>
+
+	Copy over DLL_EXPORT handling from C to C++ for non-GCC on w32.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [mingw, cygwin, os2]
+	[pw32, cegcc]: Copy over the DLL_EXPORT handling from C to C++.
+
 2010-09-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	LTO: consistently accept -fwhopr* and -flto* for GCC.
