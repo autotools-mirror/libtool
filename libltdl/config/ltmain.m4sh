@@ -3293,6 +3293,18 @@ func_exec_program ()
 
   if test -f \"\$progdir/\$program\"; then"
 
+	# fixup the dll searchpath if we need to.
+	#
+	# Fix the DLL searchpath if we need to.  Do this before prepending
+	# to shlibpath, because on Windows, both are PATH and uninstalled
+	# libraries must come first.
+	if test -n "$dllsearchpath"; then
+	  $ECHO "\
+    # Add the dll search path components to the executable PATH
+    PATH=$dllsearchpath:\$PATH
+"
+	fi
+
 	# Export our shlibpath_var if we have one.
 	if test "$shlibpath_overrides_runpath" = yes && test -n "$shlibpath_var" && test -n "$temp_rpath"; then
 	  $ECHO "\
@@ -3304,14 +3316,6 @@ func_exec_program ()
     $shlibpath_var=\`\$ECHO \"\$$shlibpath_var\" | $SED 's/::*\$//'\`
 
     export $shlibpath_var
-"
-	fi
-
-	# fixup the dll searchpath if we need to.
-	if test -n "$dllsearchpath"; then
-	  $ECHO "\
-    # Add the dll search path components to the executable PATH
-    PATH=$dllsearchpath:\$PATH
 "
 	fi
 
@@ -3703,8 +3707,12 @@ EOF
 
   lt_setenv ("BIN_SH", "xpg4"); /* for Tru64 */
   lt_setenv ("DUALCASE", "1");  /* for MSK sh */
-  lt_update_lib_path (LIB_PATH_VARNAME, LIB_PATH_VALUE);
+  /* Update the DLL searchpath.  EXE_PATH_VALUE ($dllsearchpath) must
+     be prepended before (that is, appear after) LIB_PATH_VALUE ($temp_rpath)
+     because on Windows, both *_VARNAMEs are PATH but uninstalled
+     libraries must come first. */
   lt_update_exe_path (EXE_PATH_VARNAME, EXE_PATH_VALUE);
+  lt_update_lib_path (LIB_PATH_VARNAME, LIB_PATH_VALUE);
 
   lt_debugprintf (__FILE__, __LINE__, "(main) lt_argv_zero: %s\n",
 		  nonnull (lt_argv_zero));

@@ -1,5 +1,16 @@
 2010-09-17  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
+	Fix order of PATH manipulation in cwrapper and shwrapper
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src:main): Call
+	lt_update_exe_path before lt_update_lib_path, to ensure that the
+	temporary rpath values (which include the OBJDIRs of uninstalled
+	libtool libraries) precede installation and final -rpath directories.
+	(func_emit_wrapper): Prepend $dllsearchpath to PATH before prepending
+	$temp_rpath to $shlibpath_var; similar rationale as above.
+	Reported by Jon Turney <jon.turney@dronecode.org.uk>
+
+2010-09-17  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
 	Document libtool variable to_host_file_cmd.
 	* doc/libtool.texi (libtool script contents:to_host_file_cmd):
 	Document variable.
