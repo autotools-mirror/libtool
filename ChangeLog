@@ -6,6 +6,12 @@
 
 2010-09-18  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: consolidate Introductions of README and README.alpha.
+	* README (Introduction): Rewritten to a more logical order for
+	first time users, incorporating some additional text that was
+	previously only in README.alpha.
+	* README.alpha (Introduction): Adjust to match.
+
 	maint: copy the Version Numbering section into README.alpha.
 	* README.alpha (Version Numbering): No less useful for users
 	of alpha releases.  Copied from README.

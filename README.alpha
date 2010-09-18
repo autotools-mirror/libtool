@@ -4,17 +4,38 @@ GNU Libtool
 1. Introduction
 ===============
 
-This is an alpha testing release of GNU Libtool, please try it on all
-the platforms you have access to.  Using it more or less implicitly
-signs you up to help us find whatever problems you report.
+This is an alpha testing release of GNU Libtool, a generic library
+support script.  Libtool hides the complexity of using shared libraries
+behind a consistent, portable interface.
 
-See the file INSTALL for generic instructions on how to build and install
-Libtool.  Please see the file doc/notes.txt for some platform-specific
-information.  Please note that you need GNU make to build Libtool.
+Libtool's home page is:
 
-If it builds and passes the test suite (`gmake check'), please send
-notification to the libtool mailing list <libtool@gnu.org> with a
-subject line including the string `[PLATFORM]'.
+    http://www.gnu.org/software/libtool/libtool.html
+
+See the file NEWS for a description of recent changes to Libtool.
+
+Please note that you can build GNU Libtool from this directory using a
+vendor Make program as long as this is an official release tarball;
+otherwise you will need GNU Make for sane VPATH support.  See the file
+INSTALL for complete generic instructions on how to build and install
+Libtool.  Also, see the file doc/notes.txt for some platform- specific
+information.
+
+See the info node (libtool)Tested Platforms. (or the file doc/PLATFORMS)
+for a list of platforms that Libtool already supports.
+
+Please try it on all the platforms you have access to:
+
+ * If it builds and passes the test suite (`gmake check'), please send
+   a short note to the libtool mailing list <libtool@gnu.org> with a
+   subject line including the string `[PLATFORM]', and containing the
+   details from the end of `./libtool --help' in the body.
+ * Otherwise, see `Reporting Bugs' below for how to help us fix any
+   problems you discover.
+
+To use Libtool, add the new generic library building commands to your
+Makefile, Makefile.in, or Makefile.am.  See the documentation for
+details.
 
 
 2. Reporting Bugs
