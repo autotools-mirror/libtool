@@ -1,3 +1,9 @@
+2010-09-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	tests: avoid distcheck failure with --disable-ltdl-install.
+	* tests/ltdl-libdir.at (libdir of installed modules): Skip if
+	$LIBLTDL does not exist.
+
 2010-09-17  Peter Rosin  <peda@lysator.liu.se>
 
 	tests: actually detect missing 'test' in 'if "$foo" = ...'.

@@ -93,6 +93,9 @@ main (int argc, const char *argv[])
 : ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
 : ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
 
+# Skip installcheck if --disable-ltdl-install was used.
+AT_CHECK([test -f "$LIBLTDL" || exit 77])
+
 CPPFLAGS="$LTDLINCL $CPPFLAGS"
 LDFLAGS="$LDFLAGS -no-undefined"
 
