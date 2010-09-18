@@ -41,11 +41,37 @@ details.
 2. Reporting Bugs
 =================
 
-If you have any suggestions or bug reports, or you wish to port Libtool
-to a new platform, please send electronic mail to the libtool mailing
-list <libtool@gnu.org> or bug reports to <bug-libtool@gnu.org>.  Be sure
-to send us your information from the end of the help message given by
-`./libtool --help'.
+If this distribution doesn't work for you, before you report the
+problem, at least try upgrading to the latest released version first,
+and see whether the issue persists.  If you feel able, you can also
+check whether the issue has been fixed in the development sources for
+the next release (see `Obtaining the Latest Sources' below).
+
+Once you've determined that your bug is still not fixed in the latest
+version, please send a full report to <bug-libtool@gnu.org>, including:
+
+  1. the information from the end of the help message given by
+     `./libtool --help', and the verbose output of any failed tests
+     (see `The Test Suites' immediately below);
+  2. complete instructions for how to reproduce your bug, along with
+     the results you were expecting, and how they differ from what you
+     actually see;
+  3. a workaround or full fix for the bug, if you have it;
+  4. a copy of `tests/testsuite.log' if you are experiencing failures
+     in the Autotest testsuite.
+  5. new test cases for the testsuite that demonstrate the bug are
+     especially welcome, and will help to ensure that future releases
+     don't reintroduce the problem - if you're not able to write a
+     complete testsuite case, a simple standalone shell script is
+     usually good enough to help us write a test for you.
+
+If you have any other suggestions, or if you wish to port Libtool to a
+new platform, please send email to the mailing list <libtool@gnu.org>.
+
+Please note that if you send us an non-trivial code for inclusion in a
+future release, we may ask you for a copyright assignment (for brief
+details see the `Copyright Assignment' section on our `Contributing'
+webpage <http://www.gnu.org/software/libtool/contribute.html>).
 
 
 3. The Test Suites

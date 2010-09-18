@@ -6,6 +6,11 @@
 
 2010-09-18  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: improve `Reporting Bugs' in README and README.alpha.
+	* README (Reporting Bugs): Rewritten to a more complete and
+	concise guide to providing a good bug report.
+	* README.alpha (Reporting Bugs): Adjust to match.
+
 	maint: consolidate Introductions of README and README.alpha.
 	* README (Introduction): Rewritten to a more logical order for
 	first time users, incorporating some additional text that was
