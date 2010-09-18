@@ -156,6 +156,52 @@ send the file `tests/testsuite.log' to the bug report mailing list,
 4. Obtaining the Latest Sources
 ===============================
 
+* With the exception of ancient releases, all official GNU Libtool
+  releases have a detached GPG signature file.  With this you can verify
+  that the corresponding file (i.e. without the `.sig' suffix) is the
+  same file that was released by the owner of it's GPG key ID.  First,
+  be sure to download both the .sig file and the corresponding release,
+  then run a command like this:
+
+    gpg --verify libtool-x.y.z.tar.gz.sig
+
+  If that command fails because you don't have the required public key,
+  then run this command to import it:
+
+    gpg --keyserver keys.gnupg.net --recv-keys 2983D606
+
+  and then rerun the `gpg --verify' command.
+
+* Official stable releases of GNU Libtool, along with these detached
+  signature files are available from:
+
+    ftp://ftp.gnu.org/gnu/libtool
+
+  To reduce load on the main server, please use one of the mirrors
+  listed at:
+
+    http://www.gnu.org/order/ftp.html
+
+* Alpha quality pre-releases of GNU Libtool, also with detached
+  signature files are available from:
+
+    ftp://alpha.gnu.org/gnu/libtool
+
+  and some of the mirrors listed at:
+
+    http://www.gnu.org/order/ftp.html
+
+* Nightly snapshots of the unreleased development trunk of GNU Libtool
+  are available from:
+
+    http://pogma.com/libtool
+
+  These files do not have signatures, but will allow you to easily
+  determine whether the most recent development code still exhibits any
+  bugs you have discovered, without requiring you to install a complete
+  build environment and the extra tools needed to bootstrap a version
+  control checkout.
+
 * The master libtool repository is stored in git.
 
   If you are a member of the savannah group for GNU Libtool, a writable
@@ -196,6 +242,14 @@ send the file `tests/testsuite.log' to the bug report mailing list,
   or optionally with:
   - Autoconf 2.59 or later
   - Automake 1.9.6 or later
+
+* The `bootstrap' script sets up the source directory for you to hack,
+  though it may take quite some time to run.  If you don't intend to
+  re-run the test suite, you can speed up the `bootstrap' step by an
+  order of magnitude if you call it like this instead:
+
+    reconfdirs='. libltdl' ./bootstrap
+
 
 5. Version Numbering
 ====================
@@ -252,7 +306,7 @@ things:
 For more details about version numbers, see:
 
     http://www.gnu.org/software/libtool/contribute.html
--- 
+--
   Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
   Foundation, Inc.
   Written by Gary V. Vaughan, 2004

@@ -6,6 +6,11 @@
 
 2010-09-18  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: improve README's `Obtaining the Latest Sources'.
+	* README (Obtaining the Latest Sources): Add instructions for
+	obtaining stable, alpha and nightly snapshot tarballs.
+	* README.alpha (Obtaining the Latest Sources): Adjust to match.
+
 	maint: reformat README `The Test Suites' for consistency.
 	* README (The Test Suites): Reformatted for consistency.
 	* README.alpha (The Test Suites): Adjust to match.
