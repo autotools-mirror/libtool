@@ -406,6 +406,10 @@ install-data-local: libltdl/Makefile.in
 ## Distribution. ##
 ## ------------- ##
 
+edit_readme_alpha = $(auxdir)/edit-readme-alpha
+
+EXTRA_DIST += $(edit_readme_alpha)
+
 uninstall-hook:
 	@$(NORMAL_UNINSTALL)
 	@list='$(ltdldatafiles) $(auxfiles)'; for f in $$list; do \
@@ -419,11 +423,10 @@ uninstall-hook:
 	done
 
 dist-hook:
-## Ship README.alpha only in alpha release, but renamed to README
-	@if test -f $(srcdir)/README.alpha; then \
+## Edit the README file for alpha releases.
 	case $(VERSION) in \
-	  *[a-z]) cp -p $(srcdir)/README.alpha $(distdir)/README ;; \
-	esac; else :; fi
+	  *[a-z]) $(SHELL) $(srcdir)/$(edit_readme_alpha) $(distdir)/README ;; \
+	esac
 ## Ensure aclocal has not wrongly picked up old macro definitions.
 	for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
 	  if grep $$macro $(srcdir)/aclocal.m4 $(srcdir)/libltdl/aclocal.m4; then \

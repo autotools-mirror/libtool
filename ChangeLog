@@ -6,6 +6,13 @@
 
 2010-09-18  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: use sed instead of maintaining 2 README files.
+	* README.alpha: Deleted.  It was mostly identical to README.
+	* libltdl/config/edit-readme-alpha: New script to edit the
+	contents of README in the dist tree prior to tarring up.
+	* Makefile.am (dist-hook): Run it before rolling alpha release
+	tarball.
+
 	maint: improve README's `Obtaining the Latest Sources'.
 	* README (Obtaining the Latest Sources): Add instructions for
 	obtaining stable, alpha and nightly snapshot tarballs.
