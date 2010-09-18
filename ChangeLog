@@ -6,6 +6,10 @@
 
 2010-09-18  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: reformat README `The Test Suites' for consistency.
+	* README (The Test Suites): Reformatted for consistency.
+	* README.alpha (The Test Suites): Adjust to match.
+
 	maint: improve `Reporting Bugs' in README and README.alpha.
 	* README (Reporting Bugs): Rewritten to a more complete and
 	concise guide to providing a good bug report.

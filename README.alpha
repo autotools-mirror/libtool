@@ -81,15 +81,15 @@ Libtool comes with two integrated sets of tests to check that your build
 is sane.  You can run both test suites like this, assuming that `gmake'
 refers to GNU make:
 
-  gmake -k check
+    gmake -k check
 
 If you want to run the old testsuite only, do it like this:
 
-  gmake check TESTSUITEFLAGS=-V
+    gmake check TESTSUITEFLAGS=-V
 
 If you want to run the new testsuite only, do it like this:
 
-  gmake check-local
+    gmake check-local
 
 The tests of the old test suite run in groups in the various demo
 subdirectories, so if one of the tests early in a group FAILs, the rest
@@ -102,9 +102,8 @@ To run a test group of the old test suite in isolation (say, you think
 you have fixed a bug, but don't want to rerun the entire suite), you can
 do it like this:
 
-  gmake check TESTS="tests/cdemo-static.test tests/cdemo-static-make.test \
-                     tests/cdemo-static-exec.test" \
-              TESTSUITEFLAGS=-V
+    gmake check TESTSUITEFLAGS=-V TESTS="tests/cdemo-static.test \
+        tests/cdemo-static-make.test tests/cdemo-static-exec.test"
 
 Providing that you have a FAIL from the most recent group from a
 particular demo directory (like the cdemo-static.test group above), you
@@ -120,27 +119,39 @@ the verbose output from all failed tests.
 In order to enable debug shell tracing, you can set VERBOSE=debug when
 running the old test suite.
 
+In the long run, Libtool will move to using only the new, Autotest-
+driven testsuite.  Its usage is documented in:
 
-In the long run, Libtool will move to using only the new,
-Autotest-driven testsuite.  Its usage is documented in
+    info Autoconf 'testsuite Invocation'
 
-  info Autoconf 'testsuite Invocation'
+but simple help may also be obtained through:
 
-but simple help may also be obtained through
-
-  gmake check-local TESTSUITEFLAGS='--help'
+    gmake check-local TESTSUITEFLAGS='--help'
 
 For verbose output, add the flag `-v', for running only a subset of the
 independent tests, merely specify them by number or by keyword, both of
 which are displayed with the `--list' flag.  For example, the `libtool'
 keyword is used for the tests that exercise only this script.  So it is
 possible to test an installed script, possibly from a different Libtool
-release, with
-  gmake check-local TESTSUITEFLAGS="-k libtool LIBTOOL=/path/to/libtool"
+release, with:
+
+    gmake check-local \
+        TESTSUITEFLAGS="-k libtool LIBTOOL=/path/to/libtool"
+
+Some tests, like the one exercising max_cmd_len limits, make use of this
+to invoke the testsuite recursively on a subset of tests.  For these
+tests, the variable INNER_TESTSUITEFLAGS may be used.  It will be
+expanded right after the `-k libtool', without separating whitespace, so
+that further limiting of the recursive set of tests is possible.  For
+example, to run only the template tests within the max_cmd_len, use:
+
+    gmake check-local TESTSUITEFLAGS="-v -x -k max_cmd_len \
+		      INNER_TESTSUITEFLAGS=',template -v -x'"
 
 If you wish to report test failures to the libtool list, you need to
 send the file `tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
+
 
 4. Obtaining the Latest Sources
 ===============================
