@@ -4,6 +4,12 @@
 	* tests/ltdl-libdir.at (libdir of installed modules): Skip if
 	$LIBLTDL does not exist.
 
+2010-09-18  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: copy the Version Numbering section into README.alpha.
+	* README.alpha (Version Numbering): No less useful for users
+	of alpha releases.  Copied from README.
+
 2010-09-17  Peter Rosin  <peda@lysator.liu.se>
 
 	tests: actually detect missing 'test' in 'if "$foo" = ...'.

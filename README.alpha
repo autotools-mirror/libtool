@@ -148,6 +148,62 @@ send the file `tests/testsuite.log' to the bug report mailing list,
   or optionally with:
   - Autoconf 2.59 or later
   - Automake 1.9.6 or later
+
+5. Version Numbering
+====================
+
+People have complained that they find the version numbering scheme under
+which libtool is released confusing... so we've changed it!
+
+It works like this:
+
+	<major-number>.<minor-number>
+
+Releases with a <major-number> less than 1 were not yet feature
+complete.  Releases with a <major-number> of 1 used the old numbering
+scheme that everyone disliked so much.  Releases with a <major-number>
+of 2 us the new scheme described here.  If libtool ever undergoes a
+major rewrite or substantial restructuring, the <major-number> will be
+incremented again.
+
+If we make a patch release to fix bugs in a stable release, we use a
+third number, so:
+
+      <major-number>.<minor-number>.<micro-number>
+
+Version numbers are chosen to make it easy for users to decide two
+things:
+
+  Q: How `developed' is this release?
+  A: The higher the number, the better!
+  Q: How `stable' is this release?
+  A: - If the <minor-number> is even, it is a stable release, `2.0'.
+     - If the <minor-number> is odd, it is a development version with
+       new features compared to the last stable release, `2.1a'.
+     - If it has an `odd'[1] letter after the version number,  it is a
+       snapshot direct from CVS, `2.1a'.
+     - If it has an `even'[1] letter after the version number, it is an
+       alpha quality release, `2.1b'.
+     - If it has three numbers in the version, it is a patch release,
+       fixing bugs from the stable release (with no new features), `2.0.1'.
+
+[1] We always increment the letter in the repository before *and* after
+    making a release tarball.  This means that "odd" letters
+    (a,c,e,g...) only exist in the repository, and "even" letters are
+    used instantaneously for an alpha release.  Since the odd lettered
+    version numbers cover many states of the tree, we also qualify them
+    by adding the cvs version of the ChangeLog:
+
+    $ libtool --version
+    ltmain.sh (GNU libtool 1.1603 2004/09/12 22:02:07) 2.1a
+
+    Copyright (C) 2004  Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+For more details about version numbers, see:
+
+    http://www.gnu.org/software/libtool/contribute.html
 -- 
   Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
   Foundation, Inc.
