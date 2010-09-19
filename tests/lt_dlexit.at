@@ -1,6 +1,6 @@
 # lt_dlexit.at -- test libltdl functionality                  -*- Autotest -*-
 #
-#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008, 2010 Free Software Foundation, Inc.
 #   Written by Dave Brolley & Ralf Wildenhues, 2007
 #
 #   This file is part of GNU Libtool.
@@ -117,7 +117,14 @@ AT_DATA([b1.c],
 [[#ifdef __cplusplus
 extern "C" {
 #endif
-extern int f1 (int), v1;
+#if defined DLL_EXPORT && defined _WIN32 && defined _MSC_VER
+#  define LIBA1_SCOPE extern __declspec (dllimport)
+#endif
+#if !defined LIBA1_SCOPE
+#  define LIBA1_SCOPE extern
+#endif
+LIBA1_SCOPE int f1 (int);
+LIBA1_SCOPE v1;
 int fb1 (int x) { return f1 (v1) + x - 3; }
 int vb1 = 3;
 #ifdef __cplusplus
