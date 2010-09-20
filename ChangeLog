@@ -1,4 +1,13 @@
 2010-09-20  Peter Rosin  <peda@lysator.liu.se>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	libltdl: Make sure preloaded symbols are declared extern "C".
+	* libltdl/ltdl.h (LTDL_SET_PRELOADED_SYMBOLS): Move the
+	declaration of lt__PROGRAM__LTX_preloaded_symbols to global
+	scope and make sure it has "C" linkage.  Makes exceptions.at
+	succeed on MSVC.
+
+2010-09-20  Peter Rosin  <peda@lysator.liu.se>
 
 	tests: __declspec (dll{ex,im}port) in tests/exceptions.at
 	* tests/exceptions.at (common.h, module.h, lib.h) [w32]: Use
