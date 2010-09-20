@@ -66,9 +66,8 @@ CPPFLAGS="$LTDLINCL $CPPFLAGS"
 # the regex).  However, in this test, none of these situations apply,
 # so we don't directly address it.  Otherwise, the correct mechanism
 # would be to avoid all of those flags, and instead explicitly decorate
-# all symbols with appropriate __attribute__ ((dllexport)) or
-# __attribute__ ((dllimport)) flags when building the DLLs and the
-# clients.
+# all symbols with appropriate __declspec (dllexport) or
+# __declspec (dllimport) flags when building the DLLs and the clients.
 #
 # For more information, see these two threads:
 #   http://lists.gnu.org/archive/html/bug-libtool/2010-06/msg00069.html
@@ -84,9 +83,9 @@ AT_DATA([common.h],
 #if defined(__CYGWIN__) || defined(_WIN32)
 # if defined(DLL_EXPORT) || defined(USING_COMMON_DLL)
 #  if defined(LIBTOOL_TEST_IN_COMMON)
-#   define COMMON_IMPEXP __attribute__ ((dllexport))
+#   define COMMON_IMPEXP __declspec (dllexport)
 #  else
-#   define COMMON_IMPEXP __attribute__ ((dllimport))
+#   define COMMON_IMPEXP __declspec (dllimport)
 #  endif
 # else
 #  define COMMON_IMPEXP
@@ -128,9 +127,9 @@ AT_DATA([module.h],
 #if defined(__CYGWIN__) || defined(_WIN32)
 # if defined(DLL_EXPORT) || defined(USING_MODULE_DLL)
 #  if defined(LIBTOOL_TEST_IN_MODULE)
-#   define MODULE_IMPEXP __attribute__ ((dllexport))
+#   define MODULE_IMPEXP __declspec (dllexport)
 #  else
-#   define MODULE_IMPEXP __attribute__ ((dllimport))
+#   define MODULE_IMPEXP __declspec (dllimport)
 #  endif
 # else
 #  define MODULE_IMPEXP
@@ -174,9 +173,9 @@ AT_DATA([lib.h],
 #if defined(__CYGWIN__) || defined(_WIN32)
 # if defined(DLL_EXPORT) || defined(USING_LIB_DLL)
 #  if defined(LIBTOOL_TEST_IN_LIB)
-#   define LIB_IMPEXP __attribute__ ((dllexport))
+#   define LIB_IMPEXP __declspec (dllexport)
 #  else
-#   define LIB_IMPEXP __attribute__ ((dllimport))
+#   define LIB_IMPEXP __declspec (dllimport)
 #  endif
 # else
 #  define LIB_IMPEXP
