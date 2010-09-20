@@ -138,8 +138,7 @@ AM_INIT_AUTOMAKE([1.11.1 gnu subdir-objects dist-xz color-tests parallel-tests])
 # string for this build.
 : ${autobuild_mode=default}
 AB_VERSION="AC_PACKAGE_VERSION ($TIMESTAMP)"
-m4_ifdef([AB_INIT],
-	 [AB_INIT([$autobuild_mode])])
+AB_INIT([$autobuild_mode])
 
 
 dnl We use m4sh to generate libtool's portable shell scripts

@@ -1,3 +1,10 @@
+2010-09-20  Eric Blake  <eblake@redhat.com>
+
+	build: ship autobuild.m4, to reduce bootstrap requirement
+	* libltdl/m4/.gitignore: Drop autobuild.m4.
+	* libltdl/m4/autobuild.m4: New file, copied from autobuild.
+	* configure.ac (AB_INIT): Unconditionally call it.
+
 2010-09-20  Peter Rosin  <peda@lysator.liu.se>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
