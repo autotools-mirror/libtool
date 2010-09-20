@@ -1,5 +1,8 @@
 2010-09-20  Eric Blake  <eblake@redhat.com>
 
+	maint: drop autobuild requirement
+	* HACKING: Update.
+
 	build: ship autobuild.m4, to reduce bootstrap requirement
 	* libltdl/m4/.gitignore: Drop autobuild.m4.
 	* libltdl/m4/autobuild.m4: New file, copied from autobuild.
