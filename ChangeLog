@@ -1,3 +1,13 @@
+2010-09-21  Peter Rosin  <peda@lysator.liu.se>
+
+	msvc: eliminate spaces in the library search path.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [mingw, cygwin]
+	<cl*, sys_lib_search_path_spec>: The LIB path variable telling
+	where MSVC looks for libraries is likely to contain directory
+	names with spaces.  Convert those directory names to the short
+	8.3 DOS form (i.e. without spaces) when storing them in
+	sys_lib_search_path_spec, as that is a space separated variable.
+
 2010-09-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Revert to per-language libpath computation on AIX.
