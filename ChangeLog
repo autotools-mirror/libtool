@@ -1,3 +1,12 @@
+2010-09-21  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: edit-readme-alpha shouldn't try to re-edit during dist.
+	* libltdl/config/edit-readme-alpha: If README is non-writable
+	assume that it is being run from distcheck, and skip the edit
+	with a warning (to help diagnose cases where the heuristic is
+	not correct).  However, if README has already been edited to
+	the alpha text, quietly skip without an error message.
+
 2010-09-20  Eric Blake  <eblake@redhat.com>
 
 	maint: drop autobuild requirement

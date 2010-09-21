@@ -55,10 +55,23 @@ func_fatal_error ()
 
 
 for file in "$@"; do
+  # Assume that read-only README indicates that we are running inside
+  # the latter part of a `make distcheck'.
+  test -w $file || {
+    echo "$progname: not editing non-writeable \`$file' (distcheck?)" >&2
+    continue
+  }
+
   # Make sure the paragraph we are matching has not been edited since
   # this script was written.
-  matched=`sed -n -e '/^This is GNU Libtool,/,/^interface.$/p' $file \
-      |wc -l |sed 's|^ *||'`
+  matched=`sed -n -e '/^This is GNU Libtool,/,/^interface\.$/p' $file \
+           |wc -l |sed 's|^ *||'`
+
+  # Unless, of course, it was edited by this script already.
+  test 3 = "$matched" \
+      || matched=`sed -n -e '/^This is an alpha testing release/,/behind a consistent, portable interface\.$/p' $file \
+                  |wc -l |sed 's|^ *||'`
+
   test 3 = "$matched" \
       || func_fatal_error "$file format has changed, please fix \`$0'"
 
