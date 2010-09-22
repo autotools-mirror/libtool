@@ -1,5 +1,8 @@
 2010-09-22  Gary V. Vaughan  <gary@gnu.org>
 
+	manual: web-manual index.html clashes with @node Index.
+	* doc/libtool.texi (Index): Renamed to `Combined Index'.
+
 	tests: ISO C++ forbids declaration of 'v1' with no type.
 	* tests/lt_dlexit.at (lt_dlexit unloading libs): Added an
 	explicit int type to declaration of 'v1' to prevent compilation

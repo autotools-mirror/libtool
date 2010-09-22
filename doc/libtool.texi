@@ -101,7 +101,7 @@ GNU Libtool.
 * Troubleshooting::             When libtool doesn't work as advertised.
 * Maintaining::                 Information used by the libtool maintainer.
 * GNU Free Documentation License:: License for this manual.
-* Index::                       Full index.
+* Combined Index::              Full index.
 
 @detailmenu
  --- The Detailed Node Listing ---
@@ -6926,8 +6926,8 @@ order to test new changes without having to rerun @code{configure}.
 @include fdl.texi
 
 @page
-@node Index
-@unnumbered Index
+@node Combined Index
+@unnumbered Combined Index
 
 @printindex cp
 
