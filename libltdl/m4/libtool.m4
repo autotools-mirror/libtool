@@ -3081,6 +3081,11 @@ case $reload_flag in
 esac
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
 case $host_os in
+  cygwin* | mingw* | pw32* | cegcc*)
+    if test "$GCC" != yes; then
+      reload_cmds=false
+    fi
+    ;;
   darwin*)
     if test "$GCC" = yes; then
       reload_cmds='$LTCC $LTCFLAGS -nostdlib ${wl}-r -o $output$reload_objs'

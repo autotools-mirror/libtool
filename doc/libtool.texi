@@ -6767,7 +6767,8 @@ replaced by the toolchain format of @code{@@OUTPUT@@}.  Normally disabled
 
 @defvar reload_cmds
 @defvarx reload_flag
-Commands to create a reloadable object.
+Commands to create a reloadable object.  Set @code{reload_cmds} to
+@samp{false} on systems that cannot create reloadable objects.
 @end defvar
 
 @defvar runpath_var

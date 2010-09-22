@@ -1,3 +1,14 @@
+2010-09-22  Peter Rosin  <peda@lysator.liu.se>
+
+	tests: reloadable objects do not work on MSVC, SKIP test.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	[cygwin, mingw, pw32, cegcc] <cl*, reload_cmds>: Indicate that
+	reloadable objects do not work.
+	* tests/duplicate_conv.at: Skip last test if reloadable
+	objects do not work.
+	* doc/libtool.texi (libtool script contents) <reload_cmds>:
+	Document how to indicate that reloadable objects do not work.
+
 2010-09-21  Peter Rosin  <peda@lysator.liu.se>
 
 	msvc: eliminate spaces in the library search path.
