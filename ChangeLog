@@ -1,5 +1,10 @@
 2010-09-22  Gary V. Vaughan  <gary@gnu.org>
 
+	Post-release administrivia.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	numbers to 2.4.1a.
+	* NEWS: Add header line for next release.
+
 	Release 2.4.
 	* libltdl/Makefile.inc (LTDL_VERSION_INFO): We've added the
 	static libprefix interface, so new version-info is C+1:0:R+1.
