@@ -124,7 +124,7 @@ extern "C" {
 #  define LIBA1_SCOPE extern
 #endif
 LIBA1_SCOPE int f1 (int);
-LIBA1_SCOPE v1;
+LIBA1_SCOPE int v1;
 int fb1 (int x) { return f1 (v1) + x - 3; }
 int vb1 = 3;
 #ifdef __cplusplus
