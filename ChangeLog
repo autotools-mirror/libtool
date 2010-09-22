@@ -1,5 +1,12 @@
 2010-09-22  Gary V. Vaughan  <gary@gnu.org>
 
+	Release 2.4.
+	* libltdl/Makefile.inc (LTDL_VERSION_INFO): We've added the
+	static libprefix interface, so new version-info is C+1:0:R+1.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	numbers.
+	* NEWS: Update version number.
+
 	manual: web-manual index.html clashes with @node Index.
 	* doc/libtool.texi (Index): Renamed to `Combined Index'.
 
