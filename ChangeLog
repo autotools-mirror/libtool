@@ -1,3 +1,12 @@
+2010-09-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix regression in command-line length computation.
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN): Use `env echo' rather
+	than possibly-undefined func_fallback_echo, to ensure we fork
+	and exec for this test.
+	* NEWS: Update.
+	Regression introduced in v2.2.6-39-g9c3d4d8.
+
 2010-09-22  Gary V. Vaughan  <gary@gnu.org>
 
 	Post-release administrivia.

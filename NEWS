@@ -4,7 +4,8 @@ New in 2.4.2 2010-12-??: git version 2.4.1a, Libtool team:
 
 * Bug fixes:
 
-  - None yet!
+  - The generic approximation of the command line length limit (when getconf is
+    not available) works again.  Regression introduced in v2.2.6-39-g9c3d4d8.
 
 New in 2.4 2010-09-22: git version 2.2.11a, Libtool team:
 
