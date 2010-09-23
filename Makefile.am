@@ -118,7 +118,6 @@ bootstrap_edit  = sed \
 ## We used to do this with a 'stamp-vcl' file, but non-gmake builds
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
-CLEANFILES += $(m4dir)/ltversion.tmp
 $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
@@ -129,13 +128,11 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 	  case $$prereq in *ChangeLog | *configure.ac);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  T=$(srcdir)/$(m4dir)/ltversion.tmp; \
-	  rm -f $$T; \
+	  rm -f $@; \
 	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
 	  echo $(bootstrap_edit) $(ltversion_in) \> $@; \
-	  $(bootstrap_edit) $(ltversion_in) > $$T; \
-	  chmod a-w $$T; \
-	  mv -f $$T $@; \
+	  $(bootstrap_edit) $(ltversion_in) > $@; \
+	  chmod a-w $@; \
 	fi
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
@@ -148,7 +145,6 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-CLEANFILES += $(srcdir)/$(auxdir)/ltmain.tmp
 $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
@@ -159,21 +155,15 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  T="$(srcdir)/$(auxdir)/ltmain.tmp"; \
-	  rm -f "$$T" "$@"; \
+	  rm -f $@; \
 	  echo "$(LT_M4SH) $(ltmain.m4sh) | $(bootstrap_edit) > $@"; \
 	  $(LT_M4SH) $(ltmain_m4sh) \
-	      | $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' > $$T; \
-	  chmod a-w "$$T"; \
-	  mv -f "$$T" "$@"; \
+	      | $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' > $@; \
+	  chmod a-w $@; \
 	fi
 
-CLEANFILES += $(srcdir)/libtoolize.tmp
 $(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
-	T=$(srcdir)/libtoolize.tmp; \
-	rm -f $@ $$T; \
-	$(LT_M4SH) $(libtoolize_m4sh) | $(bootstrap_edit) > $$T; \
-	mv $$T $@
+	$(LT_M4SH) $(libtoolize_m4sh) | $(bootstrap_edit) > $@
 
 lt_Makefile_am	= $(srcdir)/libltdl/Makefile.am
 lt_Makefile_in	= $(srcdir)/libltdl/Makefile.in
@@ -237,14 +227,11 @@ configure_edit = sed \
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
 
-CLEANFILES += libtoolize.tmp
 libtoolize: $(libtoolize_in) $(top_builddir)/config.status
-	T=libtoolize.tmp; \
-	rm -f $$T $@; \
-	$(configure_edit) $(libtoolize_in) > $$T; \
-	chmod a+x $$T; \
-	chmod a-w $$T; \
-	mv -f $$T $@
+	rm -f $@
+	$(configure_edit) $(libtoolize_in) > $@
+	chmod a+x $@
+	chmod a-w $@
 
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
@@ -290,7 +277,6 @@ EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
 $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
-CLEANFILES += $(srcdir)/libltdl/Makefile.tmp
 $(stamp_mk): $(lt_Makefile_in)
 	T=$(srcdir)/libltdl/Makefile.tmp; \
 	sed -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
@@ -562,11 +548,8 @@ INSTALLCHECK_ENVIRONMENT = \
 	LIBLTDL="$(libdir)/libltdl.la" \
 	tst_aclocaldir="$(aclocaldir)"
 
-CLEANFILES += $(testsuite).tmp
 $(testsuite): $(package_m4) $(TESTSUITE_AT) Makefile.am
-	T=$(testsuite).tmp; \
-	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $$T; \
-	mv -f $$T $@
+	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $@
 
 $(package_m4): $(configure_ac) Makefile.am
 	{ \
@@ -924,10 +907,8 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 # regenerated since the source tree can be read-only.
 check-recursive: tests/defs
 tests/defs: $(defs_in)
-	T=tests/defs.tmp; \
-	rm -f $$T $@; \
-	$(configure_edit) $(defs_in) > $$T; \
-	mv -f $$T $@
+	rm -f $@
+	$(configure_edit) $(defs_in) > $@
 
 $(defs_in): $(defs_m4sh) $(auxdir)/general.m4sh Makefile.am
 	rm -f $@
