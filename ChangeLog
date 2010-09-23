@@ -1,5 +1,18 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	build: don't hardcode repeated long paths in Makefile rules.
+	According to the DRY principle, scattering several copies of
+	something across a file or project leads to pain.  Let's not
+	do that!
+	* Makefile.am (Makefile_in, Makefile_inc, defs_in, defs_m4sh),
+	(libtoolize_in, ltmain_m4sh, ltversion_in): New variables to
+	hold the location of important files and targets.
+	(EXTRA_DIST): Add the distributed ones by variable.
+	(libtoolize, libltdl/Makefile.am, libltdl/m4/ltversion.m4)
+	(libltdl/config/ltmain.sh, libltdl/stamp-mk, tests/defs)
+	(tests/defs.in): Use the new variables to reduce noise and
+	repetition.
+
 	build: make better use of automatic variables in `Makefile.am'.
 	* Makefile.am (libtoolize, libtoolize.in, libltdl/Makefile.am)
 	(libltdl/config/mkstamp, libltdl/config/ltmain.m4sh)
