@@ -57,7 +57,7 @@ timestamp = set dummy `$(MKSTAMP) $(srcdir)`; shift; \
 	  *) TIMESTAMP="" ;; \
 	esac
 
-rebuild = rebuild=:; $(timestamp); correctver=$$1
+rebuild = rebuild=:; $(timestamp); revision=$$1
 
 
 # ---------- #
@@ -80,13 +80,13 @@ CLEANFILES     += libtool libtoolize libtoolize.tmp \
 ## changed by configure running on the build machine.
 bootstrap_edit  = sed \
 		  -e 's,@MACRO_VERSION\@,$(VERSION),g' \
-		  -e "s,@MACRO_REVISION\@,$$correctver,g" \
+		  -e "s,@MACRO_REVISION\@,$$revision,g" \
 		  -e "s,@MACRO_SERIAL\@,$$serial,g" \
 		  -e 's,@PACKAGE\@,$(PACKAGE),g' \
 		  -e 's,@PACKAGE_BUGREPORT\@,$(PACKAGE_BUGREPORT),g' \
 		  -e 's,@PACKAGE_URL\@,$(PACKAGE_URL),g' \
 		  -e 's,@PACKAGE_NAME\@,$(PACKAGE_NAME),g' \
-		  -e "s,@package_revision\@,$$correctver,g" \
+		  -e "s,@package_revision\@,$$revision,g" \
 		  -e 's,@PACKAGE_STRING\@,$(PACKAGE_NAME) $(VERSION),g' \
 		  -e 's,@PACKAGE_TARNAME\@,$(PACKAGE),g' \
 		  -e 's,@PACKAGE_VERSION\@,$(VERSION),g' \
@@ -107,9 +107,8 @@ EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
 $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	@target='$(srcdir)/$(m4dir)/ltversion.m4'; $(rebuild); \
 	if test -f "$$target"; then \
-	  set dummy `sed -n '/^# serial /p' "$$target"`; shift; \
-	  actualver=1.$$3; \
-	  test "$$actualver" = "$$correctver" && rebuild=false; \
+	  eval `sed -n '/^macro_revision=/p' $(srcdir)/$(m4dir)/ltversion.m4`; \
+	  test "$$macro_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
 	  case $$prereq in *ChangeLog | *configure.ac);; *) rebuild=:;; esac; \
@@ -117,7 +116,7 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	if $$rebuild; then \
 	  cd $(srcdir); \
 	  rm -f $(m4dir)/ltversion.tmp; \
-	  serial=`echo "$$correctver" | sed 's,^1[.],,g'`; \
+	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(m4dir)/ltversion.in \> $(srcdir)/$(m4dir)/ltversion.m4; \
 	  $(bootstrap_edit) \
@@ -141,8 +140,7 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	@target='$(srcdir)/$(auxdir)/ltmain.sh'; $(rebuild); \
 	if test -f "$$target"; then \
 	  eval `sed -n '/^package_revision=/p' "$$target"`; \
-	  actualver=$$package_revision; \
-	  test "$$actualver" = "$$correctver" && rebuild=false; \
+	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
@@ -247,8 +245,8 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh ChangeLog
 	@target=libtool; $(rebuild); \
 	if test -f "$$target"; then \
-	  set dummy `./$$target --version | sed 1q`; actualver="$$5"; \
-	  test "$$actualver" = "$$correctver" && rebuild=false; \
+	  eval `sed -n '/^package_revision=/p' "$$target"`; \
+	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
