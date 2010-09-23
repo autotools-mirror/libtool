@@ -107,9 +107,9 @@ bootstrap_edit  = sed \
 EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
 CLEANFILES += $(m4dir)/ltversion.tmp
 $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
-	@target='$(srcdir)/$(m4dir)/ltversion.m4'; $(rebuild); \
-	if test -f "$$target"; then \
-	  eval `sed -n '/^macro_revision=/p' $(srcdir)/$(m4dir)/ltversion.m4`; \
+	@$(rebuild); \
+	if test -f "$@"; then \
+	  eval `sed -n '/^macro_revision=/p' $@`; \
 	  test "$$macro_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
@@ -119,12 +119,10 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	  T=$(srcdir)/$(m4dir)/ltversion.tmp; \
 	  rm -f $$T; \
 	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
-	  echo $(bootstrap_edit) \
-	    $(srcdir)/$(m4dir)/ltversion.in \> $(srcdir)/$(m4dir)/ltversion.m4; \
-	  $(bootstrap_edit) \
-		  $(srcdir)/$(m4dir)/ltversion.in > $$T; \
+	  echo $(bootstrap_edit) $(srcdir)/$(m4dir)/ltversion.in \> $@; \
+	  $(bootstrap_edit) $(srcdir)/$(m4dir)/ltversion.in > $$T; \
 	  chmod a-w $$T; \
-	  mv -f $$T $(srcdir)/$(m4dir)/ltversion.m4; \
+	  mv -f $$T $@; \
 	fi
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
@@ -140,9 +138,9 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 EXTRA_DIST += $(srcdir)/$(auxdir)/ltmain.sh
 CLEANFILES += $(srcdir)/$(auxdir)/ltmain.tmp
 $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac ChangeLog
-	@target='$(srcdir)/$(auxdir)/ltmain.sh'; $(rebuild); \
-	if test -f "$$target"; then \
-	  eval `sed -n '/^package_revision=/p' "$$target"`; \
+	@$(rebuild); \
+	if test -f "$@"; then \
+	  eval `sed -n '/^package_revision=/p' "$@"`; \
 	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
@@ -150,19 +148,17 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	done; \
 	if $$rebuild; then \
 	  T=$(srcdir)/$(auxdir)/ltmain.tmp; \
-	  rm -f $(srcdir)/$(auxdir)/ltmain.in $$T \
-	    $(srcdir)/$(auxdir)/ltmain.sh; \
+	  rm -f $(srcdir)/$(auxdir)/ltmain.in $$T $@; \
 	  echo $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
 	    \> $(srcdir)/$(auxdir)/ltmain.in; \
 	  $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
 	    > $(srcdir)/$(auxdir)/ltmain.in; \
-	  echo $(bootstrap_edit) \
-	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
+	  echo $(bootstrap_edit) $(srcdir)/$(auxdir)/ltmain.in "> $@"; \
 	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' \
-		$(srcdir)/$(auxdir)/ltmain.in > $$T; \
+	    $(srcdir)/$(auxdir)/ltmain.in > $$T; \
 	  rm -f $(srcdir)/$(auxdir)/ltmain.in; \
 	  chmod a-w $$T; \
-	  mv -f $$T $(srcdir)/$(auxdir)/ltmain.sh; \
+	  mv -f $$T $@; \
 	fi
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
@@ -171,14 +167,14 @@ EXTRA_DIST += libtoolize.m4sh
 CLEANFILES += $(srcdir)/libtoolize.tmp
 $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 	T=$(srcdir)/libtoolize.tmp; \
-	rm -f $(srcdir)/libtoolize.in $$T; \
+	rm -f $@ $$T; \
 	$(LT_M4SH) $(srcdir)/libtoolize.m4sh > $$T; \
-	$(bootstrap_edit) $$T > libtoolize.in; \
+	$(bootstrap_edit) $$T > $@; \
 	rm -f $$T
 
 $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
-	in=$(srcdir)/libltdl/Makefile.inc; out=$(srcdir)/libltdl/Makefile.am; \
-	rm -f $$out; \
+	in=$(srcdir)/libltdl/Makefile.inc; \
+	rm -f $@
 	( $(SED) -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' $$in; \
 	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	  echo 'AUTOMAKE_OPTIONS = foreign'; \
@@ -198,8 +194,8 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	       -e 's,\$$(libltdl_,$$(,' \
 	) | \
 	$(SED) -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
-	       -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > $$out;
-	chmod a-w $(srcdir)/libltdl/Makefile.am
+	       -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > $@
+	chmod a-w $@
 
 
 ## Unfortunately, all this bogeyness means that we have to manually
@@ -237,28 +233,27 @@ bin_SCRIPTS = libtoolize libtool
 CLEANFILES += libtoolize.tmp
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	T=libtoolize.tmp; \
-	rm -f $$T libtoolize; \
-	$(configure_edit) \
-		$(srcdir)/libtoolize.in > $$T; \
+	rm -f $$T $@; \
+	$(configure_edit) $(srcdir)/libtoolize.in > $$T; \
 	chmod a+x $$T; \
 	chmod a-w $$T; \
-	mv -f $$T libtoolize
+	mv -f $$T $@
 
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
 # check the version numbers from the build rule when necessary.
 libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh ChangeLog
-	@target=libtool; $(rebuild); \
-	if test -f "$$target"; then \
-	  eval `sed -n '/^package_revision=/p' "$$target"`; \
+	@$(rebuild); \
+	if test -f "$@"; then \
+	  eval `sed -n '/^package_revision=/p' "$@"`; \
 	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  echo $(SHELL) ./config.status $$target; \
-	  cd $(top_builddir) && $(SHELL) ./config.status $$target; \
+	  echo $(SHELL) ./config.status $@; \
+	  cd $(top_builddir) && $(SHELL) ./config.status $@; \
 	fi
 
 .PHONY: configure-subdirs
@@ -328,7 +323,7 @@ DISTCLEANFILES	       += libtool.dvi
 all-local: $(srcdir)/doc/notes.txt
 
 $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
-	$(MAKEINFO) -P $(srcdir)/doc --no-headers $(MAKEINFOFLAGS) -o $(srcdir)/doc/notes.txt $(srcdir)/doc/notes.texi
+	$(MAKEINFO) -P $(srcdir)/doc --no-headers $(MAKEINFOFLAGS) -o $(srcdir)/doc/notes.txt $@
 
 dist_man1_MANS		= $(srcdir)/doc/libtool.1 $(srcdir)/doc/libtoolize.1
 MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
@@ -554,7 +549,7 @@ CLEANFILES += $(srcdir)/$(TESTSUITE).tmp
 $(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
 	T=$(srcdir)/$(TESTSUITE).tmp; \
 	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $$T; \
-	mv -f $$T $(srcdir)/tests/testsuite
+	mv -f $$T $@
 
 $(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
 	{ \
@@ -565,7 +560,7 @@ $(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
 	  echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])'; \
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
 	  echo 'm4_define([AT_PACKAGE_URL],       [@PACKAGE_URL@])'; \
-	} > $(srcdir)/tests/package.m4
+	} > $@
 
 tests/atconfig: $(top_builddir)/config.status
 	$(SHELL) ./config.status tests/atconfig
@@ -910,15 +905,15 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 check-recursive: tests/defs
 tests/defs: $(srcdir)/tests/defs.in
 	T=tests/defs.tmp; \
-	rm -f $$T tests/defs; \
+	rm -f $$T $@; \
 	$(configure_edit) $(srcdir)/tests/defs.in > $$T; \
-	mv -f $$T tests/defs
+	mv -f $$T $@
 
 # Use `$(srcdir)/tests' for the benefit of non-GNU makes: this is
 # how defs.in appears in our dependencies.
 $(srcdir)/tests/defs.in: $(auxdir)/general.m4sh tests/defs.m4sh Makefile.am
-	rm -f $(srcdir)/tests/defs.in; \
-	$(LT_M4SH) $(srcdir)/tests/defs.m4sh > $(srcdir)/tests/defs.in
+	rm -f $@
+	$(LT_M4SH) $(srcdir)/tests/defs.m4sh > $@
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:
