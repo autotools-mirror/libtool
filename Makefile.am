@@ -84,7 +84,6 @@ CLEANFILES     += libtool libtoolize
 configure_ac	= $(srcdir)/configure.ac
 libtoolize_in	= $(srcdir)/libtoolize.in
 libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
-ltmain_in	= $(srcdir)/$(auxdir)/ltmain.in
 ltmain_m4sh	= $(srcdir)/$(auxdir)/ltmain.m4sh
 ltmain_sh	= $(srcdir)/$(auxdir)/ltmain.sh
 ltversion_in	= $(srcdir)/$(m4dir)/ltversion.in
@@ -144,7 +143,7 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
-##           you must `touch $(srcdir)/$(auxdir)/ltmain.in' from the
+##           you must `touch $(srcdir)/$(auxdir)/ltmain.m4sh' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
@@ -160,24 +159,21 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  T=$(srcdir)/$(auxdir)/ltmain.tmp; \
-	  rm -f $(ltmain_sh) $$T $@; \
-	  echo $(LT_M4SH) $(ltmain_m4sh) > $(ltmain_in); \
-	  $(LT_M4SH) $(ltmain_m4sh) > $(ltmain_in); \
-	  echo $(bootstrap_edit) $(ltmain_in) "> $@"; \
-	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' $(ltmain_in) > $$T; \
-	  rm -f $(ltmain_in); \
-	  chmod a-w $$T; \
-	  mv -f $$T $@; \
+	  T="$(srcdir)/$(auxdir)/ltmain.tmp"; \
+	  rm -f "$$T" "$@"; \
+	  echo "$(LT_M4SH) $(ltmain.m4sh) | $(bootstrap_edit) > $@"; \
+	  $(LT_M4SH) $(ltmain_m4sh) \
+	      | $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' > $$T; \
+	  chmod a-w "$$T"; \
+	  mv -f "$$T" "$@"; \
 	fi
 
 CLEANFILES += $(srcdir)/libtoolize.tmp
 $(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
 	T=$(srcdir)/libtoolize.tmp; \
 	rm -f $@ $$T; \
-	$(LT_M4SH) $(libtoolize_m4sh) > $$T; \
-	$(bootstrap_edit) $$T > $@; \
-	rm -f $$T
+	$(LT_M4SH) $(libtoolize_m4sh) | $(bootstrap_edit) > $$T; \
+	mv $$T $@
 
 lt_Makefile_am	= $(srcdir)/libltdl/Makefile.am
 lt_Makefile_in	= $(srcdir)/libltdl/Makefile.in

@@ -1,5 +1,10 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	build: eliminate `ltmain.in' and `libtoolize.in' intermediate files.
+	* Makefile.am (libltdl/config/ltmain.sh, libtoolize.in): Pipe
+	the output of `$(LT_M4SH)' directly into `$(bootstrap_edit)' to
+	avoid use of superfluous intermediate file.
+
 	build: don't hardcode repeated long paths in Makefile rules.
 	According to the DRY principle, scattering several copies of
 	something across a file or project leads to pain.  Let's not
