@@ -114,15 +114,14 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	  case $$prereq in *ChangeLog | *configure.ac);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  cd $(srcdir); \
-	  rm -f $(m4dir)/ltversion.tmp; \
+	  rm -f $(srcdir)/$(m4dir)/ltversion.tmp; \
 	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(m4dir)/ltversion.in \> $(srcdir)/$(m4dir)/ltversion.m4; \
 	  $(bootstrap_edit) \
-		  $(m4dir)/ltversion.in > $(m4dir)/ltversion.tmp; \
-	  chmod a-w $(m4dir)/ltversion.tmp; \
-	  mv -f $(m4dir)/ltversion.tmp $(m4dir)/ltversion.m4; \
+		  $(srcdir)/$(m4dir)/ltversion.in > $(srcdir)/$(m4dir)/ltversion.tmp; \
+	  chmod a-w $(srcdir)/$(m4dir)/ltversion.tmp; \
+	  mv -f $(srcdir)/$(m4dir)/ltversion.tmp $(srcdir)/$(m4dir)/ltversion.m4; \
 	fi
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
@@ -146,13 +145,12 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  cd $(srcdir); \
-	  rm -f $(auxdir)/ltmain.in $(auxdir)/ltmain.tmp \
-	    $(auxdir)/ltmain.sh; \
-	  echo $(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
-	    \> $(auxdir)/ltmain.in; \
-	  $(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
-	    > $(auxdir)/ltmain.in; \
+	  rm -f $(srcdir)/$(auxdir)/ltmain.in $(srcdir)/$(auxdir)/ltmain.tmp \
+	    $(srcdir)/$(auxdir)/ltmain.sh; \
+	  echo $(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/$(auxdir)/ltmain.m4sh \
+	    \> $(srcdir)/$(auxdir)/ltmain.in; \
+	  $(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/$(auxdir)/ltmain.m4sh \
+	    > $(srcdir)/$(auxdir)/ltmain.in; \
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
 	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' \
@@ -166,15 +164,13 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 # how libtoolize.in appears in our dependencies.
 EXTRA_DIST += libtoolize.m4sh
 $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
-	cd $(srcdir); \
-	rm -f libtoolize.in libtoolize.tmp; \
-	$(M4SH) -B $(auxdir) libtoolize.m4sh > libtoolize.tmp; \
-	$(bootstrap_edit) libtoolize.tmp > libtoolize.in; \
+	rm -f $(srcdir)/libtoolize.in $(srcdir)/libtoolize.tmp
+	$(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/libtoolize.m4sh > $(srcdir)/libtoolize.tmp
+	$(bootstrap_edit) libtoolize.tmp > libtoolize.in
 	rm -f libtoolize.tmp
 
 $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
-	cd $(srcdir); \
-	in=libltdl/Makefile.inc; out=libltdl/Makefile.am; \
+	in=$(srcdir)/libltdl/Makefile.inc; out=$(srcdir)/libltdl/Makefile.am; \
 	rm -f $$out; \
 	( $(SED) -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' $$in; \
 	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
@@ -278,11 +274,10 @@ $(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am \
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
 $(srcdir)/libltdl/stamp-mk: $(srcdir)/libltdl/Makefile.in
-	cd $(srcdir)/libltdl && \
 	sed -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
 	    -e 's,config/mkinstalldirs,,' \
-	    < Makefile.in > Makefile.inT && \
-	mv -f Makefile.inT Makefile.in
+	    < $(srcdir)/libltdl/Makefile.in > $(srcdir)/libltdl/Makefile.inT && \
+	mv -f $(srcdir)/libltdl/Makefile.inT $(srcdir)/libltdl/Makefile.in
 	echo stamp > $@
 
 sub_aclocal_m4_deps = \
@@ -322,8 +317,7 @@ DISTCLEANFILES	       += libtool.dvi
 all-local: $(srcdir)/doc/notes.txt
 
 $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
-	cd $(srcdir)/doc && \
-	  $(MAKEINFO) --no-headers $(MAKEINFOFLAGS) -o notes.txt notes.texi
+	$(MAKEINFO) -P $(srcdir)/doc --no-headers $(MAKEINFOFLAGS) -o $(srcdir)/doc/notes.txt $(srcdir)/doc/notes.texi
 
 dist_man1_MANS		= $(srcdir)/doc/libtool.1 $(srcdir)/doc/libtoolize.1
 MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
@@ -543,9 +537,8 @@ INSTALLCHECK_ENVIRONMENT = \
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how `testsuite' appears in our dependencies.
 $(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
-	cd $(srcdir)/tests && \
-	$(AUTOTEST) `echo $(TESTSUITE_AT) | sed 's,tests/,,g'` -o testsuite.tmp && \
-	mv -f testsuite.tmp testsuite
+	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $(srcdir)/tests/testsuite.tmp
+	mv -f $(srcdir)/tests/testsuite.tmp $(srcdir)/tests/testsuite
 
 $(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
 	{ \
@@ -907,9 +900,8 @@ tests/defs: $(srcdir)/tests/defs.in
 # Use `$(srcdir)/tests' for the benefit of non-GNU makes: this is
 # how defs.in appears in our dependencies.
 $(srcdir)/tests/defs.in: $(auxdir)/general.m4sh tests/defs.m4sh Makefile.am
-	cd $(srcdir); \
-	rm -f tests/defs.in; \
-	$(M4SH) -B $(auxdir) tests/defs.m4sh > tests/defs.in
+	rm -f $(srcdir)/tests/defs.in; \
+	$(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/tests/defs.m4sh > $(srcdir)/tests/defs.in
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:
