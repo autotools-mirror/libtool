@@ -67,14 +67,31 @@ rebuild = rebuild=:; $(timestamp); revision=$$1
 # ---------- #
 
 sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
-EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
-		  $(auxdir)/mkstamp $(sh_files) \
+EXTRA_DIST     += bootstrap $(auxdir)/mkstamp $(sh_files) \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
 		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 \
 		  ChangeLog.2005 ChangeLog.2006 ChangeLog.2007 \
 		  ChangeLog.2008 ChangeLog.2009 ChangeLog.2010
 CLEANFILES     += libtool libtoolize
+
+## If a file is named several times below, and especially if it
+## is a distributed file created during Libtool bootstrap, we
+## put it in a variable in accordance with the DRY principle.
+## Use `$(srcdir)' for the benefit of non-GNU makes: referring
+## to them by their variable makes sure they appear as targets
+## and dependencies with `$(srcdir)' consistently.
+configure_ac	= $(srcdir)/configure.ac
+libtoolize_in	= $(srcdir)/libtoolize.in
+libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
+ltmain_in	= $(srcdir)/$(auxdir)/ltmain.in
+ltmain_m4sh	= $(srcdir)/$(auxdir)/ltmain.m4sh
+ltmain_sh	= $(srcdir)/$(auxdir)/ltmain.sh
+ltversion_in	= $(srcdir)/$(m4dir)/ltversion.in
+ltversion_m4	= $(srcdir)/$(m4dir)/ltversion.m4
+
+EXTRA_DIST     += $(libtoolize_in) $(libtoolize_m4sh) $(ltmain_m4sh) \
+		  $(ltmain_sh) $(ltversion_in) $(ltversion_m4)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -102,11 +119,8 @@ bootstrap_edit  = sed \
 ## We used to do this with a 'stamp-vcl' file, but non-gmake builds
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
-## Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
-## how ltversion.m4 appears in our dependencies.
-EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
 CLEANFILES += $(m4dir)/ltversion.tmp
-$(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
+$(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
 	  eval `sed -n '/^macro_revision=/p' $@`; \
@@ -119,8 +133,8 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	  T=$(srcdir)/$(m4dir)/ltversion.tmp; \
 	  rm -f $$T; \
 	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
-	  echo $(bootstrap_edit) $(srcdir)/$(m4dir)/ltversion.in \> $@; \
-	  $(bootstrap_edit) $(srcdir)/$(m4dir)/ltversion.in > $$T; \
+	  echo $(bootstrap_edit) $(ltversion_in) \> $@; \
+	  $(bootstrap_edit) $(ltversion_in) > $$T; \
 	  chmod a-w $$T; \
 	  mv -f $$T $@; \
 	fi
@@ -135,9 +149,8 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-EXTRA_DIST += $(srcdir)/$(auxdir)/ltmain.sh
 CLEANFILES += $(srcdir)/$(auxdir)/ltmain.tmp
-$(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac ChangeLog
+$(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
 	  eval `sed -n '/^package_revision=/p' "$@"`; \
@@ -148,34 +161,31 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	done; \
 	if $$rebuild; then \
 	  T=$(srcdir)/$(auxdir)/ltmain.tmp; \
-	  rm -f $(srcdir)/$(auxdir)/ltmain.in $$T $@; \
-	  echo $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
-	    \> $(srcdir)/$(auxdir)/ltmain.in; \
-	  $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
-	    > $(srcdir)/$(auxdir)/ltmain.in; \
-	  echo $(bootstrap_edit) $(srcdir)/$(auxdir)/ltmain.in "> $@"; \
-	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' \
-	    $(srcdir)/$(auxdir)/ltmain.in > $$T; \
-	  rm -f $(srcdir)/$(auxdir)/ltmain.in; \
+	  rm -f $(ltmain_sh) $$T $@; \
+	  echo $(LT_M4SH) $(ltmain_m4sh) > $(ltmain_in); \
+	  $(LT_M4SH) $(ltmain_m4sh) > $(ltmain_in); \
+	  echo $(bootstrap_edit) $(ltmain_in) "> $@"; \
+	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' $(ltmain_in) > $$T; \
+	  rm -f $(ltmain_in); \
 	  chmod a-w $$T; \
 	  mv -f $$T $@; \
 	fi
 
-# Use `$(srcdir)' for the benefit of non-GNU makes: this is
-# how libtoolize.in appears in our dependencies.
-EXTRA_DIST += libtoolize.m4sh
 CLEANFILES += $(srcdir)/libtoolize.tmp
-$(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
+$(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
 	T=$(srcdir)/libtoolize.tmp; \
 	rm -f $@ $$T; \
-	$(LT_M4SH) $(srcdir)/libtoolize.m4sh > $$T; \
+	$(LT_M4SH) $(libtoolize_m4sh) > $$T; \
 	$(bootstrap_edit) $$T > $@; \
 	rm -f $$T
 
-$(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
-	in=$(srcdir)/libltdl/Makefile.inc; \
+lt_Makefile_am	= $(srcdir)/libltdl/Makefile.am
+lt_Makefile_in	= $(srcdir)/libltdl/Makefile.in
+lt_Makefile_inc	= $(srcdir)/libltdl/Makefile.inc
+
+$(lt_Makefile_am): $(lt_Makefile_inc)
 	rm -f $@
-	( $(SED) -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' $$in; \
+	( $(SED) -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' $(lt_Makefile_inc); \
 	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	  echo 'AUTOMAKE_OPTIONS = foreign'; \
 	  echo 'AM_CPPFLAGS ='; \
@@ -189,7 +199,7 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	  echo 'CLEANFILES ='; \
 	  echo 'MOSTLYCLEANFILES ='; \
 	}; \
-	$(SED) -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' $$in | \
+	$(SED) -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' $(lt_Makefile_inc) | \
 	$(SED) -e 's,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,' \
 	       -e 's,\$$(libltdl_,$$(,' \
 	) | \
@@ -200,10 +210,11 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 
 ## Unfortunately, all this bogeyness means that we have to manually
 ## keep the generated files in libltdl up to date.
-LTDL_BOOTSTRAP_DEPS = $(srcdir)/libltdl/aclocal.m4 \
-	$(srcdir)/libltdl/stamp-mk \
-	$(srcdir)/libltdl/configure \
-	$(srcdir)/libltdl/config-h.in
+LTDL_BOOTSTRAP_DEPS = \
+	$(stamp_mk) \
+	$(lt_aclocal_m4) \
+	$(lt_config_h_in) \
+	$(lt_configure)
 
 all-local: $(LTDL_BOOTSTRAP_DEPS)
 
@@ -231,10 +242,10 @@ configure_edit = sed \
 bin_SCRIPTS = libtoolize libtool
 
 CLEANFILES += libtoolize.tmp
-libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
+libtoolize: $(libtoolize_in) $(top_builddir)/config.status
 	T=libtoolize.tmp; \
 	rm -f $$T $@; \
-	$(configure_edit) $(srcdir)/libtoolize.in > $$T; \
+	$(configure_edit) $(libtoolize_in) > $$T; \
 	chmod a+x $$T; \
 	chmod a-w $$T; \
 	mv -f $$T $@
@@ -242,7 +253,7 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
 # check the version numbers from the build rule when necessary.
-libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh ChangeLog
+libtool: $(ltmain_sh) $(top_builddir)/config.status ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
 	  eval `sed -n '/^package_revision=/p' "$@"`; \
@@ -271,40 +282,46 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 include libltdl/Makefile.inc
 
-EXTRA_DIST += $(srcdir)/libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
+lt_aclocal_m4	= $(srcdir)/libltdl/aclocal.m4
+lt_config_h_in	= $(srcdir)/libltdl/config-h.in
+lt_configure	= $(srcdir)/libltdl/configure
+stamp_mk	= $(srcdir)/libltdl/stamp-mk
 
-$(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am \
-	    $(srcdir)/libltdl/aclocal.m4 
+lt_obsolete_m4	= $(srcdir)/$(m4dir)/lt~obsolete.m4
+
+EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
+
+$(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
 CLEANFILES += $(srcdir)/libltdl/Makefile.tmp
-$(srcdir)/libltdl/stamp-mk: $(srcdir)/libltdl/Makefile.in
+$(stamp_mk): $(lt_Makefile_in)
 	T=$(srcdir)/libltdl/Makefile.tmp; \
 	sed -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
 	    -e 's,config/mkinstalldirs,,' \
-	    < $(srcdir)/libltdl/Makefile.in > $$T && \
-	mv -f $$T $(srcdir)/libltdl/Makefile.in
+	    < $(lt_Makefile_in) > $$T && \
+	mv -f $$T $(lt_Makefile_in)
 	echo stamp > $@
 
-sub_aclocal_m4_deps = \
-	$(srcdir)/libltdl/configure.ac \
+lt_aclocal_m4_deps = \
+	$(lt_obsolete_m4) \
+	$(ltversion_m4) \
 	$(m4dir)/libtool.m4 \
 	$(m4dir)/ltoptions.m4 \
 	$(m4dir)/ltdl.m4 \
-	$(srcdir)/$(m4dir)/ltversion.m4 \
 	$(m4dir)/ltsugar.m4 \
 	$(m4dir)/argz.m4 \
-	$(m4dir)/lt~obsolete.m4
+	$(srcdir)/libltdl/configure.ac
 
-sub_configure_deps = $(sub_aclocal_m4_deps) $(srcdir)/libltdl/aclocal.m4
+lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
 
-$(srcdir)/libltdl/aclocal.m4: $(sub_aclocal_m4_deps)
+$(lt_aclocal_m4): $(lt_aclocal_m4_deps)
 	cd $(srcdir)/libltdl && $(ACLOCAL) -I m4
 
-$(srcdir)/libltdl/configure: $(sub_configure_deps)
+$(lt_configure): $(lt_configure_deps)
 	cd $(srcdir)/libltdl && $(AUTOCONF)
 
-$(srcdir)/libltdl/config-h.in: $(sub_configure_deps)
+$(lt_config_h_in): $(lt_configure_deps)
 	cd $(srcdir)/libltdl && $(AUTOHEADER)
 	touch $@
 
@@ -313,26 +330,32 @@ $(srcdir)/libltdl/config-h.in: $(sub_configure_deps)
 ## Documentation. ##
 ## -------------- ##
 
+libtool_1		= $(srcdir)/doc/libtool.1
+libtoolize_1		= $(srcdir)/doc/libtoolize.1
+notes_texi		= $(srcdir)/doc/notes.texi
+notes_txt		= $(srcdir)/doc/notes.txt
+
 info_TEXINFOS		= doc/libtool.texi
-doc_libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi doc/notes.texi
-EXTRA_DIST	       += $(srcdir)/doc/notes.txt
+doc_libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi $(notes_texi)
+EXTRA_DIST	       += $(notes_txt)
 ## Workaround for a texinfo bug described here:
 ## http://thread.gmane.org/gmane.comp.tex.texinfo.bugs/3930
 DISTCLEANFILES	       += libtool.dvi
 
-all-local: $(srcdir)/doc/notes.txt
+all-local: $(notes_txt)
 
-$(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
-	$(MAKEINFO) -P $(srcdir)/doc --no-headers $(MAKEINFOFLAGS) -o $(srcdir)/doc/notes.txt $@
+$(notes_txt): $(notes_texi)
+	$(MAKEINFO) -P $(srcdir)/doc --no-headers $(MAKEINFOFLAGS) \
+	    -o $@ $(notes_texi)
 
-dist_man1_MANS		= $(srcdir)/doc/libtool.1 $(srcdir)/doc/libtoolize.1
+dist_man1_MANS		= $(libtool_1) $(libtoolize_1)
 MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
 update_mans = \
   PATH=".$(PATH_SEPARATOR)$$PATH"; export PATH; \
   $(HELP2MAN) --output=$@
-$(srcdir)/doc/libtool.1: $(srcdir)/$(auxdir)/ltmain.sh
+$(libtool_1): $(ltmain_sh)
 	$(update_mans) --help-option=--help-all libtool
-$(srcdir)/doc/libtoolize.1: $(srcdir)/libtoolize.in
+$(libtoolize_1): $(libtoolize_in)
 	$(update_mans) libtoolize
 
 
@@ -375,7 +398,7 @@ ltdldatafiles	= libltdl/COPYING.LIB \
 		  libltdl/lt__strl.c \
 		  $(libltdl_libltdl_la_SOURCES)
 
-install-data-local: libltdl/Makefile.in
+install-data-local: $(lt_Makefile_in)
 	@$(NORMAL_INSTALL)
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)/*
@@ -411,7 +434,7 @@ install-data-local: libltdl/Makefile.in
 ## Distribution. ##
 ## ------------- ##
 
-edit_readme_alpha = $(auxdir)/edit-readme-alpha
+edit_readme_alpha = $(srcdir)/$(auxdir)/edit-readme-alpha
 
 EXTRA_DIST += $(edit_readme_alpha)
 
@@ -430,11 +453,11 @@ uninstall-hook:
 dist-hook:
 ## Edit the README file for alpha releases.
 	case $(VERSION) in \
-	  *[a-z]) $(SHELL) $(srcdir)/$(edit_readme_alpha) $(distdir)/README ;; \
+	  *[a-z]) $(SHELL) $(edit_readme_alpha) $(distdir)/README ;; \
 	esac
 ## Ensure aclocal has not wrongly picked up old macro definitions.
 	for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
-	  if grep $$macro $(srcdir)/aclocal.m4 $(srcdir)/libltdl/aclocal.m4; then \
+	  if grep $$macro $(srcdir)/aclocal.m4 $(lt_aclocal_m4); then \
 	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
 	    exit 1; \
 	  else :; fi; \
@@ -513,7 +536,10 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/deplibs-mingw.at \
 		  tests/sysroot.at
 
-EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package.m4
+package_m4	= $(srcdir)/tests/package.m4
+testsuite	= $(srcdir)/$(TESTSUITE)
+
+EXTRA_DIST     += $(testsuite) $(TESTSUITE_AT) $(package_m4)
 
 # Be sure to reexport important environment variables:
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
@@ -543,15 +569,13 @@ INSTALLCHECK_ENVIRONMENT = \
 	LIBLTDL="$(libdir)/libltdl.la" \
 	tst_aclocaldir="$(aclocaldir)"
 
-# Use `$(srcdir)' for the benefit of non-GNU makes: this is
-# how `testsuite' appears in our dependencies.
-CLEANFILES += $(srcdir)/$(TESTSUITE).tmp
-$(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
-	T=$(srcdir)/$(TESTSUITE).tmp; \
+CLEANFILES += $(testsuite).tmp
+$(testsuite): $(package_m4) $(TESTSUITE_AT) Makefile.am
+	T=$(testsuite).tmp; \
 	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $$T; \
 	mv -f $$T $@
 
-$(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
+$(package_m4): $(configure_ac) Makefile.am
 	{ \
 	  echo '# Signature of the current package.'; \
 	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
@@ -895,7 +919,10 @@ NONINTERACTIVE_TESTS += $(FC_TESTS)
 endif
 TESTS = $(NONINTERACTIVE_TESTS) $(INTERACTIVE_TESTS)
 
-EXTRA_DIST     += $(srcdir)/tests/defs.in tests/defs.m4sh \
+defs_in		= $(srcdir)/tests/defs.in
+defs_m4sh	= $(srcdir)/tests/defs.m4sh
+
+EXTRA_DIST     += $(defs_in) $(defs_m4sh) \
 		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS) \
 		  $(INTERACTIVE_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
@@ -903,17 +930,15 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 # The defs script shouldn't be recreated whenever the Makefile is
 # regenerated since the source tree can be read-only.
 check-recursive: tests/defs
-tests/defs: $(srcdir)/tests/defs.in
+tests/defs: $(defs_in)
 	T=tests/defs.tmp; \
 	rm -f $$T $@; \
-	$(configure_edit) $(srcdir)/tests/defs.in > $$T; \
+	$(configure_edit) $(defs_in) > $$T; \
 	mv -f $$T $@
 
-# Use `$(srcdir)/tests' for the benefit of non-GNU makes: this is
-# how defs.in appears in our dependencies.
-$(srcdir)/tests/defs.in: $(auxdir)/general.m4sh tests/defs.m4sh Makefile.am
+$(defs_in): $(defs_m4sh) $(auxdir)/general.m4sh Makefile.am
 	rm -f $@
-	$(LT_M4SH) $(srcdir)/tests/defs.m4sh > $@
+	$(LT_M4SH) $(defs_m4sh) > $@
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:
