@@ -74,8 +74,7 @@ EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
 		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 \
 		  ChangeLog.2005 ChangeLog.2006 ChangeLog.2007 \
 		  ChangeLog.2008 ChangeLog.2009
-CLEANFILES     += libtool libtoolize libtoolize.tmp \
-		  $(auxdir)/ltmain.tmp $(m4dir)/ltversion.tmp
+CLEANFILES     += libtool libtoolize
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -106,6 +105,7 @@ bootstrap_edit  = sed \
 ## Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
 ## how ltversion.m4 appears in our dependencies.
 EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
+CLEANFILES += $(m4dir)/ltversion.tmp
 $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	@target='$(srcdir)/$(m4dir)/ltversion.m4'; $(rebuild); \
 	if test -f "$$target"; then \
@@ -116,14 +116,15 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	  case $$prereq in *ChangeLog | *configure.ac);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  rm -f $(srcdir)/$(m4dir)/ltversion.tmp; \
+	  T=$(srcdir)/$(m4dir)/ltversion.tmp; \
+	  rm -f $$T; \
 	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(m4dir)/ltversion.in \> $(srcdir)/$(m4dir)/ltversion.m4; \
 	  $(bootstrap_edit) \
-		  $(srcdir)/$(m4dir)/ltversion.in > $(srcdir)/$(m4dir)/ltversion.tmp; \
-	  chmod a-w $(srcdir)/$(m4dir)/ltversion.tmp; \
-	  mv -f $(srcdir)/$(m4dir)/ltversion.tmp $(srcdir)/$(m4dir)/ltversion.m4; \
+		  $(srcdir)/$(m4dir)/ltversion.in > $$T; \
+	  chmod a-w $$T; \
+	  mv -f $$T $(srcdir)/$(m4dir)/ltversion.m4; \
 	fi
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
@@ -137,6 +138,7 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += $(srcdir)/$(auxdir)/ltmain.sh
+CLEANFILES += $(srcdir)/$(auxdir)/ltmain.tmp
 $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac ChangeLog
 	@target='$(srcdir)/$(auxdir)/ltmain.sh'; $(rebuild); \
 	if test -f "$$target"; then \
@@ -147,7 +149,8 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  rm -f $(srcdir)/$(auxdir)/ltmain.in $(srcdir)/$(auxdir)/ltmain.tmp \
+	  T=$(srcdir)/$(auxdir)/ltmain.tmp; \
+	  rm -f $(srcdir)/$(auxdir)/ltmain.in $$T \
 	    $(srcdir)/$(auxdir)/ltmain.sh; \
 	  echo $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
 	    \> $(srcdir)/$(auxdir)/ltmain.in; \
@@ -156,20 +159,22 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
 	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' \
-	    $(auxdir)/ltmain.in > $(auxdir)/ltmain.tmp; \
-	  rm -f $(auxdir)/ltmain.in; \
-	  chmod a-w $(auxdir)/ltmain.tmp; \
-	  mv -f $(auxdir)/ltmain.tmp $(auxdir)/ltmain.sh; \
+		$(srcdir)/$(auxdir)/ltmain.in > $$T; \
+	  rm -f $(srcdir)/$(auxdir)/ltmain.in; \
+	  chmod a-w $$T; \
+	  mv -f $$T $(srcdir)/$(auxdir)/ltmain.sh; \
 	fi
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how libtoolize.in appears in our dependencies.
 EXTRA_DIST += libtoolize.m4sh
+CLEANFILES += $(srcdir)/libtoolize.tmp
 $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
-	rm -f $(srcdir)/libtoolize.in $(srcdir)/libtoolize.tmp
-	$(LT_M4SH) $(srcdir)/libtoolize.m4sh > $(srcdir)/libtoolize.tmp
-	$(bootstrap_edit) libtoolize.tmp > libtoolize.in
-	rm -f libtoolize.tmp
+	T=$(srcdir)/libtoolize.tmp; \
+	rm -f $(srcdir)/libtoolize.in $$T; \
+	$(LT_M4SH) $(srcdir)/libtoolize.m4sh > $$T; \
+	$(bootstrap_edit) $$T > libtoolize.in; \
+	rm -f $$T
 
 $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	in=$(srcdir)/libltdl/Makefile.inc; out=$(srcdir)/libltdl/Makefile.am; \
@@ -229,13 +234,15 @@ configure_edit = sed \
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
 
+CLEANFILES += libtoolize.tmp
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
-	rm -f libtoolize.tmp libtoolize
+	T=libtoolize.tmp; \
+	rm -f $$T libtoolize; \
 	$(configure_edit) \
-		$(srcdir)/libtoolize.in > libtoolize.tmp
-	chmod a+x libtoolize.tmp
-	chmod a-w libtoolize.tmp
-	mv -f libtoolize.tmp libtoolize
+		$(srcdir)/libtoolize.in > $$T; \
+	chmod a+x $$T; \
+	chmod a-w $$T; \
+	mv -f $$T libtoolize
 
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
@@ -275,11 +282,13 @@ $(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am \
 	    $(srcdir)/libltdl/aclocal.m4 
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
+CLEANFILES += $(srcdir)/libltdl/Makefile.tmp
 $(srcdir)/libltdl/stamp-mk: $(srcdir)/libltdl/Makefile.in
+	T=$(srcdir)/libltdl/Makefile.tmp; \
 	sed -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
 	    -e 's,config/mkinstalldirs,,' \
-	    < $(srcdir)/libltdl/Makefile.in > $(srcdir)/libltdl/Makefile.inT && \
-	mv -f $(srcdir)/libltdl/Makefile.inT $(srcdir)/libltdl/Makefile.in
+	    < $(srcdir)/libltdl/Makefile.in > $$T && \
+	mv -f $$T $(srcdir)/libltdl/Makefile.in
 	echo stamp > $@
 
 sub_aclocal_m4_deps = \
@@ -538,9 +547,11 @@ INSTALLCHECK_ENVIRONMENT = \
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how `testsuite' appears in our dependencies.
+CLEANFILES += $(srcdir)/$(TESTSUITE).tmp
 $(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
-	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $(srcdir)/tests/testsuite.tmp
-	mv -f $(srcdir)/tests/testsuite.tmp $(srcdir)/tests/testsuite
+	T=$(srcdir)/$(TESTSUITE).tmp; \
+	$(AUTOTEST) -I $(srcdir)/tests $(TESTSUITE_AT) -o $$T; \
+	mv -f $$T $(srcdir)/tests/testsuite
 
 $(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
 	{ \
@@ -895,9 +906,10 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 # regenerated since the source tree can be read-only.
 check-recursive: tests/defs
 tests/defs: $(srcdir)/tests/defs.in
-	rm -f tests/defs.tmp tests/defs; \
-	$(configure_edit) $(srcdir)/tests/defs.in > tests/defs.tmp; \
-	mv -f tests/defs.tmp tests/defs
+	T=tests/defs.tmp; \
+	rm -f $$T tests/defs; \
+	$(configure_edit) $(srcdir)/tests/defs.in > $$T; \
+	mv -f $$T tests/defs
 
 # Use `$(srcdir)/tests' for the benefit of non-GNU makes: this is
 # how defs.in appears in our dependencies.
