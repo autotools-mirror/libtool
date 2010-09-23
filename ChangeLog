@@ -1,5 +1,10 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	build: factor Makefile.am `m4sh' invocations to LT_M4SH.
+	* Makefile.am (LT_M4SH): Now that all directories are listed as
+	fully qualified paths, the search path argument to M4SH is always
+	the same, so factor it out into a variable.  Adjust all callers.
+
 	build: avoid unnecessary directory changes in Makefile rules.
 	* Makefile.am (doc/notes.txt, libltdl/m4/ltversion.m4,
 	(libltdl/config/ltmain.m4sh, libtoolize.in, libltdl/Makefile.am)

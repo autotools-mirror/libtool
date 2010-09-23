@@ -46,6 +46,8 @@ EXTRA_LTLIBRARIES	=
 auxdir			= libltdl/config
 m4dir			= libltdl/m4
 
+LT_M4SH			= $(M4SH) -B $(srcdir)/$(auxdir)
+
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
@@ -147,9 +149,9 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	if $$rebuild; then \
 	  rm -f $(srcdir)/$(auxdir)/ltmain.in $(srcdir)/$(auxdir)/ltmain.tmp \
 	    $(srcdir)/$(auxdir)/ltmain.sh; \
-	  echo $(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/$(auxdir)/ltmain.m4sh \
+	  echo $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
 	    \> $(srcdir)/$(auxdir)/ltmain.in; \
-	  $(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/$(auxdir)/ltmain.m4sh \
+	  $(LT_M4SH) $(srcdir)/$(auxdir)/ltmain.m4sh \
 	    > $(srcdir)/$(auxdir)/ltmain.in; \
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
@@ -165,7 +167,7 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 EXTRA_DIST += libtoolize.m4sh
 $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 	rm -f $(srcdir)/libtoolize.in $(srcdir)/libtoolize.tmp
-	$(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/libtoolize.m4sh > $(srcdir)/libtoolize.tmp
+	$(LT_M4SH) $(srcdir)/libtoolize.m4sh > $(srcdir)/libtoolize.tmp
 	$(bootstrap_edit) libtoolize.tmp > libtoolize.in
 	rm -f libtoolize.tmp
 
@@ -901,7 +903,7 @@ tests/defs: $(srcdir)/tests/defs.in
 # how defs.in appears in our dependencies.
 $(srcdir)/tests/defs.in: $(auxdir)/general.m4sh tests/defs.m4sh Makefile.am
 	rm -f $(srcdir)/tests/defs.in; \
-	$(M4SH) -B $(srcdir)/$(auxdir) $(srcdir)/tests/defs.m4sh > $(srcdir)/tests/defs.in
+	$(LT_M4SH) $(srcdir)/tests/defs.m4sh > $(srcdir)/tests/defs.in
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:
