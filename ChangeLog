@@ -1,5 +1,21 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: don't leak developer GREP, SED etc into distribution file.
+	* Makefile.am: Having rearranged the file, now apply the actual
+	changes to follow-up.
+	(edit): Split into two parts...
+	(bootstrap_edit): ...substitutions that should happen at bootstrap
+	time...
+	(configure_edit): ...and substitutions that should not happen until
+	configure time.
+	* Makefile.am (libltdl/m4/ltversion.m4, libltdl/config/ltmain.sh)
+	(libtoolize.in, tests/package.m4): Use bootstrap_edit.
+	(libtoolize, tests/defs): Use configure_edit.
+	* HACKING (Release Procedure): Remove the note to workaround the
+	bug fixed by this changeset.
+	* NEWS (Bug fixes): Mention that this bug is now fixed.
+	Reported by Joerg Sonnenberger.
+
 	maint: rearrange Makefile.am in preparation for a follow-up patch.
 	* Makefile.am (Libtool scripts.): Move this section below the
 	`Bootstrap.' section...
