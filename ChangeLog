@@ -1,5 +1,11 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	build: make better use of automatic variables in `Makefile.am'.
+	* Makefile.am (libtoolize, libtoolize.in, libltdl/Makefile.am)
+	(libltdl/config/mkstamp, libltdl/config/ltmain.m4sh)
+	(libltdl/m4/ltversion.m4, tests/testsuite, tests/defs.in):
+	Make better use of automatic variables.
+
 	build: name temporary files in `Makefile.am' consistently.
 	Sadly, we still have to jump through hoops for MICROS~1's very
 	old, very broken 8.3 naming convention, so we have to be careful
