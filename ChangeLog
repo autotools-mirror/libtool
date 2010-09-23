@@ -1,5 +1,23 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	build: name temporary files in `Makefile.am' consistently.
+	Sadly, we still have to jump through hoops for MICROS~1's very
+	old, very broken 8.3 naming convention, so we have to be careful
+	to be unique in the first 8 letters, and not to use two periods
+	in a filename, otherwise we could use the much more elegent
+	`temporary files use "$@T"' idiom:
+	* Makefile.am (libltdl/m4/ltversion.m4): Rename temporary file
+	to `ltversion.tmp'.
+	(libltdl/config/ltmain.sh): Rename temporary file to
+	`libltdl/config/ltmain.tmp'.
+	(libtoolize): Rename temporary file to `libtoolize.tmp'.
+	(tests/defs): Rename temporary file to `tests/defs.tmp'
+	(tests/testsuite): Rename temporary file to `tests/testsuite.tmp'.
+	(CLEANFILES): Append temporary files as we create rules that
+	use them.
+
+2010-08-31  Gary V. Vaughan  <gary@gnu.org>
+
 	build: factor Makefile.am `m4sh' invocations to LT_M4SH.
 	* Makefile.am (LT_M4SH): Now that all directories are listed as
 	fully qualified paths, the search path argument to M4SH is always
