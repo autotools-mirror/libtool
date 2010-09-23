@@ -1,5 +1,12 @@
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
+	build: eliminate superfluous temporary files from `Makefile.am'.
+	* Makefile.am (CLEANFILES): Remove temporary file entries.
+	(libtoolize.in, libltdl/config/ltmain.sh, libltdl/m4/ltversion.m4)
+	(tests/defs, tests/testsuite): Factor away temporary files.
+
+2010-08-31  Gary V. Vaughan  <gary@gnu.org>
+
 	build: eliminate `ltmain.in' and `libtoolize.in' intermediate files.
 	* Makefile.am (libltdl/config/ltmain.sh, libtoolize.in): Pipe
 	the output of `$(LT_M4SH)' directly into `$(bootstrap_edit)' to
