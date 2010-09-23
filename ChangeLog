@@ -1,3 +1,14 @@
+2010-08-31  Gary V. Vaughan  <gary@gnu.org>
+
+	build: compare `revision' rather than `correctver' in Makefile.am.
+	* Makefile.am (rebuild): Set the shell variable `revision' rather
+	than `correctver' for clarity of purpose.
+	(bootstrap_edit, libltdl/config/ltmain.sh): Adjust.
+	(libltdl/m4/ltversion.m4): Likewise, and alse, instead of munging
+	the serial number comment line with set, extract `macro_version'
+	from this file, and compare it directly with `revision'.
+	(libtool): Likewise for `package_revision'.
+
 2010-09-24  Gary V. Vaughan  <gary@gnu.org>
 
 	libtool: remove redundant unsubstituted shell var defaults.
