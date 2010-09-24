@@ -1,9 +1,8 @@
-2010-09-16  Gary V. Vaughan  <gary@gnu.org>
+2010-09-25  Gary V. Vaughan  <gary@gnu.org>
 
-	maint: use bootstrap script from gnulib.
-	* bootstrap: Replaced with gnulib script.
-	* bootstrap.conf: New file with Libtool specific bootstrap
-	configuration.
+	CLEANUP: fix error from pushing too far up the branch.
+	* Makefile.am (install-data-local): Undo character transposition
+	from too early push of untested v2.4-17-gaf74d58.
 
 2010-09-23  Gary V. Vaughan  <gary@gnu.org>
 

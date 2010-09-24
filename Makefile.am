@@ -430,7 +430,7 @@ install-data-local: $(lt_Makefile_in)
 ## First, put a copy of the libtool m4 macros in the aclocal dir
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@list='$(aclocalfiles)'; for p in $$list; do \
-	  f=`echo "$$p" |'$(SED') 's|^.*/||'`; \
+	  f=`echo "$$p" |'$(SED)' 's|^.*/||'`; \
 	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
