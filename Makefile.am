@@ -394,10 +394,21 @@ MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
 update_mans = \
   PATH=.$(PATH_SEPARATOR)$$PATH; export PATH; \
   $(HELP2MAN) --output='$@'
+
+# It's wrong to make distributed files (e.g. $(libtool_1)) rely on
+# files created in the build tree, so instead we regenerate the
+# manual pages if the sources for the build-tree files we want to
+# run have changed.
 $(libtool_1): $(ltmain_sh)
 	$(update_mans) --help-option=--help-all libtool
 $(libtoolize_1): $(libtoolize_in)
 	$(update_mans) libtoolize
+# That doesn't solve the problem of having `make' try to create
+# manual pages before the commands have been built, for example
+# with automake-1.11.1, `make distcheck' in a freshly checked out
+# and configured tree will fail.  The workaround is to make sure
+# `make check' is always called first:
+distcheck: all
 
 
 ## ------------- ##

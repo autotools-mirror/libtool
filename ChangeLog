@@ -1,3 +1,11 @@
+2010-09-01  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: don't run help2man on programs not-yet-built.
+	* Makefile.am (doc/libtool.1, doc/libtoolize.1): Added a
+	comment about why the dependencies here have to be a mite
+	bizarre.
+	(distcheck): Added a workaround for the bug described.
+
 2010-09-26  Gary V. Vaughan  <gary@gnu.org>
 
 	tests: remove unused `aux_dir' variable from `getopt-m4sh.test'.
