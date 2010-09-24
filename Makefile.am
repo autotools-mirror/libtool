@@ -157,8 +157,8 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac Ch
 	    > $(auxdir)/ltmain.in; \
 	  echo $(bootstrap_edit) \
 	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
-	  $(bootstrap_edit) \
-		$(auxdir)/ltmain.in > $(auxdir)/ltmain.tmp; \
+	  $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' \
+	    $(auxdir)/ltmain.in > $(auxdir)/ltmain.tmp; \
 	  rm -f $(auxdir)/ltmain.in; \
 	  chmod a-w $(auxdir)/ltmain.tmp; \
 	  mv -f $(auxdir)/ltmain.tmp $(auxdir)/ltmain.sh; \

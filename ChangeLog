@@ -1,3 +1,13 @@
+2010-09-24  Gary V. Vaughan  <gary@gnu.org>
+
+	libtool: remove redundant unsubstituted shell var defaults.
+	* Makefile.am (libltdl/config/ltmain.sh): Boilerplate code from
+	libltdl/config/general.m4 sets some default shell variables
+	designed to be substituted by `$(configure_edit)'.  Actually,
+	`libtool' uses the language tag values for those variables, and
+	`ltmain.m4sh' is not passed through `$(configure_edit)', so they
+	are just noise.  Edit them out at bootstrap time.
+
 2010-08-31  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: don't leak developer GREP, SED etc into distribution file.
