@@ -29,8 +29,8 @@
 .deps
 .dirstamp
 .gdb_history
+.gitmodules
 .libs
-\#*#
 /.pc
 /COPYING
 /INSTALL
@@ -41,6 +41,7 @@
 /release
 Makefile
 Makefile.in
+\#*#
 _inst-*demo
 _libs
 acinclude.m4
