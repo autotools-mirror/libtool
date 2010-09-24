@@ -44,7 +44,7 @@ lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
 
 aux_dir			= libltdl/config
-m4dir			= libltdl/m4
+macro_dir		= libltdl/m4
 
 LT_M4SH			= $(M4SH) -B '$(srcdir)/$(aux_dir)'
 
@@ -86,8 +86,8 @@ libtoolize_in	= $(srcdir)/libtoolize.in
 libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
 ltmain_m4sh	= $(srcdir)/$(aux_dir)/ltmain.m4sh
 ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
-ltversion_in	= $(srcdir)/$(m4dir)/ltversion.in
-ltversion_m4	= $(srcdir)/$(m4dir)/ltversion.m4
+ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
+ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 
 EXTRA_DIST     += $(libtoolize_in) $(libtoolize_m4sh) $(ltmain_m4sh) \
 		  $(ltmain_sh) $(ltversion_in) $(ltversion_m4)
@@ -311,7 +311,7 @@ lt_config_h_in	= $(srcdir)/libltdl/config-h.in
 lt_configure	= $(srcdir)/libltdl/configure
 stamp_mk	= $(srcdir)/libltdl/stamp-mk
 
-lt_obsolete_m4	= $(srcdir)/$(m4dir)/lt~obsolete.m4
+lt_obsolete_m4	= $(srcdir)/$(macro_dir)/lt~obsolete.m4
 
 EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
 
@@ -329,11 +329,11 @@ $(stamp_mk): $(lt_Makefile_in)
 lt_aclocal_m4_deps = \
 	$(lt_obsolete_m4) \
 	$(ltversion_m4) \
-	$(m4dir)/libtool.m4 \
-	$(m4dir)/ltoptions.m4 \
-	$(m4dir)/ltdl.m4 \
-	$(m4dir)/ltsugar.m4 \
-	$(m4dir)/argz.m4 \
+	$(macro_dir)/libtool.m4 \
+	$(macro_dir)/ltoptions.m4 \
+	$(macro_dir)/ltdl.m4 \
+	$(macro_dir)/ltsugar.m4 \
+	$(macro_dir)/argz.m4 \
 	$(srcdir)/libltdl/configure.ac
 
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
@@ -431,8 +431,8 @@ install-data-local: $(lt_Makefile_in)
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@list='$(aclocalfiles)'; for p in $$list; do \
 	  f=`echo "$$p" |'$(SED') 's|^.*/||'`; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$(m4dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$(m4dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
 ## install the helper scripts
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)'

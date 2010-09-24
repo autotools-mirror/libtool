@@ -64,14 +64,14 @@ test -f ./configure.ac || {
 }
 
 
-# Extract aux_dir and m4dir from configure.ac:
+# Extract aux_dir and macro_dir from configure.ac:
 lt_tab='	'
 my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
 	/AC_CONFIG_AUX_DIR[^_]/  {
 	    s,^.*AC_CONFIG_AUX_DIR([[ '"$lt_tab"']*\([^])]*\).*$,aux_dir=\1,; p;
 	};
 	/AC_CONFIG_MACRO_DIR/   {
-	    s,^.*AC_CONFIG_MACRO_DIR([[ '"$lt_tab"']*\([^])]*\).*$,m4dir=\1,; p;
+	    s,^.*AC_CONFIG_MACRO_DIR([[ '"$lt_tab"']*\([^])]*\).*$,macro_dir=\1,; p;
 	};
 	d;'
 eval `cat configure.ac 2>/dev/null | $SED "$my_sed_traces"`

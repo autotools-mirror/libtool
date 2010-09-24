@@ -121,7 +121,7 @@ done
 
 # Check for correct usage of $cc_basename.
 # redirect stderr so we also barf when sed issues diagnostics.
-for s in "$m4dir/libtool.m4"
+for s in "$macro_dir/libtool.m4"
 do
   if $SED -n '/case \$cc_basename in/,/esac/ {
 	      /^[ 	]*[a-zA-Z][a-zA-Z0-9+]*[^*][ 	]*)/p

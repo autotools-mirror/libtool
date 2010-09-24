@@ -410,7 +410,7 @@ func_scan_files ()
 	    p
         }
 	/AC_CONFIG_MACRO_DIR(/ {
-	    s,^.*AC_CONFIG_MACRO_DIR([[	 ]*\([^])]*\).*$,ac_macrodir=\1,
+	    s,^.*AC_CONFIG_MACRO_DIR([[	 ]*\([^])]*\).*$,ac_macro_dir=\1,
 	    p
         }
 	/_LT_CONFIG_LTDL_DIR(/d
@@ -562,30 +562,30 @@ func_scan_files ()
 	}
 	d'
     if test -f Makefile.am; then
-      my_macrodir_is_next=false
+      my_macro_dir_is_next=false
       for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
-        if $my_macrodir_is_next; then
-          am_macrodir="$arg"
+        if $my_macro_dir_is_next; then
+          am_macro_dir="$arg"
           break
         else
 	  case $arg in
-	    -I) my_macrodir_is_next=: ;;
+	    -I) my_macro_dir_is_next=: ;;
 	    -I*)
-	      am_macrodir=`$ECHO "$arg" | sed 's,^-I,,'`
+	      am_macro_dir=`$ECHO "$arg" | sed 's,^-I,,'`
 	      break
 	      ;;
-	    *) my_macrodir_is_next=false ;;
+	    *) my_macro_dir_is_next=false ;;
 	  esac
         fi
       done
     fi
 
-    macrodir="$ac_macrodir"
-    test -z "$macrodir" && macrodir="$am_macrodir"
+    macro_dir="$ac_macro_dir"
+    test -z "$macro_dir" && macro_dir="$am_macro_dir"
 
-    if test -n "$am_macrodir" && test -n "$ac_macrodir"; then
-      test "$am_macrodir" = "$ac_macrodir" \
-        || func_fatal_error "AC_CONFIG_MACRO_DIR([$ac_macrodir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macrodir."
+    if test -n "$am_macro_dir" && test -n "$ac_macro_dir"; then
+      test "$am_macro_dir" = "$ac_macro_dir" \
+        || func_fatal_error "AC_CONFIG_MACRO_DIR([$ac_macro_dir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macro_dir."
     fi
 }
 
@@ -728,7 +728,7 @@ func_serial_update_check ()
 
       if test "X$my_dest_serial" = "X$func_serial_max_result"; then
         func_verbose "\`$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in \`$my_destfile'"
-	$opt_force || if test -n "$ac_macrodir$ac_ltdldir"; then
+	$opt_force || if test -n "$ac_macro_dir$ac_ltdldir"; then
            func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
         fi
       fi
@@ -1000,20 +1000,20 @@ func_install_pkgmacro_subproject ()
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgmacro_files; do
-      test -f "$subproject_macrodir/$file" && func_verbose "rm -f '$subproject_macrodir/$file'"
-      rm -f "$subproject_macrodir/$file"
+      test -f "$subproject_macro_dir/$file" && func_verbose "rm -f '$subproject_macro_dir/$file'"
+      rm -f "$subproject_macro_dir/$file"
     done
 
     # Copy all the files from installed libltdl to this project, if the
-    # user specified a macrodir.
-    $opt_quiet || if test "x$macrodir" != "x$subproject_macrodir"; then
-      pkgmacro_header="putting macros in \`$subproject_macrodir'."
-    elif test -n "$subproject_macrodir"; then
-      pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macrodir'."
+    # user specified a macro_dir.
+    $opt_quiet || if test "x$macro_dir" != "x$subproject_macro_dir"; then
+      pkgmacro_header="putting macros in \`$subproject_macro_dir'."
+    elif test -n "$subproject_macro_dir"; then
+      pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macro_dir'."
     fi
 
     func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
-      "$aclocaldir" "$subproject_macrodir" pkgmacro_header
+      "$aclocaldir" "$subproject_macro_dir" pkgmacro_header
 }
 
 
@@ -1028,40 +1028,40 @@ func_install_pkgmacro_parent ()
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgmacro_files; do
-      test -f "$macrodir/$file" && func_verbose "rm -f '$macrodir/$file'"
-      rm -f "$macrodir/$file"
+      test -f "$macro_dir/$file" && func_verbose "rm -f '$macro_dir/$file'"
+      rm -f "$macro_dir/$file"
     done
 
     # Copy all the files from installed libltdl to this project, if the
-    # user specified a macrodir.
-    $opt_quiet || if test -n "$ac_macrodir"; then
-      my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macrodir'."
-    elif test -n "$macrodir"; then
-      my_pkgmacro_header="putting macros in \`$macrodir'."
+    # user specified a macro_dir.
+    $opt_quiet || if test -n "$ac_macro_dir"; then
+      my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macro_dir'."
+    elif test -n "$macro_dir"; then
+      my_pkgmacro_header="putting macros in \`$macro_dir'."
     fi
 
     if $opt_ltdl; then
-      func_serial_update argz.m4 "$aclocaldir" "$macrodir" \
+      func_serial_update argz.m4 "$aclocaldir" "$macro_dir" \
         my_pkgmacro_header argz.m4
     else
-      func_verbose "Not copying \`$macrodir/argz.m4', libltdl not used."
+      func_verbose "Not copying \`$macro_dir/argz.m4', libltdl not used."
     fi
 
-    func_serial_update  libtool.m4 "$aclocaldir" "$macrodir" \
+    func_serial_update  libtool.m4 "$aclocaldir" "$macro_dir" \
       my_pkgmacro_header LT_INIT 'A[CM]_PROG_LIBTOOL'
 
     if $opt_ltdl; then
-      func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" \
+      func_serial_update ltdl.m4 "$aclocaldir" "$macro_dir" \
         my_pkgmacro_header 'LTDL_INIT'
     else
-      func_verbose "Not copying \`$macrodir/ltdl.m4', libltdl not used."
+      func_verbose "Not copying \`$macro_dir/ltdl.m4', libltdl not used."
     fi
 
     my_save_IFS="$IFS"
     IFS=:
     for file in $pkgmacro_files; do
       IFS="$my_save_IFS"
-      func_serial_update "$file" "$aclocaldir" "$macrodir" \
+      func_serial_update "$file" "$aclocaldir" "$macro_dir" \
         my_pkgmacro_header "$file"
     done
     IFS="$my_save_IFS"
@@ -1077,21 +1077,21 @@ func_install_pkgmacro_files ()
     # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
     func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
 
-  # 1. Parent has separate macrodir to subproject ltdl:
+  # 1. Parent has separate macro_dir to subproject ltdl:
     if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
-       test -n "$macrodir" && test "x$macrodir" != "x$subproject_macrodir"
+       test -n "$macro_dir" && test "x$macro_dir" != "x$subproject_macro_dir"
     then
       func_install_pkgmacro_parent
       func_install_pkgmacro_subproject
 
-  # 2. Parent shares macrodir with subproject ltdl:
+  # 2. Parent shares macro_dir with subproject ltdl:
     elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
-       # && test "x$macrodir" = "x$subproject_macrodir"
+       # && test "x$macro_dir" = "x$subproject_macro_dir"
     then
       func_install_pkgmacro_subproject
 
-  # 3. Not a subproject, but macrodir was specified in parent:
-    elif test -n "$macrodir"; then
+  # 3. Not a subproject, but macro_dir was specified in parent:
+    elif test -n "$macro_dir"; then
       func_install_pkgmacro_parent
 
   # 4. AC_CONFIG_MACRO_DIR was not specified:
@@ -1339,10 +1339,10 @@ func_check_macros ()
 
     ac_config_macro_dir_advised=false
 
-    if test -n "$ac_macrodir$ltdldir" && test -z "$macrodir"; then
+    if test -n "$ac_macro_dir$ltdldir" && test -z "$macro_dir"; then
       my_ac_config_macro_srcdir="$aclocaldir"
-      if $opt_ltdl && test "$macrodir" != "$subproject_macrodir"; then
-	my_ac_config_macro_srcdir="$subproject_macrodir"
+      if $opt_ltdl && test "$macro_dir" != "$subproject_macro_dir"; then
+	my_ac_config_macro_srcdir="$subproject_macro_dir"
       fi
 
       my_needed="libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4"
@@ -1364,7 +1364,7 @@ func_check_macros ()
         done
 
         if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
-          func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
+          func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macro_dir])' to $configure_ac."
 	  ac_config_macro_dir_advised=:
         fi
       fi
@@ -1399,32 +1399,32 @@ func_check_macros ()
       if test "x$ltdl_mode" = "xsubproject"; then
         test "$subproject_aux_dir" = "$aux_dir" ||
           func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_aux_dir])' in $configure_ac."
-        $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
-          func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
+        $ac_config_macro_dir_advised || test "$subproject_macro_dir" = "$macro_dir" ||
+          func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macro_dir])' in $configure_ac."
 	ac_config_macro_dir_advised=:
       fi
     fi
 
     # Suggest modern idioms for storing autoconf macros:
-    $ac_config_macro_dir_advised || if test -z "$ac_macrodir" || test x"$macrodir" = x.; then
+    $ac_config_macro_dir_advised || if test -z "$ac_macro_dir" || test x"$macro_dir" = x.; then
       func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
       func_echo "rerunning $progname, to keep the correct libtool macros in-tree."
       ac_config_macro_dir_advised=:
 
-    elif test -z "$ac_macrodir$ltdldir"; then
-      func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])' to $configure_ac,"
+    elif test -z "$ac_macro_dir$ltdldir"; then
+      func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macro_dir])' to $configure_ac,"
       func_echo "and rerunning $progname and aclocal."
       ac_config_macro_dir_advised=:
     fi
 
-    if test -z "$am_macrodir$macrodir"; then
+    if test -z "$am_macro_dir$macro_dir"; then
       func_echo "Consider adding \`-I m4' to ACLOCAL_AMFLAGS in Makefile.am."
 
-    elif test -z "$am_macrodir"; then
-      if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" && test "$subproject_macrodir" != "$macrodir"; then
-	func_echo "Consider adding \`-I $subproject_macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
+    elif test -z "$am_macro_dir"; then
+      if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" && test "$subproject_macro_dir" != "$macro_dir"; then
+	func_echo "Consider adding \`-I $subproject_macro_dir' to ACLOCAL_AMFLAGS in Makefile.am."
       else
-        func_echo "Consider adding \`-I $macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
+        func_echo "Consider adding \`-I $macro_dir' to ACLOCAL_AMFLAGS in Makefile.am."
       fi
     fi
 
@@ -1458,7 +1458,7 @@ func_check_macros ()
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
   aux_dir=
-  macrodir=
+  macro_dir=
   configure_ac=configure.in
 
   seen_autoconf=false
@@ -1495,7 +1495,7 @@ func_check_macros ()
   *) ltdlprefix=$ltdldir/ ;;
   esac
   subproject_aux_dir=${ltdlprefix}config
-  subproject_macrodir=${ltdlprefix}m4
+  subproject_macro_dir=${ltdlprefix}m4
 
   # :::BE CAREFUL HERE:::
   # func_check_macros needs to check whether --ltdl was specified when
