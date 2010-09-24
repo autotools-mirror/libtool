@@ -406,7 +406,7 @@ func_scan_files ()
 	s,^.*m4@&t@_define(.*$,,
 	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
 	/AC_CONFIG_AUX_DIR(/ {
-	    s,^.*AC_CONFIG_AUX_DIR([[	 ]*\([^])]*\).*$,ac_auxdir=\1,
+	    s,^.*AC_CONFIG_AUX_DIR([[	 ]*\([^])]*\).*$,ac_aux_dir=\1,
 	    p
         }
 	/AC_CONFIG_MACRO_DIR(/ {
@@ -516,37 +516,37 @@ func_scan_files ()
 	;;
     esac
 
-    # ---------------- #
-    # Validate auxdir. #
-    # ---------------- #
+    # ----------------- #
+    # Validate aux_dir. #
+    # ----------------- #
 
-    if test -n "$ac_auxdir"; then
+    if test -n "$ac_aux_dir"; then
       # If $configure_ac contains AC_CONFIG_AUX_DIR, check that it was
       # not given in terms of a shell variable!
-      case "$ac_auxdir" in
+      case "$ac_aux_dir" in
       *\$*)
         func_fatal_error "can not handle variables in AC_CONFIG_AUX_DIR"
         ;;
       *)
-	auxdir=$ac_auxdir
+	aux_dir=$ac_aux_dir
 	;;
       esac
     else
-      # Try to discover auxdir the same way it is discovered by configure.
+      # Try to discover aux_dir the same way it is discovered by configure.
       # Note that we default to the current directory.
       for dir in . .. ../..; do
         if test -f "$dir/install-sh"; then
-          auxdir=$dir
+          aux_dir=$dir
           break
         elif test -f "$dir/install.sh"; then
-          auxdir="$dir"
+          aux_dir="$dir"
           break
         fi
       done
     fi
 
     # Just use the current directory if all else fails.
-    test -n "$auxdir" || auxdir=.
+    test -n "$aux_dir" || aux_dir=.
 
 
     # ------------------------------ #
@@ -1224,16 +1224,16 @@ func_install_pkgconfig_subproject ()
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgconfig_files; do
-      test -f "$subproject_auxdir/$file" && func_verbose "rm -f '$subproject_auxdir/$file'"
-      rm -f "$subproject_auxdir/$file"
+      test -f "$subproject_aux_dir/$file" && func_verbose "rm -f '$subproject_aux_dir/$file'"
+      rm -f "$subproject_aux_dir/$file"
     done
 
     # Copy all the files from installed libltdl to this project, if the
-    # user specified an auxdir.
-    $opt_quiet || if test "x$ac_auxdir" = "x$subproject_auxdir"; then
-      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_auxdir'."
-    elif test -n "$auxdir"; then
-      pkgconfig_header="putting auxiliary files in \`$auxdir'."
+    # user specified an aux_dir.
+    $opt_quiet || if test "x$ac_aux_dir" = "x$subproject_aux_dir"; then
+      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_aux_dir'."
+    elif test -n "$aux_dir"; then
+      pkgconfig_header="putting auxiliary files in \`$aux_dir'."
     fi
 
     func_copy_some_files "$pkgconfig_files" \
@@ -1252,26 +1252,26 @@ func_install_pkgconfig_parent ()
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgconfig_files; do
-      test -f "$auxdir/$file" && func_verbose "rm -f '$auxdir/$file'"
-      rm -f "$auxdir/$file"
+      test -f "$aux_dir/$file" && func_verbose "rm -f '$aux_dir/$file'"
+      rm -f "$aux_dir/$file"
     done
 
-    if test -n "$ac_auxdir"; then
-      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_auxdir'."
-    elif test -n "$auxdir" || test "x$ltdldir" = "x."; then
-      pkgconfig_header="putting auxiliary files in \`$auxdir'."
+    if test -n "$ac_aux_dir"; then
+      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_aux_dir'."
+    elif test -n "$aux_dir" || test "x$ltdldir" = "x."; then
+      pkgconfig_header="putting auxiliary files in \`$aux_dir'."
     fi
 
     if $opt_install; then
       func_config_update config.guess \
-        "$pkgdatadir/config" "$auxdir" pkgconfig_header
+        "$pkgdatadir/config" "$aux_dir" pkgconfig_header
       func_config_update config.sub \
-        "$pkgdatadir/config" "$auxdir" pkgconfig_header
+        "$pkgdatadir/config" "$aux_dir" pkgconfig_header
       func_install_update install-sh \
-        "$pkgdatadir/config" "$auxdir" pkgconfig_header
+        "$pkgdatadir/config" "$aux_dir" pkgconfig_header
     fi
     func_ltmain_update ltmain.sh \
-      "$pkgdatadir/config" "$auxdir" pkgconfig_header
+      "$pkgdatadir/config" "$aux_dir" pkgconfig_header
 }
 
 
@@ -1284,15 +1284,15 @@ func_install_pkgconfig_files ()
     $opt_debug
     func_massage_pkgconfig_files
 
-  # 1. Parent shares auxdir with subproject ltdl:
+  # 1. Parent shares aux_dir with subproject ltdl:
     if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
-       test "x$ac_auxdir" = "x$subproject_auxdir"
+       test "x$ac_aux_dir" = "x$subproject_aux_dir"
     then
       func_install_pkgconfig_subproject
 
-  # 2. Parent has separate auxdir to subproject ltdl:
+  # 2. Parent has separate aux_dir to subproject ltdl:
     elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
-       # && test "x$auxdir" != "x$subproject_auxdir" is implied
+       # && test "x$aux_dir" != "x$subproject_aux_dir" is implied
     then
       if $seen_autoconf; then
 	func_install_pkgconfig_parent
@@ -1300,7 +1300,7 @@ func_install_pkgconfig_files ()
       func_install_pkgconfig_subproject
 
   # 3. Not subproject, but AC_CONFIG_AUX_DIR was used in parent:
-    elif test -n "$ac_auxdir" || test "x$auxdir" = "x."; then
+    elif test -n "$ac_aux_dir" || test "x$aux_dir" = "x."; then
       func_install_pkgconfig_parent
 
   # 4. AC_CONFIG_AUX_DIR was not specified:
@@ -1397,8 +1397,8 @@ func_check_macros ()
       # For subproject mode, offer some suggestions for avoiding duplicate
       # files in a project that uses libltdl:
       if test "x$ltdl_mode" = "xsubproject"; then
-        test "$subproject_auxdir" = "$auxdir" ||
-          func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
+        test "$subproject_aux_dir" = "$aux_dir" ||
+          func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_aux_dir])' in $configure_ac."
         $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
           func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
 	ac_config_macro_dir_advised=:
@@ -1457,7 +1457,7 @@ func_check_macros ()
   pkgdatadir=@pkgdatadir@
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
-  auxdir=
+  aux_dir=
   macrodir=
   configure_ac=configure.in
 
@@ -1494,7 +1494,7 @@ func_check_macros ()
   .) ltdlprefix= ;;
   *) ltdlprefix=$ltdldir/ ;;
   esac
-  subproject_auxdir=${ltdlprefix}config
+  subproject_aux_dir=${ltdlprefix}config
   subproject_macrodir=${ltdlprefix}m4
 
   # :::BE CAREFUL HERE:::

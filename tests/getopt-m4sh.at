@@ -24,7 +24,7 @@
 
 AT_BANNER([Shell option parser generator.])
 
-auxdir="$abs_top_srcdir/libltdl/config"
+aux_dir="$abs_top_srcdir/libltdl/config"
 
 
 # _LT_AT_GETOPT_M4SH_SETUP

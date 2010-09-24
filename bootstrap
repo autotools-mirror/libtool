@@ -64,11 +64,11 @@ test -f ./configure.ac || {
 }
 
 
-# Extract auxdir and m4dir from configure.ac:
+# Extract aux_dir and m4dir from configure.ac:
 lt_tab='	'
 my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
 	/AC_CONFIG_AUX_DIR[^_]/  {
-	    s,^.*AC_CONFIG_AUX_DIR([[ '"$lt_tab"']*\([^])]*\).*$,auxdir=\1,; p;
+	    s,^.*AC_CONFIG_AUX_DIR([[ '"$lt_tab"']*\([^])]*\).*$,aux_dir=\1,; p;
 	};
 	/AC_CONFIG_MACRO_DIR/   {
 	    s,^.*AC_CONFIG_MACRO_DIR([[ '"$lt_tab"']*\([^])]*\).*$,m4dir=\1,; p;
@@ -134,17 +134,17 @@ $MAKE bootstrap-deps  \
 rm -f Makefile
 
 # Make a dummy libtoolize script for autoreconf:
-cat > $auxdir/libtoolize <<'EOF'
+cat > $aux_dir/libtoolize <<'EOF'
 #! /bin/sh
 # This is a dummy file for bootstrapping libtool.
 echo "$0: Bootstrap detected, no files installed." | sed 's,^.*/,,g'
 exit 0
 EOF
-chmod 755 $auxdir/libtoolize
+chmod 755 $aux_dir/libtoolize
 
 # Running the installed `libtoolize' will trash the local (newer) libtool.m4
 # among others.  Call the dummy script we made earlier.
-LIBTOOLIZE=`pwd`/$auxdir/libtoolize
+LIBTOOLIZE=`pwd`/$aux_dir/libtoolize
 export LIBTOOLIZE
 
 for sub in $reconfdirs; do
@@ -160,7 +160,7 @@ done
 sleep 2 && touch libltdl/config-h.in
 
 # Remove our dummy libtoolize
-rm -f $auxdir/libtoolize
+rm -f $aux_dir/libtoolize
 
 # These files can cause an infinite configure loop if left behind.
 rm -f Makefile libltdl/Makefile libtool vcl.tmp
@@ -168,7 +168,7 @@ rm -f Makefile libltdl/Makefile libtool vcl.tmp
 # This file is misgenerated earlier in bootstrap to satisfy automake 1.9.1
 # and earlier, but has a new enough timestamp to not be updated.  Force it
 # to be regenerated at make-time with proper substitutions in place:
-touch $auxdir/ltmain.m4sh
+touch $aux_dir/ltmain.m4sh
 
 for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do
   if grep $macro aclocal.m4 libltdl/aclocal.m4; then

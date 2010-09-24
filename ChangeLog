@@ -1,3 +1,18 @@
+2010-09-16  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: use bootstrap script from gnulib.
+	* bootstrap: Replaced with gnulib script.
+	* bootstrap.conf: New file with Libtool specific bootstrap
+	configuration.
+
+2010-09-23  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: use aux_dir consistently in all files.
+	* Makefile.am, Makefile.maint: Replace all uses of auxdir
+	with aux_dir to match AC_CONFIG_AUX_DIR.
+	* libltdl/config/libtoolize.m4sh: Likewise.
+	* tests/defs.m4sh, tests/getopt-m4sh.at: Likewise.
+
 2010-09-24  Gary V. Vaughan  <gary@gnu.org>
 
 	Makefile: try to be robust against shell meta-chars in filenames.
