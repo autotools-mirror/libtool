@@ -395,6 +395,11 @@ MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
 update_mans = \
   PATH=".$(PATH_SEPARATOR)$$PATH"; export PATH; \
   $(HELP2MAN) --output='$@'
+
+# It's wrong to make distributed files (e.g. $(libtool_1)) rely on
+# files created in the build tree, so instead we regenerate the
+# manual pages if the sources for the build-tree files we want to
+# run have changed.
 $(libtool_1): $(ltmain_sh)
 	$(update_mans) --help-option=--help-all libtool
 $(libtoolize_1): $(libtoolize_in)
