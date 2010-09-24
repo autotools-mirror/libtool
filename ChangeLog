@@ -1,5 +1,12 @@
 2010-09-24  Gary V. Vaughan  <gary@gnu.org>
 
+	Makefile: try to be robust against shell meta-chars in filenames.
+	* Makefile.am: In each rule body, unless a make variable needs
+	to be seen as multiple words by the shell (for word-splitting
+	loops, or because it contains several commands), quote it. Use
+	single quotes unless the shell needs to perform variable inter-
+	polation, in which case use double quotes.
+
 	maint: let make employ user's `SED' setting.
 	* Makefile.am: Replace hard-coded `sed' with `$(SED)' through-
 	out.
