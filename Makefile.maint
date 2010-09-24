@@ -88,11 +88,11 @@ WGET_CGIT = $(WGET) 'http://git.savannah.gnu.org/cgit/config.git/plain'
 ## FIXME should be a lot more here
 FETCHFILES = \
 ./INSTALL \
-$(auxdir)/compile \
-$(auxdir)/install-sh \
-$(auxdir)/config.guess \
-$(auxdir)/config.sub \
-$(auxdir)/texinfo.tex
+$(aux_dir)/compile \
+$(aux_dir)/install-sh \
+$(aux_dir)/config.guess \
+$(aux_dir)/config.sub \
+$(aux_dir)/texinfo.tex
 
 ## Fetch the latest versions of files we care about.
 .PHONY: fetch

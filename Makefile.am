@@ -43,15 +43,15 @@ noinst_LTLIBRARIES	=
 lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
 
-auxdir			= libltdl/config
+aux_dir			= libltdl/config
 m4dir			= libltdl/m4
 
-LT_M4SH			= $(M4SH) -B '$(srcdir)/$(auxdir)'
+LT_M4SH			= $(M4SH) -B '$(srcdir)/$(aux_dir)'
 
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
-MKSTAMP = '$(SHELL)' '$(srcdir)/$(auxdir)/mkstamp'
+MKSTAMP = '$(SHELL)' '$(srcdir)/$(aux_dir)/mkstamp'
 
 timestamp = set dummy `$(MKSTAMP) '$(srcdir)'`; shift; \
 	case $(VERSION) in \
@@ -66,8 +66,8 @@ rebuild = rebuild=:; $(timestamp); revision=$$1
 # Bootstrap. #
 # ---------- #
 
-sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
-EXTRA_DIST     += bootstrap $(auxdir)/mkstamp $(sh_files) \
+sh_files	= $(aux_dir)/general.m4sh $(aux_dir)/getopt.m4sh
+EXTRA_DIST     += bootstrap $(aux_dir)/mkstamp $(sh_files) \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
 		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 \
@@ -84,8 +84,8 @@ CLEANFILES     += libtool libtoolize
 configure_ac	= $(srcdir)/configure.ac
 libtoolize_in	= $(srcdir)/libtoolize.in
 libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
-ltmain_m4sh	= $(srcdir)/$(auxdir)/ltmain.m4sh
-ltmain_sh	= $(srcdir)/$(auxdir)/ltmain.sh
+ltmain_m4sh	= $(srcdir)/$(aux_dir)/ltmain.m4sh
+ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
 ltversion_in	= $(srcdir)/$(m4dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(m4dir)/ltversion.m4
 
@@ -140,7 +140,7 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
-##           you must `touch $(srcdir)/$(auxdir)/ltmain.m4sh' from the
+##           you must `touch $(srcdir)/$(aux_dir)/ltmain.m4sh' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
@@ -234,7 +234,6 @@ bootstrap-deps-prep:
 	    && exit_cmd=exit; \
 	$$exit_cmd 1
 	rm -f $(bootstrap_files)
-
 
 ## Unfortunately, all this bogeyness means that we have to manually
 ## keep the generated files in libltdl up to date.
@@ -457,7 +456,7 @@ install-data-local: $(lt_Makefile_in)
 ## Distribution. ##
 ## ------------- ##
 
-edit_readme_alpha = $(srcdir)/$(auxdir)/edit-readme-alpha
+edit_readme_alpha = $(srcdir)/$(aux_dir)/edit-readme-alpha
 
 EXTRA_DIST += $(edit_readme_alpha)
 
@@ -952,7 +951,7 @@ tests/defs: $(defs_in)
 	rm -f '$@'
 	$(configure_edit) '$(defs_in)' > '$@'
 
-$(defs_in): $(defs_m4sh) $(auxdir)/general.m4sh Makefile.am
+$(defs_in): $(defs_m4sh) $(aux_dir)/general.m4sh Makefile.am
 	rm -f '$@'
 	$(LT_M4SH) '$(defs_m4sh)' > '$@'
 
