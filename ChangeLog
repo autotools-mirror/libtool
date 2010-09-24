@@ -7,6 +7,13 @@
 
 2010-09-23  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: use macro_dir consistently in all files.
+	* Makefile.am: Replace all uses of m4dir with macrodir to
+	match AC_CONFIG_MACRO_DIR.
+	* libltdl/config/libtoolize.m4sh: Replace all uses of macrodir
+	with macro_dir.
+	* tests/defs.m4sh, tests/sh.test: Likewise.
+
 	maint: use aux_dir consistently in all files.
 	* Makefile.am, Makefile.maint: Replace all uses of auxdir
 	with aux_dir to match AC_CONFIG_AUX_DIR.
