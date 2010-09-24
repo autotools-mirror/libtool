@@ -95,7 +95,7 @@ EXTRA_DIST     += $(libtoolize_in) $(libtoolize_m4sh) $(ltmain_m4sh) \
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
 ## changed by configure running on the build machine.
-bootstrap_edit  = sed \
+bootstrap_edit  = $(SED) \
 		  -e 's,@MACRO_VERSION\@,$(VERSION),g' \
 		  -e "s,@MACRO_REVISION\@,$$revision,g" \
 		  -e "s,@MACRO_SERIAL\@,$$serial,g" \
@@ -121,7 +121,7 @@ bootstrap_edit  = sed \
 $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
-	  eval `sed -n '/^macro_revision=/p' $@`; \
+	  eval `$(SED) -n '/^macro_revision=/p' $@`; \
 	  test "$$macro_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
@@ -129,7 +129,7 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 	done; \
 	if $$rebuild; then \
 	  rm -f $@; \
-	  serial=`echo "$$revision" | sed 's,^1[.],,g'`; \
+	  serial=`echo "$$revision" |$(SED) 's,^1[.],,g'`; \
 	  echo $(bootstrap_edit) $(ltversion_in) \> $@; \
 	  $(bootstrap_edit) $(ltversion_in) > $@; \
 	  chmod a-w $@; \
@@ -148,7 +148,7 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
-	  eval `sed -n '/^package_revision=/p' "$@"`; \
+	  eval `$(SED) -n '/^package_revision=/p' "$@"`; \
 	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
@@ -250,7 +250,7 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## Libtool scripts. ##
 ## ---------------- ##
 
-configure_edit = sed \
+configure_edit = $(SED) \
 	-e 's,@aclocal_DATA\@,$(aclocalfiles),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
 	-e 's,@datadir\@,$(datadir),g' \
@@ -280,7 +280,7 @@ libtoolize: $(libtoolize_in) $(top_builddir)/config.status
 libtool: $(ltmain_sh) $(top_builddir)/config.status ChangeLog
 	@$(rebuild); \
 	if test -f "$@"; then \
-	  eval `sed -n '/^package_revision=/p' "$@"`; \
+	  eval `$(SED) -n '/^package_revision=/p' "$@"`; \
 	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
@@ -294,7 +294,7 @@ libtool: $(ltmain_sh) $(top_builddir)/config.status ChangeLog
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
-	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
+	dir=`echo $@ |$(SED) 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
 	abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure --with-dist) || exit 1
@@ -320,7 +320,7 @@ $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
 
 $(stamp_mk): $(lt_Makefile_in)
 	T=$(srcdir)/libltdl/Makefile.tmp; \
-	sed -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
+	$(SED) -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
 	    -e 's,config/mkinstalldirs,,' \
 	    < $(lt_Makefile_in) > $$T && \
 	mv -f $$T $(lt_Makefile_in)
@@ -430,7 +430,7 @@ install-data-local: $(lt_Makefile_in)
 ## First, put a copy of the libtool m4 macros in the aclocal dir
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@list='$(aclocalfiles)'; for p in $$list; do \
-	  f=`echo "$$p" | sed 's|^.*/||'`; \
+	  f=`echo "$$p" |$(SED) 's|^.*/||'`; \
 	  echo " $(INSTALL_DATA) '$(srcdir)/$(m4dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  $(INSTALL_DATA) "$(srcdir)/$(m4dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
@@ -467,7 +467,7 @@ uninstall-hook:
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done
 	@for p in $(aclocalfiles); do \
-	  f=`echo "$$p" | sed 's|^.*/||'`; \
+	  f=`echo "$$p" |$(SED) 's|^.*/||'`; \
 	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
@@ -583,8 +583,8 @@ BUILDCHECK_ENVIRONMENT = _lt_pkgdatadir="$(abs_top_srcdir)" \
 	tst_aclocaldir="$(abs_top_srcdir)/libltdl/m4"
 
 INSTALLCHECK_ENVIRONMENT = \
-	LIBTOOLIZE="$(bindir)/`echo libtoolize | sed '$(program_transform_name)'`" \
-	LIBTOOL="$(bindir)/`echo libtool | sed '$(program_transform_name)'`" \
+	LIBTOOLIZE="$(bindir)/`echo libtoolize |$(SED) '$(program_transform_name)'`" \
+	LIBTOOL="$(bindir)/`echo libtool |$(SED) '$(program_transform_name)'`" \
 	LTDLINCL="-I$(includedir)" \
 	LIBLTDL="$(libdir)/libltdl.la" \
 	tst_aclocaldir="$(aclocaldir)"

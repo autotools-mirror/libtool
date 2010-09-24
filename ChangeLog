@@ -1,3 +1,9 @@
+2010-09-24  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: let make employ user's `SED' setting.
+	* Makefile.am: Replace hard-coded `sed' with `$(SED)' through-
+	out.
+
 2010-08-30  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: simplify and improve safety of bootstrap process.
