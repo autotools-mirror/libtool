@@ -43,15 +43,17 @@ noinst_LTLIBRARIES	=
 lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
 
-aux_dir			= libltdl/config
-macro_dir		= libltdl/m4
+ltdl_dir		= $(srcdir)/libltdl
+aux_dir			= $(ltdl_dir)/config
+macro_dir		= $(ltdl_dir)/m4
+m4sh_dir		= $(aux_dir)
 
-LT_M4SH			= $(M4SH) -B '$(srcdir)/$(aux_dir)'
+LT_M4SH			= $(M4SH) -B '$(m4sh_dir)'
 
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
-MKSTAMP = '$(SHELL)' '$(srcdir)/$(aux_dir)/mkstamp'
+MKSTAMP = '$(SHELL)' '$(aux_dir)/mkstamp'
 
 timestamp = set dummy `$(MKSTAMP) '$(srcdir)'`; shift; \
 	case $(VERSION) in \
@@ -66,7 +68,13 @@ rebuild = rebuild=:; $(timestamp); revision=$$1
 # Bootstrap. #
 # ---------- #
 
-sh_files	= $(aux_dir)/general.m4sh $(aux_dir)/getopt.m4sh
+defs_m4sh	= $(tests_dir)/defs.m4sh
+general_m4sh	= $(m4sh_dir)/general.m4sh
+getopt_m4sh	= $(m4sh_dir)/getopt.m4sh
+libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
+ltmain_m4sh	= $(m4sh_dir)/ltmain.m4sh
+
+sh_files	= $(general_m4sh) $(getopt_m4sh)
 EXTRA_DIST     += bootstrap $(aux_dir)/mkstamp $(sh_files) \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
@@ -83,11 +91,9 @@ CLEANFILES     += libtool libtoolize
 ## and dependencies with `$(srcdir)' consistently.
 configure_ac	= $(srcdir)/configure.ac
 libtoolize_in	= $(srcdir)/libtoolize.in
-libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
-ltmain_m4sh	= $(srcdir)/$(aux_dir)/ltmain.m4sh
-ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
-ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
-ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
+ltmain_sh	= $(aux_dir)/ltmain.sh
+ltversion_in	= $(macro_dir)/ltversion.in
+ltversion_m4	= $(macro_dir)/ltversion.m4
 
 EXTRA_DIST     += $(libtoolize_in) $(libtoolize_m4sh) $(ltmain_m4sh) \
 		  $(ltmain_sh) $(ltversion_in) $(ltversion_m4)
@@ -140,7 +146,7 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
-##           you must `touch $(srcdir)/$(aux_dir)/ltmain.m4sh' from the
+##           you must `touch $(m4sh_dir)/ltmain.m4sh' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
@@ -165,9 +171,9 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 $(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
 	$(LT_M4SH) '$(libtoolize_m4sh)' | $(bootstrap_edit) > '$@'
 
-lt_Makefile_am	= $(srcdir)/libltdl/Makefile.am
-lt_Makefile_in	= $(srcdir)/libltdl/Makefile.in
-lt_Makefile_inc	= $(srcdir)/libltdl/Makefile.inc
+lt_Makefile_am	= $(ltdl_dir)/Makefile.am
+lt_Makefile_in	= $(ltdl_dir)/Makefile.in
+lt_Makefile_inc	= $(ltdl_dir)/Makefile.inc
 
 $(lt_Makefile_am): $(lt_Makefile_inc)
 	rm -f '$@'
@@ -306,20 +312,20 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 include libltdl/Makefile.inc
 
-lt_aclocal_m4	= $(srcdir)/libltdl/aclocal.m4
-lt_config_h_in	= $(srcdir)/libltdl/config-h.in
-lt_configure	= $(srcdir)/libltdl/configure
-stamp_mk	= $(srcdir)/libltdl/stamp-mk
+lt_aclocal_m4	= $(ltdl_dir)/aclocal.m4
+lt_config_h_in	= $(ltdl_dir)/config-h.in
+lt_configure	= $(ltdl_dir)/configure
+stamp_mk	= $(ltdl_dir)/stamp-mk
 
-lt_obsolete_m4	= $(srcdir)/$(macro_dir)/lt~obsolete.m4
+lt_obsolete_m4	= $(macro_dir)/lt~obsolete.m4
 
 EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
 
 $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
-	cd '$(srcdir)/libltdl' && "$(AUTOMAKE)" Makefile
+	cd '$(ltdl_dir)' && "$(AUTOMAKE)" Makefile
 
 $(stamp_mk): $(lt_Makefile_in)
-	T='$(srcdir)/libltdl/Makefile.tmp'; \
+	T='$(ltdl_dir)/Makefile.tmp'; \
 	'$(SED)' -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
 	    -e 's,config/mkinstalldirs,,' \
 	    < '$(lt_Makefile_in)' > "$$T" && \
@@ -334,18 +340,18 @@ lt_aclocal_m4_deps = \
 	$(macro_dir)/ltdl.m4 \
 	$(macro_dir)/ltsugar.m4 \
 	$(macro_dir)/argz.m4 \
-	$(srcdir)/libltdl/configure.ac
+	$(ltdl_dir)/configure.ac
 
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
 
 $(lt_aclocal_m4): $(lt_aclocal_m4_deps)
-	cd '$(srcdir)/libltdl' && "$(ACLOCAL)" -I m4
+	cd '$(ltdl_dir)' && "$(ACLOCAL)" -I m4
 
 $(lt_configure): $(lt_configure_deps)
-	cd '$(srcdir)/libltdl' && "$(AUTOCONF)"
+	cd '$(ltdl_dir)' && "$(AUTOCONF)"
 
 $(lt_config_h_in): $(lt_configure_deps)
-	cd '$(srcdir)/libltdl' && "$(AUTOHEADER)"
+	cd '$(ltdl_dir)' && "$(AUTOHEADER)"
 	touch '$@'
 
 
@@ -353,13 +359,22 @@ $(lt_config_h_in): $(lt_configure_deps)
 ## Documentation. ##
 ## -------------- ##
 
-libtool_1		= $(srcdir)/doc/libtool.1
-libtoolize_1		= $(srcdir)/doc/libtoolize.1
-notes_texi		= $(srcdir)/doc/notes.texi
-notes_txt		= $(srcdir)/doc/notes.txt
+doc_dir		= $(srcdir)/doc
 
+libtool_1	= $(doc_dir)/libtool.1
+libtoolize_1	= $(doc_dir)/libtoolize.1
+notes_texi	= $(doc_dir)/notes.texi
+notes_txt	= $(doc_dir)/notes.txt
+
+# A bug in automake 1.11.1 (at least) prevents us from using:
+#
+#   info_TEXINFOS	= $(doc_dir)/libtool.texi
+#
+# Producing the following error, even though srcdir is implicitly set:
+# "cannot open < ./@srcdir@/doc/libtool.texi: No such file or directory"
 info_TEXINFOS		= doc/libtool.texi
-doc_libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi $(notes_texi)
+doc_libtool_TEXINFOS	= $(doc_dir)/PLATFORMS $(doc_dir)/fdl.texi \
+			  $(notes_texi)
 EXTRA_DIST	       += $(notes_txt)
 ## Workaround for a texinfo bug described here:
 ## http://thread.gmane.org/gmane.comp.tex.texinfo.bugs/3930
@@ -431,15 +446,15 @@ install-data-local: $(lt_Makefile_in)
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@list='$(aclocalfiles)'; for p in $$list; do \
 	  f=`echo "$$p" |'$(SED)' 's|^.*/||'`; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
+	  echo " $(INSTALL_DATA) '$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  $(INSTALL_DATA) "$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
 ## install the helper scripts
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)'
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/config'
 	@list='$(auxfiles)' && for p in $$list; do \
-	  echo " $(INSTALL_SCRIPT) '$(srcdir)/libltdl/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_SCRIPT) "$(srcdir)/libltdl/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_SCRIPT) '$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_SCRIPT) "$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 ## install the libltdl files
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/libltdl'
@@ -456,7 +471,7 @@ install-data-local: $(lt_Makefile_in)
 ## Distribution. ##
 ## ------------- ##
 
-edit_readme_alpha = $(srcdir)/$(aux_dir)/edit-readme-alpha
+edit_readme_alpha = $(aux_dir)/edit-readme-alpha
 
 EXTRA_DIST += $(edit_readme_alpha)
 
@@ -489,6 +504,10 @@ dist-hook:
 ## ----------- ##
 ## Test suite. ##
 ## ----------- ##
+
+tests_dir	= $(top_srcdir)/tests
+package_m4	= $(tests_dir)/package.m4
+testsuite	= $(tests_dir)/testsuite
 
 # The testsuite files are evaluated in the order given here.
 TESTSUITE	= tests/testsuite
@@ -555,9 +574,6 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/darwin.at \
 		  tests/deplibs-mingw.at \
 		  tests/sysroot.at
-
-package_m4	= $(srcdir)/tests/package.m4
-testsuite	= $(srcdir)/$(TESTSUITE)
 
 EXTRA_DIST     += $(testsuite) $(TESTSUITE_AT) $(package_m4)
 
@@ -936,8 +952,8 @@ NONINTERACTIVE_TESTS += $(FC_TESTS)
 endif
 TESTS = $(NONINTERACTIVE_TESTS) $(INTERACTIVE_TESTS)
 
-defs_in		= $(srcdir)/tests/defs.in
-defs_m4sh	= $(srcdir)/tests/defs.m4sh
+defs		= tests/defs
+defs_in		= $(tests_dir)/defs.in
 
 EXTRA_DIST     += $(defs_in) $(defs_m4sh) \
 		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS) \
@@ -946,12 +962,12 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 
 # The defs script shouldn't be recreated whenever the Makefile is
 # regenerated since the source tree can be read-only.
-check-recursive: tests/defs
-tests/defs: $(defs_in)
+check-recursive: $(defs)
+$(defs): $(defs_in)
 	rm -f '$@'
 	$(configure_edit) '$(defs_in)' > '$@'
 
-$(defs_in): $(defs_m4sh) $(aux_dir)/general.m4sh Makefile.am
+$(defs_in): $(defs_m4sh) $(general_m4sh) Makefile.am
 	rm -f '$@'
 	$(LT_M4SH) '$(defs_m4sh)' > '$@'
 
@@ -978,5 +994,5 @@ fake-distclean-legacy:
 	  else :; fi; \
 	done
 
-$(TESTS): tests/defs
-DISTCLEANFILES += tests/defs
+$(TESTS): $(defs)
+DISTCLEANFILES += $(defs)

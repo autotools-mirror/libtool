@@ -1,5 +1,15 @@
 2010-09-25  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: DRYing out `Makefile.am' file paths.
+	* Makefile.am (aux_dir, macro_dir): Include `$(srcdir)' in
+	declaration. Adjust all references.
+	(doc_dir, ltdl_dir, m4sh_dir, tests_dir): New single location
+	to hold directory paths, all including `$(srcdir)', to reduce
+	typing.
+	(LT_M4SH): Use `$m4sh_dir' as include directory.
+	(defs): This one is for a file in the build-tree, so no
+	leading `$(srcdir)'.
+
 	CLEANUP: fix error from pushing too far up the branch.
 	* Makefile.am (install-data-local): Undo character transposition
 	from too early push of untested v2.4-17-gaf74d58.
