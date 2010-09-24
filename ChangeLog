@@ -1,3 +1,16 @@
+2010-09-23  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: pass directory declarations in configure.ac into Makefile.
+	* configure.ac (AC_CONFIG_AUX_DIR, LT_CONFIG_LTDL_DIR)
+	(AC_CONFIG_MACRO_DIR): Append code to these functions to
+	capture and propagate their directory arguments to Makefile.
+	* Makefile.am (aux_dir, ltdl_dir, macro_dir): Remove declarations.
+	* bootstrap (my_sed_trace): Also capture LT_CONFIG_LTDL_DIR into
+	`$ltdl_dir'.
+	<Makefile>: Output the extracted values of `aux_dir', `ltdl_dir'
+	and `macro_dir' at the top of the quick'n'dirty bootstrap
+	Makefile.
+
 2010-09-26  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: factor out ltmain.sh variable deletion.

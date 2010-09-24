@@ -67,10 +67,13 @@ test -f ./configure.ac || {
 # Extract aux_dir and macro_dir from configure.ac:
 lt_tab='	'
 my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-	/AC_CONFIG_AUX_DIR[^_]/  {
+	/^AC_CONFIG_AUX_DIR[^_]/  {
 	    s,^.*AC_CONFIG_AUX_DIR([[ '"$lt_tab"']*\([^])]*\).*$,aux_dir=\1,; p;
 	};
-	/AC_CONFIG_MACRO_DIR/   {
+	/^LT_CONFIG_LTDL_DIR[^_]/  {
+	    s,^.*LT_CONFIG_LTDL_DIR([[ '"$lt_tab"']*\([^])]*\).*$,ltdl_dir=\1,; p;
+	};
+	/^AC_CONFIG_MACRO_DIR/   {
 	    s,^.*AC_CONFIG_MACRO_DIR([[ '"$lt_tab"']*\([^])]*\).*$,macro_dir=\1,; p;
 	};
 	d;'
@@ -122,7 +125,12 @@ VERSION=$3
 # Whip up a dirty Makefile:
 makes='Makefile.am libltdl/Makefile.inc'
 rm -f Makefile
-$SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes > Makefile
+{
+  echo "aux_dir	= $aux_dir"
+  echo "ltdl_dir = $ltdl_dir"
+  echo "macro_dir = $macro_dir"
+  $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes
+} > Makefile
 
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.
