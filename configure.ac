@@ -34,6 +34,18 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 AC_INIT([GNU Libtool], [2.4.3a], [bug-libtool@gnu.org])
 m4_ifndef([AC_PACKAGE_URL],
 	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/software/libtool/])])
+
+# Since we already declare these directories in this file, save those
+# choices, and push the results into Makefile.am to avoid declaring
+# them in two places making renames error prone, and where copies
+# might get out of sync.
+m4_define([AC_CONFIG_AUX_DIR],
+     m4_defn([AC_CONFIG_AUX_DIR])[AC_SUBST([aux_dir], ['${srcdir}/$1'])])
+m4_define([LT_CONFIG_LTDL_DIR],
+     m4_defn([LT_CONFIG_LTDL_DIR])[AC_SUBST([ltdl_dir], ['${srcdir}/$1'])])
+m4_define([AC_CONFIG_MACRO_DIR],
+     m4_defn([AC_CONFIG_MACRO_DIR])[AC_SUBST([macro_dir], ['${srcdir}/$1'])])
+
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.m4sh])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])

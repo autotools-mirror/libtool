@@ -43,9 +43,6 @@ noinst_LTLIBRARIES	=
 lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
 
-ltdl_dir		= $(srcdir)/libltdl
-aux_dir			= $(ltdl_dir)/config
-macro_dir		= $(ltdl_dir)/m4
 m4sh_dir		= $(aux_dir)
 
 LT_M4SH			= $(M4SH) -B '$(m4sh_dir)'
