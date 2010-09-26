@@ -1,3 +1,9 @@
+2010-09-26  Gary V. Vaughan  <gary@gnu.org>
+
+	tests: DRYing out `tests/sh.test'.
+	* Makefile.am (libtool_m4): Canonical location of libtool.m4 file.
+	(lt_aclocal_m4_deps): Use it.
+
 2010-09-23  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: pass directory declarations in configure.ac into Makefile.

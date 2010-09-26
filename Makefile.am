@@ -90,6 +90,7 @@ configure_ac	= $(srcdir)/configure.ac
 config_status	= $(top_builddir)/config.status
 libtoolize_in	= $(srcdir)/libtoolize.in
 ltmain_sh	= $(aux_dir)/ltmain.sh
+libtool_m4	= $(macro_dir)/libtool.m4
 ltversion_in	= $(macro_dir)/ltversion.in
 ltversion_m4	= $(macro_dir)/ltversion.m4
 
@@ -338,7 +339,7 @@ $(stamp_mk): $(lt_Makefile_in)
 lt_aclocal_m4_deps = \
 	$(lt_obsolete_m4) \
 	$(ltversion_m4) \
-	$(macro_dir)/libtool.m4 \
+	$(libtool_m4) \
 	$(macro_dir)/ltoptions.m4 \
 	$(macro_dir)/ltdl.m4 \
 	$(macro_dir)/ltsugar.m4 \
