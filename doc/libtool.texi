@@ -3312,11 +3312,11 @@ interpreted language.  In fact, dlopen calls are frequently used in
 language interpreters to provide an efficient way to extend the
 language.
 
-As of version @value{VERSION}, libtool provides support for dlopened
-modules.  However, you should indicate that your package is willing to
-use such support, by using the @code{LT_INIT} option @samp{dlopen} in
-@file{configure.ac}.  If this option is not given, libtool will assume
-no dlopening mechanism is available, and will try to simulate it.
+Libtool provides support for dlopened modules.  However, you should
+indicate that your package is willing to use such support, by using the
+@code{LT_INIT} option @samp{dlopen} in @file{configure.ac}.  If this
+option is not given, libtool will assume no dlopening mechanism is
+available, and will try to simulate it.
 
 This chapter discusses how you as a dlopen application developer might
 use libtool to generate dlopen-accessible modules.

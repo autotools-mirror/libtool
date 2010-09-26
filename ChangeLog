@@ -1,3 +1,10 @@
+2010-09-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	docs: do not refer to Libtool version with dlopen functionality.
+	* doc/libtool.texi (Dlopened modules): Remove broken reference
+	to what should have been Libtool 0.9g.
+	Report by Roumen Petrov.
+
 2010-09-23  Peter Rosin  <peda@lysator.liu.se>
 
 	msvc: don't try to export import descriptors.
