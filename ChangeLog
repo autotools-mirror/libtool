@@ -1,3 +1,11 @@
+2010-09-26  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: factor out ltmain.sh variable deletion.
+	* Makefile.am (ltmain_sh_edit): Expand upon bootstrap edit by
+	adding the extra line to delete boilerplate variable settings
+	from libltdl/config/general.m4sh that don't apply here.
+	(libltdl/config/ltmain.sh): Use it.
+
 2010-09-25  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: DRYing out `Makefile.am' file paths.
