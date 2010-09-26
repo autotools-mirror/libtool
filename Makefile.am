@@ -117,6 +117,12 @@ bootstrap_edit  = $(SED) \
 		  -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		  -e 's,@VERSION\@,$(VERSION),g'
 
+## ltmain.sh needs some additional editing to remove unsubstituted
+## variable defaulting lines, because ltmain.sh never gets passed
+## through $(configure_edit).
+ltmain_sh_edit	= $(bootstrap_edit) \
+		  -e '/^: \$${.*="@.*@"}$$/d'
+
 ## We build ltversion.m4 here, instead of from config.status,
 ## because config.status is rerun each time one of configure's
 ## dependencies change and ltversion.m4 happens to be a configure
@@ -163,9 +169,8 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
 	done; \
 	if $$rebuild; then \
 	  rm -f '$@'; \
-	  echo "$(LT_M4SH) '$(ltmain.m4sh)' | $(bootstrap_edit) > '$@'"; \
-	  $(LT_M4SH) '$(ltmain_m4sh)' \
-	      | $(bootstrap_edit) -e '/^: \$${.*="@.*@"}$$/d' > '$@'; \
+	  echo "$(LT_M4SH) '$(ltmain.m4sh)' | $(ltmain_sh_edit) > '$@'"; \
+	  $(LT_M4SH) '$(ltmain_m4sh)' | $(ltmain_sh_edit) > '$@'; \
 	  chmod a-w '$@'; \
 	fi
 
