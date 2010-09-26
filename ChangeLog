@@ -1,3 +1,20 @@
+2010-09-26  Gary V. Vaughan  <gary@gnu.org>
+
+	tests: DRYing out `tests/sh.test'.
+	* Makefile.am (libtool_m4): Canonical location of libtool.m4 file.
+	(lt_aclocal_m4_deps): Use it.
+	(check_scripts): New variable for list of scripts to be checked
+	by `tests/sh.test'.
+	(legacy_tests_edit): New sed script to substitute `libtool_m4'
+	and `check_scripts' into `tests/defs'.
+	(tests/defs.in): Use it.
+	* tests/defs.m4sh (scripts): Calculate absolute paths of each
+	entry in `check_scripts' before changing directories.
+	(libtool_m4): Save location of `libtool.m4'.
+	(macro_dir, aux_dir): Removed. No longer required by any test.
+	* tests/sh.test: Remove loop around just `$macro_dir/libtool.m4'
+	in favour of a single reference to `$libtool_m4' from above.
+
 2010-09-23  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: pass directory declarations in configure.ac into Makefile.

@@ -89,6 +89,7 @@ CLEANFILES     += libtool libtoolize
 configure_ac	= $(srcdir)/configure.ac
 libtoolize_in	= $(srcdir)/libtoolize.in
 ltmain_sh	= $(aux_dir)/ltmain.sh
+libtool_m4	= $(macro_dir)/libtool.m4
 ltversion_in	= $(macro_dir)/ltversion.in
 ltversion_m4	= $(macro_dir)/ltversion.m4
 
@@ -337,7 +338,7 @@ $(stamp_mk): $(lt_Makefile_in)
 lt_aclocal_m4_deps = \
 	$(lt_obsolete_m4) \
 	$(ltversion_m4) \
-	$(macro_dir)/libtool.m4 \
+	$(libtool_m4) \
 	$(macro_dir)/ltoptions.m4 \
 	$(macro_dir)/ltdl.m4 \
 	$(macro_dir)/ltsugar.m4 \
@@ -957,10 +958,16 @@ TESTS = $(NONINTERACTIVE_TESTS) $(INTERACTIVE_TESTS)
 defs		= tests/defs
 defs_in		= $(tests_dir)/defs.in
 
+check_scripts	= $(ltmain_m4sh) $(libtoolize_m4sh)
+
 EXTRA_DIST     += $(defs_in) $(defs_m4sh) \
 		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS) \
 		  $(INTERACTIVE_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
+
+legacy_tests_edit = $(SED) \
+	-e 's,@check_scripts\@,$(check_scripts),g' \
+	-e 's,@libtool_m4\@,$(libtool_m4),g'
 
 # The defs script shouldn't be recreated whenever the Makefile is
 # regenerated since the source tree can be read-only.
@@ -971,7 +978,7 @@ $(defs): $(defs_in)
 
 $(defs_in): $(defs_m4sh) $(general_m4sh) Makefile.am
 	rm -f '$@'
-	$(LT_M4SH) '$(defs_m4sh)' > '$@'
+	$(LT_M4SH) '$(defs_m4sh)' | $(legacy_tests_edit) > '$@'
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:

@@ -121,14 +121,11 @@ done
 
 # Check for correct usage of $cc_basename.
 # redirect stderr so we also barf when sed issues diagnostics.
-for s in "$macro_dir/libtool.m4"
-do
-  if $SED -n '/case \$cc_basename in/,/esac/ {
-	      /^[ 	]*[a-zA-Z][a-zA-Z0-9+]*[^*][ 	]*)/p
-  	      }'  $s 2>&1 | $EGREP .; then
-    echo "\$cc_basename matches should include a trailing \`*' in $s."
-    status=$EXIT_FAILURE
-  fi
-done
+if $SED -n '/case \$cc_basename in/,/esac/ {
+	    /^[ 	]*[a-zA-Z][a-zA-Z0-9+]*[^*][ 	]*)/p
+	    }'  $libtool_m4 2>&1 | $EGREP .; then
+  echo "\$cc_basename matches should include a trailing \`*' in $libtool_m4."
+  status=$EXIT_FAILURE
+fi
 
 exit $status

@@ -342,9 +342,20 @@ func_exec ()
 # Shared global variables for test scripts
 prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
 srcdir=`cd $srcdir && pwd`
-macro_dir=$srcdir/libltdl/m4
-aux_dir=$srcdir/libltdl/config
-scripts="$aux_dir/ltmain.m4sh $srcdir/libtoolize.m4sh"
+
+# sh.test does some checks on libtool.m4.
+func_dirname_and_basename '@libtool_m4@'
+libtool_m4="`cd $func_dirname_result && pwd`/$func_basename_result"
+
+# sh.test does lots of checks on the contests of $scripts.
+scripts=
+sep=
+for script in @check_scripts@
+do
+  func_dirname_and_basename "$script"
+  scripts="$scripts$sep`cd $func_dirname_result && pwd`/$func_basename_result"
+  sep=' '
+done
 
 # Unset some MAKE... variables that may cause $MAKE to act like a
 # recursively invoked sub-make.  Any $MAKE invocation in a test is
