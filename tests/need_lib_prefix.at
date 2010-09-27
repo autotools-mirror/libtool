@@ -1,6 +1,6 @@
 # need-lib-prefix.at -- test libltdl functionality            -*- Autotest -*-
 #
-#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008, 2010 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2007
 #
 #   This file is part of GNU Libtool.
@@ -24,6 +24,11 @@
 
 AT_SETUP([enforced lib prefix])
 AT_KEYWORDS([libltdl libtool])
+
+# Originally written to simulate a failure visible on systems
+# which need a library prefix like 'lib', such as BeOS.  Currently
+# the prefix is hardcoded as 'lib', so systems that require a
+# different prefix skips the test.
 
 AT_DATA([main.c],
 [[#include <ltdl.h>
@@ -147,6 +152,13 @@ esac], [], [ignore])
 
 CPPFLAGS="$LTDLINCL $CPPFLAGS"
 LDFLAGS="$LDFLAGS"
+
+# Skip this test when libraries are not normally prefixed with lib.
+# E.g., for MSVC and OS/2.
+eval "`$LIBTOOL --config | $EGREP '^(libname_spec)='`"
+name=
+eval libname=\"$libname_spec\"
+AT_CHECK([test "$libname" = lib || exit 77])
 
 # Create our own libtool, forcing need_lib_prefix setting
 sed 's,^\(need_lib_prefix\)=.*$,\1=unknown,' $LIBTOOL > ./libtool

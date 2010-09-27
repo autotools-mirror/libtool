@@ -1,5 +1,9 @@
 2010-09-27  Peter Rosin  <peda@lysator.liu.se>
 
+	Skip need_lib_prefix.at on systems without lib prefix on libraries.
+	* tests/need_lib_prefix.at [MSVC, OS/2]: Skip this test on
+	systems that do not have libraries prefixed with lib.
+
 	tests: clean up importing and exporting on w32.
 	Makes the touched tests pass for MSVC when DLLs are built.
 	* tests/demo/Makefile.am, tests/pdemo/Makefile.am: Define
