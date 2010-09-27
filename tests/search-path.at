@@ -1,7 +1,6 @@
 # search-path.at -- test sys_lib_search_path_spec             -*- Autotest -*-
 #
-#   Copyright (C) 2006, 2008 Free Software Foundation, Inc.
-#   Written by Ralf Wildenhues, 2006
+#   Copyright (C) 2006, 2008, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -56,5 +55,43 @@ done
 if $no_libz; then
   AT_CHECK([exit 77])
 fi
+
+AT_CLEANUP
+
+
+AT_SETUP([sys_lib_search_path on w32])
+AT_KEYWORDS([libtool])
+
+# Check if libtool knows the path to system libraries.  Using
+# a w32 system library since the test is designed to check if
+# the libtool handling of the sys_lib_search_path variable is
+# correct for MSVC.
+
+LDFLAGS="$LDFLAGS -no-undefined"
+
+AT_DATA([gc.c],
+[[#include <windows.h>
+HCURSOR get_cursor (void)
+{
+  return GetCursor ();
+}
+]])
+
+eval "`$LIBTOOL --config | grep '^build_libtool_libs='`"
+AT_CHECK([test "$build_libtool_libs" = yes || exit 77])
+
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC \
+	  $CC $CPPFLAGS $CFLAGS -o gc.lo -c gc.c || exit 77],
+	 [], [ignore], [ignore])
+
+# Ok, compile was fine, then it should be possible to link too.
+
+AT_CHECK([$LIBTOOL --mode=link --tag=CC --tag=disable-static \
+	  $CC $CFLAGS $LDFLAGS -o libgc.la gc.lo -rpath /nowhere -luser32],
+	 [], [ignore], [ignore])
+
+# If -luser32 was found, then libtool will build a shared library,
+# otherwise libtool will fall back to creating a static library.
+AT_CHECK([grep old_library=\'\' libgc.la], [], [ignore])
 
 AT_CLEANUP
