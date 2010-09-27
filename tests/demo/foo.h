@@ -37,6 +37,19 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #  endif
 #endif
 
+#if (defined _WIN32 || defined _WIN32_WCE) && !defined __GNUC__
+# ifdef BUILDING_LIBHELLO
+#  ifdef DLL_EXPORT
+#   define LIBHELLO_SCOPE extern __declspec (dllexport)
+#  endif
+# else
+#  define LIBHELLO_SCOPE extern __declspec (dllimport)
+# endif
+#endif
+#ifndef LIBHELLO_SCOPE
+# define LIBHELLO_SCOPE extern
+#endif
+
 /* __BEGIN_DECLS should be used at the beginning of your declarations,
    so that C++ compilers don't mangle their names.  Use __END_DECLS at
    the end of C declarations. */
@@ -83,7 +96,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 __BEGIN_DECLS
 int foo LT_PARAMS((void));
 int hello LT_PARAMS((void));
-extern int nothing;
+LIBHELLO_SCOPE int nothing;
 __END_DECLS
 
 #endif /* !_FOO_H_ */

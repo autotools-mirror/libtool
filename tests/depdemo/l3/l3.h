@@ -1,7 +1,7 @@
 /* l3.h -- interface to a trivial library
 
    Copyright (C) 1998-1999 Thomas Tanner
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    This file is part of GNU Libtool.
@@ -29,8 +29,21 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 #include "sysdep.h"
 
+#if (defined _WIN32 || defined _WIN32_WCE) && !defined __GNUC__
+# ifdef BUILDING_LIBL3
+#  ifdef DLL_EXPORT
+#   define LIBL3_SCOPE extern __declspec (dllexport)
+#  endif
+# else
+#  define LIBL3_SCOPE extern __declspec (dllimport)
+# endif
+#endif
+#ifndef LIBL3_SCOPE
+# define LIBL3_SCOPE extern
+#endif
+
 __BEGIN_DECLS
-extern int var_l3;
+LIBL3_SCOPE int var_l3;
 int	func_l3 __P((int));
 __END_DECLS
 

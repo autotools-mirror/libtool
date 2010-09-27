@@ -1,3 +1,32 @@
+2010-09-27  Peter Rosin  <peda@lysator.liu.se>
+
+	tests: clean up importing and exporting on w32.
+	Makes the touched tests pass for MSVC when DLLs are built.
+	* tests/demo/Makefile.am, tests/pdemo/Makefile.am: Define
+	BUILDING_LIBHELLO when building libhello.la.
+	* tests/demo/foo.h, tests/pdemo/foo.h (nothing) <MSVC>: Export
+	variable when building the libhello dll and import when using
+	libhello.  For GCC and non-w32, and when building a static
+	libhello, leave as an ordinary extern.
+	* tests/pdemo/foo.h [Cygwin]: Remove unneeded and "dead" export
+	and import logic (LIBFOO_DLL is always undefined).
+	* tests/pdemo/longer_file_name_foo.c,
+	tests/pdemo/longer_file_name_foo2.c (_LIBFOO_COMPILATION_): Not
+	useful before, even less so now.  Removed.
+	* tests/depdemo/l1/Makefile.am: Define BUILDING_LIBL1 when
+	building libl1.la.
+	* tests/depdemo/l2/Makefile.am: Define BUILDING_LIBL2 when
+	building libl2.la.
+	* tests/depdemo/l3/Makefile.am: Define BUILDING_LIBL3 when
+	building libl3.la.
+	* tests/depdemo/l4/Makefile.am: Define BUILDING_LIBL4 when
+	building libl4.la.
+	* tests/depdemo/l1/l1.h, tests/depdemo/l2/l2.h,
+	tests/depdemo/l3/l3.h, tests/depdemo/l4/l4.h <MSVC>: Export
+	variables when building the associated library dll and import
+	when using the library.  For GCC and non-w32, and when building
+	static libraries, leave as an ordinary extern.
+
 2010-09-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	docs: do not refer to Libtool version with dlopen functionality.

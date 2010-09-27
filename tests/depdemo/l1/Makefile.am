@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-##   Copyright (C) 2003 Free Software Foundation
+##   Copyright (C) 2003, 2010 Free Software Foundation
 ##   Written by Gary V. Vaughan, 2003
 ##
 ##   This file is part of GNU Libtool.
@@ -26,7 +26,7 @@ top_distdir = ../..
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-AM_CPPFLAGS = -I$(top_srcdir)
+AM_CPPFLAGS = -I$(top_srcdir) -DBUILDING_LIBL1
 
 lib_LTLIBRARIES = libl1.la
 libl1_la_SOURCES = l1.c l1.h

@@ -73,22 +73,17 @@ or obtained by writing to the Free Software Foundation, Inc.,
 # define LT_DLSYM_CONST const
 #endif
 
-#ifdef __CYGWIN32__
-#  ifdef LIBFOO_DLL
-     /* need some (as yet non-existant) automake magic to tell
-      * the object whether the libfoo it will be linked with is
-      * a dll or not, ie whether LIBFOO_DLL is defined or not.
-      */
-#    ifdef _LIBFOO_COMPILATION_
-#      define EXTERN __declspec(dllexport)
-#    else
-#      define EXTERN extern __declspec(dllimport)
-#    endif
-#  else
-#    define EXTERN extern
+#if (defined _WIN32 || defined _WIN32_WCE) && !defined __GNUC__
+# ifdef BUILDING_LIBHELLO
+#  ifdef DLL_EXPORT
+#   define LIBHELLO_SCOPE extern __declspec (dllexport)
 #  endif
-#else
-#  define EXTERN extern
+# else
+#  define LIBHELLO_SCOPE extern __declspec (dllimport)
+# endif
+#endif
+#ifndef LIBHELLO_SCOPE
+# define LIBHELLO_SCOPE extern
 #endif
 
 /* Silly constants that the functions return. */
@@ -101,7 +96,7 @@ __BEGIN_DECLS
 int foo LT_PARAMS((void));
 int foo2 LT_PARAMS((void));
 int hello LT_PARAMS((void));
-EXTERN int nothing;
+LIBHELLO_SCOPE int nothing;
 __END_DECLS
 
 #endif /* !_FOO_H_ */

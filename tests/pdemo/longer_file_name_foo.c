@@ -1,6 +1,6 @@
 /* foo.c -- trivial test function for libfoo
 
-   Copyright (C) 1996-1999, 2007 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2007, 2010 Free Software Foundation, Inc.
    Written by Gordon Matzigkeit, 1996
 
    This file is part of GNU Libtool.
@@ -22,9 +22,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#define _LIBFOO_COMPILATION_
 #include "foo.h"
-#undef _LIBFOO_COMPILATION_
 
 #include <stdio.h>
 #include <math.h>

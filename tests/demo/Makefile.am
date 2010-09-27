@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-##   Copyright (C) 2003, 2004, 2005 Free Software Foundation
+##   Copyright (C) 2003, 2004, 2005, 2010 Free Software Foundation
 ##   Written by Gary V. Vaughan, 2003
 ##
 ##   This file is part of GNU Libtool.
@@ -31,6 +31,7 @@ lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
 libhello_la_LIBADD = $(LIBM)
 libhello_la_LDFLAGS = -no-undefined -version-info 3:12:1
+libhello_la_AM_CPPFLAGS = $(AM_CPPFLAGS) -DBUILDING_LIBHELLO
 
 include_HEADERS = foo.h
 
