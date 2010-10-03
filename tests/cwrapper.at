@@ -194,4 +194,71 @@ AT_CHECK([grep ' *fputs' $objdir/lt-usea.c > /dev/null])
 # Check for no overly long fputs.
 AT_CHECK([grep ' *fputs.\{250\}' $objdir/lt-usea.c], [1])
 
+
+AT_CLEANUP
+
+
+AT_SETUP([cwrapper and installed shared libraries])
+AT_KEYWORDS([libtool])
+
+# make sure existing libtool is configured for shared libraries
+AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
+	 [], [ignore])
+
+LDFLAGS="$LDFLAGS -no-undefined"
+
+inst=`pwd`/inst
+libdir=$inst/lib
+bindir=$inst/bin
+mkdir $inst $libdir $bindir
+
+# Build the library in a separate directory to avoid the special case
+# of loading from the current directory.
+
+mkdir foo
+cd foo
+# build and install "old" library version
+AT_DATA([a.c], [[
+int liba_ver (void) { return 1; }
+]])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c],
+         [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -version-info=0.0.0 -o liba.la -rpath $libdir a.lo],
+         [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL liba.la $libdir],
+         [], [ignore], [ignore])
+
+# build a new library version
+AT_DATA([a.c], [[
+int liba_ver (void) { return 2; }
+]])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c],
+         [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -version-info=0.0.0 -o liba.la -rpath $libdir a.lo],
+         [], [ignore], [ignore])
+
+cd ..
+
+# build and run test application
+AT_DATA([m.c], [[
+extern int liba_ver (void);
+int main (void)
+{
+  int r = (liba_ver () == 2) ? 0 : 1;
+  return r;
+}
+]])
+
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c m.c],
+         [], [ignore], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m1$EXEEXT m.$OBJEXT foo/liba.la],
+         [], [ignore], [ignore])
+LT_AT_EXEC_CHECK([./m1], [0], [ignore], [ignore], [])
+
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m2$EXEEXT m.$OBJEXT foo/liba.la -L$inst/lib],
+         [], [ignore], [ignore])
+LT_AT_EXEC_CHECK([./m2], [0], [ignore], [ignore], [])
+
+
 AT_CLEANUP
