@@ -503,6 +503,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/cmdline_wrap.at \
 		  tests/pic_flag.at \
 		  tests/darwin.at \
+		  tests/dumpbin-symbols.at \
 		  tests/deplibs-mingw.at \
 		  tests/sysroot.at
 
