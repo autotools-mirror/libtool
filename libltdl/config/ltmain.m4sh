@@ -4268,9 +4268,15 @@ void lt_dump_script (FILE* f)
 {
 EOF
 	    func_emit_wrapper yes |
-              $SED -e 's/\([\\"]\)/\\\1/g' \
-	           -e 's/^/  fputs ("/' -e 's/$/\\n", f);/'
-
+	      $SED -n -e '
+s/^\(.\{79\}\)\(..*\)/\1\
+\2/
+h
+s/\([\\"]\)/\\\1/g
+s/$/\\n/
+s/\([^\n]*\).*/  fputs ("\1", f);/p
+g
+D'
             cat <<"EOF"
 }
 EOF

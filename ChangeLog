@@ -1,5 +1,12 @@
 2010-10-04  Peter Rosin  <peda@lysator.liu.se>
 
+	cwrapper: split long lines when dumping the wrapper script.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src): If
+	the wrapper script contains long lines, split them for
+	readability and to conform with C standards.
+	* tests/cwrapper.at (cwrapper string length): New test, making
+	sure we don't regress.
+
 	msvc: handle symbols from different files independently.
 	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS)
 	<dumpbin, lt_cv_sys_global_symbol_pipe>: Make all sections

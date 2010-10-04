@@ -134,3 +134,64 @@ done
 
 AT_CLEANUP
 
+
+AT_SETUP([cwrapper string length])
+
+eval "`$LIBTOOL --config | $EGREP '^(objdir)='`"
+
+AT_DATA([liba.c],
+[[int liba_func1 (int arg)
+{
+  return arg + 1;
+}
+]])
+AT_DATA([usea.c],
+[[extern int liba_func1 (int arg);
+int main (void)
+{
+  int a = 2;
+  int b = liba_func1 (a);
+  if (b == 3) return 0;
+  return 1;
+}
+]])
+
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -no-undefined ]dnl
+	 [-o liba.la -rpath /foo liba.lo],
+	 [], [ignore], [ignore])
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c usea.c],
+	 [], [ignore], [ignore])
+
+
+# Make sure PATH is at least 250 chars, which should force line breaks
+# in lt-usea.c.
+
+dirpath=
+save_IFS=$IFS
+IFS=$PATH_SEPARATOR
+for dirpath in $PATH; do
+  IFS=$save_IFS
+  break
+done
+IFS=$save_IFS
+
+until $ECHO "PATH=$PATH" | grep 'PATH=.\{250\}'; do
+  PATH="$PATH$PATH_SEPARATOR$dirpath"
+done
+export PATH
+
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -no-fast-install ]dnl
+	 [-o usea$EXEEXT usea.$OBJEXT liba.la],
+	 [], [ignore], [ignore])
+
+# Skip if no cwrapper is generated.
+AT_CHECK([test -f $objdir/lt-usea.c || exit 77])
+
+# Try to make sure the test is relevant.
+AT_CHECK([grep ' *fputs' $objdir/lt-usea.c > /dev/null])
+# Check for no overly long fputs.
+AT_CHECK([grep ' *fputs.\{250\}' $objdir/lt-usea.c], [1])
+
+AT_CLEANUP
