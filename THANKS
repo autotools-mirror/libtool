@@ -42,6 +42,7 @@
   Christian Cornelssen		ccorn@cs.tu-berlin.de		  2002-11-05
   Jan Kratochvil		project-libtool@jankratochvil.net 2003-01-28
   Raja R. Harinath		harinath@acm.org		  2003-02-25
+  Paolo Bonzini			bonzini@gnu.org			  2003-03-01
   Richard Nicholas Somer Dawe	rich@phekda.freeserve.co.uk	  2003-03-12
   Peter O'Gorman		peter@pogma.com			  2003-03-14
   Ralph Schleicher		rs@nunatak.allgaeu.org		  2003-03-13
@@ -55,7 +56,6 @@
   Benjamin Reed			ranger@befunk.com		  2004-02-08
   Ralf Wildenhues		Ralf.Wildenhues@gmx.de		  2004-02-12
   Nick Hudson			skrll@netbsd.org		  2004-03-29
-  Paolo Bonzini			bonzini@gnu.org			  2003-03-01
   Noah Jeffrey Misch		noah@cs.caltech.edu		  2004-07-05
   Thorsten Glaser		tg@66h.42h.de			  2004-10-11
   Peter Rosin			peda@lysator.liu.se		  2005-04-12
@@ -118,11 +118,13 @@
   John Wolfe			jlw@sco.com
   Josh Hursey			jjhursey@open-mpi.org
   Joseph Beckenbach III		jrb3@best.com
-  Lennart Poettering		lennart@poettering.net
   Karl Berry			karl@freefriends.org
   Kenneth Albanowski		kjahds@kjahds.com
   Kevin Ryde			user42@zip.com.au
+  Khem Raj                      raj.khem@gmail.com
   Kurt D. Zeilenga		Kurt@OpenLDAP.Org
+  Lennart Poettering		lennart@poettering.net
+  Lionel Landwerlin             llandwerlin@gmail.com
   Maciej Helminiak		dion2@wp.pl
   Maciej W. Rozycki		macro@linux-mips.org
   Mahesh Narayanamurthi		mahesh.mach@gmail.com

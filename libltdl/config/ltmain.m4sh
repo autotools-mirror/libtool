@@ -8478,7 +8478,8 @@ EOF
 	      *.la)
 		func_basename "$deplib"
 		name="$func_basename_result"
-		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
+		func_resolve_sysroot "$deplib"
+		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $func_resolve_sysroot_result`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$deplib' is not a valid libtool archive"
 		func_append newdependency_libs " ${lt_sysroot:+=}$libdir/$name"

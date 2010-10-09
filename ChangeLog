@@ -1,3 +1,12 @@
+2010-10-09  Paolo Bonzini  <bonzini@gnu.org>
+
+	Add missing sysroot resolution.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Resolve sysroot
+	when fetching the install directory of dependent libraries.
+	Reported by Lionel Landwerlin <llandwerlin@gmail.com>,
+	patch by Khem Raj <raj.khem@gmail.com>.
+	* THANKS: Reorder entries, add Khem and Lionel.
+
 2010-10-07  Roumen Petrov  <bugtrack@roumenpetrov.info>
 
 	Add test case for 69e77671 (cwrapper PATH manipulation order)
