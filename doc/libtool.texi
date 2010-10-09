@@ -1517,9 +1517,12 @@ of library paths.  Useful if the program is only used in the build tree,
 e.g., for testing or generating other files.
 
 @item -no-undefined
-Declare that @var{output-file} does not depend on any other libraries.
-Some platforms cannot create shared libraries that depend on other
-libraries (@pxref{Inter-library dependencies}).
+Declare that @var{output-file} does not depend on any libraries other
+than the ones listed on the command line, i.e., after linking, it will
+not have unresolved symbols.  Some platforms require all symbols in
+shared libraries to be resolved at library creation (@pxref{Inter-library
+dependencies}), and using this parameter allows @command{libtool} to
+assume that this will not happen.
 
 @item -o @var{output-file}
 Create @var{output-file} from the specified objects and libraries.
@@ -3261,12 +3264,13 @@ in order to guarantee that all the required libraries are found.  This
 restriction is only necessary to preserve compatibility with static
 library systems and simple dynamic library systems.
 
-Some platforms, such as AIX, do not even allow you this
+Some platforms, such as Windows, do not even allow you this
 flexibility.  In order to build a shared library, it must be entirely
-self-contained (that is, have references only to symbols that are found
-in the @file{.lo} files or the specified @samp{-l} libraries), and you
-need to specify the @option{-no-undefined} flag.  By default, libtool
-builds only static libraries on these kinds of platforms.
+self-contained or it must have dependencies known at link time (that is,
+have references only to symbols that are found in the @file{.lo} files
+or the specified @samp{-l} libraries), and you need to specify the
+@option{-no-undefined} flag.  By default, libtool builds only static
+libraries on these kinds of platforms.
 
 The simple-minded inter-library dependency tracking code of libtool
 releases prior to 1.2 was disabled because it was not clear when it was

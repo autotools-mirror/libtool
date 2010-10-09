@@ -1,3 +1,13 @@
+2010-10-12  Simon Josefsson  <simon@josefsson.org>
+	    Matěj Týč <matej.tyc@gmail.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	docs: improve description of -no-undefined.
+	* doc/libtool.texi (Link mode): Fix -no-undefined description.
+	(Inter-library dependencies): Use Windows not AIX as example
+	system.  Clarify need for symbol resolution at library creation
+	time.
+
 2010-10-09  Paolo Bonzini  <bonzini@gnu.org>
 
 	Add missing sysroot resolution.
