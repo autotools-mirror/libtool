@@ -1,3 +1,17 @@
+2010-12-20  Ian Lance Taylor  <iant@google.com>
+
+	* libltdl/m4/libtool.m4 (LT_LANG): Add Go.
+	(AC_PROG_GO): Provide.
+	(_LT_SYS_HIDDEN_LIBDEPS): Add Go case.
+	(_LT_LANG_GO_CONFIG): Define.
+	(LT_PROG_GO): Define.
+	(AC_PROG_GO): Define if not defined.
+	* libltdl/config/ltmain.m4sh: Match *.go.
+	* doc/libtool.texi (LT_INIT): Mention Go.
+	(Tags): Mention Go.
+	* configure.ac: Enable Go.
+	* NEWS: Update.
+
 2010-12-20  Brice De Bruyne  <bricedb@gmail.com>  (tiny change)
 
 	Also turn off -fuse-linker-plugin for postdep_objects computation.

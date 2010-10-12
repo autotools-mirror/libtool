@@ -196,6 +196,7 @@ _LTDL_SETUP
 LT_LANG(C++)
 LT_LANG(Fortran 77)
 LT_LANG(Fortran)
+LT_LANG(Go)
 LT_LANG(Java)
 LT_LANG(Windows Resource)
 

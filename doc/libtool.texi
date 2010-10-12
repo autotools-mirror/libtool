@@ -2250,7 +2250,7 @@ specifying @option{--with-pic} to @command{configure}.
 @defmac LT_LANG (@var{language})
 Enable @command{libtool} support for the language given if it
 has not yet already been enabled.  Languages accepted are ``C++'',
-``Fortran 77'', ``Java'' and ``Windows Resource''.
+``Fortran 77'', ``Java'', ``Go'', and ``Windows Resource''.
 
 If Autoconf language support macros such as @code{AC_PROG_CXX} are
 used in your @file{configure.ac}, Libtool language support will automatically
@@ -2849,6 +2849,7 @@ correspondence between language names and tags names.
 @item Java             @tab GCJ
 @item Fortran 77       @tab F77
 @item Fortran          @tab FC
+@item Go               @tab GO
 @item Windows Resource @tab RC
 @end multitable
 

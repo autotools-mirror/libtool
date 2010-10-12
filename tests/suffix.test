@@ -25,7 +25,7 @@
 
 # Extensions taken from the ones that Automake recognizes, plus Objective C,
 # and GNU Ada.  Also test that multiple dots are handled correctly.
-extensions="C F S ada adb ads asm c c++ cc cpp cxx f f90 F90 f95 F95 f03 F03 for m s sx ada.ada"
+extensions="C F S ada adb ads asm c c++ cc cpp cxx f f90 F90 f95 F95 f03 F03 for go m s sx ada.ada"
 bad_names="foo."
 
 . tests/defs || exit 1

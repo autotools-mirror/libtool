@@ -8,6 +8,8 @@ New in 2.4.2 2010-12-??: git version 2.4.1a, Libtool team:
     package names.  This can be used to build some static libraries with PIC
     objects while building others with non-PIC objects.
 
+  - Initial support for Go, using the gccgo compiler.
+
 * Bug fixes:
 
   - The generic approximation of the command line length limit (when getconf is

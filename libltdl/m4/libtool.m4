@@ -803,6 +803,7 @@ AC_DEFUN([LT_LANG],
 m4_case([$1],
   [C],			[_LT_LANG(C)],
   [C++],		[_LT_LANG(CXX)],
+  [Go],			[_LT_LANG(GO)],
   [Java],		[_LT_LANG(GCJ)],
   [Fortran 77],		[_LT_LANG(F77)],
   [Fortran],		[_LT_LANG(FC)],
@@ -822,6 +823,31 @@ m4_defun([_LT_LANG],
   m4_define([_LT_LANG_]$1[_enabled], [])dnl
   _LT_LANG_$1_CONFIG($1)])dnl
 ])# _LT_LANG
+
+
+m4_ifndef([AC_PROG_GO], [
+############################################################
+# NOTE: This macro has been submitted for inclusion into   #
+#  GNU Autoconf as AC_PROG_GO.  When it is available in    #
+#  a released version of Autoconf we should remove this    #
+#  macro and use it instead.                               #
+############################################################
+m4_defun([AC_PROG_GO],
+[AC_LANG_PUSH(Go)dnl
+AC_ARG_VAR([GOC],     [Go compiler command])dnl
+AC_ARG_VAR([GOFLAGS], [Go compiler flags])dnl
+_AC_ARG_VAR_LDFLAGS()dnl
+AC_CHECK_TOOL(GOC, gccgo)
+if test -z "$GOC"; then
+  if test -n "$ac_tool_prefix"; then
+    AC_CHECK_PROG(GOC, [${ac_tool_prefix}gccgo], [${ac_tool_prefix}gccgo])
+  fi
+fi
+if test -z "$GOC"; then
+  AC_CHECK_PROG(GOC, gccgo, gccgo, false)
+fi
+])#m4_defun
+])#m4_ifndef
 
 
 # _LT_LANG_DEFAULT_CONFIG
@@ -853,6 +879,10 @@ AC_PROVIDE_IFELSE([AC_PROG_GCJ],
 	[m4_define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[LT_LANG(GCJ)])])
        m4_ifdef([LT_PROG_GCJ],
 	[m4_define([LT_PROG_GCJ], defn([LT_PROG_GCJ])[LT_LANG(GCJ)])])])])])
+
+AC_PROVIDE_IFELSE([AC_PROG_GO],
+  [LT_LANG(GO)],
+  [m4_define([AC_PROG_GO], defn([AC_PROG_GO])[LT_LANG(GO)])])
 
 AC_PROVIDE_IFELSE([LT_PROG_RC],
   [LT_LANG(RC)],
@@ -6916,6 +6946,11 @@ public class foo {
   }
 };
 _LT_EOF
+], [$1], [GO], [cat > conftest.$ac_ext <<_LT_EOF
+package foo
+func foo() {
+}
+_LT_EOF
 ])
 
 _lt_libdeps_save_CFLAGS=$CFLAGS
@@ -7437,6 +7472,77 @@ CFLAGS=$lt_save_CFLAGS
 ])# _LT_LANG_GCJ_CONFIG
 
 
+# _LT_LANG_GO_CONFIG([TAG])
+# --------------------------
+# Ensure that the configuration variables for the GNU Go compiler
+# are suitably defined.  These variables are subsequently used by _LT_CONFIG
+# to write the compiler configuration to `libtool'.
+m4_defun([_LT_LANG_GO_CONFIG],
+[AC_REQUIRE([LT_PROG_GO])dnl
+AC_LANG_SAVE
+
+# Source file extension for Go test sources.
+ac_ext=go
+
+# Object file extension for compiled Go test sources.
+objext=o
+_LT_TAGVAR(objext, $1)=$objext
+
+# Code to be used in simple compile tests
+lt_simple_compile_test_code="package main; func main() { }"
+
+# Code to be used in simple link tests
+lt_simple_link_test_code='package main; func main() { }'
+
+# ltmain only uses $CC for tagged configurations so make sure $CC is set.
+_LT_TAG_COMPILER
+
+# save warnings/boilerplate of simple test code
+_LT_COMPILER_BOILERPLATE
+_LT_LINKER_BOILERPLATE
+
+# Allow CC to be a program name with arguments.
+lt_save_CC=$CC
+lt_save_CFLAGS=$CFLAGS
+lt_save_GCC=$GCC
+GCC=yes
+CC=${GOC-"gccgo"}
+CFLAGS=$GOFLAGS
+compiler=$CC
+_LT_TAGVAR(compiler, $1)=$CC
+_LT_TAGVAR(LD, $1)="$LD"
+_LT_CC_BASENAME([$compiler])
+
+# Go did not exist at the time GCC didn't implicitly link libc in.
+_LT_TAGVAR(archive_cmds_need_lc, $1)=no
+
+_LT_TAGVAR(old_archive_cmds, $1)=$old_archive_cmds
+_LT_TAGVAR(reload_flag, $1)=$reload_flag
+_LT_TAGVAR(reload_cmds, $1)=$reload_cmds
+
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
+if test -n "$compiler"; then
+  _LT_COMPILER_NO_RTTI($1)
+  _LT_COMPILER_PIC($1)
+  _LT_COMPILER_C_O($1)
+  _LT_COMPILER_FILE_LOCKS($1)
+  _LT_LINKER_SHLIBS($1)
+  _LT_LINKER_HARDCODE_LIBPATH($1)
+
+  _LT_CONFIG($1)
+fi
+
+AC_LANG_RESTORE
+
+GCC=$lt_save_GCC
+CC=$lt_save_CC
+CFLAGS=$lt_save_CFLAGS
+])# _LT_LANG_GO_CONFIG
+
+
 # _LT_LANG_RC_CONFIG([TAG])
 # -------------------------
 # Ensure that the configuration variables for the Windows resource compiler
@@ -7504,6 +7610,13 @@ AC_DEFUN([LT_PROG_GCJ],
 AU_ALIAS([LT_AC_PROG_GCJ], [LT_PROG_GCJ])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([LT_AC_PROG_GCJ], [])
+
+
+# LT_PROG_GO
+# ----------
+AC_DEFUN([LT_PROG_GO],
+[AC_CHECK_TOOL(GOC, gccgo,)
+])
 
 
 # LT_PROG_RC
