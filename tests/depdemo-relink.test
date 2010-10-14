@@ -31,10 +31,10 @@ func_restore_files ()
     test "`echo _fnord/temp/libs/*`" = "_fnord/temp/libs/*" \
       || mv -f _fnord/temp/libs/* "l3/$objdir"
     mv -f "_fnord/temp/libl3.la" "l3"
-    test -f "_fnord/temp/lt-depdemo$EXEXT" \
-      && mv -f "_fnord/temp/lt-depdemo$EXEXT" "$objdir"
-    test -f "_fnord/temp/depdemo$EXEXT" \
-      && mv -f "_fnord/temp/depdemo$EXEXT" "$objdir"
+    test -f "_fnord/temp/lt-depdemo$EXEEXT" \
+      && mv -f "_fnord/temp/lt-depdemo$EXEEXT" "$objdir"
+    test -f "_fnord/temp/depdemo$EXEEXT" \
+      && mv -f "_fnord/temp/depdemo$EXEEXT" "$objdir"
     rm -rf "_fnord"
 }
 

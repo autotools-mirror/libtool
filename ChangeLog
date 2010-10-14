@@ -1,3 +1,9 @@
+2010-10-14  Peter Rosin  <peda@lysator.liu.se>
+
+	tests: fix $EXEEXT typo.
+	* tests/depdemo-relink.test (func_restore_files): Use $EXEEXT
+	instead of $EXEXT.
+
 2010-10-12  Simon Josefsson  <simon@josefsson.org>
 	    Matěj Týč <matej.tyc@gmail.com>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
