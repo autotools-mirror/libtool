@@ -1,3 +1,8 @@
+2010-10-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	tests: remove unneeded 'bindir compile check' test.
+	* tests/bindir.at (bindir compile check): Remove.
+
 2010-10-14  Peter Rosin  <peda@lysator.liu.se>
 
 	tests: fix $EXEEXT typo.

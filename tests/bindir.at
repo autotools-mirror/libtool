@@ -1,6 +1,6 @@
 # bindir.at -  Test the -bindir option
 #
-#   Copyright (C) 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 #   Written by Dave Korn, 2009
 #
 #   This file is part of GNU Libtool.
@@ -58,25 +58,8 @@
 # statement in libtool.m4sh around where the 'tdlname' variable is set.
 
 ####
-# Verify compiling works, and skip remaining tests if not.
-#
-
-AT_SETUP([bindir compile check])
-
-AT_DATA([simple.c] ,[[
-int main() { return 0;}
-]])
-
-$CC $CPPFLAGS $CFLAGS -o simple simple.c || noskip=false
-rm -f simple
-
-AT_CHECK([$noskip || (exit 77)])
-
-AT_CLEANUP
-
-####
-# Now run the tests themselves.  First a simple test that we can
-# build and run an executable with a couple of tiny libraries.
+# First a simple test that we can build and run an executable with a couple of
+# tiny libraries.
 
 AT_SETUP([bindir basic lib test])
 
