@@ -1,5 +1,17 @@
 2010-10-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix bindir check logic, and relax non-bindir case for AIX.
+	* tests/bindir.at (bindir install tests): Rewrite checks for
+	place of the installed shared library in two separate tests,
+	depending on whether -bindir is supposed to have an effect or
+	not.  In the positive case, make the test stricter so that we
+	reject libraries in $libdir.  In the negative case, do not
+	require a major version number in the $libdir file name, for AIX
+	without runtimelinking.  If tmpdir creation fails, skip the
+	test.  Use fewer bindir directory names for testing, to speed
+	up the test.  Also mention MSVC style DLL name in comment.
+	Report by Peter Rosin.
+
 	tests: remove unneeded 'bindir compile check' test.
 	* tests/bindir.at (bindir compile check): Remove.
 

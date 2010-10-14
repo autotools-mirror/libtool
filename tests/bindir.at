@@ -138,14 +138,14 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC -o main$EXEEXT $CPPFLAGS $CFLAGS $LD
 # here, that will be covered by the later tests; we've rpath'd things
 # so that they can all be run in situ.
 
-LT_AT_NOINST_EXEC_CHECK([$LIBTOOL], [], [0], [ignore], [ignore], [--mode=execute ./main$EXEEXT])
+LT_AT_NOINST_EXEC_CHECK([./main])
 
 # Ensure libraries can be found on PATH, if we are on one
 # of the affected platforms, before testing the shared version.
 
 func_save_and_prepend_path $curdir/$objdir
 $bindirneeded && {
-  LT_AT_NOINST_EXEC_CHECK([$LIBTOOL], [], [0], [ignore], [ignore], [--mode=execute $objdir/main$EXEEXT])
+  LT_AT_NOINST_EXEC_CHECK([$objdir/main])
 }
 
 #  In fact, prepending the PATH as above is superfluous on the windows
@@ -182,7 +182,7 @@ case "$host_os" in
 esac
 
 eval "`$LIBTOOL --config | grep '^build_libtool_libs='`"
-AT_CHECK([test "$build_libtool_libs" = yes || (exit 77)])
+AT_CHECK([test "$build_libtool_libs" = yes || exit 77])
 
 ####
 # These routines save the PATH before a test and restore it after,
@@ -271,11 +271,15 @@ do
   AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL libfoo.la $libdir], [], [ignore], [ignore])
   AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL main$EXEEXT $curdir/sbin/main$EXEEXT], [], [ignore], [ignore])
 
-  # And ensure it went where we expect.  Could be looking for any of 'cygfoo-0.dll',
-  # 'libfoo-0.dll', or 'libfoo.so.0'.  We'll simplify this check by taking advantage
-  # of the fact that if it's a DLL, it has to go in bindir, so we'll not check for
-  # both forms in libdir.
-  AT_CHECK([$bindirneeded && { test -f $libdir/../bin/???foo-0.dll || ls $libdir/../bin/*foo*0* 2>/dev/null ; } || ls $libdir/*foo*0* 2>/dev/null], [], [ignore], [ignore])
+  # And ensure it went where we expect.  Could be looking for any of
+  # 'cygfoo-0.dll', 'libfoo-0.dll', 'foo-0.dll', or 'libfoo.so.0'.  We'll
+  # simplify this check by taking advantage of the fact that if it's a DLL,
+  # it has to go in bindir, so we'll not check for both forms in libdir.
+  if $bindirneeded; then
+    AT_CHECK([test -f $libdir/../bin/???foo-0.dll || ls $libdir/../bin/*foo*0*], [], [ignore], [ignore])
+  else
+    AT_CHECK([ls $libdir/*foo*], [], [ignore], [ignore])
+  fi
 
   # And that it can be executed.
   extrapath=
@@ -287,18 +291,10 @@ do
   for bindir in \
 	$curdir/usr/lib/gcc/i686-pc-cygwin/4.5.0/bin/ \
 	$curdir/usr/lib/gcc/i686-pc-cygwin/4.5.0/bin \
-	$curdir/usr/lib/gcc/i686-pc-cygwin/4.5.0/ \
-	$curdir/usr/lib/gcc/i686-pc-cygwin/4.5.0 \
-	$curdir/usr/lib/gcc/i686-pc-cygwin/bin/ \
 	$curdir/usr/lib/gcc/i686-pc-cygwin/bin \
-	$curdir/usr/lib/gcc/i686-pc-cygwin/ \
-	$curdir/usr/lib/gcc/i686-pc-cygwin \
-	$curdir/usr/lib/bin/ \
 	$curdir/usr/lib/bin \
 	$curdir/usr/bin/ \
 	$curdir/usr/bin \
-	$curdir/bin/ \
-	$curdir/bin \
 	/tmp/foo/bar ;
   do
 
@@ -322,7 +318,7 @@ do
         } || {
           tmp=$TMPDIR/foo$$-$RANDOM
           (umask 077 && mkdir "$tmp")
-        } || exit 77
+        } || AT_CHECK([exit 77])
         bindir=$tmp/bar
       ;;
       *)
@@ -343,7 +339,11 @@ do
     AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL main$EXEEXT $curdir/sbin/main$EXEEXT], [], [ignore], [ignore])
 
     # Ensure it went to bindir rather than default dir this time.
-    AT_CHECK([$bindirneeded && { test -f $bindir/???foo-0.dll || ls $bindir/*foo*0* 2>/dev/null ; } || ls $libdir/*foo*0* 2>/dev/null], [], [ignore], [ignore])
+    if $bindirneeded; then
+      AT_CHECK([test -f $bindir/???foo-0.dll || ls $bindir/*foo*0*], [], [ignore], [ignore])
+    else
+      AT_CHECK([ls $libdir/*foo*], [], [ignore], [ignore])
+    fi
 
     # And that it can be executed.
     extrapath=
