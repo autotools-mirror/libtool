@@ -1035,8 +1035,8 @@ _LT_EOF
 ])
 
 
-# _LT_DARWIN_LINKER_FEATURES
-# --------------------------
+# _LT_DARWIN_LINKER_FEATURES([TAG])
+# ---------------------------------
 # Checks for linker and compiler features on darwin
 m4_defun([_LT_DARWIN_LINKER_FEATURES],
 [
@@ -1047,6 +1047,8 @@ m4_defun([_LT_DARWIN_LINKER_FEATURES],
   _LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
   if test "$lt_cv_ld_force_load" = "yes"; then
     _LT_TAGVAR(whole_archive_flag_spec, $1)='`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience ${wl}-force_load,$conv\"; done; func_echo_all \"$new_convenience\"`'
+    m4_case([$1], [F77], [_LT_TAGVAR(compiler_needs_object, $1)=yes],
+                  [FC],  [_LT_TAGVAR(compiler_needs_object, $1)=yes])
   else
     _LT_TAGVAR(whole_archive_flag_spec, $1)=''
   fi

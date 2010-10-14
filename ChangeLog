@@ -1,5 +1,14 @@
 2010-10-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix linking from only convenience archives with gfortran on Darwin.
+	* libltdl/m4/libtool.m4 (_LT_DARWIN_LINKER_FEATURES): Update
+	macro comment header.
+	[darwin, F77, FC] <compiler_needs_object>: Set to yes if
+	whole_archive_flag_spec is nonempty.  Fixes convenience.at test
+	suite failures with gfortran 4.2 on Darwin.
+	* THANKS: Update.
+	Report by Paul Laight.
+
 	Fix bindir check logic, and relax non-bindir case for AIX.
 	* tests/bindir.at (bindir install tests): Rewrite checks for
 	place of the installed shared library in two separate tests,
