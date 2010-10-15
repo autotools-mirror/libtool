@@ -619,15 +619,6 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 * Update NEWS, ChangeLog.
 
-* Until the bug that leaks developer tool paths into the release tarballs
-  from ./bootstrap is fixed, make sure the right tools are first in your
-  PATH and then:
-	export EGREP=egrep
-	export FGREP=fgrep
-	export GREP=grep
-	export MAKE=make
-	export SED=sed
-
 * Run ./bootstrap.
 
 * Run ./configure (or create a build directory first and run configure

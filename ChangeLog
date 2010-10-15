@@ -1,3 +1,39 @@
+2010-10-15  Gary V. Vaughan  <gary@gnu.org>
+
+	libtool: remove redundant unsubstituted shell var defaults.
+	* Makefile.am (libltdl/config/ltmain.sh): Boilerplate code from
+	libltdl/config/general.m4 sets some default shell variables
+	designed to be substituted by `$(configure_edit)'.  Actually,
+	`libtool' uses the language tag values for those variables, and
+	`ltmain.m4sh' is not passed through `$(configure_edit)', so they
+	are just noise.  Edit them out at bootstrap time.
+
+2010-10-15  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: don't leak developer GREP, SED etc into distribution file.
+	* Makefile.am: Having rearranged the file, now apply the actual
+	changes to follow-up.
+	(edit): Split into two parts...
+	(bootstrap_edit): ...substitutions that should happen at bootstrap
+	time...
+	(configure_edit): ...and substitutions that should not happen until
+	configure time.
+	* Makefile.am (libltdl/m4/ltversion.m4, libltdl/config/ltmain.sh)
+	(libtoolize.in, tests/package.m4): Use bootstrap_edit.
+	(libtoolize, tests/defs): Use configure_edit.
+	* HACKING (Release Procedure): Remove the note to workaround the
+	bug fixed by this changeset.
+	* NEWS (Bug fixes): Mention that this bug is now fixed.
+	Reported by Joerg Sonnenberger.
+
+	maint: rearrange Makefile.am in preparation for a follow-up patch.
+	* Makefile.am (Libtool scripts.): Move this section below the
+	`Bootstrap.' section...
+	(libtoolize.in): ...except this one which is generated at
+	bootstrap time, and was added into the `Bootstrap.' section.
+	(Libltdl.): Move this section below the `Libtool scripts.'
+	section.
+
 2010-10-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix linking from only convenience archives with gfortran on Darwin.
