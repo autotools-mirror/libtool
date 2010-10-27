@@ -1326,6 +1326,13 @@ can be achieved using either option @option{-v} or option
 Print libtool version information and exit.
 @end table
 
+The current @command{libtool} implementation is done with a shell script
+that needs to be invoked by the shell which @command{configure} chose for
+configuring @command{libtool} (@pxref{config.status Invocation, , The
+Autoconf Manual, autoconf, The Autoconf Manual}).  This shell is set in
+the she-bang (@samp{#!}) line of the @command{libtool} script.  Using a
+different shell may cause undefined behavior.
+
 The @var{mode-args} are a variable number of arguments, depending on the
 selected operation mode.  In general, each @var{mode-arg} is interpreted
 by programs libtool invokes, rather than libtool itself.

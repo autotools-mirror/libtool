@@ -1,3 +1,12 @@
+2010-10-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	docs: mention shell requirement for libtool script.
+	* doc/libtool.texi (Invoking libtool): Document that the shell
+	used to invoke libtool needs to be the same used to configure
+	it.
+	* THANKS: Update.
+	Report by Markus Duft.
+
 2010-10-15  Gary V. Vaughan  <gary@gnu.org>
 
 	libtool: remove redundant unsubstituted shell var defaults.
