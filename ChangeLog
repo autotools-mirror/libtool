@@ -1,5 +1,9 @@
 2010-11-01  Peter Rosin  <peda@lysator.liu.se>
 
+	docs: Windows DLLs and headers.
+	* doc/libtool.texi (Platform quirks): Add new subsection
+	'Windows DLLs'.
+
 	* doc/libtool.texi (Platform quirks): Fix typo.
 
 2010-10-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>

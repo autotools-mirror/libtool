@@ -225,6 +225,7 @@ Platform quirks
 * Archivers::                   Programs that create static archives.
 * Cross compiling::             Issues that arise when cross compiling.
 * File name conversion::        Converting file names between platforms.
+* Windows DLLs::                Windows header defines.
 
 @end detailmenu
 @end menu
@@ -5775,6 +5776,7 @@ write your own.
 * Archivers::                   Programs that create static archives.
 * Cross compiling::             Issues that arise when cross compiling.
 * File name conversion::        Converting file names between platforms.
+* Windows DLLs::                Windows header defines.
 @end menu
 
 @node References
@@ -6327,6 +6329,199 @@ the source or build directory trees, and all @option{-M*} options to
 
 This is quite a fragile setup, but it has been in historical use, and so is
 documented here.
+
+@node Windows DLLs
+@subsection Windows DLLs
+@cindex Windows DLLs
+
+This topic describes a couple of ways to portably create Windows Dynamic
+Link Libraries (DLLs).  Libtool knows how to create DLLs using GNU tools
+and using Microsoft tools.
+
+A typical library has a ``hidden'' implementation with an interface
+described in a header file.  On just about every system, the interface
+could be something like this:
+
+Example @file{foo.h}:
+
+@example
+#ifndef FOO_H
+#define FOO_H
+
+int one (void);
+int two (void);
+extern int three;
+
+#endif /* FOO_H */
+@end example
+
+@noindent
+And the implementation could be something like this:
+
+Example @file{foo.c}:
+
+@example
+#include "foo.h"
+
+int one (void)
+@{
+  return 1;
+@}
+
+int two (void)
+@{
+  return three - one ();
+@}
+
+int three = 3;
+@end example
+
+When using contemporary GNU tools to create the Windows DLL, the above
+code will work there too, thanks to its auto-import/auto-export
+features.  But that is not the case when using older GNU tools or perhaps
+more interestingly when using proprietary tools.  In those cases the code
+will need additional decorations on the interface symbols with
+@code{__declspec(dllimport)} and @code{__declspec(dllexport)} depending
+on whether the library is built or it's consumed and how it's built and
+consumed.  However, it should be noted that it would have worked also
+with Microsoft tools, if only the variable @code{three} hadn't been
+there, due to the fact the Microsoft tools will automatically import
+functions (but sadly not variables) and Libtool will automatically export
+non-static symbols as described next.
+
+With Microsoft tools, Libtool digs through the object files that make up
+the library, looking for non-static symbols to automatically export.
+I.e., Libtool with Microsoft tools tries to mimic the auto-export feature
+of contemporary GNU tools.  It should be noted that the GNU auto-export
+feature is turned off when an explicit @code{__declspec(dllexport)} is
+seen.  The GNU tools do this to not make more symbols visible for projects
+that have already taken the trouble to decorate symbols.  There is no
+similar way to limit which symbols are visible in the code when Libtool
+is using Microsoft tools.  In order to limit symbol visibility in that
+case you need to use one of the options @option{-export-symbols} or
+@option{-export-symbols-regex}.
+
+No matching help with auto-import is provided by Libtool, which is why
+variables must be decorated to import them from a DLL for everything but
+contemporary GNU tools.  As stated above, functions are automatically
+imported by both contemporary GNU tools and Microsoft tools, but for
+other proprietary tools the auto-import status of functions is unknown.
+
+When the objects that form the library are built, there are generally
+two copies built for each object.  One copy is used when linking the DLL
+and one copy is used for the static library.  On Windows systems, a pair
+of defines are commonly used to discriminate how the interface symbols
+should be decorated.  The first define is @samp{-DDLL_EXPORT} which is
+automatically provided by Libtool when @command{libtool} builds the copy
+of the object that is destined for the DLL.  The second define is
+@samp{-DLIBFOO_BUILD} (or similar) which is often added by the package
+providing the library and is used when building the library, but not
+when consuming the library.
+
+However, the matching double compile is not performed when consuming
+libraries.  It is therefore not possible to reliably distinguish if the
+consumer is importing from a DLL or if it is going to use a static
+library.
+
+With contemporary GNU tools, auto-import often saves the day, but see
+the GNU ld documentation and its @option{--enable-auto-import} option
+for some corner cases when it does not
+(@pxref{Options, @option{--enable-auto-import}, Options specific to
+i386 PE targets, ld, Using ld@comma{} the GNU linker}).
+
+With Microsoft tools you typically get away with always compiling the
+code such that variables are expected to be imported from a DLL and
+functions are expected to be found in a static library.  The tools will
+then automatically import the function from a DLL if that is where they
+are found.  If the variables are not imported from a DLL as expected, but
+are found in a static library that is otherwise pulled in by some
+function, the linker will issue a warning (LNK4217) that a locally
+defined symbol is imported, but it still works.  In other words, this
+scheme will not work to only consume variables from a library.  There is
+also a price connected to this liberal use of imports in that an extra
+indirection is introduced when you are consuming the static version of
+the library.  That extra indirection is unavoidable when the DLL is
+consumed, but it is not needed when consuming the static library.
+
+For older GNU tools and other proprietary tools there is no generic way
+to make it possible to consume either of the DLL or the static library
+without user intervention, the tools need to be told what is intended.
+One common assumption is that if a DLL is being built (@samp{DLL_EXPORT}
+is defined) then that DLL is going to consume any dependent libraries as
+DLLs.  If that assumption is made everywhere, it is possible to select
+how an end-user application is consuming libraries by adding a single
+flag @samp{-DDLL_EXPORT} when a DLL build is required.  This is of course
+an all or nothing deal, either everything as DLLs or everything as static
+libraries.
+
+To sum up the above, the header file of the foo library needs to be
+changed into something like this:
+
+Modified @file{foo.h}:
+
+@example
+#ifndef FOO_H
+#define FOO_H
+
+#if defined _WIN32 && !defined __GNUC__
+# ifdef LIBFOO_BUILD
+#  ifdef DLL_EXPORT
+#   define LIBFOO_SCOPE            __declspec (dllexport)
+#   define LIBFOO_SCOPE_VAR extern __declspec (dllexport)
+#  endif
+# elif defined _MSC_VER
+#  define LIBFOO_SCOPE
+#  define LIBFOO_SCOPE_VAR  extern __declspec (dllimport)
+# elif defined DLL_EXPORT
+#  define LIBFOO_SCOPE             __declspec (dllimport)
+#  define LIBFOO_SCOPE_VAR  extern __declspec (dllimport)
+# endif
+#endif
+#ifndef LIBFOO_SCOPE
+# define LIBFOO_SCOPE
+# define LIBFOO_SCOPE_VAR extern
+#endif
+
+LIBFOO_SCOPE     int one (void);
+LIBFOO_SCOPE     int two (void);
+LIBFOO_SCOPE_VAR int three;
+
+#endif /* FOO_H */
+@end example
+
+When the targets are limited to contemporary GNU tools and Microsoft
+tools, the above can be simplified to the following:
+
+Simplified @file{foo.h}:
+
+@example
+#ifndef FOO_H
+#define FOO_H
+
+#if defined _WIN32 && !defined __GNUC__ && !defined LIBFOO_BUILD
+# define LIBFOO_SCOPE_VAR extern __declspec (dllimport)
+#else
+# define LIBFOO_SCOPE_VAR extern
+#endif
+
+int one (void);
+int two (void);
+LIBFOO_SCOPE_VAR int three;
+
+#endif /* FOO_H */
+@end example
+
+This last simplified version can of course only work when Libtool is
+used to build the DLL, as no symbols would be exported otherwise (i.e.,
+when using Microsoft tools).
+
+It should be noted that there are various projects that attempt to relax
+these requirements by various low level tricks, but they are not
+discussed here.
+Examples are
+@uref{http://alain.frisch.fr/@/flexdll.html, FlexDLL} and
+@uref{http://edll.sourceforge.net/, edll}.
+
 
 @node libtool script contents
 @section @code{libtool} script contents
