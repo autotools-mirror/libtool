@@ -5970,7 +5970,7 @@ launch the MinGW application from GNU/Linux.  However, the wrapper executable,
 as a host platform (MinGW) application, must set the @env{PATH} variable so
 that the true application's dependent libraries can be located---but the
 contents of the @env{PATH} variable must be structured for MinGW.  Libtool
-must use the Wine file name mapping facilities to determined the correct value
+must use the Wine file name mapping facilities to determine the correct value
 so that the wrapper executable can set the @env{PATH} variable to point to the
 correct location.
 

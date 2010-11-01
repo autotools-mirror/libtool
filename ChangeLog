@@ -1,3 +1,7 @@
+2010-11-01  Peter Rosin  <peda@lysator.liu.se>
+
+	* doc/libtool.texi (Platform quirks): Fix typo.
+
 2010-10-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	docs: mention shell requirement for libtool script.
