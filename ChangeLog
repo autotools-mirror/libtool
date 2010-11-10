@@ -1,3 +1,10 @@
+2010-11-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix cwrapper test failure with --disable-static.
+	* tests/cwrapper.at (cwrapper and installed shared libraries):
+	Compile program source without libtool, so we can be sure a
+	non-PIC object will be created.
+
 2010-11-01  Peter Rosin  <peda@lysator.liu.se>
 
 	docs: Windows DLLs and headers.

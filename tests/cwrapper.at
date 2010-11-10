@@ -249,8 +249,7 @@ int main (void)
 }
 ]])
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c m.c],
-         [], [ignore], [ignore])
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c m.c], [], [ignore], [ignore])
 
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m1$EXEEXT m.$OBJEXT foo/liba.la],
          [], [ignore], [ignore])
