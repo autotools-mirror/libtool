@@ -2,6 +2,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 2.4.2 2010-12-??: git version 2.4.1a, Libtool team:
 
+* New features:
+
+  - The --with-pic configure option now supports a list of comma-separated
+    package names.  This can be used to build some static libraries with PIC
+    objects while building others with non-PIC objects.
+
 * Bug fixes:
 
   - The generic approximation of the command line length limit (when getconf is

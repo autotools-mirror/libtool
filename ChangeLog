@@ -1,3 +1,15 @@
+2010-11-07  Ollie Wild  <aaw@google.com>
+
+	Modify --with-pic to support per-package configurations.
+	* libltdl/m4/libtool.m4:  Modify --with-pic to accept a list of
+	package names.  Modelled off --enable-shared.
+	* tests/with-pic.at: New test.
+	* Makefile.am (TESTSUITE_AT): Add tests/with-pic.at.
+	* doc/libtool.texi (LT_INIT): Enhance documentation of
+	--with-pic configure flag.
+	* NEWS (New features): Mention that --with-pic now accepts a
+	comma-separated list of package names.
+
 2010-11-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix cwrapper test failure with --disable-static.

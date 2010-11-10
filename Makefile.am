@@ -502,6 +502,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/ctor.at \
 		  tests/exceptions.at \
 		  tests/early-libtool.at \
+		  tests/with-pic.at \
 		  tests/no-executables.at \
 		  tests/deplibs-ident.at \
 		  tests/configure-iface.at \

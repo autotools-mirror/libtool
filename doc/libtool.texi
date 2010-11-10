@@ -2042,9 +2042,10 @@ LT_PREREQ([@value{VERSION}])
 @defmac LT_INIT (@var{options})
 @defmacx AC_PROG_LIBTOOL
 @defmacx AM_PROG_LIBTOOL
-Add support for the @option{--enable-shared} and @option{--disable-shared}
-@code{configure} flags.@footnote{@code{LT_INIT} requires that
-you define the @file{Makefile} variable @code{top_builddir} in your
+Add support for the @option{--enable-shared}, @option{--disable-shared},
+@option{--enable-static}, @option{--disable-static}, @option{--with-pic}, and
+@option{--without-pic} @code{configure} flags.@footnote{@code{LT_INIT} requires
+that you define the @file{Makefile} variable @code{top_builddir} in your
 @file{Makefile.in}.  Automake does this automatically, but Autoconf
 users should set it to the relative path to the top of your build
 directory (@file{../..}, for example).}  @code{AC_PROG_LIBTOOL} and
@@ -2085,6 +2086,16 @@ behaves similarly, but it uses @option{--enable-static} and
 
 The package name @samp{default} matches any packages that have not set
 their name in the @code{PACKAGE} environment variable.
+
+The @option{--with-pic} and @option{--without-pic} configure flags can be used
+to specify whether or not @command{libtool} uses PIC objects.  By default,
+@command{libtool} uses PIC objects for shared libraries and non-PIC objects for
+static libraries.  The @option{--with-pic} option also accepts a comma-separated
+list of package names.  Specifying @option{--with-pic=@var{pkgs}} is the same
+as configuring every package in @var{pkgs} with @option{--with-pic} and every
+other package with the default configuration.  The package name @samp{default}
+is treated the same as for @option{--enable-shared} and
+@option{--enable-static}.
 
 This macro also sets the shell variable @code{LIBTOOL_DEPS}, that you
 can use to automatically update the libtool script if it becomes
