@@ -1,3 +1,9 @@
+2010-11-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Rebuild menus in the manual.
+	* doc/automake.texi: Rebuild menus (using ^C ^U ^A in emacs).
+	Thanks to Ian Lance Taylor for the suggestion.
+
 2010-11-07  Ollie Wild  <aaw@google.com>
 
 	Modify --with-pic to support per-package configurations.

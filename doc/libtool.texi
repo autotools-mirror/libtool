@@ -100,7 +100,7 @@ GNU Libtool.
 * FAQ::                         Frequently Asked Questions
 * Troubleshooting::             When libtool doesn't work as advertised.
 * Maintaining::                 Information used by the libtool maintainer.
-* GNU Free Documentation License:: License for this manual.
+* GNU Free Documentation License::  License for this manual.
 * Combined Index::              Full index.
 
 @detailmenu
@@ -127,7 +127,7 @@ Linking executables
 
 * Wrapper executables::         Wrapper executables for some platforms.
 
-Invoking @code{libtool}
+Invoking @command{libtool}
 
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
@@ -176,7 +176,7 @@ Dlopened modules
 
 * Building modules::            Creating dlopenable objects and libraries.
 * Dlpreopening::                Dlopening that works on static platforms.
-* Linking with dlopened modules:: Using dlopenable modules in libraries.
+* Linking with dlopened modules::  Using dlopenable modules in libraries.
 * Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
 
@@ -189,7 +189,7 @@ Using libltdl
 * Module loaders for libltdl::  Creating user defined module loaders.
 * Distributing libltdl::        How to distribute libltdl with your package.
 
-Frequently Asked Questions
+Frequently Asked Questions about libtool
 
 * Stripped link flags::         Dropped flags when creating a library
 
@@ -200,7 +200,7 @@ Troubleshooting
 
 The libtool test suite
 
-* Test descriptions::           The contents of the test suite.
+* Test descriptions::           The contents of the old test suite.
 * When tests fail::             What to do when a test fails.
 
 Maintenance notes for libtool
@@ -226,6 +226,15 @@ Platform quirks
 * Cross compiling::             Issues that arise when cross compiling.
 * File name conversion::        Converting file names between platforms.
 * Windows DLLs::                Windows header defines.
+
+File name conversion
+
+* File Name Conversion Failure::  What happens when file name conversion fails
+* Native MinGW File Name Conversion::  MSYS file name conversion idiosyncrasies
+* Cygwin/Windows File Name Conversion::  Using @command{cygpath} to convert Cygwin file names
+* Unix/Windows File Name Conversion::  Using Wine to convert Unix paths
+* LT_CYGPATH::                  Invoking @command{cygpath} from other environments
+* Cygwin to MinGW Cross::       Other notes concerning MinGW cross
 
 @end detailmenu
 @end menu
@@ -3347,7 +3356,7 @@ use libtool to generate dlopen-accessible modules.
 @menu
 * Building modules::            Creating dlopenable objects and libraries.
 * Dlpreopening::                Dlopening that works on static platforms.
-* Linking with dlopened modules:: Using dlopenable modules in libraries.
+* Linking with dlopened modules::  Using dlopenable modules in libraries.
 * Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
 @end menu
@@ -6069,12 +6078,12 @@ See @pxref{Unix/Windows File Name Conversion} and @pxref{LT_CYGPATH}.
 @end multitable
 
 @menu
-* File Name Conversion Failure::        What happens when file name conversion fails
-* Native MinGW File Name Conversion::   MSYS file name conversion idiosyncrasies
-* Cygwin/Windows File Name Conversion:: Using @command{cygpath} to convert Cygwin file names
-* Unix/Windows File Name Conversion::   Using Wine to convert Unix paths
-* LT_CYGPATH::                          Invoking @command{cygpath} from other environments
-* Cygwin to MinGW Cross::               Other notes concerning MinGW cross
+* File Name Conversion Failure::  What happens when file name conversion fails
+* Native MinGW File Name Conversion::  MSYS file name conversion idiosyncrasies
+* Cygwin/Windows File Name Conversion::  Using @command{cygpath} to convert Cygwin file names
+* Unix/Windows File Name Conversion::  Using Wine to convert Unix paths
+* LT_CYGPATH::                  Invoking @command{cygpath} from other environments
+* Cygwin to MinGW Cross::       Other notes concerning MinGW cross
 @end menu
 
 @node File Name Conversion Failure
