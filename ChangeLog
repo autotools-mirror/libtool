@@ -1,5 +1,19 @@
 2010-11-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Eliminate hardcode_libdir_flag_spec_ld tag variable.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Set $wl to empty
+	if $LD is used for creating shared libraries.  Do not use
+	hardcode_libdir_flag_spec_ld any more.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
+	(_LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG, _LT_SYS_DYNAMIC_LINKER)
+	<hardcode_libdir_flag_spec_ld>: Remove all instances of the tag
+	variable.
+	(_LT_LINKER_SHLIBS) [linux, xlf] <hardcode_libdir_flag_spec>:
+	Set variable, including ${wl}.  Fixes hardcoding in programs
+	created by XL Fortran on GNU/Linux.
+	* NEWS, THANKS: Update.
+	Report by Paul H. Hargrove.
+
 	Rebuild menus in the manual.
 	* doc/automake.texi: Rebuild menus (using ^C ^U ^A in emacs).
 	Thanks to Ian Lance Taylor for the suggestion.

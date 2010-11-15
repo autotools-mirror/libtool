@@ -7237,6 +7237,11 @@ EOF
 
       # Test again, we may have decided not to build it any more
       if test "$build_libtool_libs" = yes; then
+	# Remove ${wl} instances when linking with ld.
+	# FIXME: should test the right _cmds variable.
+	case $archive_cmds in
+	  *\$LD\ *) wl= ;;
+        esac
 	if test "$hardcode_into_libs" = yes; then
 	  # Hardcode the library paths
 	  hardcode_libdirs=
@@ -7275,11 +7280,7 @@ EOF
 	  if test -n "$hardcode_libdir_separator" &&
 	     test -n "$hardcode_libdirs"; then
 	    libdir="$hardcode_libdirs"
-	    if test -n "$hardcode_libdir_flag_spec_ld"; then
-	      eval dep_rpath=\"$hardcode_libdir_flag_spec_ld\"
-	    else
-	      eval dep_rpath=\"$hardcode_libdir_flag_spec\"
-	    fi
+	    eval "dep_rpath=\"$hardcode_libdir_flag_spec\""
 	  fi
 	  if test -n "$runpath_var" && test -n "$perm_rpath"; then
 	    # We should set the runpath_var.

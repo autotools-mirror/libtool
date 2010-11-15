@@ -15,6 +15,15 @@ New in 2.4.2 2010-12-??: git version 2.4.1a, Libtool team:
   - The bug that leaked developer tool paths into the release tarballs
     from ./bootstrap is fixed.
 
+* Important incompatible changes:
+
+  - The undocumented hardcode_libdir_flag_spec_ld tag variable has been
+    removed in favor of using hardcode_libdir_flag_spec with $wl set to empty.
+
+* Changes in supported systems or compilers:
+
+  - Fixes for gfortran on Darwin, XL Fortran on GNU/Linux.
+
 New in 2.4 2010-09-22: git version 2.2.11a, Libtool team:
 
 * New features:
