@@ -1791,6 +1791,56 @@ The remaining @var{mode-args} are either flags for the deletion program
 This chapter describes how to integrate libtool with your packages so
 that your users can install hassle-free shared libraries.
 
+There are several ways in which Libtool may be integrated in your
+package, described in the following sections.  Typically, the Libtool
+macro files as well as @file{ltmain.sh} are copied into your package
+using @command{libtoolize} and @command{aclocal} after setting up the
+@file{configure.ac} and toplevel @file{Makefile.am}, then
+@command{autoconf} adds the needed tests to the @file{configure} script.
+These individual steps are often automated with @command{autoreconf}.
+
+Here is a diagram showing how such a typical Libtool configuration works
+when preparing a package for distribution, assuming that @file{m4} has
+been chosen as location for additional Autoconf macros, and
+@file{build-aux} as location for auxiliary build tools (@pxref{Input,,
+The Autoconf Manual, autoconf, The Autoconf Manual}):
+
+@example
+@group
+libtool.m4 -----.                .--> aclocal.m4 -----.
+ltoptions.m4 ---+  .-> aclocal* -+                    +--> autoconf*
+ltversion.m4 ---+--+             `--> [copy in m4/] --+       |
+ltsugar.m4 -----+  |                    ^             |       \/
+lt~obsolete.m4 -+  +-> libtoolize* -----'             |    configure
+[ltdl.m4] ------+  |                                  |
+                   `----------------------------------'
+
+ltmain.sh -----------> libtoolize* -> [copy in build-aux/]
+@end group
+@end example
+
+During configuration, the @file{libtool} script is generated either
+through @command{config.status} or @command{config.lt}:
+
+@example
+@group
+             .--> config.status* --.
+configure* --+                     +--> libtool
+             `--> [config.lt*] ----'      ^
+                                          |
+ltmain.sh --------------------------------'
+@end group
+@end example
+
+At @command{make} run time, @command{libtool} is then invoked as needed
+as a wrapper around compilers, linkers, install and cleanup programs.
+
+There are alternatives choices to several parts of the setup; for
+example, the Libtool macro files can either be copied or symlinked into
+the package, or copied into @file{aclocal.m4}.  As another example, an
+external, pre-configured @command{libtool} script may be used,
+by-passing most of the tests and package-specific setup for Libtool.
+
 @menu
 * Autoconf macros::             Autoconf macros exported by libtool.
 * Makefile rules::              Writing @file{Makefile} rules for libtool.
