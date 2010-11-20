@@ -1,5 +1,9 @@
 2010-12-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Honor $AUTOCONF, $AUTOMAKE in --help output.
+	* libltdl/config/getopt.m4sh (func_help): Use $AUTOCONF and
+	$AUTOMAKE if set, for --version outout.
+
 	docs: Libtool configuration diagram.
 	* doc/libtool.texi (Integrating libtool): Add diagrams
 	explaining the dependencies between Libtool files.
