@@ -4232,7 +4232,9 @@ m4_if([$1], [CXX], [
     case $cc_basename in
     nvcc*) # Cuda Compiler Driver 2.2
       _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Xlinker '
-      _LT_TAGVAR(lt_prog_compiler_pic, $1)='-Xcompiler -fPIC'
+      if test -n "$_LT_TAGVAR(lt_prog_compiler_pic, $1)"; then
+        _LT_TAGVAR(lt_prog_compiler_pic, $1)="-Xcompiler $_LT_TAGVAR(lt_prog_compiler_pic, $1)"
+      fi
       ;;
     esac
   else

@@ -14,6 +14,7 @@ New in 2.4.2 2010-12-??: git version 2.4.1a, Libtool team:
     not available) works again.  Regression introduced in v2.2.6-39-g9c3d4d8.
   - The bug that leaked developer tool paths into the release tarballs
     from ./bootstrap is fixed.
+  - Improved support for the Cuda Compiler Driver (nvcc) on Darwin.
 
 * Important incompatible changes:
 

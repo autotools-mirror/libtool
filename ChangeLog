@@ -1,5 +1,12 @@
 2010-12-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix nvcc PIC setting on darwin.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC)
+	<lt_prog_compiler_pic>: Prepend -Xcompiler to nonempty variable
+	setting rather than hard-coding -Xcompiler -fPIC, for darwin.
+	* NEWS, THANKS: Update.
+	Report by Paweł Daniluk.
+
 	Honor $AUTOCONF, $AUTOMAKE in --help output.
 	* libltdl/config/getopt.m4sh (func_help): Use $AUTOCONF and
 	$AUTOMAKE if set, for --version outout.
