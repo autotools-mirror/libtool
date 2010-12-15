@@ -296,7 +296,7 @@ case $progpath in
      ;;
   *)
      save_IFS="$IFS"
-     IFS=:
+     IFS=${PATH_SEPARATOR-:}
      for progdir in $PATH; do
        IFS="$save_IFS"
        test -x "$progdir/$progname" && break

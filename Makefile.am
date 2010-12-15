@@ -330,7 +330,7 @@ $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
 dist_man1_MANS		= $(srcdir)/doc/libtool.1 $(srcdir)/doc/libtoolize.1
 MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
 update_mans = \
-  PATH=.$(PATH_SEPARATOR)$$PATH; export PATH; \
+  PATH=".$(PATH_SEPARATOR)$$PATH"; export PATH; \
   $(HELP2MAN) --output=$@
 $(srcdir)/doc/libtool.1: $(srcdir)/$(auxdir)/ltmain.sh
 	$(update_mans) --help-option=--help-all libtool

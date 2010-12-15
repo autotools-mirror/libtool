@@ -1,3 +1,14 @@
+2010-12-15  KO Myung-Hun  <komh@chollian.net>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix PATH_SEPARATOR handling for OS/2.
+	* Makefile.am (update_mans): Quote $(PATH_SEPARATOR).
+	* libltdl/m4/libtool.m4 (_LT_SETUP): Add _LT_DECL for
+	PATH_SEPARATOR.
+	* libltdl/config/general.m4sh: Use PATH_SEPARATOR when computing
+	$progpath.
+	* THANKS: Update.
+
 2010-12-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix nvcc PIC setting on darwin.
