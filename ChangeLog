@@ -1,3 +1,11 @@
+2010-12-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix PIC flags with mpif77 using ifort on GNU/Linux.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [linux]:
+	Match Intel compiler also using $CC -V output, to avoid false
+	negatives with compiler drivers like mpif77.
+	Report by Christian Rössel.
+
 2010-12-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix PIC flags with MPI wrappers using Portland on GNU/Linux.
