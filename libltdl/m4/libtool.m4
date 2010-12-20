@@ -6922,6 +6922,7 @@ _lt_libdeps_save_CFLAGS=$CFLAGS
 case "$CC $CFLAGS " in #(
 *\ -flto*\ *) CFLAGS="$CFLAGS -fno-lto" ;;
 *\ -fwhopr*\ *) CFLAGS="$CFLAGS -fno-whopr" ;;
+*\ -fuse-linker-plugin*\ *) CFLAGS="$CFLAGS -fno-use-linker-plugin" ;;
 esac
 
 dnl Parse the compiler output and extract the necessary

@@ -1,3 +1,12 @@
+2010-12-20  Brice De Bruyne  <bricedb@gmail.com>  (tiny change)
+
+	Also turn off -fuse-linker-plugin for postdep_objects computation.
+	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Add
+	-fno-use-linker-plugin to temporary compile flags if necessary,
+	to fix C++ postdep_objects setting with -flto
+	-fuse-linker-plugin.
+	* NEWS, THANKS: Update.
+
 2010-12-20  KO Myung-Hun  <komh@chollian.net>  (tiny change)
 
 	Set command line length limit for OS/2.
