@@ -1,3 +1,9 @@
+2010-12-20  KO Myung-Hun  <komh@chollian.net>  (tiny change)
+
+	Set command line length limit for OS/2.
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN) [os2]
+	<lt_cv_sys_max_cmd_len>: Set to 8192 to avoid long test.
+
 2010-12-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix PIC flags with mpif77 using ifort on GNU/Linux.

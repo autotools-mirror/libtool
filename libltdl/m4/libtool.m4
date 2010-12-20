@@ -1604,6 +1604,11 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     lt_cv_sys_max_cmd_len=196608
     ;;
 
+  os2*)
+    # The test takes a long time on OS/2.
+    lt_cv_sys_max_cmd_len=8192
+    ;;
+
   osf*)
     # Dr. Hans Ekkehard Plesser reports seeing a kernel panic running configure
     # due to this test when exec_disable_arg_limit is 1 on Tru64. It is not
