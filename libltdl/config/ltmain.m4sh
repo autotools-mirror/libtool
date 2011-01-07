@@ -2412,11 +2412,13 @@ func_mode_install ()
 
       # Set up the ranlib parameters.
       oldlib="$destdir/$name"
+      func_to_tool_file "$oldlib" func_convert_file_msys_to_w32
+      tool_oldlib=$func_to_tool_file_result
 
       func_show_eval "$install_prog \$file \$oldlib" 'exit $?'
 
       if test -n "$stripme" && test -n "$old_striplib"; then
-	func_show_eval "$old_striplib $oldlib" 'exit $?'
+	func_show_eval "$old_striplib $tool_oldlib" 'exit $?'
       fi
 
       # Do each command in the postinstall commands.
@@ -8370,6 +8372,8 @@ EOF
 	    esac
 	  done
 	fi
+	func_to_tool_file "$oldlib" func_convert_file_msys_to_w32
+	tool_oldlib=$func_to_tool_file_result
 	eval cmds=\"$old_archive_cmds\"
 
 	func_len " $cmds"

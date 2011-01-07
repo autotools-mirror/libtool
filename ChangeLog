@@ -1,3 +1,15 @@
+2011-01-07  Peter Rosin  <peda@lysator.liu.se>
+
+	Convert file name to toolchain format when blessing archives.
+	* libltdl/config/ltmain.m4sh (func_mode_install): When executing
+	old_postinstall_cmds and old_archive_cmds, convert $oldlib to a
+	format appropriate for the tool and provide that in $tool_oldlib.
+	Also use $tool_oldlib when stripping old libraries.
+	* libltdl/m4/libtool.m4 (_LT_CMD_OLD_ARCHIVE): Use $tool_oldlib
+	as argument to $RANLIB.
+	* THANKS: Update.
+	Report by Dan McMahill.
+
 2011-01-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Bump copyright years.
