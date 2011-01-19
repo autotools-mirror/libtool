@@ -1,6 +1,6 @@
 # darwin.at - tests specific to Mac OS X
 #
-#   Copyright (C) 2008, 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2008, 2009, 2011 Free Software Foundation, Inc.
 #   Written by Peter O'Gorman, 2008
 #
 #   This file is part of GNU Libtool.
@@ -203,4 +203,28 @@ AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main],
 	 [ignore], [ignore], [stderr])
 AT_CHECK([grep 'Could not find object file' stderr],[1],[ignore],[ignore])
 
+AT_CLEANUP
+
+AT_SETUP([darwin ld warnings changing configure results])
+
+AT_DATA([configure.ac],
+[[AC_INIT([ld-stderr], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([foreign])
+AC_PROG_CC
+LT_INIT
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+]])
+
+AT_DATA([Makefile.am],[
+ACLOCAL_AMFLAGS = -I m4
+])
+LT_AT_LIBTOOLIZE([--copy --force])
+LT_AT_AUTORECONF([--force --install])
+LT_AT_CONFIGURE
+AT_CHECK([./libtool --config],[ignore],[stdout],[ignore])
+mv stdout expout
+LT_AT_CONFIGURE([LDFLAGS=-L/there/is/no/dir/here])
+AT_CHECK([./libtool --config],[ignore],[expout],[ignore])
 AT_CLEANUP

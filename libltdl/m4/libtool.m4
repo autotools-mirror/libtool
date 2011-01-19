@@ -986,7 +986,13 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	$LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
 	  -dynamiclib -Wl,-single_module conftest.c 2>conftest.err
         _lt_result=$?
-	if test -f libconftest.dylib && test ! -s conftest.err && test $_lt_result = 0; then
+	# If there is a non-empty error log, and "single_module"
+	# appears in it, assume the flag caused a linker warning
+        if test -s conftest.err && $GREP single_module conftest.err; then
+	  cat conftest.err >&AS_MESSAGE_LOG_FD
+	# Otherwise, if the output was created with a 0 exit code from
+	# the compiler, it worked.
+	elif test -f libconftest.dylib && test $_lt_result -eq 0; then
 	  lt_cv_apple_cc_single_mod=yes
 	else
 	  cat conftest.err >&AS_MESSAGE_LOG_FD
@@ -994,6 +1000,7 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	rm -rf libconftest.dylib*
 	rm -f conftest.*
       fi])
+
     AC_CACHE_CHECK([for -exported_symbols_list linker flag],
       [lt_cv_ld_exported_symbols_list],
       [lt_cv_ld_exported_symbols_list=no
@@ -1005,6 +1012,7 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	[lt_cv_ld_exported_symbols_list=no])
 	LDFLAGS="$save_LDFLAGS"
     ])
+
     AC_CACHE_CHECK([for -force_load linker flag],[lt_cv_ld_force_load],
       [lt_cv_ld_force_load=no
       cat > conftest.c << _LT_EOF
@@ -1022,7 +1030,9 @@ _LT_EOF
       echo "$LTCC $LTCFLAGS $LDFLAGS -o conftest conftest.c -Wl,-force_load,./libconftest.a" >&AS_MESSAGE_LOG_FD
       $LTCC $LTCFLAGS $LDFLAGS -o conftest conftest.c -Wl,-force_load,./libconftest.a 2>conftest.err
       _lt_result=$?
-      if test -f conftest && test ! -s conftest.err && test $_lt_result = 0 && $GREP forced_load conftest 2>&1 >/dev/null; then
+      if test -s conftest.err && $GREP force_load conftest.err; then
+	cat conftest.err >&AS_MESSAGE_LOG_FD
+      elif test -f conftest && test $_lt_result -eq 0 && $GREP forced_load conftest >/dev/null 2>&1 ; then
 	lt_cv_ld_force_load=yes
       else
 	cat conftest.err >&AS_MESSAGE_LOG_FD
