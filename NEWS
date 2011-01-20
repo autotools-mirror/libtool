@@ -28,6 +28,7 @@ New in 2.4.2 2011-??-??: git version 2.4.1a, Libtool team:
 * Changes in supported systems or compilers:
 
   - Fixes for gfortran on Darwin, XL Fortran on GNU/Linux.
+  - Support for FreeBSD 1.x (outdated since 1994) has been removed.
 
 New in 2.4 2010-09-22: git version 2.2.11a, Libtool team:
 

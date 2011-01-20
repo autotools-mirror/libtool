@@ -1,3 +1,11 @@
+2011-01-20  Gerald Pfeifer  <gerald@pfeifer.com>  (tiny change)
+
+	Remove support for FreeBSD 1.x.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	(_LT_SYS_DYNAMIC_LINKER): Remove handling of freebsd1* which
+	soon would incorrectly match FreeBSD 10.0.
+	* NEWS, THANKS: Update.
+
 2011-01-19  Peter O'Gorman  <peter@pogma.com>
 
 	Don't let verbose linker messages influence test results.
