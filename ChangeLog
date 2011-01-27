@@ -1,3 +1,10 @@
+2011-01-27  Peter O'Gorman  <peter@pogma.com>
+
+	Don't loop through wrapper script arguments unnecessarily.
+	* libltdl/m4/ltmain.m4sh: Check that argv contains " --lt-"
+	before looping to remove wrapper script targetted arguments.
+	Performance regression reported by Dan McGee.
+
 2011-01-20  Gerald Pfeifer  <gerald@pfeifer.com>  (tiny change)
 
 	Remove support for FreeBSD 1.x.
