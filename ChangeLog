@@ -1,3 +1,10 @@
+2011-02-01  Rainer Orth  <ro@CeBiTec.Uni-Bielefeld.DE>  (tiny change)
+
+	Fix LD setting for 64-bit Solaris 2/x86.
+	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK) [*-*-solaris*):
+	Determine GNU ld options for 64-bit Solaris 2/x86.  Detect gld
+	2.21 _sol2 emulations.
+
 2011-01-27  Peter O'Gorman  <peter@pogma.com>
 
 	Don't loop through wrapper script arguments unnecessarily.
