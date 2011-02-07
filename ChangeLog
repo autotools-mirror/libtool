@@ -1,3 +1,8 @@
+2011-02-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	docs: fix copyright years in PDF version of the manual.
+	* doc/libtool.texi: Fix copyright years.
+
 2011-02-01  Rainer Orth  <ro@CeBiTec.Uni-Bielefeld.DE>  (tiny change)
 
 	Fix LD setting for 64-bit Solaris 2/x86.
