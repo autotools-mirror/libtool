@@ -1,3 +1,9 @@
+2011-02-12  Peter O'Gorman  <peter@pogma.com>
+
+	Install ltmain.sh without execute bit set.
+	* Makefile.am: change install rule for ltmain.sh
+	Reported by Křištof Želechovski.
+
 2011-02-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	docs: fix copyright years in PDF version of the manual.

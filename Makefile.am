@@ -393,10 +393,11 @@ install-data-local: libltdl/Makefile.in
 ## install the helper scripts
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/config
-	@list='$(auxfiles)' && for p in $$list; do \
+	@list='$(auxexefiles)' && for p in $$list; do \
 	  echo " $(INSTALL_SCRIPT) '$(srcdir)/libltdl/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_SCRIPT) "$(srcdir)/libltdl/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
+	$(INSTALL_DATA) "$(srcdir)/libltdl/config/ltmain.sh" "$(DESTDIR)$(pkgdatadir)/config/ltmain.sh" 
 ## install the libltdl files
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl/libltdl
