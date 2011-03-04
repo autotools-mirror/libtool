@@ -1,3 +1,13 @@
+2011-03-04  Peter O'Gorman  <peter@pogma.com>
+
+	On Mac OS X try .dylib as well as .so with lt_dlopenext
+	* libltdl/m4/ltdl.m4: Define extra extension if module extension
+	differs from shared lib extension.
+	* libltdl/ltdl.c: Use it.
+	* tests/darwin.at: Test it.
+	* NEWS: Announce it.
+	Reported by Hans Aberg, Michael Ellis, and others.
+
 2011-02-12  Peter O'Gorman  <peter@pogma.com>
 
 	Install ltmain.sh without execute bit set.

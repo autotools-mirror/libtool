@@ -10,6 +10,9 @@ New in 2.4.2 2011-??-??: git version 2.4.1a, Libtool team:
 
   - Initial support for Go, using the gccgo compiler.
 
+  - On Mac OS X .dylib is now tried as well as .so with
+    lt_dlopenext().
+
 * Bug fixes:
 
   - The generic approximation of the command line length limit (when getconf is
