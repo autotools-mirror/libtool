@@ -1,3 +1,10 @@
+2011-03-22  Justin Lecher  <jlec@gentoo.org>  (tiny change)
+	    Rhys Ulerich  <rhys.ulerich@gmail.com>  (tiny change)
+
+	Don't filter OPENMP flags (-openmp & -fopenmp) from linker lines.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Treat OpenMP
+	flags like pthreads flags.
+
 2011-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	libtoolize: detect -I<dir> (without space) in ACLOCAL_AMFLAGS.
