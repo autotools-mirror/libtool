@@ -1,3 +1,11 @@
+2011-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	libtoolize: detect -I<dir> (without space) in ACLOCAL_AMFLAGS.
+	* libtoolize.m4sh (func_scan_files): Also accept -I<dir>
+	(without intervening space) in ACLOCAL_AMFLAGS.
+	* THANKS: Update.
+	Report from Jan Engelhardt.
+
 2011-03-04  Peter O'Gorman  <peter@pogma.com>
 
 	On Mac OS X try .dylib as well as .so with lt_dlopenext

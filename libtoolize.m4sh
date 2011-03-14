@@ -556,8 +556,8 @@ func_scan_files ()
     # Hunt for ACLOCAL_AMFLAGS in `Makefile.am' for a `-I' argument.
 
     my_sed_aclocal_flags='
-        /^[	 ]*ACLOCAL_[A-Z_]*FLAGS[	 ]*=/ {
-	    s,^[^=]*=[	 ]*\(.*\), \1,
+        /^[	 ]*ACLOCAL_[A-Z_]*FLAGS[	 ]*=[	 ]*/ {
+	    s,,,
 	    q
 	}
 	d'
@@ -568,11 +568,14 @@ func_scan_files ()
           am_macrodir="$arg"
           break
         else
-          if test "X$arg" = "X-I"; then
-            my_macrodir_is_next=:
-          else
-            my_macrodir_is_next=false
-          fi
+	  case $arg in
+	    -I) my_macrodir_is_next=: ;;
+	    -I*)
+	      am_macrodir=`$ECHO "$arg" | sed 's,^-I,,'`
+	      break
+	      ;;
+	    *) my_macrodir_is_next=false ;;
+	  esac
         fi
       done
     fi
