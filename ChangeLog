@@ -1,3 +1,9 @@
+2011-04-10  Kurt Roeckx  <kurt@roeckx.be>
+
+	tagdemo: do not rely on picking up symbols from indirect deps.
+	* tests/tagdemo/Makefile.am: Link to all libraries that the
+	demo application uses.
+
 2011-04-10  Svante Signell  <srs@kth.se>  (tiny change)
 
 	Set shlibpath_overrides_runpath for the Hurd.

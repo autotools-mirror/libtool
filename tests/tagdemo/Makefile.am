@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-##   Copyright (C) 2003, 2004, 2005 Free Software Foundation
+##   Copyright (C) 2003, 2004, 2005, 2011 Free Software Foundation
 ##   Written by Gary V. Vaughan, 2003
 ##
 ##   This file is part of GNU Libtool.
@@ -47,7 +47,7 @@ noinst_HEADERS = foo.h baz.h conv.h
 bin_PROGRAMS = tagdemo
 
 tagdemo_SOURCES = main.cpp
-tagdemo_LDADD = libbaz.la
+tagdemo_LDADD = libbaz.la libfoo.la
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
