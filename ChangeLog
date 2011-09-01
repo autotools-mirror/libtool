@@ -1,3 +1,9 @@
+2011-09-01  Peter O'Gorman  <peter@pogma.com>
+
+	Add flag to inhibit warnings.
+	* libltdl/config/ltmain.m4sh: Add --no-warn, --no-warning flags.
+	Reported by John Davd Anglin.
+
 2011-04-10  Kurt Roeckx  <kurt@roeckx.be>
 
 	tagdemo: do not rely on picking up symbols from indirect deps.

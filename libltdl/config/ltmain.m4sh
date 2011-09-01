@@ -42,6 +42,7 @@ m4_divert_push([SCRIPT])
 #       --quiet, --silent    don't print informational messages
 #       --no-quiet, --no-silent
 #                            print informational messages (default)
+#       --no-warn            don't display warning messages
 #       --tag=TAG            use configuration variables from tag TAG
 #   -v, --verbose            print more informational messages than default
 #       --no-verbose         don't print the extra informational messages
@@ -372,6 +373,8 @@ M4SH_GETOPTS(
 	     ;;
 	esac],
   [],		[--no-silent|--no-quiet],	[false],		[
+	func_append preserve_args " $opt"],
+  [],		[--no-warning|--no-warn],	[false],		[
 	func_append preserve_args " $opt"],
   [],		[--no-verbose],			[false],		[
 	func_append preserve_args " $opt"],
