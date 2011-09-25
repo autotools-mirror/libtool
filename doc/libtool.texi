@@ -3784,7 +3784,7 @@ libltdl supports currently the following dynamic linking mechanisms:
 
 @itemize @bullet
 @item
-@code{dlopen} (Solaris, Linux and various BSD flavors)
+@code{dlopen} (POSIX compliant systems, GNU/Linux, etc.)
 @item
 @code{shl_load} (HP-UX)
 @item
@@ -3823,7 +3823,7 @@ distribution terms that you use for the rest of that program.
 @section How to use libltdl in your programs
 
 @noindent
-The libltdl API is similar to the dlopen interface of Solaris and Linux,
+The libltdl API is similar to the POSIX dlopen interface,
 which is very simple but powerful.
 
 @noindent
@@ -3945,7 +3945,7 @@ This search path is the value of the environment variable
 
 @item system library search path:
 The system dependent library search path
-(e.g.@: on Linux it is @env{LD_LIBRARY_PATH}).
+(e.g.@: on GNU/Linux it is @env{LD_LIBRARY_PATH}).
 @end enumerate
 
 Each search path must be a list of absolute directories separated by
@@ -5372,7 +5372,7 @@ uninstalled correctly.
 The @file{tests/mdemo} subdirectory contains a demonstration of a
 package that uses libtool and the system independent dlopen wrapper
 @file{libltdl} to load modules.  The library @file{libltdl} provides a
-dlopen wrapper for various platforms (Linux, Solaris, HP/UX etc.)
+dlopen wrapper for various platforms (POSIX)
 including support for dlpreopened modules (@pxref{Dlpreopening}).
 
 The tests matching @file{mdemo-*make.test}, @file{mdemo-*exec.test},

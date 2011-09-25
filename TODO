@@ -58,7 +58,7 @@ GNU Libtool
 
 * Audit file listing in libtool.m4.
 
-* Fix deplibs_check_method=pass_all (which is wrong!) on linux.
+* Fix deplibs_check_method=pass_all (which is wrong!) on GNU/Linux.
 
 * Fix -dlopen "self" on AIX.  Reported by Gary Kumfert <kumfert@llnl.gov>.
 
@@ -290,15 +290,15 @@ GNU Libtool
     and central_unixish_to_mingw would still do all the work (with its guts
     customized based on $build).
 
-    For more reasonable cross environments (e.g. linux->some_embedded) I think
-    you could probably work out a general M+N scheme, since most embedded $hosts
-    aren't as strange as the win32 variants -- even VxWorks and INTEGRITY have
-    basic, unix-like file systems (although INTEGRITY does have multiple roots).
-    Aggressive use of the m4 function_replace machinery WOULD be appropriate for
-    /these/ conversion functions.  OTOH...(a) you can't run the $host apps on
-    $build anyway, in these embedded situations. At best you'd use $TARGETSHELL
-    and "run" them via a remote connection, and (b) they don't use the C
-    wrapper!
+    For more reasonable cross environments (e.g. linux-gnu->some_embedded) I
+    think you could probably work out a general M+N scheme, since most embedded
+    $hosts aren't as strange as the win32 variants -- even VxWorks and INTEGRITY
+    have basic, unix-like file systems (although INTEGRITY does have multiple
+    roots). Aggressive use of the m4 function_replace machinery WOULD be
+    appropriate for /these/ conversion functions.  OTOH...(a) you can't run the
+    $host apps on $build anyway, in these embedded situations. At best you'd use
+    $TARGETSHELL and "run" them via a remote connection, and (b) they don't use
+    the C wrapper!
 
     So...I don't think it makes much difference *right now* in the amount of
     code required, or the number of functions implemented. At some point in the
