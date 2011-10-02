@@ -1,3 +1,10 @@
+2011-10-02  Xin LI <d@delphij.net>
+
+	Avoid problems when FreeBSD goes to version 10.
+	* libltdl/m4/libtool.m4: Remove mentions of freebsd1. Use dots
+	for FreeBSD 2 and 3 detection to avoid future problems
+	* libltdl/m4/ltmain.m4sh: ditto.
+
 2011-09-25  Cristophe Jarry <christophe.jarry@ouvaton.org>
 
 	Avoid mentioning "Linux", use "GNU/Linux", if appropriate.
