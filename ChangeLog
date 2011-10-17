@@ -1,5 +1,10 @@
 2011-10-17  Gary V. Vaughan  <gary@gnu.org>
 
+	Replace leading spaces with tabs.
+	* libltdl/m4/libtool.m4, libltdl/config/ltmain.m4sh: Replace leading
+	spaces in soure code with tabs to match surrounding code.
+	Reported by Peter Rosin.
+
 	Make a note to use gnu/linux for version_type.
 	* libltdl/m4/libtool.m4 (version_type): Add a comment to change
 	version_type setting from 'linux' to 'gnu/linux' during the next

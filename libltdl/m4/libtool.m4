@@ -2601,7 +2601,7 @@ irix5* | irix6* | nonstopux*)
     nonstopux*) version_type=nonstopux ;;
     *)
 	if test "$lt_cv_prog_gnu_ld" = yes; then
-                version_type=linux # correct to gnu/linux during the next big refactor
+		version_type=linux # correct to gnu/linux during the next big refactor
 	else
 		version_type=irix
 	fi ;;
