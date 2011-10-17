@@ -6543,6 +6543,7 @@ func_mode_link ()
 	  # which has an extra 1 added just for fun
 	  #
 	  case $version_type in
+          # correct linux to gnu/linux during the next big refactor
 	  darwin|linux|osf|windows|none)
 	    func_arith $number_major + $number_minor
 	    current=$func_arith_result
@@ -6659,7 +6660,7 @@ func_mode_link ()
 	  versuffix="$major.$revision"
 	  ;;
 
-	linux)
+        linux)  # correct to gnu/linux during the next big refactor
 	  func_arith $current - $age
 	  major=.$func_arith_result
 	  versuffix="$major.$age.$revision"

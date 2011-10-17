@@ -1,3 +1,12 @@
+2011-10-17  Gary V. Vaughan  <gary@gnu.org>
+
+	Make a note to use gnu/linux for version_type.
+	* libltdl/m4/libtool.m4 (version_type): Add a comment to change
+	version_type setting from 'linux' to 'gnu/linux' during the next
+	destabilising code refactoring.
+	* libltdl/config/ltmain.m4sh: ditto.
+	Requested by Richard Stallman.
+
 2011-10-04  Bart Van Assche <bvanassche@acm.org>
 
 	Typo fix - change func_apped into func_append
