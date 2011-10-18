@@ -1,3 +1,12 @@
+2011-10-18  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: use gnulib's canonical COPYING files.
+	* COPYING, libltdl/COPYING.LIB: Removed.
+	* bootstrap.conf (gnulib_non_module_files): Add COPYING.
+	(libtool_add_libltdl_copying): New func_gnulib_tool hook
+	function to copy the canonical LGPL2 COPYING file from gnulib at
+	bootstrap.
+
 2010-09-16  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: use gnulib's (pending saner) bootstrap script.
