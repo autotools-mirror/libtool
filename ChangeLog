@@ -1,5 +1,10 @@
 2011-10-17  Gary V. Vaughan  <gary@gnu.org>
 
+	Post-release administrivia.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	numbers.
+	* NEWS: Add header line for next release.
+
 	Release 2.4.2.
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
 	numbers.
