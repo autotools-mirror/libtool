@@ -1,0 +1,39 @@
+--- gnulib/build-aux/announce-gen	2011-10-19 01:26:27.000000000 +0700
++++ gl/build-aux/announce-gen	2011-10-19 16:54:12.000000000 +0700
+@@ -102,7 +102,7 @@
+   my %res;
+   foreach my $f (@file)
+     {
+-      my $cmd = "du --human $f";
++      my $cmd = "du -h $f";
+       my $t = `$cmd`;
+       # FIXME-someday: give a better diagnostic, a la $PROCESS_STATUS
+       $@
+@@ -449,7 +449,14 @@
+ 
+ <\#secure method=pgpmime mode=sign>
+ 
+-FIXME: put comments here
++Libtoolers!
++
++The Libtool Team is pleased to announce the release of $package_name $curr_version.
++
++GNU Libtool hides the complexity of using shared libraries behind a
++consistent, portable interface. GNU Libtool ships with GNU libltdl, which
++hides the complexity of loading dynamic runtime libraries (modules)
++behind a consistent, portable interface.
+ 
+ EOF
+ 
+@@ -497,6 +504,11 @@
+   $release_type eq 'stable'
+     or print_changelog_deltas ($package_name, $prev_version);
+ 
++  print <<EOF;
++
++Enjoy!
++EOF
++
+   exit 0;
+ }
+ 

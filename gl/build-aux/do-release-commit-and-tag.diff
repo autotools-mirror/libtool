@@ -1,0 +1,22 @@
+--- gnulib/build-aux/do-release-commit-and-tag	2011-10-19 22:37:21.000000000 +0700
++++ gl/build-aux/do-release-commit-and-tag	2011-10-21 15:09:12.000000000 +0700
+@@ -74,6 +74,10 @@
+   esac
+ }
+ 
++for gsort in $SORT gsort sort; do
++  echo 1|$gsort -V >/dev/null 2>/dev/null && break
++done
++
+ branch=master
+ case $1 in
+   --branch) shift; branch=$1; shift ;;
+@@ -95,7 +99,7 @@
+   || die 'failed to determine previous version number from .prev-version'
+ 
+ # Verify that $ver is sensible (> .prev-version).
+-case $(printf "$prev_ver\n$ver\n"|sort -V -u|tr '\n' ':') in
++case $(printf "$prev_ver\n$ver\n"|$gsort -V -u|tr '\n' ':') in
+   "$prev_ver:$ver:") ;;
+   *) die "invalid version: $ver";;
+ esac

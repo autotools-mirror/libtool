@@ -1,6 +1,10 @@
+/announce-gen
 /compile
 /depcomp
+/do-release-commit-and-tag
 /gendocs.sh
+/gnu-web-doc-update
+/gnupload
 /install-sh
 /ltmain.in
 /ltmain.sh

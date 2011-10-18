@@ -1,3 +1,18 @@
+2011-10-18  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: use gnulib's maint.mk and support scripts release procedure.
+	* Makefile.maint: Removed.
+	* configure.ac (LASTRELEASE, lt_major, lt_minor, lt_micro, lt_alpha):
+	All removed. Makefile.maint was the only client.
+	* HACKING (Release Procedure): Removed.
+	* bootstrap.conf (gnulib_modules): Add announce-gen,
+	do-release-commit-and-tag, gendocs, gnu-web-doc-update reademe-release
+	and gnupload.
+	* cfg.mk (manual_title): Set it for web-manual rule.
+	* Makefile.am (build_scripts): Add to EXTRA_DIST additional files
+	imported from gnulib for maint.mk release procedure.
+	* NEWS: Updated.
+
 2011-10-24  Gary V. Vaughan  <gary@gnu.org>
 
 	tests: ensure VPATH autom4te search path can find autotests.

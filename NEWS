@@ -1,8 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.4.4 201?-??-??: git version 2.4.3a, Libtool team:
+* Noteworthy changes in release ?.? (????-??-??) [?]
 
-* Bug fixes:
+** New features:
+
+  - Moved to gnulib release infrastructure.
+
+** Bug fixes:
 
   - Fix a long-standing latent bug in autom4te include path for autotests
     with VPATH builds.

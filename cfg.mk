@@ -21,11 +21,20 @@
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Boston, # MA 02111-1301, USA.
 
-gnulib_dir = $(srcdir)/gnulib
 _build-aux = libltdl/config
 
 # Set format of NEWS
 old_NEWS_hash := d41d8cd98f00b204e9800998ecf8427e
+
+manual_title = Portable Dynamic Shared Object Management
+
+# Set the release announcement email addresses, maint.mk will email the
+# translation-project instead of autotools-announce otherwise.
+ifeq ($(RELEASE_TYPE),stable)
+announcement_Cc_ = autotools-announce@gnu.org
+else
+announcement_Cc_ = autotools-announce@gnu.org, $(PACKAGE_BUGREPORT)
+endif
 
 # Don't syntax check the mail subdirectory.
 VC_LIST_ALWAYS_EXCLUDE_REGEX = /mail/

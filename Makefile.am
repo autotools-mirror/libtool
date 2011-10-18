@@ -73,7 +73,14 @@ libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
 ltmain_m4sh	= $(m4sh_dir)/ltmain.m4sh
 
 sh_files	= $(general_m4sh) $(getopt_m4sh)
-EXTRA_DIST     += bootstrap bootstrap.conf cfg.mk maint.mk $(aux_dir)/mkstamp \
+build_scripts	= $(aux_dir)/announce-gen $(aux_dir)/cvsu \
+		  $(aux_dir)/do-release-commit-and-tag \
+		  $(aux_dir)/gendocs.sh \
+		  $(aux_dir)/gnu-web-doc-update $(aux_dir)/gnupload \
+		  $(aux_dir)/mkstamp \
+		  $(aux_dir)/useless-if-before-free $(aux_dir)/vc-list-files
+
+EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
 		  $(sh_files) ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 \
 		  ChangeLog.2003 ChangeLog.2004 ChangeLog.2005 ChangeLog.2006 \
@@ -370,6 +377,8 @@ libtool_1	= $(doc_dir)/libtool.1
 libtoolize_1	= $(doc_dir)/libtoolize.1
 notes_texi	= $(doc_dir)/notes.texi
 notes_txt	= $(doc_dir)/notes.txt
+
+EXTRA_DIST	+= $(doc_dir)/gendocs_template
 
 # A bug in automake 1.11.1 (at least) prevents us from using:
 #

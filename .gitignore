@@ -36,6 +36,7 @@
 /COPYING
 /GNUmakefile
 /INSTALL
+/README-release
 /gnulib-local
 /libtoolize
 /libtoolize.in
@@ -67,3 +68,4 @@ testdir*
 testsuite
 testsuite.dir
 testsuite.log
+vc-diffs
