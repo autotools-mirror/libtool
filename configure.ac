@@ -31,7 +31,7 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([GNU Libtool], [2.4.1a], [bug-libtool@gnu.org])
+AC_INIT([GNU Libtool], [2.4.2], [bug-libtool@gnu.org])
 m4_ifndef([AC_PACKAGE_URL],
 	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/software/libtool/])])
 AC_CONFIG_HEADERS([config.h:config-h.in])

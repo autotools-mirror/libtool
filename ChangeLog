@@ -1,5 +1,10 @@
 2011-10-17  Gary V. Vaughan  <gary@gnu.org>
 
+	Release 2.4.2.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	numbers.
+	* NEWS: Update version number.
+
 	Replace leading spaces with tabs.
 	* libltdl/m4/libtool.m4, libltdl/config/ltmain.m4sh: Replace leading
 	spaces in soure code with tabs to match surrounding code.
