@@ -32,11 +32,14 @@
 .gitmodules
 .libs
 /.pc
+/.sc-start*
 /COPYING
+/GNUmakefile
 /INSTALL
 /gnulib-local
 /libtoolize
 /libtoolize.in
+/maint.mk
 /patches
 /release
 Makefile

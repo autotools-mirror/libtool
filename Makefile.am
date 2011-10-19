@@ -73,11 +73,12 @@ libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
 ltmain_m4sh	= $(m4sh_dir)/ltmain.m4sh
 
 sh_files	= $(general_m4sh) $(getopt_m4sh)
-EXTRA_DIST     += bootstrap bootstrap.conf $(aux_dir)/mkstamp \
+EXTRA_DIST     += bootstrap bootstrap.conf cfg.mk maint.mk $(aux_dir)/mkstamp \
 		  $(sh_files) ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 \
 		  ChangeLog.2003 ChangeLog.2004 ChangeLog.2005 ChangeLog.2006 \
-		  ChangeLog.2007 ChangeLog.2008 ChangeLog.2009 ChangeLog.2010
+		  ChangeLog.2007 ChangeLog.2008 ChangeLog.2009 ChangeLog.2010 \
+		  GNUmakefile
 CLEANFILES     += libtool libtoolize
 
 ## If a file is named several times below, and especially if it

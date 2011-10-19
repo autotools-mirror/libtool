@@ -1,5 +1,14 @@
 2011-10-19  Gary V. Vaughan  <gary@gnu.org>
 
+	maint: use gnulib's maintainer-makefile module.
+	* bootstrap.conf (gnulib_modules): Add maintainer-makefile.
+	(gnulib_tool_options): Add --avoid=dummy now that we have a real
+	module to import.
+	* cfg.mk: New file. Customize maint.mk for Libtool.
+	* Makefile.am (EXTRA_DIST): Add GNUmakefile, cfg.mk and maint.mk.
+
+2011-10-19  Gary V. Vaughan  <gary@gnu.org>
+
 	maint: use gnulib's canonical fdl.texi.
 	* doc/fdl.texi: Removed.
 	* bootstrap.conf (gnulib_non_module_files): Add fdl.texi.
