@@ -1,3 +1,9 @@
+2011-10-19  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: use gnulib's canonical fdl.texi.
+	* doc/fdl.texi: Removed.
+	* bootstrap.conf (gnulib_non_module_files): Add fdl.texi.
+
 2011-10-18  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: use gnulib's canonical COPYING files.
