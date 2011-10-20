@@ -3,6 +3,7 @@
 /depcomp
 /do-release-commit-and-tag
 /gendocs.sh
+/git-version-gen
 /gnu-web-doc-update
 /gnupload
 /install-sh

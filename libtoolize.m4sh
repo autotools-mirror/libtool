@@ -1,6 +1,6 @@
 m4_pattern_allow([dnl])
 AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
-# libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
+# libtoolize (GNU @PACKAGE@) @VERSION@
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
 
 # Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
@@ -59,7 +59,7 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # include the following information:
 #
 #       host-triplet:	@host_triplet@
-#       $progname:	(GNU @PACKAGE@@TIMESTAMP@) @VERSION@
+#       $progname:	(GNU @PACKAGE@) @VERSION@
 #       automake:		$automake_version
 #       autoconf:		$autoconf_version
 #

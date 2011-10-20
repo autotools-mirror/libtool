@@ -31,9 +31,11 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([GNU Libtool], [2.4.3a], [bug-libtool@gnu.org])
+AC_INIT([GNU Libtool],
+	m4_esyscmd([libltdl/config/git-version-gen .tarball-version]),
+	[bug-libtool@gnu.org])
 m4_ifndef([AC_PACKAGE_URL],
-	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/software/libtool/])])
+	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/s/libtool/])])
 
 # Since we already declare these directories in this file, save those
 # choices, and push the results into Makefile.am to avoid declaring
@@ -53,6 +55,8 @@ AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_MACRO_DIR([libltdl/m4])
 AC_CONFIG_LIBOBJ_DIR([libltdl])
 
+package_revision=`$SHELL $ac_aux_dir/git-version-gen .tarball-version`
+AC_SUBST([package_revision])
 
 ## ------------------------ ##
 ## Autotest initialisation. ##
@@ -68,20 +72,8 @@ AC_SUBST([AUTOTEST], ['$(AUTOM4TE) --language=autotest'])
 ## ---------------------------------------- ##
 
 # This is a sanity check so we can see which version is used in bug reports.
-# It is assumed that we only want to see the date extension for cvs libtool
-# versions (i.e. "odd" letters) and not actual alpha releases.
-TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp ${srcdir}`
-package_revision=`( set $TIMESTAMP; echo $1; )`
-case $package_revision in
-  *[[bdfhjlnprtvxz]])
-    TIMESTAMP=
-    ;;
-esac
-timestamp_string="${TIMESTAMP:+ (Build:$TIMESTAMP)}"
-AS_BOX([Configuring AC_PACKAGE_TARNAME$timestamp_string AC_PACKAGE_VERSION])
+AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION])
 echo
-AC_SUBST([TIMESTAMP])
-AC_SUBST([package_revision])
 
 
 ## ------------------------ ##
@@ -101,7 +93,7 @@ AM_INIT_AUTOMAKE([1.11.1 gnu subdir-objects dist-xz color-tests parallel-tests])
 # You can set autobuild_mode at configure time to specify a "unique"
 # string for this build.
 : ${autobuild_mode=default}
-AB_VERSION="AC_PACKAGE_VERSION ($TIMESTAMP)"
+AB_VERSION="AC_PACKAGE_VERSION"
 AB_INIT([$autobuild_mode])
 
 
@@ -109,7 +101,7 @@ dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 
 dnl Make sure config.status is regenerated when the version timestamp changes
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/ChangeLog'])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(srcdir)/.version'])
 
 
 ## ------------------------------- ##

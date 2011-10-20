@@ -1,3 +1,26 @@
+2011-10-20  Gary V. Vaughan  <gary@gnu.org>
+
+	maint: use gnulib's git-version-gen instead of mkstamp.
+	* libltdl/config/mkstamp: File removed.
+	* bootstrap.conf (gnulib_modules): Add git-version-gen.
+	* configure.ac (AC_INIT, package_revision): Use git-version-gen to
+	calculate version number.
+	(TIMESTAMP): Removed.
+	* libtoolize.m4sh, libltdl/config/ltmain.m4sh, libltdl/m4/libtool.m4
+	(TIMESTAMP): Ditto.
+	* Makefile.am (TIMESTAMP): Ditto.
+	(MKSTAMP): Renamed from this...
+	(git_version_gen): ...to this. Set revision here.  An alpha is now a
+	release with an odd micro relase number.
+	(rebuild): Don't reset revision here.
+	(build_scripts): Remove mkstamp, add git-version-gen.
+	(EXTRA_DIST, BUILT_SOURCES): Add .version.
+	(libltdl/config/ltmain.sh, libltdl/m4/ltversion.m4, tests/package.m4):
+	Don't depend on configure.ac or ChangeLog to determine when the
+	version number has reved, use .version directly.
+	(.version): Flush most recent configure calculated VERSION to disk.
+	(dist-hook): Flush current VERSION to disk at dist time.
+
 2011-10-18  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: use gnulib's maint.mk and support scripts release procedure.

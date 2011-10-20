@@ -33,6 +33,7 @@
 .libs
 /.pc
 /.sc-start*
+/.version
 /COPYING
 /GNUmakefile
 /INSTALL

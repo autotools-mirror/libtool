@@ -51,15 +51,8 @@ LT_M4SH			= $(M4SH) -B '$(m4sh_dir)'
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
-MKSTAMP = '$(SHELL)' '$(aux_dir)/mkstamp'
-
-timestamp = set dummy `$(MKSTAMP) '$(srcdir)'`; shift; \
-	case $(VERSION) in \
-	  *[acegikmoqsuwy]) TIMESTAMP=" $$1 $$2" ;; \
-	  *) TIMESTAMP="" ;; \
-	esac
-
-rebuild = rebuild=:; $(timestamp); revision=$$1
+git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '.tarball-version'
+rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's,-.*$$,,g'`
 
 
 # ---------- #
@@ -75,9 +68,8 @@ ltmain_m4sh	= $(m4sh_dir)/ltmain.m4sh
 sh_files	= $(general_m4sh) $(getopt_m4sh)
 build_scripts	= $(aux_dir)/announce-gen $(aux_dir)/cvsu \
 		  $(aux_dir)/do-release-commit-and-tag \
-		  $(aux_dir)/gendocs.sh \
+		  $(aux_dir)/gendocs.sh $(aux_dir)/git-version-gen \
 		  $(aux_dir)/gnu-web-doc-update $(aux_dir)/gnupload \
-		  $(aux_dir)/mkstamp \
 		  $(aux_dir)/useless-if-before-free $(aux_dir)/vc-list-files
 
 EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
@@ -120,7 +112,6 @@ bootstrap_edit  = $(SED) \
 		  -e 's,@PACKAGE_STRING\@,$(PACKAGE_NAME) $(VERSION),g' \
 		  -e 's,@PACKAGE_TARNAME\@,$(PACKAGE),g' \
 		  -e 's,@PACKAGE_VERSION\@,$(VERSION),g' \
-		  -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		  -e 's,@VERSION\@,$(VERSION),g'
 
 ## ltmain.sh needs some additional editing to remove unsubstituted
@@ -137,18 +128,22 @@ ltmain_sh_edit	= $(bootstrap_edit) \
 ## We used to do this with a 'stamp-vcl' file, but non-gmake builds
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
-$(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
+$(ltversion_m4): $(ltversion_in) $(dotversion)
 	@$(rebuild); \
 	if test -f '$@'; then \
 	  eval `'$(SED)' -n '/^macro_revision=/p' '$@'`; \
 	  test x"$$macro_revision" = x"$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
-	  case $$prereq in *ChangeLog | *configure.ac);; *) rebuild=:;; esac; \
+	  case $$prereq in *.version);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
 	  rm -f '$@'; \
-	  serial=`echo "$$revision" |$(SED) 's,^1[.],,g'`; \
+	  if test -f '$(srcdir)/.serial'; then \
+	    serial=`cat '$(srcdir)/.serial'`; \
+	  else \
+	    serial=`$(git_commit_count)`; \
+	  fi; \
 	  echo "$(bootstrap_edit) '$(ltversion_in)' > '$@'"; \
 	  $(bootstrap_edit) '$(ltversion_in)' > '$@'; \
 	  chmod a-w '$@'; \
@@ -164,14 +159,14 @@ $(ltversion_m4): $(ltversion_in) $(configure_ac) ChangeLog
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-$(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(configure_ac) ChangeLog
+$(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
 	@$(rebuild); \
 	if test -f '$@'; then \
 	  eval `'$(SED)' -n '/^package_revision=/p' '$@'`; \
 	  test x"$$package_revision" = x"$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
-	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
+	  case $$prereq in *.version);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
 	  rm -f '$@'; \
@@ -295,14 +290,14 @@ libtoolize: $(libtoolize_in) $(config_status)
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
 # check the version numbers from the build rule when necessary.
-libtool: $(ltmain_sh) $(config_status) ChangeLog
+libtool: $(ltmain_sh) $(config_status) $(dotversion)
 	@$(rebuild); \
 	if test -f '$@'; then \
 	  eval `'$(SED)' -n '/^package_revision=/p' '$@'`; \
 	  test "$$package_revision" = "$$revision" && rebuild=false; \
 	fi; \
 	for prereq in $?; do \
-	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
+	  case $$prereq in *.version);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
 	  echo '$(SHELL) ./config.status "$@"'; \
@@ -491,9 +486,42 @@ install-data-local: $(lt_Makefile_in)
 ## Distribution. ##
 ## ------------- ##
 
-edit_readme_alpha = $(aux_dir)/edit-readme-alpha
+edit_readme_alpha	= $(aux_dir)/edit-readme-alpha
 
+dotserial		= $(distdir)/.serial
+dotversion		= $(srcdir)/.version
+tarball_version		= $(distdir)/.tarball-version
+
+
+## Arrange so that .tarball-version appears only in the distribution
+## tarball, and never in a checked-out repository.
+EXTRA_DIST += $(dotversion)
+BUILT_SOURCES += $(dotversion)
+$(dotversion):
+	echo '$(VERSION)' > '$@T' && mv '$@T' '$@'
+
+## Edit the README file for alpha releases.
 EXTRA_DIST += $(edit_readme_alpha)
+re_odd_version	= '\([0-9][0-9]*.[0-9][0-9]*.[0-9]*[13579]\)'
+$(readme): FORCE
+	test -n `expr $(VERSION) : $(re_odd_version)` && \
+	  $(SHELL) $(edit_readme_alpha) '$@'
+
+git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's,[ 	],,g'
+
+dist-hook: $(dotversion) $(readme)
+## Arrange so that .tarball-version appears only in the distribution
+## tarball, and never in a checked-out repository.
+	echo '$(VERSION)' > $(tarball_version)
+## ...and similarly for .serial.
+	$(git_commit_count) > $(dotserial)
+## Ensure aclocal has not wrongly picked up old macro definitions.
+	for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
+	  if grep "$$macro" '$(srcdir)/aclocal.m4' '$(lt_aclocal_m4)'; then \
+	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
+	    exit 1; \
+	  else :; fi; \
+	done
 
 uninstall-hook:
 	@$(NORMAL_UNINSTALL)
@@ -505,19 +533,6 @@ uninstall-hook:
 	  f=`echo "$$p" |$(SED) 's|^.*/||'`; \
 	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
-	done
-
-dist-hook:
-## Edit the README file for alpha releases.
-	case $(VERSION) in \
-	  *[a-z]) $(SHELL) $(edit_readme_alpha) $(distdir)/README ;; \
-	esac
-## Ensure aclocal has not wrongly picked up old macro definitions.
-	for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
-	  if grep "$$macro" '$(srcdir)/aclocal.m4' '$(lt_aclocal_m4)'; then \
-	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
-	    exit 1; \
-	  else :; fi; \
 	done
 
 
@@ -630,7 +645,7 @@ INSTALLCHECK_ENVIRONMENT = \
 $(testsuite): $(package_m4) $(TESTSUITE_AT) Makefile.am
 	$(AUTOTEST) -I '$(srcdir)' -I '$(srcdir)/tests' $(TESTSUITE_AT) -o '$@'
 
-$(package_m4): $(configure_ac) Makefile.am
+$(package_m4): $(dotversion) Makefile.am
 	{ \
 	  echo '# Signature of the current package.'; \
 	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
@@ -1018,3 +1033,7 @@ fake-distclean-legacy:
 
 $(TESTS): $(defs)
 DISTCLEANFILES += $(defs)
+
+## An empty target to depend on when a rule needs to always run
+## whenever it is visited.
+FORCE:
