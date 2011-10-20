@@ -1,3 +1,11 @@
+2010-10-20  Gary V. Vaughan  <gary@gnu.org>
+
+	build: avoid spurious bootstrap_edit call.
+	* Makefile.am (tests/package.m4): @FOO@ substitutions have already
+	been made by the time Makefile.am has been transformed into Makefile,
+	so don't try to rerun the substitutions manually with
+	$(bootstrap_edit) after the fact.
+
 2011-10-17  Gary V. Vaughan  <gary@gnu.org>
 
 	Post-release administrivia.

@@ -561,7 +561,7 @@ $(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
 	  echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])'; \
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
 	  echo 'm4_define([AT_PACKAGE_URL],       [@PACKAGE_URL@])'; \
-	} | $(bootstrap_edit) > $(srcdir)/tests/package.m4
+	} > $(srcdir)/tests/package.m4
 
 tests/atconfig: $(top_builddir)/config.status
 	$(SHELL) ./config.status tests/atconfig
