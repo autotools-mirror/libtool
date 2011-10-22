@@ -487,11 +487,22 @@ install-data-local: $(lt_Makefile_in)
 ## ------------- ##
 
 edit_readme_alpha	= $(aux_dir)/edit-readme-alpha
+gitlog_to_changelog	= $(aux_dir)/gitlog-to-changelog
 
 dotserial		= $(distdir)/.serial
 dotversion		= $(srcdir)/.version
 tarball_version		= $(distdir)/.tarball-version
+readme			= $(distdir)/README
+changelog		= $(distdir)/ChangeLog
 
+# Generate ChangeLog for this year until it rotates out, when this start
+# date is updated to the following year.
+changelog_start_date = 2011-01-01
+$(changelog): FORCE
+	if test -d .git; then \
+	  $(gitlog_to_changelog) --since=$(changelog_start_date) > '$@T'; \
+	  rm -f '$@'; mv '$@T' '$@'; \
+	fi
 
 ## Arrange so that .tarball-version appears only in the distribution
 ## tarball, and never in a checked-out repository.
@@ -509,7 +520,7 @@ $(readme): FORCE
 
 git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's,[ 	],,g'
 
-dist-hook: $(dotversion) $(readme)
+dist-hook: $(changelog) $(dotversion) $(readme)
 ## Arrange so that .tarball-version appears only in the distribution
 ## tarball, and never in a checked-out repository.
 	echo '$(VERSION)' > $(tarball_version)

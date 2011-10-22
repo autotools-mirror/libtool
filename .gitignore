@@ -35,6 +35,7 @@
 /.sc-start*
 /.version
 /COPYING
+/ChangeLog
 /GNUmakefile
 /INSTALL
 /README-release

@@ -15,9 +15,9 @@ and is not part of a release distribution.
   appropriate paperwork, and be sure to add their name and email
   address to THANKS
 
-* If a change fixes a test, mention the test in the ChangeLog entry.
+* If a change fixes a test, mention the test in the git log entry.
 
-* If somebody reports a new bug, mention his name in the ChangeLog entry
+* If somebody reports a new bug, mention his name in the git log entry
   and in the test case you write.
 
 * The correct response to most actual bugs is to write a new test case
@@ -89,112 +89,7 @@ and is not part of a release distribution.
   with the `_lt_' macro namespace).
 
 
-5. Editing 'ChangeLog'
-======================
-
-* When in doubt, check that emacs can syntax-color properly in
-  change-log-mode.  And preferably use emacs 'C-x 4 a'
-  (add-change-log-entry-other-window) to open ChangeLog with an
-  appropriate new template.
-
-* If this change is by a different author, or on a different date to the
-  last entry start a new entry at the top of the file with the format
-  (note two spaces between each field):
-
-yyyy-mm-dd  Name of Author  <email@address>
-
-*  If more than one person collaborated on the change, additional
-   authors can be listed on subsequent lines, thus:
-
-yyyy-mm-dd  Name of Main Author  <email@address>,
-            Name of Contributor  <another@email.address>
-
-* Where a change author did not supply a copyright assignment, but the
-  changes they submitted were sufficiently trivial to commit in any case
-  (see the GCS for guidelines on this), then flag this against their
-  name in the header, thus:
-
-yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
-
-* In ChangeLog.2004 and earlier, 'Name of Author' was sometimes the name
-  of the author of the ChangeLog when the person who made the change
-  being documented didn't supply one.   In that case separated from
-  the previous field by a blank line and indented by 1 tab (note, only
-  1 space between fields here) you will see:
-
-	From Author of Actual Change <email@address>:
-
-  As of now, don't do that anymore, since the GNU Coding Standards say
-  that the author of the change must be credited in the main entry
-  header for legal purposes.
-
-* Preferably the next part should be a description of the overall
-  purpose of the change, separated from the header by a blank line,
-  indented by 1 tab, and filled at column 72.  The last character of the
-  description should be a period.  Ideally, this description fits on one
-  line, or begins with a one-line summary.
-
-* Changes to each file come next.  Each new file starts on a new line,
-  indented by 1 tab and starting with an asterisk and a space.  Multiple
-  files can be listed here relative to $top_srcdir, and comma separated.
-  Names of functions (or sections as appropriate) to which the change
-  applies should be named inside parentheses and comma separated.  If
-  this goes beyond column 72, then parens should be closed and re-opened
-  on the next line:
-
-	* file, another/file, test/testcases/foo.test (func_foo)
-	(func_bar, func_baz): Description of changes.
-
-* If the change does not apply to particular functions (or sections),
-  the section list can be omitted:
-
-	* file, another/file, test/testcases/foo.test: General changes.
-
-* If the changes are particular to certain architectures, they should be
-  listed after the functions in square brackets:
-
-	* file, another/file (func_foo) [linux, solaris]: Description of
-	changes.
-
-* Subsequent changes in other files that are related to the same overall
-  enhancement or bugfix should be listed concurrently, without blank
-  lines.  Always start a fresh line for a new file:
-
-	* file, another/file (func_foo) [linux, solaris]: Description of
-	changes.
-	* doc/foo.texi (Invoking Foo): Document.
-	* NEWS: Updated.
-
-* If the change is in response to a problem reported by someone other
-  than the author, then credit them at the end of the description with:
-
-	Reported by Reporter Name <email@address>.
-
-* See the GNU Coding Standards document for more details on ChangeLog
-  formatting.
-
-
-2005-01-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change),
-            Peter O'Gorman  <peter@pogma.com>
-
-	This is the overall description of the purpose of this change
-	and any useful background for a model ChangeLog entry.
-
-	* HACKING: Updated copyright.  This isn't attached to a
-	particular section of the file, so it comes first.
-	(Editing 'ChangeLog'): New section.  This applies to the same
-	file, but since it applies to a particular section it starts on
-	a new line.
-	(Introduction, Maintenance Notes, Test Suite, Naming)
-	(Editing '.am' Files): If I had changed all these sections in
-	the same way, I can list them like this, being careful to close
-	and reopen the parentheses when starting a new line.  The colon
-	only comes after the last section before this description.
-	* NEWS: Updated.
-	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
-
-
-6. Using git
+5. Using git
 ============
 
 * Preferably, let the git commit message mirror the ChangeLog entry,
@@ -217,7 +112,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   a linear history.
 
 
-7. Editing `.am' Files
+6. Editing `.am' Files
 ======================
 
 * Always use $(...) and not ${...}
@@ -243,7 +138,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   and will be fixed in the `libtoolize --ltdl --(non)recursive' stage.
 
 
-8. Editing `.m4sh' Files
+7. Editing `.m4sh' Files
 ========================
 
 * Use shell functions, but be careful not to assume local scope for
@@ -286,7 +181,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   ]])
 
 
-9. Editing `.m4' Files
+8. Editing `.m4' Files
 ======================
 
 * Be careful with both `echo' and `$ECHO'.  As the latter may be one of
@@ -312,7 +207,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   be updated in all newer versions.
 
 
-10. Abstraction layers in libltdl
+9. Abstraction layers in libltdl
 =================================
 
 * The libltdl API uses a layered approach to differentiate internal and
@@ -413,7 +308,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   loading: preopen.c, dlopen.c etc.
 
 
-11. Licensing Rules
+10. Licensing Rules
 ===================
 
 GNU Libtool uses 3 different licenses for various of the files distributed
@@ -424,7 +319,7 @@ commenting (shell, C etc) and decoration (m4sh etc) assumed throughout.
 
 
 
-11.1. Notice preservation
+10.1. Notice preservation
 
 Autoconf macros and files used to generate them need this license, along
 with files such as HACKING, NEWS, README, README.alpha, TODO and
@@ -440,7 +335,7 @@ without warranty of any kind.
 
 
 
-11.2. GPL
+10.2. GPL
 
 Everything else in the distribution has the following license text
 unless there is good reason to use one of the other license texts
@@ -469,7 +364,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-11.3. GPL with self extracting version
+10.3. GPL with self extracting version
 
 Some of the sources built atop the getopt.m4sh framework use
 func_version() to extract their --version output from the copyright
@@ -503,7 +398,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-11.4. GPL with self extracting version and Libtool exception clause
+10.4. GPL with self extracting version and Libtool exception clause
 
 Although the libtool script is generated from `ltmain.m4sh' according
 to the rules in the preceding subsection, it also needs the Libtool
@@ -542,7 +437,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-11.5. LGPL with Libtool exception clause
+10.5. LGPL with Libtool exception clause
 
 Finally, not only is Libltdl is LGPLed, but it is routinely
 redistributed inside projects that use it, so its sources need to use
