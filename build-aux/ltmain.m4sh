@@ -3424,6 +3424,8 @@ EOF
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#define STREQ(s1, s2) (strcmp ((s1), (s2)) == 0)
+
 /* declarations of non-ANSI functions */
 #if defined(__MINGW32__)
 # ifdef __STRICT_ANSI__
@@ -3620,7 +3622,7 @@ main (int argc, char *argv[])
   newargc=0;
   for (i = 1; i < argc; i++)
     {
-      if (strcmp (argv[i], dumpscript_opt) == 0)
+      if (STREQ (argv[i], dumpscript_opt))
 	{
 EOF
 	    case "$host" in
@@ -3634,12 +3636,12 @@ EOF
 	  lt_dump_script (stdout);
 	  return 0;
 	}
-      if (strcmp (argv[i], debug_opt) == 0)
+      if (STREQ (argv[i], debug_opt))
 	{
           lt_debug = 1;
           continue;
 	}
-      if (strcmp (argv[i], ltwrapper_option_prefix) == 0)
+      if (STREQ (argv[i], ltwrapper_option_prefix))
         {
           /* however, if there is an option in the LTWRAPPER_OPTION_PREFIX
              namespace, but it is not one of the ones we know about and
@@ -4047,7 +4049,7 @@ strendzap (char *str, const char *pat)
   if (patlen <= len)
     {
       str += len - patlen;
-      if (strcmp (str, pat) == 0)
+      if (STREQ (str, pat))
 	*str = '\0';
     }
   return str;

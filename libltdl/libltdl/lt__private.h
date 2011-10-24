@@ -94,8 +94,8 @@ LT_SCOPE void	lt__alloc_die_callback (void);
 
 
 /* For readability:  */
-#define strneq(s1, s2)	(strcmp((s1), (s2)) != 0)
-#define streq(s1, s2)	(!strcmp((s1), (s2)))
+#define STRNEQ(s1, s2)	(strcmp((s1), (s2)) != 0)
+#define STREQ(s1, s2)	(strcmp((s1), (s2)) == 0)
 
 
 

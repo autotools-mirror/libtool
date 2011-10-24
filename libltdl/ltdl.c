@@ -385,7 +385,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
     {
       if ((handle->info.filename == filename) /* dlopen self: 0 == 0 */
 	  || (handle->info.filename && filename
-	      && streq (handle->info.filename, filename)))
+	      && STREQ (handle->info.filename, filename)))
 	{
 	  break;
 	}
@@ -1108,11 +1108,11 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 	{
 	  errors += trim (deplibs, &line[sizeof (STR_DL_DEPLIBS) - 1]);
 	}
-      else if (streq (line, "installed=yes\n"))
+      else if (STREQ (line, "installed=yes\n"))
 	{
 	  *installed = 1;
 	}
-      else if (streq (line, "installed=no\n"))
+      else if (STREQ (line, "installed=no\n"))
 	{
 	  *installed = 0;
 	}
@@ -1324,7 +1324,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
     }
 
   /* Check whether we are opening a libtool module (.la extension).  */
-  if (ext && streq (ext, archive_ext))
+  if (ext && STREQ (ext, archive_ext))
     {
       /* this seems to be a libtool module */
       FILE *	file	 = 0;
@@ -1538,12 +1538,12 @@ has_library_ext (const char *filename)
 
   ext = strrchr (filename, '.');
 
-  if (ext && ((streq (ext, archive_ext))
+  if (ext && ((STREQ (ext, archive_ext))
 #if defined(LT_MODULE_EXT)
-	     || (streq (ext, shlib_ext))
+	     || (STREQ (ext, shlib_ext))
 #endif
 #if defined(LT_SHARED_EXT)
-	     || (streq (ext, shared_ext))
+	     || (STREQ (ext, shared_ext))
 #endif
     ))
     {
@@ -2428,7 +2428,7 @@ lt_dlhandle_fetch (lt_dlinterface_id iface, const char *module_name)
   while ((handle = lt_dlhandle_iterate (iface, handle)))
     {
       lt_dlhandle cur = handle;
-      if (cur && cur->info.name && streq (cur->info.name, module_name))
+      if (cur && cur->info.name && STREQ (cur->info.name, module_name))
 	break;
     }
 

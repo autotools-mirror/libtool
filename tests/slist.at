@@ -31,9 +31,11 @@ AT_DATA([test-slist.c], [[
 #include <stdio.h>
 #include "slist.h"
 
+#define STREQ(s1, s2)	(strcmp ((s1), (s2)) == 0)
+
 void *find_string (SList *item, void *data)
 {
-  if (data != NULL && !strcmp ((const char *) item->userdata, (const char *)data))
+  if (data != NULL && STREQ ((const char *) item->userdata, (const char *)data))
     return item;
   else
     return NULL;
@@ -83,10 +85,10 @@ int main ()
   assert (slist_find (list, find_string, (void *) "foo10") == NULL);
   item = (SList *) slist_find (list, find_string, (void *) "foo1");
   assert (item != NULL);
-  assert (!strcmp ((const char *) item->userdata, "foo1"));
+  assert (STREQ ((const char *) item->userdata, "foo1"));
 
   item = slist_nth (list, 10);
-  assert (item != NULL && !strcmp ((const char *) item->userdata, "foo0"));
+  assert (item != NULL && STREQ ((const char *) item->userdata, "foo0"));
 
   puts ("list as inserted:");
   slist_foreach (list, print_item, NULL);
@@ -95,13 +97,13 @@ int main ()
   slist_foreach (list, print_item, NULL);
 
   item = slist_nth (list, 1);
-  assert (item != NULL && !strcmp ((const char *) item->userdata, "foo0"));
+  assert (item != NULL && STREQ ((const char *) item->userdata, "foo0"));
 
   assert (10 == slist_length (list));
 
   /* slist_tail is the second item, not the last one */
   item = slist_tail (list);
-  assert (item != NULL && !strcmp ((const char *) item->userdata, "foo1"));
+  assert (item != NULL && STREQ ((const char *) item->userdata, "foo1"));
 
   assert (slist_tail (slist_nth (list, 10)) == NULL);
 
@@ -131,19 +133,19 @@ int main ()
   list_save = list;
   item = slist_remove (&list, find_string, (void *) "foo5");
   assert (list_save == list);
-  assert (item != NULL && !strcmp (data = (char *) slist_unbox (item), "foo5"));
+  assert (item != NULL && STREQ (data = (char *) slist_unbox (item), "foo5"));
   free (data);
 
   list_save = list;
   item = slist_remove (&list, find_string, (void *) "foo9");
   assert (list_save == list);
-  assert (item != NULL && !strcmp (data = (char *) slist_unbox (item), "foo9"));
+  assert (item != NULL && STREQ (data = (char *) slist_unbox (item), "foo9"));
   free (data);
 
   list_save = list;
   item = slist_remove (&list, find_string, (void *) "foo0");
   assert (list_save != list);
-  assert (item != NULL && !strcmp (data = (char *) slist_unbox (item), "foo0"));
+  assert (item != NULL && STREQ (data = (char *) slist_unbox (item), "foo0"));
   free (data);
 
   list_save = list;

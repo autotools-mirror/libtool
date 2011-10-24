@@ -168,7 +168,7 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
       const lt_dlsymlist *symbol;
       for (symbol= lists->symlist; symbol->name; ++symbol)
 	{
-	  if (!symbol->address && streq (symbol->name, filename))
+	  if (!symbol->address && STREQ (symbol->name, filename))
 	    {
 	      /* If the next symbol's name and address is 0, it means
 		 the module just contains the originator and no symbols.
@@ -214,7 +214,7 @@ vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 
   while (symbol->name)
     {
-      if (streq (symbol->name, name))
+      if (STREQ (symbol->name, name))
 	{
 	  return symbol->address;
 	}
@@ -336,8 +336,8 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
   for (list = preloaded_symlists; list; list = list->next)
     {
       /* ...that was preloaded by the requesting ORIGINATOR... */
-      if ((originator && streq (list->symlist->name, originator))
-          || (!originator && streq (list->symlist->name, "@PROGRAM@")))
+      if ((originator && STREQ (list->symlist->name, originator))
+          || (!originator && STREQ (list->symlist->name, "@PROGRAM@")))
 	{
 	  const lt_dlsymlist *symbol;
 	  unsigned int idx = 0;
@@ -349,7 +349,7 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
 	  while ((symbol = &list->symlist[++idx])->name != 0)
 	    {
 	      if ((symbol->address == 0)
-		  && (strneq (symbol->name, "@PROGRAM@")))
+		  && (STRNEQ (symbol->name, "@PROGRAM@")))
 		{
 		  lt_dlhandle handle = lt_dlopen (symbol->name);
 		  if (handle == 0)

@@ -52,7 +52,7 @@ loader_callback (SList *item, void *userdata)
 
   assert (vtable);
 
-  return streq (vtable->name, name) ? (void *) item : NULL;
+  return STREQ (vtable->name, name) ? (void *) item : NULL;
 }
 
 

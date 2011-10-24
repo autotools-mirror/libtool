@@ -40,7 +40,6 @@ VC_LIST_ALWAYS_EXCLUDE_REGEX = ^mail/
 local-checks-to-fix =				\
 	sc_prohibit_always-defined_macros	\
 	sc_prohibit_always_true_header_tests	\
-	sc_prohibit_strcmp			\
 	sc_prohibit_test_minus_ao		\
 	sc_prohibit_undesirable_word_seq	\
 	sc_require_config_h			\
@@ -67,3 +66,5 @@ local-checks-to-skip =				\
 # List syntax-check exempted files.
 exclude_file_name_regexp--sc_error_message_uppercase = \
   ^$(_build-aux)/cvsu$$
+exclude_file_name_regexp--sc_prohibit_strcmp = \
+  ^(doc/libtool.texi|tests/.*demo/.*\.c)$$
