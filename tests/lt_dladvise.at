@@ -174,7 +174,7 @@ hint_global (void)
 
       /* Don't attempt to load moddepend unless modglobal was successfully
          loaded and the symglobal hint was taken, and the system allows to
- 	 to have undefined symbols.  */
+ 	 have undefined symbols.  */
       if (info && info->is_symglobal && HAVE_UNDEFINED_SYMBOLS)
         {
           hint_ext ();
