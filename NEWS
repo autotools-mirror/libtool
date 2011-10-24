@@ -4,7 +4,8 @@ New in 2.4.4 201?-??-??: git version 2.4.3a, Libtool team:
 
 * Bug fixes:
 
-  - Waiting for bug reports...
+  - Fix a long-standing latent bug in autom4te include path for autotests
+    with VPATH builds.
 
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 

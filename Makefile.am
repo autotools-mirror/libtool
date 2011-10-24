@@ -619,7 +619,7 @@ INSTALLCHECK_ENVIRONMENT = \
 	tst_aclocaldir="$(aclocaldir)"
 
 $(testsuite): $(package_m4) $(TESTSUITE_AT) Makefile.am
-	$(AUTOTEST) -I '$(srcdir)/tests' $(TESTSUITE_AT) -o '$@'
+	$(AUTOTEST) -I '$(srcdir)' -I '$(srcdir)/tests' $(TESTSUITE_AT) -o '$@'
 
 $(package_m4): $(configure_ac) Makefile.am
 	{ \

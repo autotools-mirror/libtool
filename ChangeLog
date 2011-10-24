@@ -1,3 +1,13 @@
+2011-10-24  Gary V. Vaughan  <gary@gnu.org>
+
+	tests: ensure VPATH autom4te search path can find autotests.
+	* Makefile.am (tests/testsuite): Passing only $(srcdir) include path
+	to autom4te is unable to find tests/package.m4, and passing only
+	$(srcdir)/tests breaks VPATH build searches for TESTSUITE_AT files,
+	which are relative to $(srcdir)... so we pass both!
+	* NEWS: Updated.
+	Reported by Bob Friesenhahn.
+
 2011-10-24  Karl Berry  <karl@gnu.org>
 
 	doc: modernize libtool.texi.
