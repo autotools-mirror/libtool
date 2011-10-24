@@ -1274,7 +1274,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
     name[ext - base_name] = LT_EOS_CHAR;
   }
 
-  /* Before trawling through the filesystem in search of a module,
+  /* Before trawling through the file system in search of a module,
      check whether we are opening a preloaded module.  */
   if (!dir)
     {

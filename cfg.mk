@@ -35,10 +35,9 @@ announcement_Cc_ = autotools-announce@gnu.org, $(PACKAGE_BUGREPORT)
 endif
 
 # Don't syntax check the mail subdirectory.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = /mail/
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^mail/
 
 local-checks-to-fix =				\
-	sc_file_system				\
 	sc_m4_quote_check			\
 	sc_makefile_TAB_only_indentation	\
 	sc_makefile_at_at_check			\

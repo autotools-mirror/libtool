@@ -45,7 +45,7 @@ first_open (lt_user_data data, const char *filename, lt_dladvise advise)
   static const char *first_module = "first";
   const char *ctx = (const char *) data;
 
-  /* Use a magic string to avoid possible interactions with filesystem
+  /* Use a magic string to avoid possible interactions with file system
    * objects.  Prepend '/' to short-circuit libltdl's search of
    * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
    */
@@ -115,7 +115,7 @@ last_open (lt_user_data data, const char *filename, lt_dladvise advise)
   static const char *last_module = "last";
   const char *ctx = (const char *) data;
 
-  /* Use a magic string to avoid possible interactions with filesystem
+  /* Use a magic string to avoid possible interactions with file system
    * objects.  Prepend '/' to short-circuit libltdl's search of
    * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
    */
@@ -277,7 +277,7 @@ main (int argc, char* argv[])
 
   printf ("Found loader \"%s\"\n", finder->name);
 
-  /* Use a magic string to avoid possible interactions with filesystem
+  /* Use a magic string to avoid possible interactions with file system
    * objects.  Prepend '/' to short-circuit libltdl's search of
    * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
    */
@@ -324,7 +324,7 @@ main (int argc, char* argv[])
 
   lt_dlclose (module);
 
-  /* Use a magic string to avoid possible interactions with filesystem
+  /* Use a magic string to avoid possible interactions with file system
    * objects.  Prepend '/' to short-circuit libltdl's search of
    * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
    */
