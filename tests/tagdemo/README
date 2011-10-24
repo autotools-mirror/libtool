@@ -1,5 +1,3 @@
-# $Id$
-
 This directory contains a sample package that demonstrates the use of
 GNU Libtool's multi-language support through the use of configuration
 tags.  It requires GNU autoconf, automake and of course libtool.
