@@ -1316,7 +1316,7 @@ func_mode_compile ()
       case $arg in
       -shared)
 	test "$build_libtool_libs" != yes && \
-	  func_fatal_configuration "can not build a shared library"
+	  func_fatal_configuration "cannot build a shared library"
 	build_old_libs=no
 	continue
 	;;
@@ -4423,7 +4423,7 @@ func_mode_link ()
       case $arg in
       -shared)
 	test "$build_libtool_libs" != yes && \
-	  func_fatal_configuration "can not build a shared library"
+	  func_fatal_configuration "cannot build a shared library"
 	build_old_libs=no
 	break
 	;;
@@ -6062,7 +6062,7 @@ func_mode_link ()
 		  *-*-sysv5OpenUNIX* | *-*-sysv5UnixWare7.[01].[10]* | \
 		    *-*-unixware7*) add_dir="-L$dir" ;;
 		  *-*-darwin* )
-		    # if the lib is a (non-dlopened) module then we can not
+		    # if the lib is a (non-dlopened) module then we cannot
 		    # link against it, someone is ignoring the earlier warnings
 		    if /usr/bin/file -L $add 2> /dev/null |
 			 $GREP ": [^:]* bundle" >/dev/null ; then
@@ -6212,7 +6212,7 @@ func_mode_link ()
 	    # Just print a warning and add the library to dependency_libs so
 	    # that the program can be linked against the static library.
 	    echo
-	    $ECHO "*** Warning: This system can not link to static lib archive $lib."
+	    $ECHO "*** Warning: This system cannot link to static lib archive $lib."
 	    echo "*** I have the capability to make that library automatically link in when"
 	    echo "*** you link to this library.  But I can only do this if you have a"
 	    echo "*** shared version of the library, which you do not appear to have."
@@ -8646,7 +8646,7 @@ library_names='$library_names'
 # The name of the static archive.
 old_library='$old_library'
 
-# Linker flags that can not go in dependency_libs.
+# Linker flags that cannot go in dependency_libs.
 inherited_linker_flags='$new_inherited_linker_flags'
 
 # Libraries that this one depends upon.

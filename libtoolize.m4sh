@@ -947,7 +947,7 @@ func_nonemptydir_p ()
 
     # check that the directories contents can be ls'ed
     test -n "`{ cd $my_dir && ls; } 2>/dev/null`" \
-        || func_fatal_error "can not list files: \`$my_dir'"
+        || func_fatal_error "cannot list files: \`$my_dir'"
 }
 
 
@@ -1354,7 +1354,7 @@ func_require_ac_aux_dir ()
       case $ac_aux_dir in
         *\$*)
           func_fatal_error "\
-can not expand unknown variable in AC_CONFIG_AUX_DIR argument."
+cannot expand unknown variable in AC_CONFIG_AUX_DIR argument."
           ;;
       esac
     }
@@ -1382,7 +1382,7 @@ func_require_ac_ltdl_dir ()
       case $ac_ltdl_dir in
         *\$*)
           func_fatal_error "\
-can not expand unknown variable in LT_CONFIG_LTDL_DIR argument."
+cannot expand unknown variable in LT_CONFIG_LTDL_DIR argument."
           ;;
       esac
     fi
@@ -1431,7 +1431,7 @@ func_require_ac_ltdl_options ()
       case $ac_ltdl_options in
         *\$*)
           func_fatal_error "\
-can not expand unknown variable in LTDL_INIT argument."
+cannot expand unknown variable in LTDL_INIT argument."
           ;;
       esac
     fi

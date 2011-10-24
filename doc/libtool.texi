@@ -1710,7 +1710,7 @@ expected installation path established during @code{libtool --mode=link}.
 
 Thus, end-users need change nothing, and @command{automake}-style
 @code{make install DESTDIR=/tmp} will Just Work(tm) most of the time.
-For systems where fast installation can not be turned on, relinking
+For systems where fast installation cannot be turned on, relinking
 may be needed.  In this case, a @samp{DESTDIR} install will fail.
 
 Currently it is not generally possible to install into a temporary
@@ -6855,7 +6855,7 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 @end defvar
 
 @defvar hardcode_direct_absolute
-Some architectures hardcode "absolute" library directories that can not
+Some architectures hardcode "absolute" library directories that cannot
 be overridden by @code{shlibpath_var} when @code{hardcode_direct} is
 @samp{yes}.  In that case set @code{hardcode_direct_absolute} to
 @samp{yes}, or otherwise @samp{no}.

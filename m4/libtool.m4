@@ -2280,7 +2280,7 @@ aix[[4-9]]*)
       fi
       ;;
     esac
-    # AIX (on Power*) has no versioning support, so currently we can not hardcode correct
+    # AIX (on Power*) has no versioning support, so currently we cannot hardcode correct
     # soname into executable. Probably we can add versioning support to
     # collect2, so additional links can be useful in future.
     if test "$aix_use_runtimelinking" = yes; then
@@ -4897,7 +4897,7 @@ _LT_EOF
 	_LT_TAGVAR(ld_shlibs, $1)=no
 	cat <<_LT_EOF 1>&2
 
-*** Warning: Releases of the GNU linker prior to 2.16.91.0.3 can not
+*** Warning: Releases of the GNU linker prior to 2.16.91.0.3 cannot
 *** reliably create shared libraries on SCO systems.  Therefore, libtool
 *** is disabling shared libraries support.  We urge you to upgrade GNU
 *** binutils to release 2.16.91.0.3 or newer.  Another option is to modify
@@ -5539,7 +5539,7 @@ _LT_EOF
       ;;
 
     sysv5* | sco3.2v5* | sco5v6*)
-      # Note: We can NOT use -z defs as we might desire, because we do not
+      # Note: We CANNOT use -z defs as we might desire, because we do not
       # link with -lc, and that would cause any symbols used from libc to
       # always be unresolved, which means just about no library would
       # ever link correctly.  If we're not using GNU ld we use -z text
@@ -6791,7 +6791,7 @@ if test "$_lt_caught_CXX_error" != yes; then
       ;;
 
       sysv5* | sco3.2v5* | sco5v6*)
-	# Note: We can NOT use -z defs as we might desire, because we do not
+	# Note: We CANNOT use -z defs as we might desire, because we do not
 	# link with -lc, and that would cause any symbols used from libc to
 	# always be unresolved, which means just about no library would
 	# ever link correctly.  If we're not using GNU ld we use -z text
