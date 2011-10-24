@@ -38,7 +38,6 @@ endif
 VC_LIST_ALWAYS_EXCLUDE_REGEX = ^mail/
 
 local-checks-to-fix =				\
-	sc_makefile_TAB_only_indentation	\
 	sc_makefile_at_at_check			\
 	sc_prohibit_always-defined_macros	\
 	sc_prohibit_always_true_header_tests	\

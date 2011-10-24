@@ -211,9 +211,9 @@ $(lt_Makefile_am): $(ltdl_mk)
 	  '$(SED)' -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' \
 	      '$(ltdl_mk)' \
 	    |'$(SED)' -e 's,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,' \
-	        -e 's,\$$(libltdl_,$$(,' \
+	      -e 's,\$$(libltdl_,$$(,' \
 	) |'$(SED)' -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
-	       -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > '$@'
+	      -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > '$@'
 	$(AM_V_at)chmod a-w '$@'
 
 ## Document the make macros that are needed to build bootstrap-deps
@@ -367,9 +367,9 @@ $(stamp_mk): $(lt_Makefile_in)
 	  case " $(pkgaux_scripts) ltmain.sh " in \
 	    *" $$f "*) ;; \
 	    *) '$(SED)' \
-	          -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"'\$$,,' \
-	          -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"' ,,' \
-	          -e '/^[	 ]*\\$$/d' \
+		  -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"'\$$,,' \
+		  -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"' ,,' \
+		  -e '/^[	 ]*\\$$/d' \
 		'$(lt_Makefile_in)' > "$$T" \
 		  && mv -f "$$T" '$(lt_Makefile_in)';; \
 	  esac; \

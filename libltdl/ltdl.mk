@@ -60,7 +60,7 @@ libltdl_libltdl_la_SOURCES = libltdl/libltdl/lt__alloc.h \
 			  libltdl/libltdl/lt__strl.h \
 			  libltdl/libltdl/lt_dlloader.h \
 			  libltdl/libltdl/lt_error.h \
-	                  libltdl/libltdl/lt_system.h \
+			  libltdl/libltdl/lt_system.h \
 			  libltdl/libltdl/slist.h \
 			  libltdl/loaders/preopen.c \
 			  libltdl/lt__alloc.c \
