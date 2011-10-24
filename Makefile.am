@@ -325,7 +325,7 @@ libtool: $(ltmain_sh) $(config_status) $(dotversion)
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
-@DIST_MAKEFILE_LIST@:
+$(DIST_MAKEFILE_LIST):
 	$(AM_V_at)dir=`echo '$@' |'$(SED)' 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d "$$dir" || mkdir "$$dir" || exit 1; \
 	abs_srcdir=`$(lt__cd) '$(srcdir)' && pwd`; \
@@ -417,7 +417,7 @@ EXTRA_DIST	+= $(doc_dir)/gendocs_template
 #   info_TEXINFOS	= $(doc_dir)/libtool.texi
 #
 # Producing the following error, even though srcdir is implicitly set:
-# "cannot open < ./@srcdir@/doc/libtool.texi: No such file or directory"
+# "cannot open < ./$(srcdir)/doc/libtool.texi: No such file or directory"
 info_TEXINFOS		= doc/libtool.texi
 doc_libtool_TEXINFOS	= $(doc_dir)/PLATFORMS $(doc_dir)/fdl.texi \
 			  $(notes_texi)
@@ -728,12 +728,12 @@ $(testsuite): $(package_m4) $(TESTSUITE_AT) Makefile.am
 $(package_m4): $(dotversion) Makefile.am
 	$(AM_V_GEN){ \
 	  echo '# Signature of the current package.'; \
-	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
-	  echo 'm4_define([AT_PACKAGE_TARNAME],   [@PACKAGE_TARNAME@])'; \
-	  echo 'm4_define([AT_PACKAGE_VERSION],   [@PACKAGE_VERSION@])'; \
-	  echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])'; \
-	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
-	  echo 'm4_define([AT_PACKAGE_URL],       [@PACKAGE_URL@])'; \
+	  echo 'm4_define([AT_PACKAGE_NAME],      [$(PACKAGE_NAME)])'; \
+	  echo 'm4_define([AT_PACKAGE_TARNAME],   [$(PACKAGE_TARNAME)])'; \
+	  echo 'm4_define([AT_PACKAGE_VERSION],   [$(PACKAGE_VERSION)])'; \
+	  echo 'm4_define([AT_PACKAGE_STRING],    [$(PACKAGE_STRING)])'; \
+	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [$(PACKAGE_BUGREPORT)])'; \
+	  echo 'm4_define([AT_PACKAGE_URL],       [$(PACKAGE_URL)])'; \
 	} > '$@'
 
 tests/atconfig: $(config_status)
@@ -968,13 +968,13 @@ INTERACTIVE_TESTS = \
 
 tests/cdemo-undef-exec.log:	tests/cdemo-undef-make.log
 tests/cdemo-undef-make.log:	tests/cdemo-undef.log
-tests/cdemo-undef.log: @ORDER@	tests/cdemo-shared-exec.log
+tests/cdemo-undef.log: $(ORDER)	tests/cdemo-shared-exec.log
 tests/cdemo-shared-exec.log:	tests/cdemo-shared-make.log
 tests/cdemo-shared-make.log:	tests/cdemo-shared.log
-tests/cdemo-shared.log: @ORDER@	tests/cdemo-exec.log
+tests/cdemo-shared.log: $(ORDER) tests/cdemo-exec.log
 tests/cdemo-exec.log:		tests/cdemo-make.log
 tests/cdemo-make.log:		tests/cdemo-conf.log
-tests/cdemo-conf.log: @ORDER@	tests/cdemo-static-exec.log
+tests/cdemo-conf.log: $(ORDER)	tests/cdemo-static-exec.log
 tests/cdemo-static-exec.log:	tests/cdemo-static-make.log
 tests/cdemo-static-make.log:	tests/cdemo-static.log
 
@@ -985,24 +985,24 @@ tests/demo-hardcode.log:	tests/demo-shared-inst.log
 tests/demo-shared-inst.log:	tests/demo-shared-exec.log
 tests/demo-shared-exec.log:	tests/demo-shared-make.log
 tests/demo-shared-make.log:	tests/demo-shared.log
-tests/demo-shared.log: @ORDER@	tests/demo-nopic-exec.log
+tests/demo-shared.log: $(ORDER)	tests/demo-nopic-exec.log
 tests/demo-nopic-exec.log:	tests/demo-nopic-make.log
 tests/demo-nopic-make.log:	tests/demo-nopic.log
-tests/demo-nopic.log: @ORDER@	tests/demo-pic-exec.log
+tests/demo-nopic.log: $(ORDER)	tests/demo-pic-exec.log
 tests/demo-pic-exec.log:	tests/demo-pic-make.log
 tests/demo-pic-make.log:	tests/demo-pic.log
-tests/demo-pic.log: @ORDER@	tests/demo-nofast-unst.log
+tests/demo-pic.log: $(ORDER)	tests/demo-nofast-unst.log
 tests/demo-nofast-unst.log:	tests/demo-nofast-inst.log
 tests/demo-nofast-inst.log:	tests/demo-nofast-exec.log
 tests/demo-nofast-exec.log:	tests/demo-nofast-make.log
 tests/demo-nofast-make.log:	tests/demo-nofast.log
-tests/demo-nofast.log: @ORDER@	tests/demo-deplibs.log
+tests/demo-nofast.log: $(ORDER)	tests/demo-deplibs.log
 tests/demo-deplibs.log:		tests/demo-unst.log
 tests/demo-unst.log:		tests/demo-inst.log
 tests/demo-inst.log:		tests/demo-exec.log
 tests/demo-exec.log:		tests/demo-make.log
 tests/demo-make.log:		tests/demo-conf.log
-tests/demo-conf.log: @ORDER@	tests/demo-static-unst.log
+tests/demo-conf.log: $(ORDER)	tests/demo-static-unst.log
 tests/demo-static-unst.log:	tests/demo-static-inst.log
 tests/demo-static-inst.log:	tests/demo-static-exec.log
 tests/demo-static-exec.log:	tests/demo-static-make.log
@@ -1013,17 +1013,17 @@ tests/depdemo-relink.log:	tests/depdemo-shared-inst.log
 tests/depdemo-shared-inst.log:	tests/depdemo-shared-exec.log
 tests/depdemo-shared-exec.log:	tests/depdemo-shared-make.log
 tests/depdemo-shared-make.log:	tests/depdemo-shared.log
-tests/depdemo-shared.log: @ORDER@ tests/depdemo-nofast-unst.log
+tests/depdemo-shared.log: $(ORDER) tests/depdemo-nofast-unst.log
 tests/depdemo-nofast-unst.log:	tests/depdemo-nofast-inst.log
 tests/depdemo-nofast-inst.log:	tests/depdemo-nofast-exec.log
 tests/depdemo-nofast-exec.log:	tests/depdemo-nofast-make.log
 tests/depdemo-nofast-make.log:	tests/depdemo-nofast.log
-tests/depdemo-nofast.log: @ORDER@ tests/depdemo-unst.log
+tests/depdemo-nofast.log: $(ORDER) tests/depdemo-unst.log
 tests/depdemo-unst.log:		tests/depdemo-inst.log
 tests/depdemo-inst.log:		tests/depdemo-exec.log
 tests/depdemo-exec.log:		tests/depdemo-make.log
 tests/depdemo-make.log:		tests/depdemo-conf.log
-tests/depdemo-conf.log: @ORDER@	tests/depdemo-static-unst.log
+tests/depdemo-conf.log: $(ORDER) tests/depdemo-static-unst.log
 tests/depdemo-static-unst.log:	tests/depdemo-static-inst.log
 tests/depdemo-static-inst.log:	tests/depdemo-static-exec.log
 tests/depdemo-static-exec.log:	tests/depdemo-static-make.log
@@ -1033,7 +1033,7 @@ tests/mdemo-shared-unst.log:	tests/mdemo-shared-inst.log
 tests/mdemo-shared-inst.log:	tests/mdemo-shared-exec.log
 tests/mdemo-shared-exec.log:	tests/mdemo-shared-make.log
 tests/mdemo-shared-make.log:	tests/mdemo-shared.log
-tests/mdemo-shared.log: @ORDER@	tests/mdemo-dryrun.log \
+tests/mdemo-shared.log: $(ORDER) tests/mdemo-dryrun.log \
 				tests/mdemo2-exec.log
 
 tests/mdemo-dryrun.log:		tests/mdemo-unst.log
@@ -1041,7 +1041,7 @@ tests/mdemo-unst.log:		tests/mdemo-inst.log
 tests/mdemo-inst.log:		tests/mdemo-exec.log
 tests/mdemo-exec.log:		tests/mdemo-make.log
 tests/mdemo-make.log:		tests/mdemo-conf.log
-tests/mdemo-conf.log: @ORDER@	tests/mdemo-static-unst.log
+tests/mdemo-conf.log: $(ORDER)	tests/mdemo-static-unst.log
 tests/mdemo-static-unst.log:	tests/mdemo-static-inst.log
 tests/mdemo-static-inst.log:	tests/mdemo-static-exec.log
 tests/mdemo-static-exec.log:	tests/mdemo-static-make.log

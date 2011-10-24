@@ -43,18 +43,16 @@ libsub_la_LDFLAGS = -no-undefined
 ## its exported symbols, and we use libltdl as a convenience archive.
 ## Thus, on w32, auto-exporting is turned off.
 libmlib_la_SOURCES = mlib.c
-libmlib_la_LIBADD = @LIBLTDL@ "-dlopen" foo1.la "-dlopen" libfoo2.la
+libmlib_la_LIBADD = $(LIBLTDL) "-dlopen" foo1.la "-dlopen" libfoo2.la
 libmlib_la_LDFLAGS = -no-undefined -export-symbols-regex ".*"
-libmlib_la_DEPENDENCIES = @LIBLTDL@ libsub.la foo1.la libfoo2.la
+libmlib_la_DEPENDENCIES = $(LIBLTDL) libsub.la foo1.la libfoo2.la
 
 noinst_HEADERS = foo.h
 
 bin_PROGRAMS = mdemo mdemo_static
 
-## use @LIBLTDL@ because some broken makes do not accept macros in targets
-## we can only do this because our LIBLTDL does not contain ${top_builddir}
 top_distdir = ../..
-@LIBLTDL@: $(top_distdir)/libtool \
+$(LIBLTDL): $(top_distdir)/libtool \
     $(top_distdir)/config.h $(srcdir)/$(top_distdir)/libltdl/ltdl.c \
     $(srcdir)/$(top_distdir)/libltdl/ltdl.h
 	(cd $(top_distdir); $(MAKE) `echo $(LIBLTDL) | sed 's,.*\.\./libltdl/,libltdl/,g'`)
@@ -65,9 +63,9 @@ $(top_distdir)/config.h:
 mdemo_SOURCES = main.c
 mdemo_LDFLAGS = -export-dynamic
 ## The quotes around -dlopen below fool automake into accepting it
-mdemo_LDADD = @LIBLTDL@ libsub.la "-dlopen" self \
+mdemo_LDADD = $(LIBLTDL) libsub.la "-dlopen" self \
 		"-dlopen" foo1.la "-dlopen" libfoo2.la
-mdemo_DEPENDENCIES = @LIBLTDL@ libsub.la foo1.la libfoo2.la
+mdemo_DEPENDENCIES = $(LIBLTDL) libsub.la foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.
 mdemo_static_SOURCES = $(mdemo_SOURCES)

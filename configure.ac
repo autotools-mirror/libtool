@@ -186,7 +186,8 @@ AC_CACHE_CHECK([whether ${MAKE-make} supports order-only prerequisites],
    touch b
    touch a
 cat >confmk << 'END'
-a: b | c
+ORDER = |
+a: b $(ORDER) c
 a b c:
 	touch $[]@
 END
