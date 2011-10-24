@@ -26,9 +26,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #define _FOO_H_ 1
 
 /* config.h is necessary for the fortran name mangling */
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 /* csub is an extremely useful subroutine that
  * returns the argument multiplied by two :-)
