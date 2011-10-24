@@ -223,4 +223,3 @@ argz_stringify (char *argz, size_t argz_len, int sep)
 	}
     }
 }
-

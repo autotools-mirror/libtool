@@ -10,7 +10,3 @@ function.
 
 This demo requires GNU autoconf, automake, 
 libtool with the FC tag and quite obvious Fortran.
-
-
-
-

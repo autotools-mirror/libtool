@@ -36,4 +36,3 @@ func_exec "$prefix/bin/hell$EXEEXT" 'Welcome to GNU Hell'
 func_exec "$prefix/bin/helldl$EXEEXT" '(Welcome to .*GNU Hell|unsupported)'
 
 exit $status
-

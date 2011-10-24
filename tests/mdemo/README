@@ -14,4 +14,3 @@ libraries *are* built as dll's, but do not have the __declspec
 machinery to make them suitable for loading at link time.  This is
 only for clarity inside this example, look at the example in ../demo
 to see how the __declspec macros should be set up.
-
