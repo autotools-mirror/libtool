@@ -2065,7 +2065,7 @@ objdir=$lt_cv_objdir
 _LT_DECL([], [objdir], [0],
          [The name of the directory that contains temporary libtool files])dnl
 m4_pattern_allow([LT_OBJDIR])dnl
-AC_DEFINE_UNQUOTED(LT_OBJDIR, "$lt_cv_objdir/",
+AC_DEFINE_UNQUOTED([LT_OBJDIR], "$lt_cv_objdir/",
   [Define to the sub-directory in which libtool stores uninstalled libraries.])
 ])# _LT_CHECK_OBJDIR
 
