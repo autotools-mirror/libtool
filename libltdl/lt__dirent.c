@@ -31,7 +31,6 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #include "lt__private.h"
 
 #include <assert.h>
-#include <stddef.h>
 
 #include "lt__dirent.h"
 

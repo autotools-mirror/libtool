@@ -37,7 +37,6 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #include <argz.h>
 
 #include <assert.h>
-#include <stddef.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <errno.h>

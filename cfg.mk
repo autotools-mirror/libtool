@@ -40,7 +40,6 @@ VC_LIST_ALWAYS_EXCLUDE_REGEX = ^mail/
 local-checks-to-fix =				\
 	sc_prohibit_always-defined_macros	\
 	sc_prohibit_always_true_header_tests	\
-	sc_prohibit_stddef_without_use		\
 	sc_prohibit_strcmp			\
 	sc_prohibit_test_minus_ao		\
 	sc_prohibit_undesirable_word_seq	\
