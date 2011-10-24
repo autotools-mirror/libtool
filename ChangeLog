@@ -1,3 +1,14 @@
+2011-10-24  Karl Berry  <karl@gnu.org>
+
+	doc: modernize libtool.texi.
+	* libtool.texi (@copying): Use this instead of @ifnottex; format for
+	Texinfo; eliminate obsolete paragraph about TeX; use @insertcopying
+	instead of duplicating text.
+	(@syncodeindex): Move all to the Texinfo header, where they belong.
+	(@dircategory): Use "Software development" instead of "GNU programming
+	tools", for consistency; and align individual entries to avoid
+	multiple lines; and move to after the copyright message.
+
 2011-10-19  Gary V. Vaughan  <gary@gnu.org>
 
 	maint: use gnulib's maintainer-makefile module.

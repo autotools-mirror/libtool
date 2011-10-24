@@ -4,6 +4,12 @@
 @settitle Libtool
 @c For double-sided printing, uncomment:
 @c @setchapternewpage odd
+@c Put everything in one index (arbitrarily chosen to be the concept index).
+
+@syncodeindex vr cp
+@syncodeindex fn cp
+@syncodeindex tp cp
+@synindex pg cp
 @c %**end of header
 
 @include version.texi
@@ -11,37 +17,29 @@
 @set MAILLIST the Libtool mailing list @email{libtool@@gnu.org}
 @set objdir .libs
 
-@dircategory GNU programming tools
-@direntry
-* Libtool: (libtool).           Generic shared library support script.
-@end direntry
+@copying
+This manual is for GNU Libtool (version @value{VERSION}, @value{UPDATED}).
 
-@dircategory Individual utilities
-@direntry
-* libtool-invocation: (libtool)Invoking libtool.
-                                                Running the @code{libtool} script.
-* libtoolize: (libtool)Invoking libtoolize.     Adding libtool support.
-@end direntry
-
-@ifnottex
-This file documents GNU Libtool @value{VERSION}
-
-Copyright (C) 1996-2011 Free Software Foundation, Inc.
+Copyright @copyright{} 1996--2011 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
 or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts,
 and with no Back-Cover Texts.  A copy of the license is included in
-the section entitled "GNU Free Documentation License".
+the section entitled ``GNU Free Documentation License''.
+@end copying
 
-@ignore
-Permission is granted to process this file through TeX and print the
-results, provided the printed document carries copying permission notice
-identical to this one except for the removal of this paragraph
+@dircategory Software development
+@direntry
+* Libtool: (libtool).           Generic shared library support script.
+@end direntry
 
-@end ignore
-@end ifnottex
+@dircategory Individual utilities
+@direntry
+* libtool-invocation: (libtool)Invoking libtool. Running the @code{libtool} script.
+* libtoolize: (libtool)Invoking libtoolize.      Adding libtool support.
+@end direntry
 
 @titlepage
 @title GNU Libtool
@@ -53,22 +51,8 @@ identical to this one except for the removal of this paragraph
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996-2011 Free Software Foundation, Inc.
-
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.3
-or any later version published by the Free Software Foundation;
-with no Invariant Sections, with no Front-Cover Texts,
-and with no Back-Cover Texts.  A copy of the license is included in
-the section entitled "GNU Free Documentation License".
-
+@insertcopying
 @end titlepage
-
-@c Put everything in one index (arbitrarily chosen to be the concept index).
-@syncodeindex vr cp
-@syncodeindex fn cp
-@syncodeindex tp cp
-@synindex pg cp
 
 @contents
 
