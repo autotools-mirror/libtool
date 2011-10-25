@@ -34,7 +34,7 @@ LT_END_C_DECLS
 int
 test_dl (char *filename, int test_ext)
 {
-  lt_dlhandle handle;	
+  lt_dlhandle handle;
   const lt_dlinfo *info;
   int (*pfoo1)() = 0;
   int (*pfoo2)() = 0;
@@ -65,12 +65,12 @@ test_dl (char *filename, int test_ext)
   }
   printf ("module filename: %s\n", info->filename);
   printf ("module reference count: %i\n", info->ref_count);
-  
-  phello = (int(*)())lt_dlsym(handle, "hello");  
+
+  phello = (int(*)())lt_dlsym(handle, "hello");
   if (phello)
     {
       int value = (*phello) ();
-      
+
       printf ("hello returned: %i\n", value);
       if (value == HELLO_RET)
         printf("hello is ok!\n");
@@ -82,7 +82,7 @@ test_dl (char *filename, int test_ext)
       ret = 1;
     }
 
-  pnothing = (int*)lt_dlsym(handle, "nothing");  
+  pnothing = (int*)lt_dlsym(handle, "nothing");
   /* Try assigning to the nothing variable. */
   if (pnothing)
     *pnothing = 1;
@@ -93,7 +93,7 @@ test_dl (char *filename, int test_ext)
       ret = 1;
     }
 
-  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");  
+  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");
   /* Just call the functions and check return values. */
   if (pfoo1)
     {
@@ -103,7 +103,7 @@ test_dl (char *filename, int test_ext)
 	ret = 1;
     }
   else {
-    pfoo2 = (int(*)())lt_dlsym(handle, "foo2");  
+    pfoo2 = (int(*)())lt_dlsym(handle, "foo2");
     if (pfoo2)
       {
         if ((*pfoo2) () == FOO_RET)
@@ -132,7 +132,7 @@ int myvar;
 int
 test_dlself ()
 {
-  lt_dlhandle handle;	
+  lt_dlhandle handle;
   int (*pmyfunc)() = 0;
   int *pmyvar = 0;
   int ret = 0;
@@ -148,7 +148,7 @@ test_dlself ()
   if (pmyfunc)
     {
       int value = (*pmyfunc) ();
-      
+
       printf ("myfunc returned: %i\n", value);
       if (value == HELLO_RET)
         printf("myfunc is ok!\n");
@@ -160,7 +160,7 @@ test_dlself ()
       ret = 1;
     }
 
-  pmyvar = (int*)lt_dlsym(handle, "myvar");  
+  pmyvar = (int*)lt_dlsym(handle, "myvar");
   /* Try assigning to the variable. */
   if (pmyvar)
     *pmyvar = 1;

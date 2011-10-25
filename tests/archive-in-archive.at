@@ -44,7 +44,7 @@ $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o foo.lo foo.c
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o bar.lo bar.c
 $LIBTOOL --mode=link --tag=CC --tag=disable-shared $CC $CFLAGS $LDFLAGS \
 -o libfoo.la foo.lo -version-info 1:0:0 -rpath $thisdir
-$LIBTOOL --mode=install cp libfoo.la $thisdir 
+$LIBTOOL --mode=install cp libfoo.la $thisdir
 eval `$EGREP '^(old_library)=' < libfoo.la`
 libfoo=$old_library
 AT_CHECK([$LIBTOOL --mode=link --tag=CC --tag=disable-shared $CC $CFLAGS $LDFLAGS \

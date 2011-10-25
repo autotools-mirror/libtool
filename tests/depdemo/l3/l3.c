@@ -42,5 +42,5 @@ func_l3 (int indent)
   func_l1(indent+1);
   func_l2(indent+1);
   var_l3 += var_l1 + var_l2;
-  return 0; 
+  return 0;
 }

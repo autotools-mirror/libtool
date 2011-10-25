@@ -41,8 +41,7 @@ local-checks-to-fix =				\
 	sc_prohibit_always-defined_macros	\
 	sc_prohibit_always_true_header_tests	\
 	sc_require_config_h			\
-	sc_require_config_h_first		\
-	sc_trailing_blank
+	sc_require_config_h_first
 
 local-checks-to-skip =				\
 	$(local-checks-to-fix)			\
@@ -50,6 +49,7 @@ local-checks-to-skip =				\
 	sc_bindtextdomain			\
 	sc_cast_of_x_alloc_return_value		\
 	sc_program_name				\
+	sc_trailing_blank			\
 	sc_unmarked_diagnostics
 
 # GPL_version: checks for GPLv3, which we don't use
@@ -57,7 +57,13 @@ local-checks-to-skip =				\
 # cast_of_x_alloc_return_value:
 #         We support C++ compilation which does require casting here.
 # program_name: libtool has no programs!
+# trailing_blank: flags valid rfc3676 separators
 # unmarked_diagnostics: libtool isn't internationalized
+
+sc_trailing_blank-non-rfc3676:
+	@prohibit='([^-][^-][	 ][	 ]*|^[	 ][	 ]*)$$'		\
+	halt='found trailing blank(s)'					\
+	  $(_sc_search_regexp)
 
 # List syntax-check exempted files.
 exclude_file_name_regexp--sc_error_message_uppercase = \
@@ -67,3 +73,4 @@ exclude_file_name_regexp--sc_prohibit_strcmp = \
 exclude_file_name_regexp--sc_prohibit_test_minus_ao = \
   ^m4/libtool.m4$$
 exclude_file_name_regexp--sc_space_tab = \.diff$$
+exclude_file_name_regexp--sc_trailing_blank-non-rfc3676 = \.diff$$

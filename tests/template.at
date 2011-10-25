@@ -129,7 +129,7 @@ AT_KEYWORDS([libtool])
 
 noskip=:
 # Mac OS X.
-# The linker has issues with this test. 
+# The linker has issues with this test.
 case $host in
 *-darwin*) noskip=false ;;
 esac

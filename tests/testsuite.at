@@ -442,7 +442,7 @@ module.lo: $(LIBTOOL) module.c
 	$(LTCOMPILE) -c module.c
 ]])
 cat >> Makefile <<EOF
-SHELL = $SHELL 
+SHELL = $SHELL
 EOF
 ])
 m4_popdef([_ARG_DIR])

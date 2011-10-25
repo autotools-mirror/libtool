@@ -28,26 +28,26 @@ int
 main ()
 {
   int arg,cres,fres;
-  
+
   printf ("Welcome to GNU libtool mixed C/Fortran demo!\n");
-  
+
   arg=2;
-  
+
   cres=csub(arg);
-  
+
   printf ("The C subroutine returned, claiming that 2*%d = %d\n",arg,cres);
-  
+
   if(cres==2*arg)
     printf ("The C subroutine is ok!\n");
-  
+
   printf("\nCalling the C wrapper routine...\n");
   fres=fwrapper(arg);
-  
+
   printf ("The C wrapper to the fortran subroutine returned,\n"
 	  "claiming that 2*%d = %d\n",arg,fres);
-  
+
   if(fres==2*arg)
     printf ("The Fortran 77 subroutine is ok!\n");
-  
+
   return 0;
 }

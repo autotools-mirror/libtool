@@ -44,5 +44,5 @@ func_l4 (int indent)
     putchar(' ');
   printf("libm [sin(1.5) = %f]\n", sin(1.5));
   var_l4 += var_l3;
-  return 0; 
+  return 0;
 }

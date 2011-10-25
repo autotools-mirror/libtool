@@ -36,7 +36,7 @@ int main() { return 0;}
 
 $noskip && {
 $CC $CPPFLAGS $CFLAGS -arch ppc -arch i386 -o simple simple.c 2>&1 > /dev/null || noskip=false
-rm -f simple 
+rm -f simple
 }
 
 AT_CHECK([$noskip || (exit 77)])

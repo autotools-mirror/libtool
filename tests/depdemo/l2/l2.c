@@ -40,5 +40,5 @@ func_l2 (int indent)
   printf("l2 (%i)\n", var_l2);
   func_l1(indent+1);
   var_l2 += var_l1;
-  return 0; 
+  return 0;
 }

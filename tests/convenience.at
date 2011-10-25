@@ -43,7 +43,7 @@ cat >main3.c <<EOF
 extern int a1(void), a2(void), a3(void);
 int main(void) { return a1() + a2() + a3() != 6; }
 EOF
-for i in 1 2 3; do 
+for i in 1 2 3; do
   echo "int a$i(void) { return $i; }" > a$i.c
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c main$i.c
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a$i.c
@@ -83,7 +83,7 @@ cat >main3.cpp <<EOF
 extern int a1(void), a2(void), a3(void);
 int main(void) { return a1() + a2() + a3() != 6; }
 EOF
-for i in 1 2 3; do 
+for i in 1 2 3; do
   echo "int a$i(void) { return $i; }" > a$i.cpp
   $LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c main$i.cpp
   $LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c a$i.cpp
@@ -136,7 +136,7 @@ cat >main3.f <<EOF
       end
 EOF
 
-for i in 1 2 3; do 
+for i in 1 2 3; do
   cat >a$i.f <<EOF
       subroutine a$i(res)
       implicit none
@@ -196,7 +196,7 @@ cat >main3.f <<EOF
       end
 EOF
 
-for i in 1 2 3; do 
+for i in 1 2 3; do
   cat >a$i.f <<EOF
       subroutine a$i(res)
       implicit none

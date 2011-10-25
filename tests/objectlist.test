@@ -43,6 +43,6 @@ rm -f "$objlist"
 echo "$linkresult" | ${EGREP} "spaces" >/dev/null 2>&1 && {
   func_msg "$progname: -objectlist with spaces in filename not recognized."
   exit $EXIT_FAILURE
-} 
+}
 
 exit $EXIT_SUCCESS

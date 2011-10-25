@@ -37,5 +37,5 @@ func_l1 (int indent)
     putchar(' ');
   printf("l1 (%i)\n", var_l1);
   var_l1++;
-  return 0; 
+  return 0;
 }

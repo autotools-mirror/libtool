@@ -30,7 +30,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 int
 test_dl (char *filename)
 {
-  lt_dlhandle handle;	
+  lt_dlhandle handle;
   const lt_dlinfo *info;
   int (*pfoo1)() = 0;
   int (*pfoo2)() = 0;
@@ -57,12 +57,12 @@ test_dl (char *filename)
   }
   printf ("module filename: %s\n", info->filename);
   printf ("module reference count: %i\n", info->ref_count);
-  
-  phello = (int(*)())lt_dlsym(handle, "hello");  
+
+  phello = (int(*)())lt_dlsym(handle, "hello");
   if (phello)
     {
       int value = (*phello) ();
-      
+
       printf ("hello returned: %i\n", value);
       if (value == HELLO_RET)
         printf("hello is ok!\n");
@@ -74,7 +74,7 @@ test_dl (char *filename)
       ret = 1;
     }
 
-  pnothing = (int*)lt_dlsym(handle, "nothing");  
+  pnothing = (int*)lt_dlsym(handle, "nothing");
   /* Try assigning to the nothing variable. */
   if (pnothing)
     *pnothing = 1;
@@ -85,7 +85,7 @@ test_dl (char *filename)
       ret = 1;
     }
 
-  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");  
+  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");
   /* Just call the functions and check return values. */
   if (pfoo1)
     {
@@ -95,7 +95,7 @@ test_dl (char *filename)
 	ret = 1;
     }
   else {
-    pfoo2 = (int(*)())lt_dlsym(handle, "foo2");  
+    pfoo2 = (int(*)())lt_dlsym(handle, "foo2");
     if (pfoo2)
       {
         if ((*pfoo2) () == FOO_RET)
@@ -113,7 +113,7 @@ test_dl (char *filename)
   return ret;
 }
 
-int 
+int
 mlib_func (int argc, char **argv)
 {
   int ret = 0;

@@ -37,9 +37,9 @@
 #     will only cause the linker not to consider `*.so' libraries, but only
 #     `*.a'.  The latter, however, may still be shared images.  :-/
 #     `-all-static' still works, however.
-#   
+#
 #     It will not work with dlpreloading until we fix its related bug.
-#   
+#
 #   Let's try the latter until we know better.
 
 # - Test -Bstatic/-Bdynamic.  It should work with all of:
@@ -248,7 +248,7 @@ for withdep in no yes; do
   $LIBTOOL --mode=install cp a1/liba1.la $libdir1/liba1.la
   $LIBTOOL --mode=install cp a3/liba3.la $libdir3/liba3.la
   $LIBTOOL --mode=clean rm -f a1/liba1.la a3/liba3.la
-  test "$withdep" = yes && $LIBTOOL --mode=clean rm -f a1/liba1dep.la 
+  test "$withdep" = yes && $LIBTOOL --mode=clean rm -f a1/liba1dep.la
   # simulate a non-libtool lib:
   rm -f $libdir3/liba3.la
 
@@ -307,7 +307,7 @@ for withdep in no yes; do
 
   ### install the programs.
   # We can't install any program that links dynamically against liba2.
-  for st in -static -static-libtool-libs $can_link_all_static `$per_deplib && echo 2 12 23 123 123a`; do 
+  for st in -static -static-libtool-libs $can_link_all_static `$per_deplib && echo 2 12 23 123 123a`; do
     echo "# m$st"
     AT_CHECK([$LIBTOOL --mode=install cp m${st}$EXEEXT $bindir/m${st}$EXEEXT], [0], [ignore], [stderr])
     if $have_static; then
@@ -318,7 +318,7 @@ for withdep in no yes; do
 
 
   ### Run each program once so that relinking has happened.
-  
+
   func_fix_path $prefix1 $prefix2 $prefix3
   func_test_exec -static -static-libtool-libs -all-static `$per_deplib && echo 1 2 3 12 13 23 31 123 123a`
   func_restore_path
