@@ -57,7 +57,6 @@ local-checks-to-fix =				\
 	sc_require_config_h_first		\
 	sc_space_tab				\
 	sc_trailing_blank			\
-	sc_unmarked_diagnostics			\
 	sc_useless_cpp_parens
 
 local-checks-to-skip =				\
@@ -68,12 +67,14 @@ local-checks-to-skip =				\
 	sc_cast_of_argument_to_free		\
 	sc_cast_of_x_alloc_return_value		\
 	sc_error_message_uppercase		\
-	sc_program_name
+	sc_program_name				\
+	sc_unmarked_diagnostics
 
 # GPL_version: checks for GPLv3, which we don't use
-# avoid_if_before_free: we don't use the gnulib malloc modules
 # bindtextdomain: libtool isn't internationalized
+# avoid_if_before_free: we don't use the gnulib malloc modules
 # cast_of_argument_to_free: ditto
 # cast_of_x_alloc_return_value: ditto
 # error_message_uppercase: we like our error messages
 # program_name: libtool has no programs!
+# unmarked_diagnostics: libtool isn't internationalized
