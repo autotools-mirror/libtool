@@ -53,7 +53,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches. */
 #undef LTDL_PARAMS
-#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN32__) || defined(__cplusplus)
+#if defined __STDC__ || defined _AIX || (defined __mips && defined _SYSTYPE_SVR4) || defined __CYGWIN32__ || defined __cplusplus
 # define LT_PARAMS(protos) protos
 # define lt_ptr_t     void*
 #else
@@ -62,11 +62,11 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #endif
 
 /* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
-#if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN32_WCE)
+#if defined _WIN32 || defined __CYGWIN__ || defined _WIN32_WCE
 /* DATA imports from DLLs on WIN32 con't be const, because runtime
    relocations are performed -- see ld's documentation on pseudo-relocs.  */
 # define LT_DLSYM_CONST
-#elif defined(__osf__)
+#elif defined __osf__
 /* This system does not cope well with relocations in const data.  */
 # define LT_DLSYM_CONST
 #else

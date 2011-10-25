@@ -29,7 +29,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 */
 
 /* Only include this header file once. */
-#if !defined(LT_ERROR_H)
+#if !defined LT_ERROR_H
 #define LT_ERROR_H 1
 
 #include <libltdl/lt_system.h>
@@ -82,4 +82,4 @@ LT_SCOPE int	lt_dlseterror	(int errorcode);
 
 LT_END_C_DECLS
 
-#endif /*!defined(LT_ERROR_H)*/
+#endif /*!defined LT_ERROR_H*/

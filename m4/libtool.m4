@@ -1795,7 +1795,7 @@ else
 
 /* When -fvisbility=hidden is used, assume the code has been annotated
    correspondingly for the symbols needed.  */
-#if defined(__GNUC__) && (((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3)) || (__GNUC__ > 3))
+#if defined __GNUC__ && (((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3)) || (__GNUC__ > 3))
 int fnord () __attribute__((visibility("default")));
 #endif
 
@@ -3751,11 +3751,11 @@ _LT_EOF
 	if $GREP ' nm_test_func$' "$nlist" >/dev/null; then
 	  cat <<_LT_EOF > conftest.$ac_ext
 /* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
-#if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN32_WCE)
+#if defined _WIN32 || defined __CYGWIN__ || defined _WIN32_WCE
 /* DATA imports from DLLs on WIN32 con't be const, because runtime
    relocations are performed -- see ld's documentation on pseudo-relocs.  */
 # define LT@&t@_DLSYM_CONST
-#elif defined(__osf__)
+#elif defined __osf__
 /* This system does not cope well with relocations in const data.  */
 # define LT@&t@_DLSYM_CONST
 #else

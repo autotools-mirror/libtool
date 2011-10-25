@@ -28,16 +28,16 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-#if !defined(LT__GLIBC_H)
+#if !defined LT__GLIBC_H
 #define LT__GLIBC_H 1
 
-#if defined(LT_CONFIG_H)
+#if defined LT_CONFIG_H
 #  include LT_CONFIG_H
 #else
 #  include <config.h>
 #endif
 
-#if !defined(HAVE_ARGZ_H) || !defined(HAVE_WORKING_ARGZ)
+#if !defined HAVE_ARGZ_H || !defined HAVE_WORKING_ARGZ
 /* Redefine any glibc symbols we reimplement to import the
    implementations into our lt__ namespace so we don't ever
    clash with the system library if our clients use argz_*
@@ -80,4 +80,4 @@ extern "C" {
 
 #include <slist.h>
 
-#endif /*!defined(LT__GLIBC_H)*/
+#endif /*!defined LT__GLIBC_H*/

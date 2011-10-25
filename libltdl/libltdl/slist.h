@@ -38,10 +38,10 @@ or obtained by writing to the Free Software Foundation, Inc.,
    get to manage the memory involved by yourself.
 */
 
-#if !defined(SLIST_H)
+#if !defined SLIST_H
 #define SLIST_H 1
 
-#if defined(LTDL)
+#if defined LTDL
 #  include <libltdl/lt__glibc.h>
 #  include <libltdl/lt_system.h>
 #else
@@ -50,7 +50,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 #include <stddef.h>
 
-#if defined(__cplusplus)
+#if defined __cplusplus
 extern "C" {
 #endif
 
@@ -85,12 +85,12 @@ LT_SCOPE void *	slist_foreach   (SList *slist, SListCallback *foreach,
 LT_SCOPE SList *slist_box	(const void *userdata);
 LT_SCOPE void *	slist_unbox	(SList *item);
 
-#if defined(__cplusplus)
+#if defined __cplusplus
 }
 #endif
 
-#if !defined(LTDL)
+#if !defined LTDL
 #  undef LT_SCOPE
 #endif
 
-#endif /*!defined(SLIST_H)*/
+#endif /*!defined SLIST_H*/

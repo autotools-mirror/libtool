@@ -32,7 +32,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #include "lt__private.h"
 #include "lt_dlloader.h"
 
-#if defined(__CYGWIN__)
+#if defined __CYGWIN__
 # include <sys/cygwin.h>
 #endif
 
@@ -163,7 +163,7 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 	  return 0;
 	}
       len = 0;
-#elif defined(__CYGWIN__)
+#elif defined __CYGWIN__
       cygwin_conv_to_full_win32_path (filename, wpath);
       len = 0;
 #else

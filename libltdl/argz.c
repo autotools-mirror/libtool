@@ -28,7 +28,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#if defined(LTDL) && defined LT_CONFIG_H
+#if defined LTDL && defined LT_CONFIG_H
 #  include LT_CONFIG_H
 #else
 #  include <config.h>

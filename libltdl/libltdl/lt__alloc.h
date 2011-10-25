@@ -28,7 +28,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-#if !defined(LT__ALLOC_H)
+#if !defined LT__ALLOC_H
 #define LT__ALLOC_H 1
 
 #include "lt_system.h"
@@ -55,4 +55,4 @@ LT_SCOPE char *lt__strdup (const char *string);
 
 LT_END_C_DECLS
 
-#endif /*!defined(LT__ALLOC_H)*/
+#endif /*!defined LT__ALLOC_H*/

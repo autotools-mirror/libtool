@@ -28,7 +28,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#if !defined(LT_DLLOADER_H)
+#if !defined LT_DLLOADER_H
 #define LT_DLLOADER_H 1
 
 #include <libltdl/lt_system.h>
@@ -87,4 +87,4 @@ LT_SCOPE void		lt_dlloader_dump	(void);
 
 LT_END_C_DECLS
 
-#endif /*!defined(LT_DLLOADER_H)*/
+#endif /*!defined LT_DLLOADER_H*/

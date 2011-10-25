@@ -80,9 +80,9 @@ AT_DATA([common.h],
 #include <exception>
 #include <string>
 
-#if defined(__CYGWIN__) || defined(_WIN32)
-# if defined(DLL_EXPORT) || defined(USING_COMMON_DLL)
-#  if defined(LIBTOOL_TEST_IN_COMMON)
+#if defined __CYGWIN__ || defined _WIN32
+# if defined DLL_EXPORT || defined USING_COMMON_DLL
+#  if defined LIBTOOL_TEST_IN_COMMON
 #   define COMMON_IMPEXP __declspec (dllexport)
 #  else
 #   define COMMON_IMPEXP __declspec (dllimport)
@@ -124,9 +124,9 @@ int common_dummy (void)
 AT_DATA([module.h],
 [[#include "common.h"
 
-#if defined(__CYGWIN__) || defined(_WIN32)
-# if defined(DLL_EXPORT) || defined(USING_MODULE_DLL)
-#  if defined(LIBTOOL_TEST_IN_MODULE)
+#if defined __CYGWIN__ || defined _WIN32
+# if defined DLL_EXPORT || defined USING_MODULE_DLL
+#  if defined LIBTOOL_TEST_IN_MODULE
 #   define MODULE_IMPEXP __declspec (dllexport)
 #  else
 #   define MODULE_IMPEXP __declspec (dllimport)
@@ -170,9 +170,9 @@ AT_DATA([lib.h],
 #include <string>
 
 
-#if defined(__CYGWIN__) || defined(_WIN32)
-# if defined(DLL_EXPORT) || defined(USING_LIB_DLL)
-#  if defined(LIBTOOL_TEST_IN_LIB)
+#if defined __CYGWIN__ || defined _WIN32
+# if defined DLL_EXPORT || defined USING_LIB_DLL
+#  if defined LIBTOOL_TEST_IN_LIB
 #   define LIB_IMPEXP __declspec (dllexport)
 #  else
 #   define LIB_IMPEXP __declspec (dllimport)

@@ -90,7 +90,7 @@ get_vtable (lt_user_data loader_data)
 /* --- IMPLEMENTATION --- */
 
 
-#if defined(HAVE_DLD_H)
+#if defined HAVE_DLD_H
 #  include <dld.h>
 #endif
 

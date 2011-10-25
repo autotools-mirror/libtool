@@ -34,7 +34,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 #include "lt__dirent.h"
 
-#if defined(__WINDOWS__)
+#if defined __WINDOWS__
 
 void
 closedir (DIR *entry)
@@ -103,4 +103,4 @@ readdir (DIR *entry)
   return &entry->file_info;
 }
 
-#endif /*defined(__WINDOWS__)*/
+#endif /*defined __WINDOWS__*/

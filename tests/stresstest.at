@@ -90,18 +90,18 @@ int ab = 1;
 
 AT_DATA(main.c,
 [[
-#if defined(LIBA_DLL_IMPORT)
-#  if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#if defined LIBA_DLL_IMPORT
+#  if defined _WIN32 || defined WIN32 || defined __CYGWIN__
 #    define LIBA_SCOPE extern __declspec(dllimport)
-#    if defined(_MSC_VER)
+#    if defined _MSC_VER
 #      define LIBA_SCOPE_VAR LIBA_SCOPE
 #    endif
 #  endif
 #endif
-#if !defined(LIBA_SCOPE)
+#if !defined LIBA_SCOPE
 #  define LIBA_SCOPE extern
 #endif
-#if !defined(LIBA_SCOPE_VAR)
+#if !defined LIBA_SCOPE_VAR
 #  define LIBA_SCOPE_VAR extern
 #endif
 #ifdef __cplusplus
@@ -134,18 +134,18 @@ int main(void)
 
 AT_DATA(dlself.c,
 [[
-#if defined(LIBA_DLL_IMPORT)
-#  if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#if defined LIBA_DLL_IMPORT
+#  if defined _WIN32 || defined WIN32 || defined __CYGWIN__
 #    define LIBA_SCOPE extern __declspec(dllimport)
-#    if defined(_MSC_VER)
+#    if defined _MSC_VER
 #      define LIBA_SCOPE_VAR LIBA_SCOPE
 #    endif
 #  endif
 #endif
-#if !defined(LIBA_SCOPE)
+#if !defined LIBA_SCOPE
 #  define LIBA_SCOPE extern
 #endif
-#if !defined(LIBA_SCOPE_VAR)
+#if !defined LIBA_SCOPE_VAR
 #  define LIBA_SCOPE_VAR extern
 #endif
 #ifdef __cplusplus

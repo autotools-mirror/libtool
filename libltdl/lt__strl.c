@@ -46,7 +46,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
    if (lt_strlcat(dst, src, dstsize) >= dstsize)
      return -1;
 */
-#if !defined(HAVE_STRLCAT)
+#if !defined HAVE_STRLCAT
 size_t
 lt_strlcat(char *dst, const char *src, const size_t dstsize)
 {
@@ -79,7 +79,7 @@ lt_strlcat(char *dst, const char *src, const size_t dstsize)
 
   return length;
 }
-#endif /* !defined(HAVE_STRLCAT) */
+#endif /* !defined HAVE_STRLCAT */
 
 /*
   lt_strlcpy copies up to dstsize - 1 characters from the NULL-terminated
@@ -94,7 +94,7 @@ lt_strlcat(char *dst, const char *src, const size_t dstsize)
     if (lt_strlcpy(dst, src, dstsize) >= dstsize)
       return -1;
 */
-#if !defined(HAVE_STRLCPY)
+#if !defined HAVE_STRLCPY
 size_t
 lt_strlcpy(char *dst, const char *src, const size_t dstsize)
 {
@@ -124,4 +124,4 @@ lt_strlcpy(char *dst, const char *src, const size_t dstsize)
 
   return length;
 }
-#endif /* !defined(HAVE_STRLCPY) */
+#endif /* !defined HAVE_STRLCPY */

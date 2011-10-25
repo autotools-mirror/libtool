@@ -42,8 +42,7 @@ local-checks-to-fix =				\
 	sc_prohibit_always_true_header_tests	\
 	sc_require_config_h			\
 	sc_require_config_h_first		\
-	sc_trailing_blank			\
-	sc_useless_cpp_parens
+	sc_trailing_blank
 
 local-checks-to-skip =				\
 	$(local-checks-to-fix)			\

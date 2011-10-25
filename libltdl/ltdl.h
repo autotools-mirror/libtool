@@ -30,7 +30,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 */
 
 /* Only include this header file once. */
-#if !defined(LTDL_H)
+#if !defined LTDL_H
 #define LTDL_H 1
 
 #include <libltdl/lt_system.h>
@@ -160,4 +160,4 @@ LT_SCOPE int	    lt_dlisresident	(lt_dlhandle handle);
 
 LT_END_C_DECLS
 
-#endif /*!defined(LTDL_H)*/
+#endif /*!defined LTDL_H*/

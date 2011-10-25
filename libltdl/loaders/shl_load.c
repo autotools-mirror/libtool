@@ -90,7 +90,7 @@ get_vtable (lt_user_data loader_data)
 /* --- IMPLEMENTATION --- */
 
 
-#if defined(HAVE_DL_H)
+#if defined HAVE_DL_H
 #  include <dl.h>
 #endif
 
@@ -125,10 +125,10 @@ get_vtable (lt_user_data loader_data)
  *		     library specified by the path argument.
  */
 
-#if !defined(DYNAMIC_PATH)
+#if !defined DYNAMIC_PATH
 #  define DYNAMIC_PATH		0
 #endif
-#if !defined(BIND_RESTRICTED)
+#if !defined BIND_RESTRICTED
 #  define BIND_RESTRICTED	0
 #endif
 

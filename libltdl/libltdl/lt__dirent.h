@@ -28,10 +28,10 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-#if !defined(LT__DIRENT_H)
+#if !defined LT__DIRENT_H
 #define LT__DIRENT_H 1
 
-#if defined(LT_CONFIG_H)
+#if defined LT_CONFIG_H
 #  include LT_CONFIG_H
 #else
 #  include <config.h>
@@ -80,8 +80,8 @@ LT_SCOPE void		closedir	(DIR *entry);
 
 LT_END_C_DECLS
 
-#else /* !defined(__WINDOWS__)*/
+#else /* !defined __WINDOWS__*/
 ERROR - cannot find dirent
-#endif /*!defined(__WINDOWS__)*/
+#endif /*!defined __WINDOWS__*/
 
-#endif /*!defined(LT__DIRENT_H)*/
+#endif /*!defined LT__DIRENT_H*/

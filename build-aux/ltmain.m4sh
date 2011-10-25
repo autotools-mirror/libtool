@@ -2511,16 +2511,16 @@ func_generate_dlsyms ()
 extern \"C\" {
 #endif
 
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4)) || (__GNUC__ > 4))
+#if defined __GNUC__ && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4)) || (__GNUC__ > 4))
 #pragma GCC diagnostic ignored \"-Wstrict-prototypes\"
 #endif
 
 /* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
-#if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN32_WCE)
+#if defined _WIN32 || defined __CYGWIN__ || defined _WIN32_WCE
 /* DATA imports from DLLs on WIN32 con't be const, because runtime
    relocations are performed -- see ld's documentation on pseudo-relocs.  */
 # define LT_DLSYM_CONST
-#elif defined(__osf__)
+#elif defined __osf__
 /* This system does not cope well with relocations in const data.  */
 # define LT_DLSYM_CONST
 #else
@@ -3427,21 +3427,21 @@ EOF
 #define STREQ(s1, s2) (strcmp ((s1), (s2)) == 0)
 
 /* declarations of non-ANSI functions */
-#if defined(__MINGW32__)
+#if defined __MINGW32__
 # ifdef __STRICT_ANSI__
 int _putenv (const char *);
 # endif
-#elif defined(__CYGWIN__)
+#elif defined __CYGWIN__
 # ifdef __STRICT_ANSI__
 char *realpath (const char *, char *);
 int putenv (char *);
 int setenv (const char *, const char *, int);
 # endif
-/* #elif defined (other platforms) ... */
+/* #elif defined other_platform || defined ... */
 #endif
 
 /* portability defines, excluding path handling macros */
-#if defined(_MSC_VER)
+#if defined _MSC_VER
 # define setmode _setmode
 # define stat    _stat
 # define chmod   _chmod
@@ -3452,21 +3452,21 @@ int setenv (const char *, const char *, int);
 #  define _INTPTR_T_DEFINED
 #  define intptr_t int
 # endif
-#elif defined(__MINGW32__)
+#elif defined __MINGW32__
 # define setmode _setmode
 # define stat    _stat
 # define chmod   _chmod
 # define getcwd  _getcwd
 # define putenv  _putenv
-#elif defined(__CYGWIN__)
+#elif defined __CYGWIN__
 # define HAVE_SETENV
 # define FOPEN_WB "wb"
-/* #elif defined (other platforms) ... */
+/* #elif defined other platforms ... */
 #endif
 
-#if defined(PATH_MAX)
+#if defined PATH_MAX
 # define LT_PATHMAX PATH_MAX
-#elif defined(MAXPATHLEN)
+#elif defined MAXPATHLEN
 # define LT_PATHMAX MAXPATHLEN
 #else
 # define LT_PATHMAX 1024
@@ -3485,8 +3485,8 @@ int setenv (const char *, const char *, int);
 # define PATH_SEPARATOR ':'
 #endif
 
-#if defined (_WIN32) || defined (__MSDOS__) || defined (__DJGPP__) || \
-  defined (__OS2__)
+#if defined _WIN32 || defined __MSDOS__ || defined __DJGPP__ || \
+  defined __OS2__
 # define HAVE_DOS_BASED_FILE_SYSTEM
 # define FOPEN_WB "wb"
 # ifndef DIR_SEPARATOR_2
@@ -3522,7 +3522,7 @@ int setenv (const char *, const char *, int);
   if (stale) { free (stale); stale = 0; } \
 } while (0)
 
-#if defined(LT_DEBUGWRAPPER)
+#if defined LT_DEBUGWRAPPER
 static int lt_debug = 1;
 #else
 static int lt_debug = 0;
@@ -3820,7 +3820,7 @@ base_name (const char *name)
 {
   const char *base;
 
-#if defined (HAVE_DOS_BASED_FILE_SYSTEM)
+#if defined HAVE_DOS_BASED_FILE_SYSTEM
   /* Skip over the disk name in MSDOS pathnames. */
   if (isalpha ((unsigned char) name[0]) && name[1] == ':')
     name += 2;
@@ -3889,7 +3889,7 @@ find_executable (const char *wrapper)
     return NULL;
 
   /* Absolute path? */
-#if defined (HAVE_DOS_BASED_FILE_SYSTEM)
+#if defined HAVE_DOS_BASED_FILE_SYSTEM
   if (isalpha ((unsigned char) wrapper[0]) && wrapper[1] == ':')
     {
       concat_name = xstrdup (wrapper);
@@ -3907,7 +3907,7 @@ find_executable (const char *wrapper)
 	    return concat_name;
 	  XFREE (concat_name);
 	}
-#if defined (HAVE_DOS_BASED_FILE_SYSTEM)
+#if defined HAVE_DOS_BASED_FILE_SYSTEM
     }
 #endif
 
