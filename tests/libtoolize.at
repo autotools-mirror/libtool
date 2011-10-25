@@ -713,7 +713,7 @@ func_serial ()
     my_filename="$1"
     my_macro_regex="$2"
     my_sed_serial='
-	/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
+	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
 	    s,^# serial \([1-9][0-9.]*\).*$,\1,
 	    q
 	}

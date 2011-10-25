@@ -81,7 +81,7 @@ m4_if([$1],[LT_INIT],[
   _LT_UNLESS_OPTIONS([LT_INIT], [static disable-static], [_LT_ENABLE_STATIC])
   _LT_UNLESS_OPTIONS([LT_INIT], [pic-only no-pic], [_LT_WITH_PIC])
   _LT_UNLESS_OPTIONS([LT_INIT], [fast-install disable-fast-install],
-  		   [_LT_ENABLE_FAST_INSTALL])
+		   [_LT_ENABLE_FAST_INSTALL])
   ])
 ])# _LT_SET_OPTIONS
 

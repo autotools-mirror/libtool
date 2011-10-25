@@ -229,7 +229,7 @@ slist_reverse (SList *slist)
       next		= slist->next;
       slist->next	= result;
       result		= slist;
-      slist 		= next;
+      slist		= next;
     }
 
   return result;

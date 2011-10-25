@@ -79,7 +79,7 @@ fn_check_msg ()
 
     # Flag duplicated Copyright-paperwork-exempt lines.
     count=`grep "$CPR_re" "$log_file" 2>/dev/null \
-      |wc |sed -e 's,^[	 ]*,,;s,[ 	].*$,,'`
+      |wc |sed -e 's,^[	 ]*,,;s,[	 ].*$,,'`
 
     test 2 -gt "$count" || {
       $ECHO 'More than one Copyright-paperwork-exempt line.'

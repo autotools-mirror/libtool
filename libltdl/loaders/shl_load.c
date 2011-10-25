@@ -103,11 +103,11 @@ get_vtable (lt_user_data loader_data)
  *
  * Optionally:
  * BIND_FIRST	   - Place the library at the head of the symbol search
- * 		     order.
+ *		     order.
  * BIND_NONFATAL   - The default BIND_IMMEDIATE behavior is to treat all
- * 		     unsatisfied symbols as fatal.  This flag allows
- * 		     binding of unsatisfied code symbols to be deferred
- * 		     until use.
+ *		     unsatisfied symbols as fatal.  This flag allows
+ *		     binding of unsatisfied code symbols to be deferred
+ *		     until use.
  *		     [Perl: For certain libraries, like DCE, deferred
  *		     binding often causes run time problems. Adding
  *		     BIND_NONFATAL to BIND_IMMEDIATE still allows

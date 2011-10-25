@@ -240,8 +240,8 @@ vm_open (lt_user_data loader_data, const char *filename,
     {
     case NSObjectFileImageSuccess:
       module = NSLinkModule (ofi, filename, NSLINKMODULE_OPTION_RETURN_ON_ERROR
-			     		    | NSLINKMODULE_OPTION_PRIVATE
-			     		    | NSLINKMODULE_OPTION_BINDNOW);
+					    | NSLINKMODULE_OPTION_PRIVATE
+					    | NSLINKMODULE_OPTION_BINDNOW);
       NSDestroyObjectFileImage (ofi);
 
       if (module)

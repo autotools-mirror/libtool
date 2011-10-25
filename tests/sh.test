@@ -31,37 +31,37 @@
 status=$EXIT_SUCCESS
 
 # Check for bad binary operators.
-if $EGREP -n -e 'if[ 	]+["'\'']?\$[^ 	]+[ 	]+(=|-[lg][te]|-eq|-ne)' $scripts; then
+if $EGREP -n -e 'if[	 ]+["'\'']?\$[^	 ]+[	 ]+(=|-[lg][te]|-eq|-ne)' $scripts; then
   echo "use \`if test \$something =' instead of \`if \$something ='"
   status=$EXIT_FAILURE
 fi
 
 # Check for bad unary operators.
-if $EGREP -n -e 'if[ 	]+-' $scripts; then
+if $EGREP -n -e 'if[	 ]+-' $scripts; then
   echo "use \`if test -X' instead of \`if -X'"
   status=$EXIT_FAILURE
 fi
 
 # Check for using `[' instead of `test'.
-if $EGREP -n -e 'if[ 	]+\[' $scripts; then
+if $EGREP -n -e 'if[	 ]+\[' $scripts; then
   echo "use \`if test' instead of \`if ['"
   status=$EXIT_FAILURE
 fi
 
 # Check for using test X... instead of test "X...
-if $EGREP -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?X' $scripts; then
+if $EGREP -n -e 'test[	 ]+(![	 ])?(-.[	 ]+)?X' $scripts; then
   echo "use \`test \"X...\"' instead of \`test X'"
   status=$EXIT_FAILURE
 fi
 
 # Check for using test $... instead of test "$...
-if $EGREP -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?X?\$' $scripts; then
+if $EGREP -n -e 'test[	 ]+(![	 ])?(-.[	 ]+)?X?\$' $scripts; then
   echo "use \`test \"\$...\"' instead of \`test \$'"
   status=$EXIT_FAILURE
 fi
 
 # Never use test -e.
-if $EGREP -n -e 'test[ 	]+(![ 	])?-e' $scripts; then
+if $EGREP -n -e 'test[	 ]+(![	 ])?-e' $scripts; then
   echo "use \`test -f' instead of \`test -e'"
   status=$EXIT_FAILURE
 fi
@@ -80,7 +80,7 @@ if $EGREP -n -e '"[^`"]*`[^"`]*"[^"`]*".*`[^`"]*"' $scripts | \
 fi
 
 # Check for using set -- instead of set dummy
-if $EGREP -n -e 'set[ 	]+--[ 	]+' $scripts; then
+if $EGREP -n -e 'set[	 ]+--[	 ]+' $scripts; then
   echo "use \`set dummy ...' instead of \`set -- ...'"
   status=$EXIT_FAILURE
 fi
@@ -89,7 +89,7 @@ fi
 for s in $scripts
 do
   if $SED -n '
-      /set[ 	][ 	]*dummy/{
+      /set[	 ][	 ]*dummy/{
 	  /set.*dummy.*;.*shift/d
 	  N
 	  /\n.*shift/D
@@ -107,7 +107,7 @@ do
   if $SED -n '
       /^func_.*(/{
 	  N
-	  /^func_[^ 	]* ()\n{$/d
+	  /^func_[^	 ]* ()\n{$/d
 	  p
       }' "$s" 2>&1 | $EGREP .; then
     echo "Function definitions should look like this in $s:
@@ -124,7 +124,7 @@ done
 for s in "$abs_macro_dir/libtool.m4"
 do
   if $SED -n '/case \$cc_basename in/,/esac/ {
-	      /^[ 	]*[a-zA-Z][a-zA-Z0-9+]*[^*][ 	]*)/p
+	      /^[	 ]*[a-zA-Z][a-zA-Z0-9+]*[^*][	 ]*)/p
 	      }'  $s 2>&1 | $EGREP .; then
     echo "\$cc_basename matches should include a trailing \`*' in $s."
     status=$EXIT_FAILURE

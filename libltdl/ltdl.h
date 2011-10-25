@@ -57,7 +57,7 @@ LT_SCOPE int	    lt_dlexit		(void);
 LT_SCOPE int	    lt_dladdsearchdir	 (const char *search_dir);
 LT_SCOPE int	    lt_dlinsertsearchdir (const char *before,
 						  const char *search_dir);
-LT_SCOPE int 	    lt_dlsetsearchpath	 (const char *search_path);
+LT_SCOPE int	    lt_dlsetsearchpath	 (const char *search_path);
 LT_SCOPE const char *lt_dlgetsearchpath	 (void);
 LT_SCOPE int	    lt_dlforeachfile	 (
 			const char *search_path,

@@ -301,8 +301,8 @@ for withdep in no yes; do
 	      [0], [ignore], [ignore])
     dnl # This usually fails.  So don't do it.
     dnl AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123b$EXEEXT m.$OBJEXT \
-    dnl 	 -L$libdir1 -Bstatic -la1 a2/liba2.la -L$libdir3 -la3],
-    dnl 	 [0], [ignore], [ignore])
+    dnl		 -L$libdir1 -Bstatic -la1 a2/liba2.la -L$libdir3 -la3],
+    dnl		 [0], [ignore], [ignore])
   fi
 
   ### install the programs.

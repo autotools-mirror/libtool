@@ -349,7 +349,7 @@ dnl SHORT	LONG			       DEFAULT		      INIT
 dnl ----------------------------------------------------------------------
 M4SH_GETOPTS(
   [n],		[--dry-run|--dryrun],		[],			[],
-  [],		[--config],			[], 			[
+  [],		[--config],			[],			[
 	func_config],
   [;],		[--dlopen|-dlopen],		[],			[],
   [],		[--preserve-dup-deps],		[],			[],

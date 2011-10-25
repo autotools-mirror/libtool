@@ -86,7 +86,7 @@ M4SH_VERBATIM([[
       --debug|--no-warn|--quiet|--verbose)
 		envopts="${envopts+$envopts }$opt"			  ;;
       --*)	env_warning="${env_warning+$env_warning
-}unrecognized environment option \`$opt'" 				  ;;
+}unrecognized environment option \`$opt'"				  ;;
       *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
     esac
   done

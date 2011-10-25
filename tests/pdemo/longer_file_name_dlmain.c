@@ -54,13 +54,13 @@ main (int argc, char **argv)
         const char *name = s->name;
         printf ("found symbol: %s\n", name);
         if (!strcmp ("hello", name))
- 	  phello = (int(*)())s->address;
+	  phello = (int(*)())s->address;
         else if (!strcmp ("foo", name))
-  	  pfoo = (int(*)())s->address;
+	  pfoo = (int(*)())s->address;
         else if (!strcmp ("nothing", name))
 #ifndef _WIN32
 	  /* In an ideal world we could do this... */
-  	  pnothing = (int*)s->address;
+	  pnothing = (int*)s->address;
 #else /* !_WIN32 */
 	  /* In an ideal world a shared lib would be able to export data */
 	  pnothing = (int*)&nothing;

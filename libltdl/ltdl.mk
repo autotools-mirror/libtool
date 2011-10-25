@@ -97,7 +97,7 @@ EXTRA_LTLIBRARIES	       += libltdl/dlopen.la \
 
 libltdl_dlopen_la_SOURCES	= libltdl/loaders/dlopen.c
 libltdl_dlopen_la_LDFLAGS	= -module -avoid-version
-libltdl_dlopen_la_LIBADD 	= $(LIBADD_DLOPEN)
+libltdl_dlopen_la_LIBADD	= $(LIBADD_DLOPEN)
 
 libltdl_dld_link_la_SOURCES	= libltdl/loaders/dld_link.c
 libltdl_dld_link_la_LDFLAGS	= -module -avoid-version

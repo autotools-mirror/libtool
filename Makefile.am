@@ -580,7 +580,7 @@ $(readme): FORCE
 	  $(SHELL) $(edit_readme_alpha) '$@'; \
 	fi
 
-git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's,[ 	],,g'
+git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's,[	 ],,g'
 
 dist-hook: $(changelog) $(dotversion) $(readme)
 ## Arrange so that .tarball-version appears only in the distribution

@@ -273,12 +273,12 @@ do
 	  esac
 
 	  LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"main$EXEEXT "$rel"main$mst.lo "$rel"sub2/liba.la],
-	  	   [0],[ignore],[ignore])
+		   [0],[ignore],[ignore])
 	  LT_AT_EXEC_CHECK([./main],[0])
 	  for l10 in '' '-export-symbols dlselfsyms'
 	  do
 	    LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"sub3/dlself$EXEEXT "$rel"sub3/dlself$mst.lo "$rel"sub2/liba.la sub/b.lo -dlopen self $l10],
-	    	     [0],[ignore],[ignore])
+		     [0],[ignore],[ignore])
 	    LT_AT_EXEC_CHECK([./sub3/dlself],[0])
 	  done
 	done

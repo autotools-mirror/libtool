@@ -42,7 +42,7 @@ main (int argc, char **argv)
   if (var_l1 + var_l2 + var_l4 != 20)
 	{
 	printf("var_l1(%d) + var_l2(%d) + var_l4(%d) != 20\n",var_l1,var_l2,var_l4);
-  	return 1;
+	return 1;
 	}
   return 0;
 }

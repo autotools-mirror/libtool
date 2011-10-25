@@ -42,7 +42,6 @@ local-checks-to-fix =				\
 	sc_prohibit_always_true_header_tests	\
 	sc_require_config_h			\
 	sc_require_config_h_first		\
-	sc_space_tab				\
 	sc_trailing_blank			\
 	sc_useless_cpp_parens
 
@@ -68,3 +67,4 @@ exclude_file_name_regexp--sc_prohibit_strcmp = \
   ^(doc/libtool.texi|tests/.*demo/.*\.c)$$
 exclude_file_name_regexp--sc_prohibit_test_minus_ao = \
   ^m4/libtool.m4$$
+exclude_file_name_regexp--sc_space_tab = \.diff$$
