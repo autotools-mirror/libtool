@@ -3517,7 +3517,7 @@ int setenv (const char *, const char *, int);
 
 #define XMALLOC(type, num)      ((type *) xmalloc ((num) * sizeof(type)))
 #define XFREE(stale) do { \
-  if (stale) { free ((void *) stale); stale = 0; } \
+  if (stale) { free (stale); stale = 0; } \
 } while (0)
 
 #if defined(LT_DEBUGWRAPPER)

@@ -2281,7 +2281,7 @@ lt_dlisresident	(lt_dlhandle handle)
 /* --- MODULE INFORMATION --- */
 
 typedef struct {
-  const char *id_string;
+  char *id_string;
   lt_dlhandle_interface *iface;
 } lt__interface_id;
 
