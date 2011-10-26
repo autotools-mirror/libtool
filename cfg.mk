@@ -62,7 +62,6 @@ local-checks-to-fix =				\
 local-checks-to-skip =				\
 	$(local-checks-to-fix)			\
 	sc_GPL_version				\
-	sc_avoid_if_before_free			\
 	sc_bindtextdomain			\
 	sc_cast_of_argument_to_free		\
 	sc_cast_of_x_alloc_return_value		\
@@ -72,8 +71,7 @@ local-checks-to-skip =				\
 
 # GPL_version: checks for GPLv3, which we don't use
 # bindtextdomain: libtool isn't internationalized
-# avoid_if_before_free: we don't use the gnulib malloc modules
-# cast_of_argument_to_free: ditto
+# cast_of_argument_to_free: we don't use gnulib alloc modules
 # cast_of_x_alloc_return_value: ditto
 # error_message_uppercase: we like our error messages
 # program_name: libtool has no programs!
