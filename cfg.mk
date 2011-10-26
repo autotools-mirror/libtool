@@ -47,14 +47,12 @@ local-checks-to-skip =				\
 	$(local-checks-to-fix)			\
 	sc_GPL_version				\
 	sc_cast_of_x_alloc_return_value		\
-	sc_program_name				\
 	sc_trailing_blank			\
 	sc_unmarked_diagnostics
 
 # GPL_version: checks for GPLv3, which we don't use
 # cast_of_x_alloc_return_value:
 #         We support C++ compilation which does require casting here.
-# program_name: libtool has no programs!
 # trailing_blank: flags valid rfc3676 separators
 # unmarked_diagnostics: libtool isn't internationalized
 
@@ -67,6 +65,7 @@ sc_trailing_blank-non-rfc3676:
 exclude_file_name_regexp--sc_bindtextdomain = ^tests/.*demo[0-9]*/.*\.c$$
 exclude_file_name_regexp--sc_error_message_uppercase = \
   ^$(_build-aux)/cvsu$$
+exclude_file_name_regexp--sc_program_name = ^tests/.*demo[0-9]*/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_strcmp = \
   ^(doc/libtool.texi|tests/.*demo/.*\.c)$$
 exclude_file_name_regexp--sc_prohibit_test_minus_ao = \
