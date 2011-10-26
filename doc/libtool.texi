@@ -4635,7 +4635,7 @@ This function allows you to integrate your own error messages into
 If the allocation of an identifier fails, this function returns -1.
 
 @example
-int myerror = lt_dladderror ("Doh!");
+int myerror = lt_dladderror ("doh!");
 if (myerror < 0)
   perror (lt_dlerror ());
 @end example

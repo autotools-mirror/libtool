@@ -64,7 +64,6 @@ local-checks-to-skip =				\
 	sc_GPL_version				\
 	sc_bindtextdomain			\
 	sc_cast_of_x_alloc_return_value		\
-	sc_error_message_uppercase		\
 	sc_program_name				\
 	sc_unmarked_diagnostics
 
@@ -72,6 +71,9 @@ local-checks-to-skip =				\
 # bindtextdomain: libtool isn't internationalized
 # cast_of_x_alloc_return_value:
 #         We support C++ compilation which does require casting here.
-# error_message_uppercase: we like our error messages
 # program_name: libtool has no programs!
 # unmarked_diagnostics: libtool isn't internationalized
+
+# List syntax-check exempted files.
+exclude_file_name_regexp--sc_error_message_uppercase = \
+  ^$(_build-aux)/cvsu$$
