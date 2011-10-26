@@ -942,12 +942,26 @@ func_gnulib_tool_copy_file ()
     gnulib_copy_cmd="$gnulib_tool --copy-file"
     $opt_copy || func_append gnulib_copy_cmd " --symlink"
 
-    test -f "$gnulib_path/$1" || {
-      func_error "error: \`$gnulib_path/$file' does not exist"
-      return 1
-    }
+    if test true = "$gnulib_tool"; then
+      # If gnulib-tool is not available (e.g. bootstrapping in a
+      # distribution tarball), make sure that at least we have some
+      # version of the required file already in place.
+      test -f "$2" || func_fatal_error "\
+error: Can't find, copy or download \`$2', a required
+       gnulib supplied file, please provide the location of a
+       complete \`gnulib' tree by setting \`gnulib_path' in your
+       \`bootstrap.conf' or with the \`--gnulib-srcdir' option -
+       or else specify the location of your \`git' binary by
+       setting \`GIT' in the environment so that a fresh
+       \`gnulib' submodule can be cloned."
+    else
+      test -f "$gnulib_path/$1" || {
+        func_error "error: \`$gnulib_path/$1' does not exist"
+        return 1
+      }
 
-    $gnulib_copy_cmd $1 $2
+      $gnulib_copy_cmd $1 $2
+    fi
 }
 
 
@@ -959,34 +973,25 @@ func_install_gnulib_non_module_files ()
     $debug_cmd
 
     $require_build_aux
-    $require_gnulib_path
+    $require_gnulib_tool
 
     test -n "$gnulib_non_module_files" && {
-      if test -n "$gnulib_path"; then
-        maybe_exit_cmd=:
+      maybe_exit_cmd=:
 
-        for file in $gnulib_non_module_files; do
-          case $file in
-            */COPYING*) dest=COPYING;;
-            */INSTALL) dest=INSTALL;;
-            build-aux/*) dest=$build_aux/`expr "$file" : 'build-aux/\(.*\)'`;;
-            *) dest=$file;;
-          esac
+      for file in $gnulib_non_module_files; do
+        case $file in
+          */COPYING*) dest=COPYING;;
+          */INSTALL) dest=INSTALL;;
+          build-aux/*) dest=$build_aux/`expr "$file" : 'build-aux/\(.*\)'`;;
+          *) dest=$file;;
+        esac
 
-          # Be sure to show all copying errors before bailing out
-	  func_gnulib_tool_copy_file "$file" "$dest" \
-	      || maybe_exit_cmd="exit $EXIT_FAILURE"
-        done
+        # Be sure to show all copying errors before bailing out
+	func_gnulib_tool_copy_file "$file" "$dest" \
+	    || maybe_exit_cmd="exit $EXIT_FAILURE"
+      done
 
-        $maybe_exit_cmd
-      else
-        func_warning recommend "\
-Unable to link \`\$gnulib_non_module_files', please provide the
-location of a complete \`gnulib' tree by setting \`gnulib_path' in
-your \`bootstrap.conf' or with the \`--gnulib-srcdir' option - or
-else specify the location of your \`git' binary by setting \`GIT'
-in the environment so that a fresh \`gnulib' submodule can be cloned."
-      fi
+      $maybe_exit_cmd
     }
 }
 
@@ -1197,9 +1202,12 @@ func_require_checkout_only_file ()
 {
     $debug_cmd
 
-    test -n "$checkout_only_file" && test ! -f "$checkout_only_file" \
-       && func_fatal_error "\
-error: Bootstrapping from a non-checked-out distribution is risky."
+    $opt_force || {
+      test -n "$checkout_only_file" && test ! -f "$checkout_only_file" \
+          && func_fatal_error "\
+error: Bootstrapping from a non-checked-out distribution is risky.
+       If you wish to bootstrap anyway, use the \`--force' option."
+    }
 
     require_checkout_only_file=:
 }
@@ -1634,46 +1642,6 @@ func_require_gnulib_cache ()
 }
 
 
-# require_gnulib_files_already_present
-# ------------------------------------
-# If we have no means to update imported gnulib files, then try to
-# ensure at least that this tree already has files from a previous
-# `gnulib-tool' run.
-require_gnulib_files_already_present=func_require_gnulib_files_already_present
-func_require_gnulib_files_already_present ()
-{
-    $debug_cmd
-
-    $require_build_aux
-    $require_macro_dir
-    $require_gnulib_mk
-    $require_source_base
-
-    # As a heuristic, only bail out if any of the following
-    # are missing.
-    my_gnulib_files_already_present="
-        $build_aux/install-sh
-        $macro_dir/00gnulib.m4
-        $source_base/${gnulib_mk:-Makefile.am}
-    "
-
-    $opt_dry_run || {
-      for my_file in $my_gnulib_files_already_present; do
-        test -f "$my_file" || func_fatal_error "\
-error: Can't find, copy or download required gnulib files,
-       please provide the location of a complete \`gnulib' tree
-       by setting \`gnulib_path' in your \`bootstrap.conf' or
-       with the \`--gnulib-srcdir' option - or else specify the
-       location of your \`git' binary by setting \`GIT' in the
-       environment so that a fresh \`gnulib' submodule can be
-       cloned."
-      done
-    }
-
-    require_gnulib_files_already_present=:
-}
-
-
 # require_gnulib_merge_changelog
 # ------------------------------
 # See if we can use gnulib's git-merge-changelog merge driver.
@@ -1712,7 +1680,7 @@ func_require_gnulib_mk ()
 {
     $debug_cmd
 
-    test -n "$gnulib_mk" || {
+    test -f "$gnulib_cache" && test -z "$gnulib_mk" && {
       $require_gnulib_cache
       $require_macro_dir
 
@@ -1738,33 +1706,36 @@ func_require_dotgitmodules_parameters ()
 
     $require_git
 
-    if test true = "$GIT"; then
+    test true = "$GIT" && {
       # If we can't find git (or if the user specified `--skip-git'),
       # then use an existing gnulib directory specified with
       # `--gnulib-srcdir' if possible.
       test -n "$gnulib_path" \
           || test ! -x "$opt_gnulib_srcdir/gnulib-tool" \
           || gnulib_path="$opt_gnulib_srcdir"
-    fi
+    }
+
 
     $require_dotgitmodules
 
-    # Extract the parameters with sed, since git may be missing
-    test -n "$gnulib_path" \
-      || gnulib_path=`$SED -e '/^.submodule "gnulib".$/,${
-                                /[	 ]*path *= */{
-			          s,[   ]*,,g;s,^[^=]*=,,;p
-			        }
-		              };d' .gitmodules |$SED 1q`
-    test -n "$gnulib_url" \
-      || gnulib_url=`$SED -e '/^.submodule "gnulib".$/,${
-                                /[	 ]*url *= */{
-			          s,[   ]*,,g;s,^[^=]*=,,;p
-			        }
-		              };d' .gitmodules |$SED 1q`
+    test -f .gitmodules && {
+      # Extract the parameters with sed, since git may be missing
+      test -n "$gnulib_path" \
+        || gnulib_path=`$SED -e '/^.submodule "gnulib".$/,${
+                                   /[	 ]*path *= */{
+			             s,[   ]*,,g;s,^[^=]*=,,;p
+			           }
+		                 };d' .gitmodules |$SED 1q`
+      test -n "$gnulib_url" \
+        || gnulib_url=`$SED -e '/^.submodule "gnulib".$/,${
+                                  /[	 ]*url *= */{
+			            s,[   ]*,,g;s,^[^=]*=,,;p
+			          }
+		                };d' .gitmodules |$SED 1q`
 
-    func_verbose "gnulib_path='$gnulib_path'"
-    func_verbose "gnulib_url='$gnulib_url'"
+      func_verbose "gnulib_path='$gnulib_path'"
+      func_verbose "gnulib_url='$gnulib_url'"
+    }
 
     require_gnulib_path=:
     require_gnulib_url=:
@@ -1842,8 +1813,6 @@ func_require_gnulib_tool ()
         || gnulib_tool="$gnulib_path/gnulib-tool"
 
       test -x "$gnulib_tool" || {
-        $require_gnulib_files_already_present
-
         gnulib_tool=true
         func_warning recommend \
             "No \`gnulib-tool' found; gnulib modules may be missing."
@@ -2092,9 +2061,7 @@ func_require_source_base ()
       func_verbose "source_base='$source_base'"
     }
 
-    # Only prevent repeated calls if we found something...
-    # gnulib-cache.m4 might arrive before the next call.
-    test -n "$source_base" && require_source_base=:
+    require_source_base=:
 }
 
 
