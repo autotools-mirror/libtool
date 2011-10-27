@@ -52,11 +52,6 @@ DEBUG | debug )
   ;;
 esac
 
-if test -z "$srcdir"; then
-  srcdir=`$ECHO "$0" | $SED "$dirname; s,/tests\$,,"`
-  test "$srcdir" = "$0" && srcdir=.
-fi
-
 # func_msg arg...
 # Echo message with prefix.
 func_msg ()
@@ -341,9 +336,9 @@ func_exec ()
 
 # Shared global variables for test scripts
 prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
-srcdir=`cd $srcdir && pwd`
-macro_dir=$srcdir/libltdl/m4
-aux_dir=$srcdir/libltdl/config
+srcdir=`cd '@srcdir@' && pwd`
+macro_dir=`cd '@macro_dir@' && pwd`
+aux_dir=`cd '@aux_dir@' && pwd`
 scripts="$aux_dir/ltmain.m4sh $srcdir/libtoolize.m4sh"
 
 # Unset some MAKE... variables that may cause $MAKE to act like a

@@ -268,17 +268,20 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 configure_edit = $(SED) \
 	-e 's,@aclocal_DATA\@,$(aclocalfiles),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
+	-e 's,@aux_dir\@,$(aux_dir),g' \
 	-e 's,@datadir\@,$(datadir),g' \
 	-e 's,@EGREP\@,$(EGREP),g' \
 	-e 's,@FGREP\@,$(FGREP),g' \
 	-e 's,@GREP\@,$(GREP),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@LN_S\@,$(LN_S),g' \
+	-e 's,@macro_dir\@,$(macro_dir),g' \
 	-e "s,@pkgconfig_files\@,$(auxfiles),g" \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e "s,@pkgltdl_files\@,$(ltdldatafiles),g" \
 	-e 's,@prefix\@,$(prefix),g' \
-	-e 's,@SED\@,$(SED),g'
+	-e 's,@SED\@,$(SED),g' \
+	-e 's,@srcdir\@,$(srcdir),g'
 
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
