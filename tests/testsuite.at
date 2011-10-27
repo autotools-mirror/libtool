@@ -56,11 +56,11 @@ if (FOO=bar; unset FOO) >/dev/null 2>&1; then
 else
   unset=false
 fi
-: ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
+: ${mkdir_p="$abs_top_srcdir/build-aux/install-sh -d"}
 # Fix relative paths in $lt_INSTALL
 case $lt_INSTALL in
-  *libltdl/config/install-sh*)
-    lt_INSTALL=$abs_top_srcdir/libltdl/config/install-sh
+  *build-aux/install-sh*)
+    lt_INSTALL=$abs_top_srcdir/build-aux/install-sh
     ;;
 esac
 

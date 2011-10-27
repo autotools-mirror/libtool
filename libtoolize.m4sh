@@ -818,19 +818,28 @@ func_install_pkgltdl_files ()
           continue
 	  ;;
 
+        config-h.in)
+          test subproject = "$ltdl_mode" || continue
+          ;;
+
         configure)
           test subproject = "$ltdl_mode" && {
+            $require_configure_ac_filter
+
             # Always copy configure, otherwise regenerating it can
             # overwrite the destination if it is symlinked.
             ( opt_copy=:
-              func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
+              func_copy "$file" "$pkgltdldir" "$ltdl_dir" \
+                pkgltdl_header "$configure_ac_filter"
             )
           }
           continue
 	  ;;
 
-        config-h.in|configure.ac)
+        configure.ac)
           test subproject = "$ltdl_mode" || continue
+          $require_configure_ac_filter
+          my_copy_filter=$configure_ac_filter
           ;;
       esac
 
@@ -848,50 +857,18 @@ func_install_pkgltdl_files ()
 }
 
 
-# func_install_pkgaux_subproject
-# Unless --quiet was passed, display a message. Then copy pkgaux_files
-# from libtool installation tree to subproject libltdl tree.
-func_install_pkgaux_subproject ()
+# func_install_pkgaux_files
+# Install copies of the auxiliary files into this package according to
+# the whether libltdl is included as a subproject, and whether the parent
+# shares the AC_CONFIG_AUX_DIR setting.
+func_install_pkgaux_files ()
 {
     $debug_cmd
 
     $require_ac_aux_dir
     $require_aux_dir
-    $require_ltdl_dir
-
-    # Remove any lingering files that my have been installed by some
-    # previous libtoolize release:
-    $opt_force && for file in $all_pkgaux_files; do
-      test -f "$subproject_aux_dir/$file" && func_verbose "rm -f '$subproject_aux_dir/$file'"
-      rm -f "$subproject_aux_dir/$file"
-    done
-
-    # Copy all the files from installed libltdl to this project, if the
-    # user specified an aux_dir.
-    $opt_quiet || if test "x$ac_aux_dir" = "x$subproject_aux_dir"; then
-      pkgaux_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_aux_dir'."
-    elif test -n "$ac_aux_dir"; then
-      pkgaux_header="putting auxiliary files in \`$aux_dir'."
-    else
-      pkgaux_header="putting auxiliary files in \`$subproject_aux_dir'."
-    fi
-
-    for file in $pkgaux_files; do
-      func_copy "$file" "$pkgauxdir" "$ltdl_dir/config" pkgaux_header
-    done
-}
-
-
-# func_install_pkgaux_parent
-# Unless --quiet was passed, or AC_CONFIG_AUX_DIR was not seen, display a
-# message.  Then update appropriate auxiliary files if newer ones are
-# available from the libtool installation tree.
-func_install_pkgaux_parent ()
-{
-    $debug_cmd
-
-    $require_ac_aux_dir
-    $require_aux_dir
+    $require_configure_ac
+    $require_ltdl_mode
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -906,50 +883,51 @@ func_install_pkgaux_parent ()
       pkgaux_header="putting auxiliary files in \`$aux_dir'."
     fi
 
-    if $opt_install; then
-      func_config_update config.guess "$pkgauxdir" "$aux_dir" pkgaux_header
-      func_config_update config.sub "$pkgauxdir" "$aux_dir" pkgaux_header
-      func_install_update install-sh "$pkgauxdir" "$aux_dir" pkgaux_header
-    fi
-    func_ltmain_update ltmain.sh "$pkgauxdir" "$aux_dir" pkgaux_header
-}
+    for file in $pkgaux_files; do
+      case $file in
+        config.guess|config.sub)
+          $opt_install || test subproject = "$ltdl_mode" || continue
+          func_config_update "$file" "$pkgauxdir" "$aux_dir" pkgaux_header
+          ;;
+        install-sh)
+          $opt_install || test subproject = "$ltdl_mode" || continue
+          func_install_update "$file" "$pkgauxdir" "$aux_dir" pkgaux_header
+          ;;
+        ltmain.sh)
+          func_ltmain_update "$file" "$pkgauxdir" "$aux_dir" pkgaux_header
+          ;;
+        *)
+          test subproject = "$ltdl_mode" || continue
+          func_copy "$file" "$pkgauxdir" "$aux_dir" pkgaux_header
+          ;;
+      esac
+    done
 
+    # If the parent project is using Autoconf and linking with Libtool,
+    # even if subproject libltdl already has a copy, the parent project
+    # will still need to build libtool for its own purposes, and might
+    # need another copy of ltmain.sh if the parent didn't declare an
+    # AC_CONFIG_AUX_DIR.
+    pkgaux_hdr="putting another copy of auxiliary files in \`.'"
+    test -f "$configure_ac" \
+      && test -z "$ac_aux_dir" \
+      && test subproject = "$ltdl_mode" \
+      && test "$aux_dir" = "$ltdl_dir" \
+      && func_ltmain_update "$file" "$pkgauxdir" . pkgaux_hdr
 
-# func_install_pkgaux_files
-# Install copies of the auxiliary files into this package according to
-# the whether libltdl is included as a subproject, and whether the parent
-# shares the AC_CONFIG_AUX_DIR setting.
-func_install_pkgaux_files ()
-{
-    $debug_cmd
-
-    $require_aux_dir
-    $require_configure_ac
-    $require_ltdl_mode
-
-  # 1. Parent shares aux_dir with subproject ltdl:
-    if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
-       test "x$aux_dir" = "x$subproject_aux_dir"
-    then
-      func_install_pkgaux_subproject
-
-  # 2. Parent has separate aux_dir to subproject ltdl:
-    elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
-       # && test "x$aux_dir" != "x$subproject_aux_dir" is implied
-    then
-      if test -n "$configure_ac"; then
-	func_install_pkgaux_parent
-      fi
-      func_install_pkgaux_subproject
-
-  # 3. Not subproject, but AC_CONFIG_AUX_DIR was used in parent:
-    elif test -n "$ac_aux_dir" || test "x$aux_dir" = "x."; then
-      func_install_pkgaux_parent
-
-  # 4. AC_CONFIG_AUX_DIR was not specified:
-    else
-      func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxiliary files."
-    fi
+    # FIXME: Remove in 2013.
+    # Very old parent projects using `libtoolize --install --ltdl', and
+    # a top-level $configure_ac to build the ltdl subproject, but not
+    # using Automake themselves, might still be relying on the old
+    # behaviour of libtoolize to put a second copy of some `Auxiliary
+    # Programs' needed by the top-level configure (instead of using
+    # the recommended method: `automake --add-missing').
+    test -f "$configure_ac" \
+      && test subproject = "$ltdl_mode" \
+      && test "$aux_dir" = "$ltdl_dir" \
+      && func_config_update config.guess "$pkgauxdir" . pkgaux_hdr \
+      && func_config_update config.sub "$pkgauxdir" . pkgaux_hdr \
+      && func_install_update install-sh "$pkgauxdir" . pkgaux_hdr
 }
 
 
@@ -1049,14 +1027,6 @@ func_check_macros ()
 	  func_error "Use of \`include $ltdl_dir/Makefile.inc' is deprecated!"
 	  func_echo "Consider updating to use of \`include $ltdl_dir/ltdl.mk' in Makefile.am."
 	fi
-      fi
-
-      # For subproject mode, offer some suggestions for avoiding duplicate
-      # files in a project that uses libltdl:
-      if test "x$ltdl_mode" = "xsubproject"; then
-        test "$subproject_aux_dir" = "$aux_dir" ||
-          func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_aux_dir])' in $configure_ac."
-	ac_config_macro_dir_advised=:
       fi
     fi
 
@@ -1297,7 +1267,9 @@ func_require_Makefile_am_filter ()
         ;;
 
       subproject)
+        $require_ltdl_ac_aux_dir
         $require_ltdl_am_macro_dir
+        $require_ltdl_relative_aux_dir
         $require_ltdl_relative_macro_dir
 
         test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
@@ -1309,6 +1281,16 @@ $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
               s, -I $my_am_macro_dir_regex\$, -I $ltdl_relative_macro_dir,
             }
             s,dir)/$my_am_macro_dir_regex,dir)/$ltdl_relative_macro_dir,g"
+        }
+
+        test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
+          my_aux_dir_regex=`$ECHO "\
+$ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
+
+          Makefile_am_filter="$Makefile_am_filter
+            s,$my_aux_dir_regex,$ltdl_relative_aux_dir,g
+            s,/\./,/,g
+          "
         }
         ;;
     esac
@@ -1552,8 +1534,8 @@ func_require_aux_dir ()
 
 # require_configure_ac
 # --------------------
-# Ensure that there is a `configure.ac' or `configure.in' file in the
-# current directory, and that `$configure_ac' contains its name.
+# Ensure that there is a `configure.ac' or `configure.in' file in this
+# directory, and that `$configure_ac' contains its name.
 require_configure_ac=func_require_configure_ac
 func_require_configure_ac ()
 {
@@ -1567,6 +1549,50 @@ func_require_configure_ac ()
       || func_verbose "found \`$configure_ac'"
 
     require_configure_ac=:
+}
+
+
+# require_configure_ac_filter
+# ---------------------------
+# Set `configure_ac_filter' ready for passing to func_copy when
+# libltdl's stock configure.ac contents need to be filtered to work in
+# subproject mode.
+require_configure_ac_filter=func_require_configure_ac_filter
+func_require_configure_ac_filter ()
+{
+    $debug_cmd
+
+    $require_ltdl_ac_aux_dir
+    $require_ltdl_relative_aux_dir
+
+    test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
+      my_aux_dir_regex=`$ECHO "\
+$ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
+
+      configure_ac_filter="
+        s,$my_aux_dir_regex,$ltdl_relative_aux_dir,g
+      "
+    }
+
+    require_configure_ac_filter=:
+}
+
+
+# require_ltdl_ac_aux_dir
+# -----------------------
+# This needs to work in subproject mode, when GNU M4 may not be
+# available and hence extract-trace can't be used.  But since we
+# installed libltdl/configure.ac, then we already know what value
+# we used.
+require_ltdl_ac_aux_dir=func_require_ltdl_ac_aux_dir
+func_require_ltdl_ac_aux_dir ()
+{
+    $debug_cmd
+
+    ltdl_ac_aux_dir="@ltdl_ac_aux_dir@"
+    func_verbose "ltdl_ac_aux_dir='$ltdl_ac_aux_dir'"
+
+    require_ltdl_ac_aux_dir=:
 }
 
 
@@ -1735,9 +1761,8 @@ func_require_seen_libtool ()
 
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
-    pkgauxdir="$_lt_pkgdatadir/libltdl/config"
+    pkgauxdir="$_lt_pkgdatadir/build-aux"
     pkgltdldir="$_lt_pkgdatadir/libltdl"
-    pkgdatadir="$_lt_pkgdatadir/libltdl"
     aclocaldir="$_lt_pkgdatadir/m4"
   fi
   func_nonemptydir_p pkgauxdir
@@ -1745,13 +1770,6 @@ func_require_seen_libtool ()
   func_nonemptydir_p aclocaldir
 
   extract_trace=$pkgauxdir/extract-trace
-
-  $require_ltdl_dir
-  case $ltdl_dir in
-  .) ltdlprefix= ;;
-  *) ltdlprefix=$ltdl_dir/ ;;
-  esac
-  subproject_aux_dir=${ltdlprefix}config
 
   # :::BE CAREFUL HERE:::
   # func_check_macros needs to check whether --ltdl was specified when

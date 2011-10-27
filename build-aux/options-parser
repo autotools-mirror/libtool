@@ -319,7 +319,7 @@ func_run_hooks ()
 #
 #        # Note that for efficiency, we parse as many options as we can
 #        # recognise in a loop before passing the remainder back to the
-#        # caller on the first unrecognised argument we encounter. 
+#        # caller on the first unrecognised argument we encounter.
 #        while test $# -gt 0; do
 #          opt=$1; shift
 #          case $opt in

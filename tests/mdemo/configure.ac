@@ -29,7 +29,7 @@ AC_PREREQ(2.54)
 ## ------------------------ ##
 AC_INIT([mdemo], [1.0], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([main.c])
-AC_CONFIG_AUX_DIR([../../libltdl/config])
+AC_CONFIG_AUX_DIR([../../build-aux])
 
 
 ## ------------------------ ##

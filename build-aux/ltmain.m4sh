@@ -732,7 +732,7 @@ func_convert_core_path_wine_to_w32 ()
 {
   $debug_cmd
 
-  # unfortunately, winepath doesn't convert paths, only file names 
+  # unfortunately, winepath doesn't convert paths, only file names
   func_convert_core_path_wine_to_w32_result=""
   if test -n "$1"; then
     oldIFS=$IFS

@@ -139,7 +139,7 @@ One of these is required:
 # Attempt to run `CMD --version', discarding errors.  The output can be
 # ignored by redirecting stdout, and this function used simply to test
 # whether the command exists and exits normally when passed a
-# `--version' argument. 
+# `--version' argument.
 # When FATAL-ERROR-MSG is given, then this function will display the
 # message and exit if running `CMD --version' returns a non-zero exit
 # status.
@@ -322,7 +322,7 @@ func_extract_trace ()
         # Dummy definitions for the macros we want to trace.
         # AM_INIT_AUTOMAKE at least produces no trace without this.
     '
-    
+
     _G_save=$IFS
     IFS=,
     for _G_macro in $_G_macros; do

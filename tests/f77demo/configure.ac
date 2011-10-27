@@ -29,7 +29,7 @@ AC_PREREQ(2.54)
 AC_INIT([f77demo], [1.0], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([foof.f])
-AC_CONFIG_AUX_DIR([../../libltdl/config])
+AC_CONFIG_AUX_DIR([../../build-aux])
 
 AC_ARG_WITH([dist], AS_HELP_STRING([--with-dist],
 				   [ignore errors not affecting `make dist']))

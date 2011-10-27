@@ -351,14 +351,14 @@ AT_CLEANUP
 # Macro to generate data files common to several tests.
 m4_pushdef([_LT_AT_LTDL_SETUP],
 [AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `ltdl/config'.
-libtoolize: linking file `ltdl/config/compile'
-libtoolize: linking file `ltdl/config/config.guess'
-libtoolize: linking file `ltdl/config/config.sub'
-libtoolize: linking file `ltdl/config/depcomp'
-libtoolize: linking file `ltdl/config/install-sh'
-libtoolize: linking file `ltdl/config/missing'
-libtoolize: linking file `ltdl/config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: linking file `build-aux/compile'
+libtoolize: linking file `build-aux/config.guess'
+libtoolize: linking file `build-aux/config.sub'
+libtoolize: linking file `build-aux/depcomp'
+libtoolize: linking file `build-aux/install-sh'
+libtoolize: linking file `build-aux/missing'
+libtoolize: linking file `build-aux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: linking file `m4/argz.m4'
 libtoolize: linking file `m4/libtool.m4'
@@ -407,7 +407,7 @@ libtoolize: linking file `ltdl/slist.c'
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
-AC_CONFIG_AUX_DIR([ltdl/config])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 LT_INIT
 LTDL_INIT
@@ -450,14 +450,14 @@ AT_CLEANUP
 AT_SETUP([diagnose missing LTDL_INIT invocation])
 
 AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `ltdl/config'.
-libtoolize: copying file `ltdl/config/compile'
-libtoolize: copying file `ltdl/config/config.guess'
-libtoolize: copying file `ltdl/config/config.sub'
-libtoolize: copying file `ltdl/config/depcomp'
-libtoolize: copying file `ltdl/config/install-sh'
-libtoolize: copying file `ltdl/config/missing'
-libtoolize: copying file `ltdl/config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/compile'
+libtoolize: copying file `build-aux/config.guess'
+libtoolize: copying file `build-aux/config.sub'
+libtoolize: copying file `build-aux/depcomp'
+libtoolize: copying file `build-aux/install-sh'
+libtoolize: copying file `build-aux/missing'
+libtoolize: copying file `build-aux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/libtool.m4'
@@ -508,7 +508,7 @@ libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
-AC_CONFIG_AUX_DIR([ltdl/config])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 LT_INIT
 AC_OUTPUT
@@ -847,26 +847,21 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install --ltdl=ltdl], 0, expout)
 AT_CLEANUP
 
 
-## ----------------------------------------------------- ##
-## Check subproject ltdl with AC_CONFIG_MACRO_DIR(acm4). ##
-## ----------------------------------------------------- ##
+## ------------------------------------------------- ##
+## Check subproject ltdl with unconventional layout. ##
+## ------------------------------------------------- ##
 
-AT_SETUP([subproject ltdl with non-canonical macro dir])
+AT_SETUP([subproject ltdl with unconventional layout])
 
 AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: copying file `build-aux/config.guess'
-libtoolize: copying file `build-aux/config.sub'
-libtoolize: copying file `build-aux/install-sh'
-libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting auxiliary files in `build-aux'.
-libtoolize: copying file `ltdl/config/compile'
-libtoolize: copying file `ltdl/config/config.guess'
-libtoolize: copying file `ltdl/config/config.sub'
-libtoolize: copying file `ltdl/config/depcomp'
-libtoolize: copying file `ltdl/config/install-sh'
-libtoolize: copying file `ltdl/config/missing'
-libtoolize: copying file `ltdl/config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `acaux'.
+libtoolize: copying file `acaux/compile'
+libtoolize: copying file `acaux/config.guess'
+libtoolize: copying file `acaux/config.sub'
+libtoolize: copying file `acaux/depcomp'
+libtoolize: copying file `acaux/install-sh'
+libtoolize: copying file `acaux/missing'
+libtoolize: copying file `acaux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `acm4'.
 libtoolize: copying file `acm4/argz.m4'
 libtoolize: copying file `acm4/libtool.m4'
@@ -880,12 +875,12 @@ libtoolize: copying file `ltdl/COPYING.LIB'
 libtoolize: creating file `ltdl/Makefile.am'
 libtoolize: creating file `ltdl/Makefile.in'
 libtoolize: copying file `ltdl/README'
-libtoolize: copying file `ltdl/configure.ac'
+libtoolize: creating file `ltdl/configure.ac'
 libtoolize: creating file `ltdl/aclocal.m4'
 libtoolize: copying file `ltdl/argz_.h'
 libtoolize: copying file `ltdl/argz.c'
 libtoolize: copying file `ltdl/config-h.in'
-libtoolize: copying file `ltdl/configure'
+libtoolize: creating file `ltdl/configure'
 libtoolize: copying file `ltdl/libltdl/lt__alloc.h'
 libtoolize: copying file `ltdl/libltdl/lt__dirent.h'
 libtoolize: copying file `ltdl/libltdl/lt__glibc.h'
@@ -910,14 +905,13 @@ libtoolize: copying file `ltdl/lt_error.c'
 libtoolize: copying file `ltdl/ltdl.c'
 libtoolize: copying file `ltdl/ltdl.h'
 libtoolize: copying file `ltdl/slist.c'
-libtoolize: Consider using `AC_CONFIG_AUX_DIR([ltdl/config])' in configure.ac.
 libtoolize: Consider adding `-I acm4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
-AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_AUX_DIR([acaux])
 AC_CONFIG_MACRO_DIR([acm4])
 LT_INIT
 LTDL_INIT([subproject])
@@ -936,14 +930,14 @@ AT_CLEANUP
 AT_SETUP([Subproject ltdl without GNU M4])
 
 AT_DATA(expout,
-[[libtoolize: putting auxiliary files in `ltdl/config'.
-libtoolize: linking file `ltdl/config/compile'
-libtoolize: linking file `ltdl/config/config.guess'
-libtoolize: linking file `ltdl/config/config.sub'
-libtoolize: linking file `ltdl/config/depcomp'
-libtoolize: linking file `ltdl/config/install-sh'
-libtoolize: linking file `ltdl/config/missing'
-libtoolize: linking file `ltdl/config/ltmain.sh'
+[[libtoolize: putting auxiliary files in `ltdl'.
+libtoolize: linking file `ltdl/compile'
+libtoolize: linking file `ltdl/config.guess'
+libtoolize: linking file `ltdl/config.sub'
+libtoolize: linking file `ltdl/depcomp'
+libtoolize: linking file `ltdl/install-sh'
+libtoolize: linking file `ltdl/missing'
+libtoolize: linking file `ltdl/ltmain.sh'
 libtoolize: putting macros in `ltdl/m4'.
 libtoolize: linking file `ltdl/m4/argz.m4'
 libtoolize: linking file `ltdl/m4/libtool.m4'
@@ -957,12 +951,12 @@ libtoolize: linking file `ltdl/COPYING.LIB'
 libtoolize: creating file `ltdl/Makefile.am'
 libtoolize: creating file `ltdl/Makefile.in'
 libtoolize: linking file `ltdl/README'
-libtoolize: linking file `ltdl/configure.ac'
+libtoolize: creating file `ltdl/configure.ac'
 libtoolize: creating file `ltdl/aclocal.m4'
 libtoolize: linking file `ltdl/argz_.h'
 libtoolize: linking file `ltdl/argz.c'
 libtoolize: linking file `ltdl/config-h.in'
-libtoolize: copying file `ltdl/configure'
+libtoolize: creating file `ltdl/configure'
 libtoolize: linking file `ltdl/libltdl/lt__alloc.h'
 libtoolize: linking file `ltdl/libltdl/lt__dirent.h'
 libtoolize: linking file `ltdl/libltdl/lt__glibc.h'

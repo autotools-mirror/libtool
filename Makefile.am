@@ -272,6 +272,8 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## Libtool scripts. ##
 ## ---------------- ##
 
+ltdl_ac_aux_dir = `$(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
+
 configure_edit = $(SED) \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
 	-e 's,@aux_dir\@,$(aux_dir),g' \
@@ -281,6 +283,7 @@ configure_edit = $(SED) \
 	-e 's,@GREP\@,$(GREP),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@LN_S\@,$(LN_S),g' \
+	-e "s,@ltdl_ac_aux_dir\@,$(ltdl_ac_aux_dir),g" \
 	-e 's,@macro_dir\@,$(macro_dir),g' \
 	-e 's,@pkgauxdir\@,$(pkgauxdir),g' \
 	-e 's,@pkgaux_files\@,$(pkgaux_scripts) $(pkgaux_data_files),g' \
@@ -357,15 +360,16 @@ $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
 
 # Don't let unused scripts leak into the libltdl Makefile
 $(stamp_mk): $(lt_Makefile_in)
-	$(AM_V_at)T='$(srcdir)/$(ltdl_dir)/Makefile.tmp'; \
-	for p in $(srcdir)/$(ltdl_dir)/config/*; do \
+	$(AM_V_at)T='$(srcdir)/$(aux_dir)/Makefile.tmp'; \
+	for p in $(srcdir)/$(aux_dir)/*; do \
 	  test -f "$$p" || continue; \
-	  f=`echo "$$p" | $(SED) 's,^$(srcdir)/$(ltdl_dir)/,,'`; \
-	  case " $(pkgaux_scripts) " in \
+	  f=`echo "$$p" | $(SED) 's,^$(srcdir)/$(aux_dir)/,,'`; \
+	  case " $(pkgaux_scripts) ltmain.sh " in \
 	    *" $$f "*) ;; \
 	    *) '$(SED)' \
-	          -e 's,\(\$$([^)]*)/\)*'"$$f"'\$$,,' \
-	          -e 's,\(\$$([^)]*)/\)*'"$$f"' ,,' \
+	          -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"'\$$,,' \
+	          -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"' ,,' \
+	          -e '/^[	 ]*\\$$/d' \
 		'$(lt_Makefile_in)' > "$$T" \
 		  && mv -f "$$T" '$(lt_Makefile_in)';; \
 	  esac; \
@@ -449,7 +453,7 @@ $(libtoolize_1): $(libtoolize_in)
 ## ------------- ##
 
 ltdldir		= $(srcdir)/libltdl
-pkgauxdir	= $(pkgdatadir)/config
+pkgauxdir	= $(pkgdatadir)/build-aux
 
 # The timestamps on these files must be preserved carefully so we install,
 # uninstall and set executable with custom rules here.

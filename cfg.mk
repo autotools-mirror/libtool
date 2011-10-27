@@ -21,8 +21,6 @@
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Boston, # MA 02111-1301, USA.
 
-_build-aux = libltdl/config
-
 # Set format of NEWS
 old_NEWS_hash := d41d8cd98f00b204e9800998ecf8427e
 

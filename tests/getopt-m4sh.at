@@ -47,7 +47,7 @@ M4SH_GETOPTS(
 m4_pattern_forbid([m4_include])
 m4_pattern_forbid([AS_INIT])
 AT_CHECK([$M4SH --version || exit 77], [], [ignore], [ignore])
-AT_CHECK([$M4SH -B $abs_top_srcdir/libltdl/config options.m4sh > t-options],
+AT_CHECK([$M4SH -B $abs_top_srcdir/build-aux options.m4sh > t-options],
 	 [], [], [], [AT_CHECK([test $at_status -eq 63 && exit 77])])
 $SED "s,@LN_S\@,$LN_S,g;s,@SED\@,$SED,g" t-options > options
 ])# _LT_AT_GETOPT_M4SH_SETUP
@@ -60,7 +60,7 @@ m4_define([_LT_AT_FALLBACK_FUNC_EXTRACT],
 [dnl {{
 $SED '/^# func_dirname /q' options > options.tmp
 echo '# func_append var value' >> options.tmp
-$SED -n '/^$1 ()/,/^} # $1 /p' $abs_top_srcdir/libltdl/config/ltmain.m4sh >> options.tmp
+$SED -n '/^$1 ()/,/^} # $1 /p' $abs_top_srcdir/build-aux/ltmain.m4sh >> options.tmp
 $SED '1,/^# func_dirname/d' options >> options.tmp
 rm -f options && mv options.tmp options])
 

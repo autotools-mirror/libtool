@@ -19,6 +19,14 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     already sharing a macro directory with AC_CONFIG_MACRO_DIR(ltdl/m4)
     or similar, that still works as does any other directory choice).
 
+  - Invoking `libtoolize --ltdl' no longer maintains a separate auxiliary
+    scripts directory in the libltdl tree, but automatically adjusts the
+    installed libltdl configuration files to share whatever auxiliary
+    scripts directory is declared by the parent project. (Note: if you
+    were already sharing an auxiliary directory with subproject libltdl
+    using AC_CONFIG_AUX_DIR(ltdl/config) or similar, that still works as
+    does any other directory choice).
+
   - The Autotest testsuite can be run without the especially time consuming
     tests with:
 

@@ -32,7 +32,7 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 ## Autoconf initialisation. ##
 ## ------------------------ ##
 AC_INIT([GNU Libtool],
-	m4_esyscmd([libltdl/config/git-version-gen .tarball-version]),
+	m4_esyscmd([build-aux/git-version-gen .tarball-version]),
 	[bug-libtool@gnu.org])
 m4_ifndef([AC_PACKAGE_URL],
 	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/s/libtool/])])
@@ -51,7 +51,7 @@ m4_define([AC_CONFIG_MACRO_DIR],
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.m4sh])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
-AC_CONFIG_AUX_DIR([libltdl/config])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_LIBOBJ_DIR([libltdl])
 
