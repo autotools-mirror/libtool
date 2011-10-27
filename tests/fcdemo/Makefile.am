@@ -23,7 +23,7 @@
 #####
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-ACLOCAL_AMFLAGS  = -I ../../libltdl/m4
+ACLOCAL_AMFLAGS  = -I ../../m4
 AM_CPPFLAGS	 = -I$(top_srcdir)/../..
 
 lib_LTLIBRARIES = libfoo.la libmix.la libfoo2.la libfoo3.la

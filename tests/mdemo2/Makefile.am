@@ -23,7 +23,7 @@
 #####
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-ACLOCAL_AMFLAGS  = -I ../../libltdl/m4
+ACLOCAL_AMFLAGS  = -I ../../m4
 AM_CPPFLAGS	 = -I$(top_srcdir)/../.. -I$(top_srcdir)/../../libltdl
 
 bin_PROGRAMS = mdemo2 mdemo2_static

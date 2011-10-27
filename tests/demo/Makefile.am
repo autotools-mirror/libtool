@@ -23,7 +23,7 @@
 #####
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-ACLOCAL_AMFLAGS  = -I ../../libltdl/m4
+ACLOCAL_AMFLAGS  = -I ../../m4
 AM_CPPFLAGS	 = -I$(top_srcdir)/../..
 
 # Build a libtool library, libhello.la for installation in libdir.

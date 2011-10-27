@@ -23,7 +23,7 @@
 ## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #####
 
-ACLOCAL_AMFLAGS  	= -I libltdl/m4
+ACLOCAL_AMFLAGS		= -I m4
 
 AM_CPPFLAGS		=
 AM_LDFLAGS		=
@@ -195,7 +195,7 @@ $(lt_Makefile_am): $(ltdl_mk)
 	$(AM_V_at)rm -f '$@'
 	$(AM_V_GEN)( '$(SED)' -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' \
 	      '$(ltdl_mk)'; \
-	  { echo 'ACLOCAL_AMFLAGS = -I m4'; \
+	  { echo 'ACLOCAL_AMFLAGS = -I ../m4'; \
 	    echo 'AUTOMAKE_OPTIONS = foreign'; \
 	    echo 'AM_CPPFLAGS ='; \
 	    echo 'AM_LDFLAGS ='; \
@@ -384,7 +384,7 @@ lt_aclocal_m4_deps = \
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
 
 $(lt_aclocal_m4): $(lt_aclocal_m4_deps)
-	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(ACLOCAL) -I m4
+	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(ACLOCAL) -I ../m4
 
 $(lt_configure): $(lt_configure_deps)
 	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOCONF)
@@ -708,7 +708,7 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 BUILDCHECK_ENVIRONMENT = _lt_pkgdatadir="$(abs_top_srcdir)" \
 	LIBTOOLIZE="$(abs_top_builddir)/libtoolize" \
 	LIBTOOL="$(abs_top_builddir)/libtool" \
-	tst_aclocaldir="$(abs_top_srcdir)/libltdl/m4"
+	tst_aclocaldir="$(abs_top_srcdir)/m4"
 
 INSTALLCHECK_ENVIRONMENT = \
 	LIBTOOLIZE="$(bindir)/`echo libtoolize |$(SED) '$(program_transform_name)'`" \

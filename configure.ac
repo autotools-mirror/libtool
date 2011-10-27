@@ -52,7 +52,7 @@ AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.m4sh])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
 AC_CONFIG_AUX_DIR([libltdl/config])
-AC_CONFIG_MACRO_DIR([libltdl/m4])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_LIBOBJ_DIR([libltdl])
 
 package_revision=`$SHELL $ac_aux_dir/git-version-gen .tarball-version`

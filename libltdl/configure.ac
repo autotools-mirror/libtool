@@ -44,7 +44,6 @@ AC_INIT([libltdl], [2.4.3a], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([ltdl.c])
 AC_CONFIG_AUX_DIR([config])
-AC_CONFIG_MACRO_DIR([m4])
 LT_CONFIG_LTDL_DIR([.]) # I am me!
 
 
