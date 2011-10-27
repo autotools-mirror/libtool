@@ -1248,7 +1248,11 @@ func_require_autobuild_buildreq ()
 {
     $debug_cmd
 
-    printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*autobuild' || {
+    $require_macro_dir
+
+    test -f "$macro_dir/autobuild.m4" \
+        || printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*autobuild' \
+        || {
       $require_configure_ac
 
       func_extract_trace AB_INIT
