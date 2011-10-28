@@ -284,7 +284,7 @@ configure_edit = $(SED) \
 	-e 's,@macro_dir\@,$(macro_dir),g' \
 	-e "s,@pkgconfig_files\@,$(auxfiles),g" \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
-	-e "s,@pkgltdl_files\@,$(ltdldatafiles),g" \
+	-e 's,@pkgltdl_files\@,$(pkgltdl_files),g' \
 	-e 's,@pkgmacro_files\@,$(pkgmacro_files),g' \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e 's,@SED\@,$(SED),g' \
@@ -437,6 +437,8 @@ $(libtoolize_1): $(libtoolize_in)
 ## Installation. ##
 ## ------------- ##
 
+ltdldir		= $(srcdir)/libltdl
+
 # The timestamps on these files must be preserved carefully so we install,
 # uninstall and set executable with custom rules here.
 auxfiles	= $(pkgaux_scripts) config/ltmain.sh
@@ -448,26 +450,41 @@ pkgmacro_files	= argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 \
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatafiles	= libltdl/COPYING.LIB \
-		  libltdl/README \
-		  libltdl/Makefile.inc \
-		  libltdl/Makefile.am \
-		  libltdl/configure.ac \
-		  libltdl/aclocal.m4 \
-		  libltdl/Makefile.in \
-		  libltdl/config-h.in \
-		  libltdl/configure \
-		  libltdl/argz_.h \
-		  libltdl/argz.c \
-		  libltdl/loaders/dld_link.c \
-		  libltdl/loaders/dlopen.c \
-		  libltdl/loaders/dyld.c \
-		  libltdl/loaders/load_add_on.c \
-		  libltdl/loaders/loadlibrary.c \
-		  libltdl/loaders/shl_load.c \
-		  libltdl/lt__dirent.c \
-		  libltdl/lt__strl.c \
-		  $(libltdl_libltdl_la_SOURCES)
+pkgltdl_files	= COPYING.LIB \
+		  Makefile.am \
+		  Makefile.in \
+		  Makefile.inc \
+		  README \
+		  aclocal.m4 \
+		  argz_.h \
+		  argz.c \
+		  config-h.in \
+		  configure \
+		  configure.ac \
+		  libltdl/lt__alloc.h \
+		  libltdl/lt__dirent.h \
+		  libltdl/lt__glibc.h \
+		  libltdl/lt__private.h \
+		  libltdl/lt__strl.h \
+		  libltdl/lt_dlloader.h \
+		  libltdl/lt_error.h \
+		  libltdl/lt_system.h \
+		  libltdl/slist.h \
+		  loaders/dld_link.c \
+		  loaders/dlopen.c \
+		  loaders/dyld.c \
+		  loaders/load_add_on.c \
+		  loaders/loadlibrary.c \
+		  loaders/preopen.c \
+		  loaders/shl_load.c \
+		  lt__alloc.c \
+		  lt__dirent.c \
+		  lt__strl.c \
+		  lt_dlloader.c \
+		  lt_error.c \
+		  ltdl.c \
+		  ltdl.h \
+		  slist.c
 
 install-data-local: $(lt_Makefile_in)
 	@$(NORMAL_INSTALL)
@@ -488,15 +505,20 @@ install-data-local: $(lt_Makefile_in)
 	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_SCRIPT) "$(srcdir)/$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
-	$(INSTALL_DATA) "$(ltmain_sh)" "$(DESTDIR)$(pkgdatadir)/config/ltmain.sh" 
-## install the libltdl files
-	@list='$(ltdldatafiles)' && for p in $$list; do \
+	@list='$(auxfiles)' && for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
-	-chmod a+x '$(DESTDIR)$(pkgdatadir)/libltdl/configure'
+## install the libltdl files
+	@list='$(pkgltdl_files)' && for p in $$list; do \
+	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
+	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	done
+	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure'
 
 
 ## ------------- ##
@@ -556,7 +578,7 @@ dist-hook: $(changelog) $(dotversion) $(readme)
 
 uninstall-hook:
 	@$(NORMAL_UNINSTALL)
-	@list='$(ltdldatafiles) $(auxfiles)'; for f in $$list; do \
+	@list='$(pkgltdl_files) $(auxfiles)'; for f in $$list; do \
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done
