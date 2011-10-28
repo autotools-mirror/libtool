@@ -270,24 +270,20 @@ func_copy_cb ()
 }
 
 
-# func_copy_some_files srcfile_spec srcdir destdir [msg_var] [cb=func_copy_cb]
-# Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
-# names in SRCFILE_SPEC.  The odd calling convention is needed to allow
-# spaces in file and directory names.
+# func_copy_some_files srcfile_list srcdir destdir [msg_var] [cb=func_copy_cb]
+# Call COPY_CB for each regular file in SRCDIR named by the space delimited
+# names in SRCFILE_LIST.
 func_copy_some_files ()
 {
     $debug_cmd
 
-    my_srcfile_spec="$1"
+    my_srcfile_list="$1"
     my_srcdir="$2"
     my_destdir="$3"
     my_msg_var="$4"
     my_copy_cb="${5-func_copy_cb}"
 
-    my_save_IFS="$IFS"
-    IFS=:
-    for my_filename in $my_srcfile_spec; do
-      IFS="$my_save_IFS"
+    for my_filename in $my_srcfile_list; do
       if test -f "$my_srcdir/$my_filename"; then
         if test "X$my_copy_cb" = Xfunc_copy_cb; then
 	  $opt_force || if test -f "$my_destdir/$my_filename"; then
@@ -304,7 +300,6 @@ func_copy_some_files ()
 
       $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
     done
-    IFS="$my_save_IFS"
 }
 
 
@@ -787,11 +782,8 @@ func_massage_aclocal_DATA ()
 	$my_cont && continue
       fi
 
-      pkgmacro_files="$pkgmacro_files:$my_filename"
+      pkgmacro_files="${pkgmacro_files+$pkgmacro_files }$my_filename"
     done
-
-    # strip spurious leading `:'
-    pkgmacro_files=`$ECHO "$pkgmacro_files" | $SED 's,^:*,,'`
 }
 
 
@@ -819,7 +811,7 @@ func_install_pkgmacro_subproject ()
       pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macro_dir'."
     fi
 
-    func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
+    func_copy_some_files "argz.m4 libtool.m4 ltdl.m4 $pkgmacro_files" \
       "$aclocaldir" "$subproject_macro_dir" pkgmacro_header
 }
 
@@ -867,14 +859,10 @@ func_install_pkgmacro_parent ()
       func_verbose "Not copying \`$macro_dir/ltdl.m4', libltdl not used."
     fi
 
-    my_save_IFS="$IFS"
-    IFS=:
     for file in $pkgmacro_files; do
-      IFS="$my_save_IFS"
       func_serial_update "$file" "$aclocaldir" "$macro_dir" \
         my_pkgmacro_header "$file"
     done
-    IFS="$my_save_IFS"
 }
 
 
@@ -944,14 +932,11 @@ func_massage_pkgltdl_files ()
       fi
 
       # ignore duplicates
-      case :$pkgltdl_files: in
-        *:$my_filename:*) ;;
-	*) pkgltdl_files="$pkgltdl_files:$my_filename" ;;
+      case " "$pkgltdl_files" " in
+        *" $my_filename "*) ;;
+	*) pkgltdl_files="${pkgltdl_files+$pkgltdl_files }$my_filename" ;;
       esac
     done
-
-    # strip spurious leading `:'
-    pkgltdl_files=`$ECHO "$pkgltdl_files" | $SED 's,^:*,,'`
 }
 
 
@@ -1028,14 +1013,11 @@ func_massage_pkgconfig_files ()
       fi
 
       # ignore duplicates
-      case :$pkgconfig_files: in
-        *:$my_filename:*) ;;
-	*) pkgconfig_files="$pkgconfig_files:$my_filename" ;;
+      case " "$pkgconfig_files" " in
+        *" $my_filename "*) ;;
+	*) pkgconfig_files="${pkgconfig_files+$pkgconfig_files }$my_filename" ;;
       esac
     done
-
-    # strip spurious leading `:'
-    pkgconfig_files=`$ECHO "$pkgconfig_files" | $SED 's,^:*,,'`
 }
 
 
