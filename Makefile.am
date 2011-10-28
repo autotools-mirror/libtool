@@ -282,7 +282,9 @@ configure_edit = $(SED) \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@LN_S\@,$(LN_S),g' \
 	-e 's,@macro_dir\@,$(macro_dir),g' \
-	-e "s,@pkgconfig_files\@,$(auxfiles),g" \
+	-e 's,@pkgaux_files\@,$(pkgaux_scripts) $(pkgaux_data_files),g' \
+	-e 's,@pkgaux_install_files\@,$(pkgaux_install_files),g' \
+	-e 's,@pkgaux_parent_files\@,$(pkgaux_parent_files),g' \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@pkgltdl_files\@,$(pkgltdl_files),g' \
 	-e 's,@pkgmacro_files\@,$(pkgmacro_files),g' \
@@ -438,10 +440,13 @@ $(libtoolize_1): $(libtoolize_in)
 ## ------------- ##
 
 ltdldir		= $(srcdir)/libltdl
+pkgauxdir	= $(pkgdatadir)/build-aux
 
 # The timestamps on these files must be preserved carefully so we install,
 # uninstall and set executable with custom rules here.
-auxfiles	= $(pkgaux_scripts) config/ltmain.sh
+pkgaux_parent_files	= ltmain.sh
+pkgaux_install_files	= config.guess config.sub install-sh
+pkgaux_data_files	= $(pkgaux_parent_files)
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
@@ -578,7 +583,8 @@ dist-hook: $(changelog) $(dotversion) $(readme)
 
 uninstall-hook:
 	@$(NORMAL_UNINSTALL)
-	@list='$(pkgltdl_files) $(auxfiles)'; for f in $$list; do \
+	@list='$(pkgltdl_files) $(pkgaux_scripts) $(pkgaux_data_files)'; \
+	for f in $$list; do \
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done

@@ -882,7 +882,7 @@ func_install_pkgmacro_files ()
 # func_install_pkgltdl_files
 # Install copies of the libltdl files into this package.  Any auxiliary
 # or m4 macro files needed in the libltdl tree will also be copied by
-# func_install_pkgconfig_files and func_install_pkgmacro_files resp.
+# func_install_pkgaux_files and func_install_pkgmacro_files resp.
 func_install_pkgltdl_files ()
 {
     $debug_cmd
@@ -933,40 +933,10 @@ func_install_pkgltdl_files ()
 }
 
 
-# func_massage_pkgconfig_files [glob_exclude]
-# @pkgconfig_files\@ is substituted as per its value in Makefile.am; this
-# function massages it into a suitable format for func_copy_some_files.
-func_massage_pkgconfig_files ()
-{
-    $debug_cmd
-
-    pkgconfig_files=	# GLOBAL VAR
-
-    my_glob_exclude="$1"
-
-    # Massage a value for pkgconfig_files from the value used in Makefile.am
-    for my_filename in @pkgconfig_files@; do
-
-      # ignore excluded filenames
-      if test -n "$my_glob_exclude"; then
-	my_cont=false
-	eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
-	$my_cont && continue
-      fi
-
-      # ignore duplicates
-      case " "$pkgconfig_files" " in
-        *" $my_filename "*) ;;
-	*) pkgconfig_files="${pkgconfig_files+$pkgconfig_files }$my_filename" ;;
-      esac
-    done
-}
-
-
-# func_install_pkgconfig_subproject
-# Unless --quiet was passed, display a message. Then copy pkgconfig_files
+# func_install_pkgaux_subproject
+# Unless --quiet was passed, display a message. Then copy pkgaux_files
 # from libtool installation tree to subproject libltdl tree.
-func_install_pkgconfig_subproject ()
+func_install_pkgaux_subproject ()
 {
     $debug_cmd
 
@@ -976,7 +946,7 @@ func_install_pkgconfig_subproject ()
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
-    $opt_force && for file in $all_pkgconfig_files; do
+    $opt_force && for file in $all_pkgaux_files; do
       test -f "$subproject_aux_dir/$file" && func_verbose "rm -f '$subproject_aux_dir/$file'"
       rm -f "$subproject_aux_dir/$file"
     done
@@ -984,23 +954,23 @@ func_install_pkgconfig_subproject ()
     # Copy all the files from installed libltdl to this project, if the
     # user specified an aux_dir.
     $opt_quiet || if test "x$ac_aux_dir" = "x$subproject_aux_dir"; then
-      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_aux_dir'."
+      pkgaux_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_aux_dir'."
     elif test -n "$ac_aux_dir"; then
-      pkgconfig_header="putting auxiliary files in \`$aux_dir'."
+      pkgaux_header="putting auxiliary files in \`$aux_dir'."
     else
-      pkgconfig_header="putting auxiliary files in \`$subproject_aux_dir'."
+      pkgaux_header="putting auxiliary files in \`$subproject_aux_dir'."
     fi
 
-    func_copy_some_files "$pkgconfig_files" \
-      "$pkgdatadir" "$ltdl_dir" pkgconfig_header
+    func_copy_some_files "$pkgaux_files" \
+      "$pkgdatadir/config" "$ltdl_dir/config" pkgaux_header
 }
 
 
-# func_install_pkgconfig_parent
+# func_install_pkgaux_parent
 # Unless --quiet was passed, or AC_CONFIG_AUX_DIR was not seen, display a
 # message.  Then update appropriate auxiliary files if newer ones are
 # available from the libtool installation tree.
-func_install_pkgconfig_parent ()
+func_install_pkgaux_parent ()
 {
     $debug_cmd
 
@@ -1009,35 +979,35 @@ func_install_pkgconfig_parent ()
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
-    $opt_force && for file in $all_pkgconfig_files; do
+    $opt_force && for file in $all_pkgaux_files; do
       test -f "$aux_dir/$file" && func_verbose "rm -f '$aux_dir/$file'"
       rm -f "$aux_dir/$file"
     done
 
     if test -n "$ac_aux_dir"; then
-      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_aux_dir'."
+      pkgaux_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_aux_dir'."
     else
-      pkgconfig_header="putting auxiliary files in \`$aux_dir'."
+      pkgaux_header="putting auxiliary files in \`$aux_dir'."
     fi
 
     if $opt_install; then
       func_config_update config.guess \
-        "$pkgdatadir/config" "$aux_dir" pkgconfig_header
+        "$pkgdatadir/config" "$aux_dir" pkgaux_header
       func_config_update config.sub \
-        "$pkgdatadir/config" "$aux_dir" pkgconfig_header
+        "$pkgdatadir/config" "$aux_dir" pkgaux_header
       func_install_update install-sh \
-        "$pkgdatadir/config" "$aux_dir" pkgconfig_header
+        "$pkgdatadir/config" "$aux_dir" pkgaux_header
     fi
     func_ltmain_update ltmain.sh \
-      "$pkgdatadir/config" "$aux_dir" pkgconfig_header
+      "$pkgdatadir/config" "$aux_dir" pkgaux_header
 }
 
 
-# func_install_pkgconfig_files
+# func_install_pkgaux_files
 # Install copies of the auxiliary files into this package according to
 # the whether libltdl is included as a subproject, and whether the parent
 # shares the AC_CONFIG_AUX_DIR setting.
-func_install_pkgconfig_files ()
+func_install_pkgaux_files ()
 {
     $debug_cmd
 
@@ -1045,26 +1015,24 @@ func_install_pkgconfig_files ()
     $require_configure_ac
     $require_ltdl_mode
 
-    func_massage_pkgconfig_files
-
   # 1. Parent shares aux_dir with subproject ltdl:
     if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
        test "x$aux_dir" = "x$subproject_aux_dir"
     then
-      func_install_pkgconfig_subproject
+      func_install_pkgaux_subproject
 
   # 2. Parent has separate aux_dir to subproject ltdl:
     elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
        # && test "x$aux_dir" != "x$subproject_aux_dir" is implied
     then
       if test -n "$configure_ac"; then
-	func_install_pkgconfig_parent
+	func_install_pkgaux_parent
       fi
-      func_install_pkgconfig_subproject
+      func_install_pkgaux_subproject
 
   # 3. Not subproject, but AC_CONFIG_AUX_DIR was used in parent:
     elif test -n "$ac_aux_dir" || test "x$aux_dir" = "x."; then
-      func_install_pkgconfig_parent
+      func_install_pkgaux_parent
 
   # 4. AC_CONFIG_AUX_DIR was not specified:
     else
@@ -1629,13 +1597,14 @@ func_require_seen_libtool ()
   # ensure a clean upgrade.
   # Do not remove config.guess nor config.sub, we don't install them
   # without --install, and the project may not be using Automake.
-  all_pkgconfig_files="ltmain.sh"
+  all_pkgaux_files="compile install-sh depcomp missing ltmain.sh snippet/_Noreturn.h snippet/arg-nonnull.h snippet/c++defs.h snippet/warn-on-use.h"
   all_pkgmacro_files="argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 ltversion.in ltversion.m4 lt~obsolete.m4"
   all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am README acinclude.m4 aclocal.m4 argz_.h argz.c config.h.in config-h.in configure configure.ac configure.in libltdl/lt__alloc.h libltdl/lt__dirent.h libltdl/lt__glibc.h libltdl/lt__private.h libltdl/lt__strl.h libltdl/lt_dlloader.h libltdl/lt_error.h libltdl/lt_system.h libltdl/slist.h loaders/dld_link.c loaders/dlopen.c loaders/dyld.c loaders/load_add_on.c loaders/loadlibrary.c loaders/preopen.c loaders/shl_load.c lt__alloc.c lt__dirent.c lt__strl.c lt_dlloader.c lt_error.c ltdl.c ltdl.h slist.c"
 
   # Files installed by func_install_*, some files are missing from these
   # lists deliberately because their respective func_install has to handle
   # the missing filenames specially.
+  pkgaux_files="@pkgaux_files@"
   pkgltdl_files="@pkgltdl_files@"
   pkgmacro_files="@pkgmacro_files@"
 
@@ -1688,7 +1657,7 @@ func_require_seen_libtool ()
   $require_seen_ltdl
   $seen_ltdl && opt_ltdl=:
 
-  func_install_pkgconfig_files
+  func_install_pkgaux_files
   func_install_pkgmacro_files
   func_install_pkgltdl_files
 
