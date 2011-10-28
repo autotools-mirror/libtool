@@ -539,8 +539,8 @@ libtoolize: copying file `build-aux/ltmain.sh'
 libtoolize: You should add the contents of the following files to `aclocal.m4':
 libtoolize:   `/usr/local/share/aclocal/libtool.m4'
 libtoolize:   `/usr/local/share/aclocal/ltoptions.m4'
-libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
+libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
 libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac and
 libtoolize: rerunning libtoolize, to keep the correct libtool macros in-tree.
@@ -674,8 +674,8 @@ AT_DATA([expout],
 libtoolize: copying file `./ltmain.sh'
 libtoolize: You should add the contents of the following files to `aclocal.m4':
 libtoolize:   `/usr/local/share/aclocal/libtool.m4'
-libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
+libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
 libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac and
 libtoolize: rerunning libtoolize, to keep the correct libtool macros in-tree.

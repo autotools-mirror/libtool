@@ -273,7 +273,6 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## ---------------- ##
 
 configure_edit = $(SED) \
-	-e 's,@aclocal_DATA\@,$(aclocalfiles),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
 	-e 's,@aux_dir\@,$(aux_dir),g' \
 	-e 's,@datadir\@,$(datadir),g' \
@@ -286,6 +285,7 @@ configure_edit = $(SED) \
 	-e "s,@pkgconfig_files\@,$(auxfiles),g" \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e "s,@pkgltdl_files\@,$(ltdldatafiles),g" \
+	-e 's,@pkgmacro_files\@,$(pkgmacro_files),g' \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e 's,@SED\@,$(SED),g' \
 	-e 's,@srcdir\@,$(srcdir),g'
@@ -443,8 +443,8 @@ auxfiles	= $(pkgaux_scripts) config/ltmain.sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-aclocalfiles	= m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 m4/ltoptions.m4 \
-		  m4/ltsugar.m4 m4/ltversion.m4 m4/lt~obsolete.m4
+pkgmacro_files	= argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 \
+		  ltversion.m4 lt~obsolete.m4
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
@@ -474,12 +474,11 @@ install-data-local: $(lt_Makefile_in)
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf '$(DESTDIR)$(pkgdatadir)'/*
 ## First, put a copy of the libtool m4 macros in the aclocal dir
-	@list='$(aclocalfiles)'; for p in $$list; do \
-	  f=`echo "$$p" |'$(SED)' 's|^.*/||'`; \
-	  d=`echo "$(DESTDIR)$(aclocaldir)/$$f" |$(SED) 's,[^/]*$$,,'`; \
+	@list='$(pkgmacro_files)'; for p in $$list; do \
+	  d=`echo "$(DESTDIR)$(aclocaldir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$p' '$(DESTDIR)$(aclocaldir)/$$p'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$p" "$(DESTDIR)$(aclocaldir)/$$p"; \
 	done
 ## install the helper scripts
 	@list='config/extract-trace config/options-parser $(pkgaux_scripts)' && \
@@ -561,7 +560,7 @@ uninstall-hook:
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done
-	@for p in $(aclocalfiles); do \
+	@for p in $(pkgmacro_files); do \
 	  f=`echo "$$p" |$(SED) 's|^.*/||'`; \
 	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
