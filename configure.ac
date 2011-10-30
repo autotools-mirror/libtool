@@ -118,6 +118,13 @@ if test x"${enable_ltdl_install+set}" != xset; then
   enable_ltdl_install=yes
 fi
 
+# The list of scripts required to build libltdl, and which need to be
+# installed by libtoolize --ltdl, and consequently need to be placed in
+# $pkgdatadir by our make install rule.
+pkgaux_scripts="config/compile config/config.guess config/config.sub \
+ config/depcomp config/install-sh config/missing"
+AC_SUBST([pkgaux_scripts])
+
 # All subdirectories that are configured on demand, but that must be
 # included in the distribution.
 CONF_SUBDIRS="tests/cdemo tests/demo tests/depdemo tests/f77demo tests/fcdemo \

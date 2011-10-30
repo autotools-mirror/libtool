@@ -337,12 +337,21 @@ EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
 $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
 	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOMAKE) Makefile
 
+# Don't let unused scripts leak into the libltdl Makefile
 $(stamp_mk): $(lt_Makefile_in)
 	$(AM_V_at)T='$(ltdl_dir)/Makefile.tmp'; \
-	'$(SED)' -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
-	    -e 's,config/mkinstalldirs,,' \
-	    < '$(lt_Makefile_in)' > "$$T" && \
-	mv -f "$$T" '$(lt_Makefile_in)'
+	for p in $(ltdl_dir)/config/*; do \
+	  test -f "$$p" || continue; \
+	  f=`echo "$$p" | $(SED) 's,^$(ltdl_dir)/,,'`; \
+	  case " $(pkgaux_scripts) " in \
+	    *" $$f "*) ;; \
+	    *) '$(SED)' \
+	          -e 's,\(\$$([^)]*)/\)*'"$$f"'\$$,,' \
+	          -e 's,\(\$$([^)]*)/\)*'"$$f"' ,,' \
+		'$(lt_Makefile_in)' > "$$T" \
+		  && mv -f "$$T" '$(lt_Makefile_in)';; \
+	  esac; \
+	done
 	$(AM_V_GEN)echo stamp > '$@'
 
 lt_aclocal_m4_deps = \
@@ -421,12 +430,9 @@ $(libtoolize_1): $(libtoolize_in)
 ## Installation. ##
 ## ------------- ##
 
-# These are required by libtoolize and must be executable when installed.
 # The timestamps on these files must be preserved carefully so we install,
 # uninstall and set executable with custom rules here.
-auxexefiles	= config/compile config/config.guess config/config.sub \
-		  config/depcomp config/install-sh config/missing
-auxfiles	= $(auxexefiles) config/ltmain.sh
+auxfiles	= $(pkgaux_scripts) config/ltmain.sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
@@ -472,7 +478,7 @@ install-data-local: $(lt_Makefile_in)
 ## install the helper scripts
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)'
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/config'
-	@list='$(auxexefiles)' && for p in $$list; do \
+	@list='$(pkgaux_scripts)' && for p in $$list; do \
 	  echo " $(INSTALL_SCRIPT) '$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_SCRIPT) "$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
