@@ -26,7 +26,7 @@
 # We simulate this by setting max_cmd_len very low.
 
 AT_SETUP([Run tests with low max_cmd_len])
-AT_KEYWORDS([recursive])
+AT_KEYWORDS([recursive expensive])
 m4_ifdef([AT_CAPTURE_FILE],
 [AT_CAPTURE_FILE([testsuite.log])])
 

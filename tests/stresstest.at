@@ -29,7 +29,7 @@
 
 AT_BANNER([Libtool stress test.])
 AT_SETUP([Link option thorough search test])
-AT_KEYWORDS([libtool])
+AT_KEYWORDS([libtool expensive])
 eval `$LIBTOOL --config | $EGREP '^(CC|objdir|allow_undefined_flag)='`
 
 mkdir sub sub2 sub3 2>/dev/null

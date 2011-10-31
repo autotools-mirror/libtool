@@ -5,6 +5,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 ** New features:
 
   - Moved to gnulib release infrastructure.
+  - The Autotest testsuite can be run without the especially time consuming
+    tests with:
+
+        make check-local TESTSUITEFLAGS='-k "!expensive"'
 
 ** Bug fixes:
 
