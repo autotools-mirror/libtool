@@ -10,6 +10,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix a long-standing latent bug in autom4te include path for autotests
     with VPATH builds.
+  - Fix a long-standing latent bug in libtoolize which could delete lines
+    from libltdl/Makefile.am in recursive mode due to underquoting in a
+    sed script.
 
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 

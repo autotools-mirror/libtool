@@ -320,7 +320,7 @@ func_fixup_Makefile ()
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
-    my_fixup_non_subpackage_script="\
+    my_fixup_non_subpackage_script='/^[^#]/{
       s,(LIBOBJS),(ltdl_LIBOBJS),g
       s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
       s,libltdl/configure.ac,,
@@ -329,7 +329,8 @@ func_fixup_Makefile ()
       s,libltdl/config-h.in,,
       s,libltdl/Makefile.am,,
       s,libltdl/Makefile.in,,
-      /^[	 ]*\\\\\$/d"
+      /^[	 ]*\\\\$/d
+    }'
     case $my_filename in
       Makefile.am)
 	my_fixup_non_subpackage_script=`echo "$my_fixup_non_subpackage_script" | \
