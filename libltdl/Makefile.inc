@@ -146,8 +146,8 @@ EXTRA_DIST	+= libltdl/argz_.h \
 # doesn't have one that works with the given compiler.
 all-local $(lib_OBJECTS): libltdl/$(ARGZ_H)
 libltdl/argz.h: libltdl/argz_.h
-	$(mkinstalldirs) . libltdl/
-	cp $(srcdir)/libltdl/argz_.h $@-t
-	mv $@-t $@
+	$(AM_V_at)$(mkinstalldirs) . libltdl/
+	$(AM_V_GEN)cp $(srcdir)/libltdl/argz_.h $@-t
+	$(AM_V_at)mv $@-t $@
 MOSTLYCLEANFILES += libltdl/argz.h \
 		    libltdl/argz.h-t

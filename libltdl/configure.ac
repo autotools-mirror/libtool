@@ -53,6 +53,7 @@ LT_CONFIG_LTDL_DIR([.]) # I am me!
 ## ------------------------ ##
 
 AM_INIT_AUTOMAKE([gnu])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 
 ## ------------------------------- ##

@@ -144,7 +144,8 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 	  else \
 	    serial=`$(git_commit_count)`; \
 	  fi; \
-	  echo "$(bootstrap_edit) '$(ltversion_in)' > '$@'"; \
+	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  else echo "$(bootstrap_edit) '$(ltversion_in)' > '$@'"; fi; \
 	  $(bootstrap_edit) '$(ltversion_in)' > '$@'; \
 	  chmod a-w '$@'; \
 	fi
@@ -170,21 +171,22 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
 	done; \
 	if $$rebuild; then \
 	  rm -f '$@'; \
-	  echo "$(LT_M4SH) '$(ltmain.m4sh)' | $(ltmain_sh_edit) > '$@'"; \
+	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  else echo "$(LT_M4SH) '$(ltmain.m4sh)' | $(ltmain_sh_edit) > '$@'"; fi; \
 	  $(LT_M4SH) '$(ltmain_m4sh)' | $(ltmain_sh_edit) > '$@'; \
 	  chmod a-w '$@'; \
 	fi
 
 $(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
-	$(LT_M4SH) '$(libtoolize_m4sh)' | $(bootstrap_edit) > '$@'
+	$(AM_V_GEN)$(LT_M4SH) '$(libtoolize_m4sh)' | $(bootstrap_edit) > '$@'
 
 lt_Makefile_am	= $(ltdl_dir)/Makefile.am
 lt_Makefile_in	= $(ltdl_dir)/Makefile.in
 lt_Makefile_inc	= $(ltdl_dir)/Makefile.inc
 
 $(lt_Makefile_am): $(lt_Makefile_inc)
-	rm -f '$@'
-	( '$(SED)' -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' \
+	$(AM_V_at)rm -f '$@'
+	$(AM_V_GEN)( '$(SED)' -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' \
 	      '$(lt_Makefile_inc)'; \
 	  { echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	    echo 'AUTOMAKE_OPTIONS = foreign'; \
@@ -205,7 +207,7 @@ $(lt_Makefile_am): $(lt_Makefile_inc)
 	        -e 's,\$$(libltdl_,$$(,' \
 	) |'$(SED)' -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
 	       -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > '$@'
-	chmod a-w '$@'
+	$(AM_V_at)chmod a-w '$@'
 
 ## Document the make macros that are needed to build bootstrap-deps
 ## dependencies when called from `bootstrap' (developer's machine),
@@ -246,7 +248,7 @@ bootstrap-deps-prep:
 	    && echo "ERROR: don't call $(MAKE) with VERSION unset." \
 	    && exit_cmd=exit; \
 	$$exit_cmd 1
-	rm -f $(bootstrap_files)
+	$(AM_V_at)rm -f $(bootstrap_files)
 
 ## Unfortunately, all this bogeyness means that we have to manually
 ## keep the generated files in libltdl up to date.
@@ -282,10 +284,10 @@ configure_edit = $(SED) \
 bin_SCRIPTS = libtoolize libtool
 
 libtoolize: $(libtoolize_in) $(config_status)
-	rm -f '$@'
-	$(configure_edit) '$(libtoolize_in)' > '$@'
-	chmod a+x '$@'
-	chmod a-w '$@'
+	$(AM_V_at)rm -f '$@'
+	$(AM_V_GEN)$(configure_edit) '$(libtoolize_in)' > '$@'
+	$(AM_V_at)chmod a+x '$@'
+	$(AM_V_at)chmod a-w '$@'
 
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
@@ -300,14 +302,15 @@ libtool: $(ltmain_sh) $(config_status) $(dotversion)
 	  case $$prereq in *.version);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  echo '$(SHELL) ./config.status "$@"'; \
+	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  else echo '$(SHELL) $(top_builddir)/config.status "$@"'; fi; \
 	  cd '$(top_builddir)' && '$(SHELL)' ./config.status '$@'; \
 	fi
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
-	dir=`echo '$@' |'$(SED)' 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
+	$(AM_V_at)dir=`echo '$@' |'$(SED)' 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d "$$dir" || mkdir "$$dir" || exit 1; \
 	abs_srcdir=`$(lt__cd) '$(srcdir)' && pwd`; \
 	(cd "$$dir" && "$$abs_srcdir/$$dir/configure" --with-dist) || exit 1
@@ -329,15 +332,15 @@ lt_obsolete_m4	= $(macro_dir)/lt~obsolete.m4
 EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
 
 $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
-	cd '$(ltdl_dir)' && $(AUTOMAKE) Makefile
+	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOMAKE) Makefile
 
 $(stamp_mk): $(lt_Makefile_in)
-	T='$(ltdl_dir)/Makefile.tmp'; \
+	$(AM_V_at)T='$(ltdl_dir)/Makefile.tmp'; \
 	'$(SED)' -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
 	    -e 's,config/mkinstalldirs,,' \
 	    < '$(lt_Makefile_in)' > "$$T" && \
 	mv -f "$$T" '$(lt_Makefile_in)'
-	echo stamp > '$@'
+	$(AM_V_GEN)echo stamp > '$@'
 
 lt_aclocal_m4_deps = \
 	$(lt_obsolete_m4) \
@@ -352,14 +355,14 @@ lt_aclocal_m4_deps = \
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
 
 $(lt_aclocal_m4): $(lt_aclocal_m4_deps)
-	cd '$(ltdl_dir)' && $(ACLOCAL) -I m4
+	$(AM_V_GEN)cd '$(ltdl_dir)' && $(ACLOCAL) -I m4
 
 $(lt_configure): $(lt_configure_deps)
-	cd '$(ltdl_dir)' && $(AUTOCONF)
+	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOCONF)
 
 $(lt_config_h_in): $(lt_configure_deps)
-	cd '$(ltdl_dir)' && $(AUTOHEADER)
-	touch '$@'
+	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOHEADER)
+	$(AM_V_at)touch '$@'
 
 
 ## -------------- ##
@@ -392,8 +395,8 @@ DISTCLEANFILES	       += libtool.dvi
 all-local: $(notes_txt)
 
 $(notes_txt): $(notes_texi)
-	$(MAKEINFO) -P '$(srcdir)/doc' --no-headers $(MAKEINFOFLAGS) \
-	    -o '$@' '$(notes_texi)'
+	$(AM_V_GEN)$(MAKEINFO) -P '$(srcdir)/doc' --no-headers \
+	    $(MAKEINFOFLAGS) -o '$@' '$(notes_texi)'
 
 dist_man1_MANS		= $(libtool_1) $(libtoolize_1)
 MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
@@ -406,9 +409,9 @@ update_mans = \
 # manual pages if the sources for the build-tree files we want to
 # run have changed.
 $(libtool_1): $(ltmain_sh)
-	$(update_mans) --help-option=--help-all libtool
+	$(AM_V_GEN)$(update_mans) --help-option=--help-all libtool
 $(libtoolize_1): $(libtoolize_in)
-	$(update_mans) libtoolize
+	$(AM_V_GEN)$(update_mans) libtoolize
 
 
 ## ------------- ##
@@ -499,7 +502,7 @@ changelog		= $(distdir)/ChangeLog
 # date is updated to the following year.
 changelog_start_date = 2011-01-01
 $(changelog): FORCE
-	if test -d .git; then \
+	$(AM_V_GEN)if test -d .git; then \
 	  $(gitlog_to_changelog) --since=$(changelog_start_date) > '$@T'; \
 	  rm -f '$@'; mv '$@T' '$@'; \
 	fi
@@ -509,14 +512,17 @@ $(changelog): FORCE
 EXTRA_DIST += $(dotversion)
 BUILT_SOURCES += $(dotversion)
 $(dotversion):
-	echo '$(VERSION)' > '$@T' && mv '$@T' '$@'
+	$(AM_V_GEN)echo '$(VERSION)' > '$@T' && mv '$@T' '$@'
 
 ## Edit the README file for alpha releases.
 EXTRA_DIST += $(edit_readme_alpha)
 re_odd_version	= '\([0-9][0-9]*.[0-9][0-9]*.[0-9]*[13579]\)'
 $(readme): FORCE
-	test -n `expr $(VERSION) : $(re_odd_version)` && \
-	  $(SHELL) $(edit_readme_alpha) '$@'
+	@if test -n `expr $(VERSION) : $(re_odd_version)`; then \
+	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  else echo "$(SHELL) $(edit_readme_alpha) $@"; fi; \
+	  $(SHELL) $(edit_readme_alpha) '$@'; \
+	fi
 
 git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's,[ 	],,g'
 
@@ -527,7 +533,7 @@ dist-hook: $(changelog) $(dotversion) $(readme)
 ## ...and similarly for .serial.
 	$(git_commit_count) > $(dotserial)
 ## Ensure aclocal has not wrongly picked up old macro definitions.
-	for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
+	@for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
 	  if grep "$$macro" '$(srcdir)/aclocal.m4' '$(lt_aclocal_m4)'; then \
 	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
 	    exit 1; \
@@ -654,10 +660,10 @@ INSTALLCHECK_ENVIRONMENT = \
 	tst_aclocaldir="$(aclocaldir)"
 
 $(testsuite): $(package_m4) $(TESTSUITE_AT) Makefile.am
-	$(AUTOTEST) -I '$(srcdir)' -I '$(srcdir)/tests' $(TESTSUITE_AT) -o '$@'
+	$(AM_V_GEN)$(AUTOTEST) -I '$(srcdir)' -I '$(srcdir)/tests' $(TESTSUITE_AT) -o '$@'
 
 $(package_m4): $(dotversion) Makefile.am
-	{ \
+	$(AM_V_GEN){ \
 	  echo '# Signature of the current package.'; \
 	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
 	  echo 'm4_define([AT_PACKAGE_TARNAME],   [@PACKAGE_TARNAME@])'; \
@@ -668,7 +674,7 @@ $(package_m4): $(dotversion) Makefile.am
 	} > '$@'
 
 tests/atconfig: $(config_status)
-	'$(SHELL)' '$(config_status)' '$@'
+	$(AM_V_GEN)$(SHELL) '$(config_status)' '$@'
 
 DISTCLEANFILES += tests/atconfig
 
@@ -680,25 +686,25 @@ testsuite_deps_uninstalled = $(testsuite_deps) libltdl/libltdlc.la \
 
 # Hook the test suite into the check rule
 check-local: $(testsuite_deps_uninstalled)
-	$(CD_TESTDIR); \
+	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(TESTSUITEFLAGS)
 
 # Run the test suite on the *installed* tree.
 installcheck-local: $(testsuite_deps)
-	$(CD_TESTDIR); \
+	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
 	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITEFLAGS) \
 	  AUTOTEST_PATH='$(exec_prefix)/bin'
 
 check-noninteractive-old:
-	'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(NONINTERACTIVE_TESTS)'
+	$(AM_V_at)'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(NONINTERACTIVE_TESTS)'
 check-interactive-old:
-	'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(INTERACTIVE_TESTS)'
+	$(AM_V_at)'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(INTERACTIVE_TESTS)'
 
 # Run only noninteractive parts of the new testsuite.
 check-noninteractive-new: $(testsuite_deps_uninstalled)
-	$(CD_TESTDIR); \
+	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
 	  -k '!interactive' INNER_TESTSUITEFLAGS=',!interactive' \
@@ -706,7 +712,7 @@ check-noninteractive-new: $(testsuite_deps_uninstalled)
 
 # Run only interactive parts of the new testsuite.
 check-interactive-new: $(testsuite_deps_uninstalled)
-	$(CD_TESTDIR); \
+	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
 	  -k interactive -k recursive INNER_TESTSUITEFLAGS=',interactive' \
@@ -1012,12 +1018,12 @@ DIST_SUBDIRS   += $(CONF_SUBDIRS)
 # regenerated since the source tree can be read-only.
 check-recursive: $(defs)
 $(defs): $(defs_in)
-	rm -f '$@'
-	$(configure_edit) '$(defs_in)' > '$@'
+	$(AM_V_at)rm -f '$@'
+	$(AM_V_GEN)$(configure_edit) '$(defs_in)' > '$@'
 
 $(defs_in): $(defs_m4sh) $(general_m4sh) Makefile.am
-	rm -f '$@'
-	$(LT_M4SH) '$(defs_m4sh)' > '$@'
+	$(AM_V_at)rm -f '$@'
+	$(AM_V_GEN)$(LT_M4SH) '$(defs_m4sh)' > '$@'
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:
