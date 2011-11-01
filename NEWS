@@ -40,6 +40,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     `configure.ac' (or `configure.in') that needs tracing to determine
     what modes and directories have been specified.
 
+  - The use of the idiosyncratically named `Makefile.inc' in nonrecursive
+    libltdl builds is deprecated, although it will be supported for one
+    more year or until the next release, whichever takes longer.  Please
+    upgrade to the more standard naming of `ltdl.mk' in keeping with other
+    GNU projects.
+
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 
 * New features:

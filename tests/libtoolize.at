@@ -296,7 +296,6 @@ libtoolize: copying file `m4/ltversion.m4'
 libtoolize: copying file `m4/lt~obsolete.m4'
 libtoolize: putting libltdl files in `ltdl'.
 libtoolize: copying file `ltdl/COPYING.LIB'
-libtoolize: creating file `ltdl/Makefile.inc'
 libtoolize: copying file `ltdl/README'
 libtoolize: copying file `ltdl/argz_.h'
 libtoolize: copying file `ltdl/argz.c'
@@ -323,6 +322,7 @@ libtoolize: copying file `ltdl/lt_dlloader.c'
 libtoolize: copying file `ltdl/lt_error.c'
 libtoolize: copying file `ltdl/ltdl.c'
 libtoolize: copying file `ltdl/ltdl.h'
+libtoolize: creating file `ltdl/ltdl.mk'
 libtoolize: copying file `ltdl/slist.c'
 libtoolize: Remember to add `LT_CONFIG_LTDL_DIR([ltdl])' to `configure.ac'.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
@@ -798,7 +798,6 @@ libtoolize: copying file `m4/ltversion.m4'
 libtoolize: copying file `m4/lt~obsolete.m4'
 libtoolize: putting libltdl files in LT_CONFIG_LTDL_DIR, `ltdl'.
 libtoolize: copying file `ltdl/COPYING.LIB'
-libtoolize: creating file `ltdl/Makefile.inc'
 libtoolize: copying file `ltdl/README'
 libtoolize: copying file `ltdl/argz_.h'
 libtoolize: copying file `ltdl/argz.c'
@@ -825,6 +824,7 @@ libtoolize: copying file `ltdl/lt_dlloader.c'
 libtoolize: copying file `ltdl/lt_error.c'
 libtoolize: copying file `ltdl/ltdl.c'
 libtoolize: copying file `ltdl/ltdl.h'
+libtoolize: creating file `ltdl/ltdl.mk'
 libtoolize: copying file `ltdl/slist.c'
 ]])
 

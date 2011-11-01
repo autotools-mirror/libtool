@@ -189,12 +189,12 @@ $(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
 
 lt_Makefile_am	= $(srcdir)/$(ltdl_dir)/Makefile.am
 lt_Makefile_in	= $(srcdir)/$(ltdl_dir)/Makefile.in
-lt_Makefile_inc	= $(srcdir)/$(ltdl_dir)/Makefile.inc
+ltdl_mk		= $(srcdir)/$(ltdl_dir)/ltdl.mk
 
-$(lt_Makefile_am): $(lt_Makefile_inc)
+$(lt_Makefile_am): $(ltdl_mk)
 	$(AM_V_at)rm -f '$@'
 	$(AM_V_GEN)( '$(SED)' -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' \
-	      '$(lt_Makefile_inc)'; \
+	      '$(ltdl_mk)'; \
 	  { echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	    echo 'AUTOMAKE_OPTIONS = foreign'; \
 	    echo 'AM_CPPFLAGS ='; \
@@ -209,7 +209,7 @@ $(lt_Makefile_am): $(lt_Makefile_inc)
 	    echo 'MOSTLYCLEANFILES ='; \
 	  }; \
 	  '$(SED)' -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' \
-	      '$(lt_Makefile_inc)' \
+	      '$(ltdl_mk)' \
 	    |'$(SED)' -e 's,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,' \
 	        -e 's,\$$(libltdl_,$$(,' \
 	) |'$(SED)' -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
@@ -332,7 +332,7 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 ## Libltdl. ##
 ## -------- ##
 
-include libltdl/Makefile.inc
+include libltdl/ltdl.mk
 
 lt_aclocal_m4	= $(srcdir)/$(ltdl_dir)/aclocal.m4
 lt_config_h_in	= $(srcdir)/$(ltdl_dir)/config-h.in
@@ -466,7 +466,6 @@ pkgmacro_files	= argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 \
 pkgltdl_files	= COPYING.LIB \
 		  Makefile.am \
 		  Makefile.in \
-		  Makefile.inc \
 		  README \
 		  configure.ac \
 		  aclocal.m4 \
@@ -497,6 +496,7 @@ pkgltdl_files	= COPYING.LIB \
 		  lt_error.c \
 		  ltdl.c \
 		  ltdl.h \
+		  ltdl.mk \
 		  slist.c
 
 install-data-local: $(lt_Makefile_in)
@@ -652,6 +652,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/versioning.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
+		  tests/old-ltdl-iface.at \
 		  tests/am-subdir.at \
 		  tests/lt_dlexit.at \
 		  tests/lt_dladvise.at \

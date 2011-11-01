@@ -62,7 +62,7 @@ EXTRA_DIST		=
 CLEANFILES		=
 MOSTLYCLEANFILES	=
 
-include ltdl/Makefile.inc
+include ltdl/ltdl.mk
 
 foo_la_LDFLAGS		= -module -avoid-version -no-undefined
 foo_la_SOURCES		= foo.c

@@ -865,7 +865,7 @@ func_install_pkgltdl_files ()
           esac
           ;;
 
-        Makefile.inc)
+        ltdl.mk)
           test nonrecursive = "$ltdl_mode" || continue
           my_copy_filter=$Makefile_inc_filter
           ;;
@@ -889,6 +889,13 @@ func_install_pkgltdl_files ()
       # Still here?  Copy the file then, with selected filters.
       func_copy "$file" "$pkgltdldir" "$ltdl_dir" \
         pkgltdl_header "$my_copy_filter"
+
+      # FIXME: Remove in 2013
+      #        (along with deprecation warning in func_check_macros)
+      test ltdl.mk = "$file" \
+        && func_grep "^-\?include $ltdl_dir/Makefile.inc\$" Makefile.am \
+        && mv "$ltdl_dir/$file" "$ltdl_dir/Makefile.inc" \
+        && func_whisper "renaming file \`$ltdl_dir/Makefile.inc'"
     done
 }
 
@@ -1098,6 +1105,17 @@ func_check_macros ()
       # Remind the user to call LT_CONFIG_LTDL_DIR:
       test -n "$ac_ltdl_dir" ||
         func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdl_dir])' to \`$configure_ac'."
+
+      # For nonrecursive mode, warn about continued use of Makefile.inc:
+      # FIXME: Remove in 2013
+      #        (along with last minute rename in func_install_pkgltdl_files)
+      if test "x$ltdl_mode" = "xnonrecursive"; then
+	if func_grep "^-\?include $ltdl_dir/Makefile.inc\$" Makefile.am;
+	then
+	  func_error "Use of \`include $ltdl_dir/Makefile.inc' is deprecated!"
+	  func_echo "Consider updating to use of \`include $ltdl_dir/ltdl.mk' in Makefile.am."
+	fi
+      fi
 
       # For subproject mode, offer some suggestions for avoiding duplicate
       # files in a project that uses libltdl:
@@ -1646,7 +1664,7 @@ func_require_seen_libtool ()
   # without --install, and the project may not be using Automake.
   all_pkgaux_files="compile install-sh depcomp missing ltmain.sh snippet/_Noreturn.h snippet/arg-nonnull.h snippet/c++defs.h snippet/warn-on-use.h"
   all_pkgmacro_files="argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 ltversion.in ltversion.m4 lt~obsolete.m4"
-  all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am README acinclude.m4 aclocal.m4 argz_.h argz.c config.h.in config-h.in configure configure.ac configure.in libltdl/lt__alloc.h libltdl/lt__dirent.h libltdl/lt__glibc.h libltdl/lt__private.h libltdl/lt__strl.h libltdl/lt_dlloader.h libltdl/lt_error.h libltdl/lt_system.h libltdl/slist.h loaders/dld_link.c loaders/dlopen.c loaders/dyld.c loaders/load_add_on.c loaders/loadlibrary.c loaders/preopen.c loaders/shl_load.c lt__alloc.c lt__dirent.c lt__strl.c lt_dlloader.c lt_error.c ltdl.c ltdl.h slist.c"
+  all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am README acinclude.m4 aclocal.m4 argz_.h argz.c config.h.in config-h.in configure configure.ac configure.in libltdl/lt__alloc.h libltdl/lt__dirent.h libltdl/lt__glibc.h libltdl/lt__private.h libltdl/lt__strl.h libltdl/lt_dlloader.h libltdl/lt_error.h libltdl/lt_system.h libltdl/slist.h loaders/dld_link.c loaders/dlopen.c loaders/dyld.c loaders/load_add_on.c loaders/loadlibrary.c loaders/preopen.c loaders/shl_load.c lt__alloc.c lt__dirent.c lt__strl.c lt_dlloader.c lt_error.c ltdl.c ltdl.h ltdl.mk slist.c"
 
   # Files installed by func_install_*, some files are missing from these
   # lists deliberately because their respective func_install has to handle

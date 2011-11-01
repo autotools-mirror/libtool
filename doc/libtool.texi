@@ -2558,7 +2558,7 @@ you will need to add the following to the @file{Makefile.am} of the
 parent project:
 
 @example
-## libltdl/Makefile.inc @r{appends to the following variables}
+## libltdl/ltdl.mk @r{appends to the following variables}
 ## @r{so we set them here before including it:}
 BUILT_SOURCES   =
 
@@ -2575,7 +2575,7 @@ EXTRA_DIST   =
 CLEANFILES   =
 MOSTLYCLEANFILES   =
 
-include libltdl/Makefile.inc
+include libltdl/ltdl.mk
 @end example
 
 @noindent
@@ -4816,14 +4816,14 @@ noinst_LTLIBRARIES =
 lib_LTLIBRARIES =
 EXTRA_LTLIBRARIES =
 
-include libltdl/Makefile.inc
+include libltdl/ltdl.mk
 @end example
 
 @noindent
 Unless you build no other libraries from this @file{Makefile.am},
 you will also need to change @code{lib_LTLIBRARIES} to assign with
 @samp{+=} so that the @code{libltdl} targets declared in
-@file{Makefile.inc} are not overwritten.
+@file{ltdl.mk} are not overwritten.
 
 @item recursive
 This build mode still requires that you use Automake, but (in contrast

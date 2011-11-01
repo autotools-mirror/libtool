@@ -1,4 +1,4 @@
-## Makefile.inc -- includable Makefile.am snippet
+## ltdl.mk -- includable Makefile snippet
 ##
 ##   Copyright (C) 2003, 2004, 2005, 2007 Free Software Foundation, Inc.
 ##   Written by Gary V. Vaughan, 2003
