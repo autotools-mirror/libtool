@@ -22,6 +22,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     mode is selected; `--standalone' never worked, and is no longer
     accepted.
 
+** Important incompatible changes:
+
+  - GNU M4 is required to run libtoolize in a directory with a
+    `configure.ac' (or `configure.in') that needs tracing to determine
+    what modes and directories have been specified.
+
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 
 * New features:

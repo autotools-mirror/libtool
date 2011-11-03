@@ -366,6 +366,24 @@ func_fixup_Makefile ()
     fi
 }
 
+
+# func_extract_trace macro_name [filename ...]
+# set `$func_extract_trace_result' to a colon delimited list of arguments
+# to MACRO_NAME in FILENAME. If no FILENAME is given, then
+# `configure.ac' is assumed.
+func_extract_trace ()
+{
+    $opt_debug
+
+    if test 1 -eq $#; then
+      test -n "$configure_ac" || return
+      set dummy "$@" "$configure_ac"; shift
+    fi
+
+    func_extract_trace_result=`$extract_trace ${1+"$@"}`
+}
+
+
 # func_scan_files
 # Scan configure.(ac|in) and aclocal.m4 (if present) for use of libltdl
 # and libtool.  Possibly running some of these tools if necessary.
@@ -397,10 +415,6 @@ func_scan_files ()
 	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
 	/AC_CONFIG_AUX_DIR(/ {
 	    s,^.*AC_CONFIG_AUX_DIR([[	 ]*\([^])]*\).*$,ac_aux_dir=\1,
-	    p
-        }
-	/AC_CONFIG_MACRO_DIR(/ {
-	    s,^.*AC_CONFIG_MACRO_DIR([[	 ]*\([^])]*\).*$,ac_macro_dir=\1,
 	    p
         }
 	/_LT_CONFIG_LTDL_DIR(/d
@@ -537,46 +551,6 @@ func_scan_files ()
 
     # Just use the current directory if all else fails.
     test -n "$aux_dir" || aux_dir=.
-
-
-    # ------------------------------ #
-    # Find local m4 macro directory. #
-    # ------------------------------ #
-
-    # Hunt for ACLOCAL_AMFLAGS in `Makefile.am' for a `-I' argument.
-
-    my_sed_aclocal_flags='
-        /^[	 ]*ACLOCAL_[A-Z_]*FLAGS[	 ]*=[	 ]*/ {
-	    s,,,
-	    q
-	}
-	d'
-    if test -f Makefile.am; then
-      my_macro_dir_is_next=false
-      for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
-        if $my_macro_dir_is_next; then
-          am_macro_dir="$arg"
-          break
-        else
-	  case $arg in
-	    -I) my_macro_dir_is_next=: ;;
-	    -I*)
-	      am_macro_dir=`$ECHO "$arg" | sed 's,^-I,,'`
-	      break
-	      ;;
-	    *) my_macro_dir_is_next=false ;;
-	  esac
-        fi
-      done
-    fi
-
-    macro_dir="$ac_macro_dir"
-    test -z "$macro_dir" && macro_dir="$am_macro_dir"
-
-    if test -n "$am_macro_dir" && test -n "$ac_macro_dir"; then
-      test "$am_macro_dir" = "$ac_macro_dir" \
-        || func_fatal_error "AC_CONFIG_MACRO_DIR([$ac_macro_dir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macro_dir."
-    fi
 }
 
 # func_included_files searchfile
@@ -700,6 +674,8 @@ func_serial_max ()
 func_serial_update_check ()
 {
     $debug_cmd
+
+    $require_ac_macro_dir
 
     my_srcfile="$1"
     my_src_serial="$2"
@@ -1000,6 +976,8 @@ func_install_pkgmacro_subproject ()
 {
     $debug_cmd
 
+    $require_macro_dir
+
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgmacro_files; do
@@ -1028,6 +1006,9 @@ func_install_pkgmacro_parent ()
 {
     $debug_cmd
 
+    $require_ac_macro_dir
+    $require_macro_dir
+
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgmacro_files; do
@@ -1039,7 +1020,7 @@ func_install_pkgmacro_parent ()
     # user specified a macro_dir.
     $opt_quiet || if test -n "$ac_macro_dir"; then
       my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macro_dir'."
-    elif test -n "$macro_dir"; then
+    else
       my_pkgmacro_header="putting macros in \`$macro_dir'."
     fi
 
@@ -1077,12 +1058,16 @@ func_install_pkgmacro_files ()
 {
     $debug_cmd
 
+    $require_ac_macro_dir
+    $require_am_macro_dir
+    $require_macro_dir
+
     # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
     func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
 
   # 1. Parent has separate macro_dir to subproject ltdl:
     if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
-       test -n "$macro_dir" && test "x$macro_dir" != "x$subproject_macro_dir"
+       test "x$macro_dir" != "x$subproject_macro_dir"
     then
       func_install_pkgmacro_parent
       func_install_pkgmacro_subproject
@@ -1094,7 +1079,7 @@ func_install_pkgmacro_files ()
       func_install_pkgmacro_subproject
 
   # 3. Not a subproject, but macro_dir was specified in parent:
-    elif test -n "$macro_dir"; then
+    elif test -n "$ac_macro_dir$am_macro_dir"; then
       func_install_pkgmacro_parent
 
   # 4. AC_CONFIG_MACRO_DIR was not specified:
@@ -1345,14 +1330,17 @@ func_check_macros ()
 {
     $debug_cmd
 
+    $require_ac_macro_dir
+    $require_am_macro_dir
     $require_configure_ac
+    $require_macro_dir
 
     $opt_quiet && return
     test -n "$configure_ac" || return
 
     ac_config_macro_dir_advised=false
 
-    if test -n "$ac_macro_dir$ltdldir" && test -z "$macro_dir"; then
+    if test -n "$ac_macro_dir$ltdldir" && test -z "$ac_macro_dir$am_macro_dir"; then
       my_ac_config_macro_srcdir="$aclocaldir"
       if $opt_ltdl && test "$macro_dir" != "$subproject_macro_dir"; then
 	my_ac_config_macro_srcdir="$subproject_macro_dir"
@@ -1430,7 +1418,7 @@ func_check_macros ()
       ac_config_macro_dir_advised=:
     fi
 
-    if test -z "$am_macro_dir$macro_dir"; then
+    if test -z "$am_macro_dir$ac_macro_dir"; then
       func_echo "Consider adding \`-I m4' to ACLOCAL_AMFLAGS in Makefile.am."
 
     elif test -z "$am_macro_dir"; then
@@ -1500,6 +1488,76 @@ func_autoconf_configure ()
 # most, once.
 
 
+# require_ac_macro_dir
+# --------------------
+# Extract ac_macro_dir from AC_CONFIG_MACRO_DIR.
+require_ac_macro_dir=func_require_ac_macro_dir
+func_require_ac_macro_dir ()
+{
+    $debug_cmd
+
+    $require_configure_ac
+
+    if test -n "$configure_ac"; then
+      func_extract_trace AC_CONFIG_MACRO_DIR
+      ac_macro_dir=$func_extract_trace_result
+    fi
+
+    require_ac_macro_dir=:
+}
+
+
+# require_aclocal_amflags
+# -----------------------
+# Extract `$aclocal_amflags' from `Makefile.am' if present.
+require_aclocal_amflags=func_require_aclocal_amflags
+func_require_aclocal_amflags ()
+{
+    $debug_cmd
+
+    $require_makefile_am
+
+    test -n "$makefile_am" && {
+      _G_sed_extract_aclocal_amflags='s|#.*$||
+        /^[	 ]*ACLOCAL_AMFLAGS[	 ]*=/ {
+            s|^.*=[	 ]*\(.*\)|aclocal_amflags="\1"|
+            p
+        }'
+
+      _G_aclocal_flags_cmd=`$SED -n "$_G_sed_extract_aclocal_amflags" \
+          "$makefile_am"`
+      eval "$_G_aclocal_flags_cmd"
+
+      func_verbose "ACLOCAL_AMFLAGS='$aclocal_amflags'"
+    }
+
+    require_aclocal_amflags=:
+}
+
+
+# require_am_macro_dir
+# --------------------
+# Set am_macro_dir to the first directory specified in ACLOCAL_AMFLAGS.
+require_am_macro_dir=func_require_am_macro_dir
+func_require_am_macro_dir ()
+{
+    $debug_cmd
+
+    $require_aclocal_amflags
+
+    _G_minus_I_seen=false
+    for _G_arg in $aclocal_amflags; do
+      case $_G_minus_I_seen,$_G_arg in
+        :,*)   am_macro_dir=$_G_arg; break ;;
+        *,-I)  _G_minus_I_seen=: ;;
+        *,-I*) am_macro_dir=`expr x$_G_opt : 'x-I\(.*\)$'`; break ;;
+      esac
+    done
+
+    require_am_macro_dir=:
+}
+
+
 # require_configure_ac
 # --------------------
 # Ensure that there is a `configure.ac' or `configure.in' file in the
@@ -1517,6 +1575,52 @@ func_require_configure_ac ()
       || func_verbose "found \`$configure_ac'"
 
     require_configure_ac=:
+}
+
+
+# require_macro_dir
+# -----------------
+# If both are specified, ensure both ACLOCAL_AMFLAGS and
+# AC_CONFIG_MACRO_DIR agree, and set macro_dir to the value of either.
+require_macro_dir=func_require_macro_dir
+func_require_macro_dir ()
+{
+    $debug_cmd
+
+    $require_ac_macro_dir
+    $require_am_macro_dir
+
+    macro_dir=$ac_macro_dir
+    test -n "$macro_dir" || macro_dir=$am_macro_dir
+    test -n "$macro_dir" || macro_dir=m4
+
+    if test -n "$ac_macro_dir" && test -n "$am_macro_dir"; then
+      test "$ac_macro_dir" = "$am_macro_dir" || func_fatal_error "\
+AC_CONFIG_MACRO_DIR([$ac_macro_dir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macro_dir."
+    fi
+
+    require_macro_dir=:
+}
+
+
+# require_makefile_am
+# -------------------
+# If not already set, set makefile_am to `Makefile.am' if that file is
+# present in the current directory.
+require_makefile_am=func_require_makefile_am
+func_require_makefile_am ()
+{
+    $debug_cmd
+
+    test -n "$makefile_am" || makefile_am=Makefile.am
+
+    if test -f Makefile.am; then
+      func_verbose "found \`$makefile_am'"
+    else
+      makefile_am=
+    fi
+
+    require_makefile_am=:
 }
 
 
@@ -1542,7 +1646,6 @@ func_require_configure_ac ()
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
   aux_dir=
-  macro_dir=
 
   seen_libtool=false
   seen_ltdl=false
@@ -1569,6 +1672,8 @@ func_require_configure_ac ()
   func_nonemptydir_p pkgltdldir
   func_nonemptydir_p pkgdatadir
   func_nonemptydir_p aclocaldir
+
+  extract_trace=$pkgdatadir/config/extract-trace
 
   func_scan_files
 
