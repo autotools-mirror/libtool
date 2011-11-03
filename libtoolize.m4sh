@@ -376,25 +376,9 @@ func_scan_files ()
 {
     $debug_cmd
 
-    # Prefer configure.ac to configure.in
-    test -f configure.ac && configure_ac=configure.ac
-    test -f "$configure_ac" || configure_ac=
+    $require_configure_ac
 
-    # Set local variables to reflect contents of configure.ac
-    my_sed_scan_configure_ac='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-	/AC_INIT/ {
-	    s,^.*$,seen_autoconf=:,
-	    p
-	}
-	d'
-    test -z "$configure_ac" \
-        || eval `$SED "$my_sed_scan_configure_ac" "$configure_ac"`
-
-    $seen_autoconf || {
-	my_configure_ac=
-	test -n "$configure_ac" && my_configure_ac="$configure_ac: "
-        func_verbose "${my_configure_ac}not using Autoconf"
-
+    test -n "$configure_ac" || {
 	# Make sure ltdldir and ltdl_mode have sensible defaults
         # since we return early here:
 	test -n "$ltdldir" || ltdldir=libltdl
@@ -1305,6 +1289,8 @@ func_install_pkgconfig_files ()
 {
     $debug_cmd
 
+    $require_configure_ac
+
     func_massage_pkgconfig_files
 
   # 1. Parent shares aux_dir with subproject ltdl:
@@ -1317,7 +1303,7 @@ func_install_pkgconfig_files ()
     elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
        # && test "x$aux_dir" != "x$subproject_aux_dir" is implied
     then
-      if $seen_autoconf; then
+      if test -n "$configure_ac"; then
 	func_install_pkgconfig_parent
       fi
       func_install_pkgconfig_subproject
@@ -1359,8 +1345,10 @@ func_check_macros ()
 {
     $debug_cmd
 
+    $require_configure_ac
+
     $opt_quiet && return
-    $seen_autoconf || return
+    test -n "$configure_ac" || return
 
     ac_config_macro_dir_advised=false
 
@@ -1462,6 +1450,77 @@ func_check_macros ()
 }
 
 
+
+## ------------------##
+## Helper functions. ##
+## ------------------##
+
+# This section contains the helper functions used by the rest of
+# this script.
+
+
+# func_autoconf_configure MAYBE-CONFIGURE-FILE
+# ------------------------------------------
+# Ensure that MAYBE-CONFIGURE-FILE is the name of a file in the current
+# directory which contains an uncommented call to AC_INIT.
+func_autoconf_configure ()
+{
+    $debug_cmd
+
+    _G_sed_no_comment='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;'
+    _G_ac_init=
+
+    # If we were passed a genuine file, make sure it calls AC_INIT.
+    test -f "$1" \
+      && _G_ac_init=`$SED "$_G_sed_no_comment" "$1" |grep AC_INIT`
+
+    # Otherwise it is not a genuine Autoconf input file.
+    test -n "$_G_ac_init"
+    _G_status=$?
+
+    test "$_G_status" -ne 0 \
+      && func_verbose "\`$1' not using Autoconf"
+
+    (exit $_G_status)
+}
+
+
+
+## -------------------- ##
+## Resource management. ##
+## -------------------- ##
+
+# This section contains definitions for functions that each ensure a
+# particular resource (a file, or a non-empty configuration variable for
+# example) is available, and if appropriate to extract default values
+# from pertinent package files.  Where a variable already has a non-
+# empty value (as set by the package's `bootstrap.conf'), that value is
+# used in preference to deriving the default. Call them using their
+# associated `require_*' variable to ensure that they are executed, at
+# most, once.
+
+
+# require_configure_ac
+# --------------------
+# Ensure that there is a `configure.ac' or `configure.in' file in the
+# current directory, and that `$configure_ac' contains its name.
+require_configure_ac=func_require_configure_ac
+func_require_configure_ac ()
+{
+    $debug_cmd
+
+    test -z "$configure_ac" \
+      && func_autoconf_configure configure.ac && configure_ac=configure.ac
+    test -z "$configure_ac" \
+      && func_autoconf_configure configure.in && configure_ac=configure.in
+    test -z "$configure_ac" \
+      || func_verbose "found \`$configure_ac'"
+
+    require_configure_ac=:
+}
+
+
+
 ## ----------- ##
 ##    Main.    ##
 ## ----------- ##
@@ -1484,9 +1543,7 @@ func_check_macros ()
   aclocaldir=@aclocaldir@
   aux_dir=
   macro_dir=
-  configure_ac=configure.in
 
-  seen_autoconf=false
   seen_libtool=false
   seen_ltdl=false
 
