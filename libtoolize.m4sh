@@ -413,10 +413,6 @@ func_scan_files ()
         s,^.*AC_REQUIRE(.*$,,; s,^.*m4@&t@_require(.*$,,;
 	s,^.*m4@&t@_define(.*$,,
 	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
-	/AC_CONFIG_AUX_DIR(/ {
-	    s,^.*AC_CONFIG_AUX_DIR([[	 ]*\([^])]*\).*$,ac_aux_dir=\1,
-	    p
-        }
 	/_LT_CONFIG_LTDL_DIR(/d
 	/LT_CONFIG_LTDL_DIR(/ {
 	    s,^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^])]*\).*$,ac_ltdldir=\1,
@@ -519,38 +515,6 @@ func_scan_files ()
 	    func_fatal_error "--$ltdl_mode does not match LTDL_INIT($ac_ltdl_mode)"
 	;;
     esac
-
-    # ----------------- #
-    # Validate aux_dir. #
-    # ----------------- #
-
-    if test -n "$ac_aux_dir"; then
-      # If $configure_ac contains AC_CONFIG_AUX_DIR, check that it was
-      # not given in terms of a shell variable!
-      case "$ac_aux_dir" in
-      *\$*)
-        func_fatal_error "can not handle variables in AC_CONFIG_AUX_DIR"
-        ;;
-      *)
-	aux_dir=$ac_aux_dir
-	;;
-      esac
-    else
-      # Try to discover aux_dir the same way it is discovered by configure.
-      # Note that we default to the current directory.
-      for dir in . .. ../..; do
-        if test -f "$dir/install-sh"; then
-          aux_dir=$dir
-          break
-        elif test -f "$dir/install.sh"; then
-          aux_dir="$dir"
-          break
-        fi
-      done
-    fi
-
-    # Just use the current directory if all else fails.
-    test -n "$aux_dir" || aux_dir=.
 }
 
 # func_included_files searchfile
@@ -1215,6 +1179,9 @@ func_install_pkgconfig_subproject ()
 {
     $debug_cmd
 
+    $require_ac_aux_dir
+    $require_aux_dir
+
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgconfig_files; do
@@ -1226,7 +1193,7 @@ func_install_pkgconfig_subproject ()
     # user specified an aux_dir.
     $opt_quiet || if test "x$ac_aux_dir" = "x$subproject_aux_dir"; then
       pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_aux_dir'."
-    elif test -n "$aux_dir"; then
+    elif test -n "$ac_aux_dir"; then
       pkgconfig_header="putting auxiliary files in \`$aux_dir'."
     else
       pkgconfig_header="putting auxiliary files in \`$subproject_aux_dir'."
@@ -1245,6 +1212,9 @@ func_install_pkgconfig_parent ()
 {
     $debug_cmd
 
+    $require_ac_aux_dir
+    $require_aux_dir
+
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgconfig_files; do
@@ -1254,7 +1224,7 @@ func_install_pkgconfig_parent ()
 
     if test -n "$ac_aux_dir"; then
       pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_aux_dir'."
-    elif test -n "$aux_dir" || test "x$ltdldir" = "x."; then
+    else
       pkgconfig_header="putting auxiliary files in \`$aux_dir'."
     fi
 
@@ -1279,13 +1249,14 @@ func_install_pkgconfig_files ()
 {
     $debug_cmd
 
+    $require_aux_dir
     $require_configure_ac
 
     func_massage_pkgconfig_files
 
   # 1. Parent shares aux_dir with subproject ltdl:
     if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
-       test "x$ac_aux_dir" = "x$subproject_aux_dir"
+       test "x$aux_dir" = "x$subproject_aux_dir"
     then
       func_install_pkgconfig_subproject
 
@@ -1337,6 +1308,7 @@ func_check_macros ()
 
     $require_ac_macro_dir
     $require_am_macro_dir
+    $require_aux_dir
     $require_configure_ac
     $require_macro_dir
 
@@ -1493,6 +1465,32 @@ func_autoconf_configure ()
 # most, once.
 
 
+# require_ac_aux_dir
+# ------------------
+# Extract ac_aux_dir from AC_CONFIG_AUX_DIR.
+require_ac_aux_dir=func_require_ac_aux_dir
+func_require_ac_aux_dir ()
+{
+    $debug_cmd
+
+    $require_configure_ac
+
+    if test -n "$configure_ac"; then
+      func_extract_trace AC_CONFIG_AUX_DIR
+      ac_aux_dir=$func_extract_trace_result
+
+      case $ac_aux_dir in
+        *\$*)
+          func_fatal_error "\
+can not expand unknown variable in AC_CONFIG_AUX_DIR argument."
+          ;;
+      esac
+    fi
+
+    require_ac_aux_dir=:
+}
+
+
 # require_ac_macro_dir
 # --------------------
 # Extract ac_macro_dir from AC_CONFIG_MACRO_DIR.
@@ -1560,6 +1558,36 @@ func_require_am_macro_dir ()
     done
 
     require_am_macro_dir=:
+}
+
+
+# require_aux_dir
+# ---------------
+# Set aux_dir according to AC_CONFIG_AUX_DIR or else use the same
+# heuristics as Autoconf to intuit an appropriate setting.
+require_aux_dir=func_require_aux_dir
+func_require_aux_dir ()
+{
+    $debug_cmd
+
+    $require_ac_aux_dir
+
+    test -n "$aux_dir" || aux_dir=$ac_aux_dir
+    test -n "$aux_dir" || {
+      # Try to intuit aux_dir using the same heuristic as Autoconf.
+      for _G_dir in . .. ../..; do
+        if test -f "$_G_dir/install-sh" || test -f "$_G_dir/install.sh"
+        then
+          aux_dir=$_G_dir
+          break
+        fi
+      done
+    }
+
+    # Use the current directory if all else fails.
+    test -n "$aux_dir" || aux_dir=.
+
+    require_aux_dir=:
 }
 
 
@@ -1650,7 +1678,6 @@ func_require_makefile_am ()
   pkgdatadir=@pkgdatadir@
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
-  aux_dir=
 
   seen_libtool=false
   seen_ltdl=false
