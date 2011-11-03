@@ -1,6 +1,11 @@
 #! /bin/sh
-# Print a version string.
-scriptversion=2011-10-22.09; # UTC
+
+# Source required external libraries.
+. `echo "$0" |${SED-sed} 's,[^/]*$,,'`"libltdl/config/options-parser"
+. `echo "$0" |${SED-sed} 's,[^/]*$,,'`"libltdl/config/extract-trace"
+
+# Set a version string for *this* script.
+scriptversion=2011-11-04.05; # UTC
 
 # Bootstrap this package from checked-out sources.
 # Written by Gary V. Vaughan, 2010
@@ -8,6 +13,8 @@ scriptversion=2011-10-22.09; # UTC
 # Copyright (C) 2010, 2011 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+##### PLEASE CHECK `--version' WORKS AFTER EDITING THE ABOVE COPYRIGHT #####
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -49,9 +56,10 @@ scriptversion=2011-10-22.09; # UTC
 # called at the wrong time by other tools that we call (`autoreconf',
 # for example).
 #
-# We also allow `LIBTOOLIZE' and `M4' to be overridden, and export the
-# result for child processes, but they are handled by the function
-# `func_find_tool' and not defaulted in this section.
+# We also allow `LIBTOOLIZE', `M4', `SHA1SUM' and some others to be
+# overridden, and export the result for child processes, but they are
+# handled by the function `func_find_tool' and not defaulted in this
+# section.
 
 : ${ACLOCAL="aclocal"}
 : ${AUTOCONF="autoconf"}
@@ -86,53 +94,6 @@ export CONFIG_SHELL
 ## -------------- ##
 ## Configuration. ##
 ## -------------- ##
-
-# Short help message in response to `-h'.  Add to this in `bootstrap.conf'
-# if you accept any additional options.
-usage_message="Bootstrap this package from the checked-out sources.
-
-Common Bootstrap Options:
-  -c, --copy         copy files instead of creating symbolic links.
-      --debug        enable verbose shell tracing
-  -n, --dry-run      print commands rather than running them
-  -f, --force        attempt to bootstrap even if the sources seem not to have
-                     been checked out.
-      --gnulib-srcdir=DIRNAME
-                     specify a local directory where gnulib sources reside.
-                     Use this if you already have the gnulib sources on your
-                     machine, and don't want to waste your bandwidth
-                     downloading them again.  Defaults to \$GNULIB_SRCDIR.
-      --skip-git     do not fetch files from remote repositories
-      --skip-po      do not download po files.
-  -v, --verbose      verbosely report processing
-      --version      print version information and exit
-  -W, --warnings=CATEGORY
-                     report the warnings falling in CATEGORY [all]
-  -h, --help         print short or long help message and exit
-"
-
-# Warning categories used by `bootstrap', append others if you use them
-# in your `bootstrap.conf'.
-warning_categories="recommend settings upgrade"
-
-# Additional text appended to `usage_message' in response to `--help'.
-long_help_message="
-Warning categories include:
-  \`all'           show all warnings
-  \`none'          turn off all the warnings
-  \`error'         warnings are treated as fatal errors
-  \`recommend'     show warnings about missing recommended packages
-  \`settings'      show warnings about missing \`bootstrap.conf' settings
-  \`upgrade'       show warnings about out-dated files
-
-If the file $progpath.conf exists in the same directory as this script, its
-contents are read as shell variables to configure the bootstrap.
-
-For build prerequisites, environment variables like \$AUTOCONF and \$AMTAR
-are honored.
-
-Running without arguments will suffice in most cases.
-"
 
 # A newline delimited list of triples of programs (that respond to
 # --version), the minimum version numbers required (or just `-' in the
@@ -246,150 +207,15 @@ copy=false
 vc_ignore=
 
 
-## -------------------- ##
-## Shell normalisation. ##
-## -------------------- ##
-
-# Be more Bourne compatible
-DUALCASE=1; export DUALCASE # for MKS sh
-if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then :
-  emulate sh
-  NULLCMD=:
-  # Pre-4.2 versions of Zsh do word splitting on ${1+"$@"}, which
-  # is contrary to our usage.  Disable this feature.
-  alias -g '${1+"$@"}'='"$@"'
-  setopt NO_GLOB_SUBST
-else
-  case `(set -o) 2>/dev/null` in *posix*) set -o posix ;; esac
-fi
-
-# NLS nuisances.
-LANGUAGE=C
-export LANGUAGE
-
-# Ensure file names are sorted consistently across platforms.
-LC_ALL=C
-export LC_ALL
-
-# CDPATH.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
-
-# FIXME: check that $SED accepts comments, or bail out with a pointer
-#        to GNU sed
-
-
-## ------------------------- ##
-## Hook function management. ##
-## ------------------------- ##
-
-# This section contains functions for adding, removing, and running hooks
-# to the main code.  A hook is just a named list of of function, that can
-# be run in order later on.
-
-
-# func_append VAR VALUE
-# ---------------------
-# Append VALUE onto the existing contents of VAR.
-if (eval 'x=a; x+=" b"; test "x$x" = "xa b"') 2>/dev/null
-then
-  # This is an XSI compatible shell, allowing a faster implementation...
-  eval 'func_append ()
-  {
-    $debug_cmd
-
-    eval "$1+=\$2"
-  }'
-else
-  # ...otherwise fall back to using expr, which is often a shell builtin.
-  func_append ()
-  {
-    $debug_cmd
-
-    eval "$1=\$$1\$2"
-  }
-fi
-
-
-# func_hookable FUNC_NAME
-# -----------------------
-# Declare that FUNC_NAME will run hooks added with
-# `func_add_hook FUNC_NAME ...'.
-func_hookable ()
-{
-    $debug_cmd
-
-    func_append hookable_funcs " $1"
-}
-
-
-# func_add_hook FUNC_NAME HOOK_FUNC
-# ---------------------------------
-# Request that FUNC_NAME call HOOK_FUNC before it returns.  FUNC_NAME must
-# first have been declared "hookable" by a coll to `func_hookable'.
-func_add_hook ()
-{
-    $debug_cmd
-
-    case " $hookable_funcs " in
-      *" $1 "*) ;;
-      *) func_fatal_error "error: \`$1' does not accept hook functions." ;;
-    esac
-
-    eval func_append ${1}_hooks '" $2"'
-}
-
-
-# func_remove_hook FUNC_NAME HOOK_FUNC
-# ------------------------------------
-# Remove HOOK_FUNC from the list of functions called by FUNC_NAME.
-func_remove_hook ()
-{
-    $debug_cmd
-
-    eval ${1}_hooks='`echo "\$'$1'_hooks" |$SED "s| '$2'||"`'
-}
-
-
-# func_run_hooks FUNC_NAME [ARG]...
-# ---------------------------------
-# Run all hook functions registered to FUNC_NAME.
-# It is assumed that the list of hook functions contains nothing more
-# than a whitespace-delimited list of legal shell function names, and
-# no effort is wasted trying to catch shell meta-characters or preserve
-# whitespace.
-func_run_hooks ()
-{
-    $debug_cmd
-
-    case " $hookable_funcs " in
-      *" $1 "*) ;;
-      *) func_fatal_error "error: \`$1' does not support hook funcions.n" ;;
-    esac
-
-    eval hook_funcs="\$$1_hooks"
-
-    # shift away the first argument (FUNC_NAME)
-    shift
-    func_run_hooks_result=$*
-
-    for hook_func in $hook_funcs; do
-      eval $hook_func '"$@"'
-
-      # store returned options list back into positional
-      # parameters for next `cmd' execution.
-      set dummy $func_run_hooks_result; shift
-    done
-}
-
-
 ## ------------------- ##
 ## Hookable functions. ##
 ## ------------------- ##
 
 # After `bootstrap.conf' has been sourced, execution proceeds by calling
-# `func_bootstrap'.  Where a function is decorated with `func_hookable
-# func_name', you will find a matching `func_run_hooks func_name' which
-# executes all functions added with `func_add_hook func_name my_func'.
+# `func_bootstrap'.  Wherever a function is decorated with
+# `func_hookable func_name', you will find a matching `func_run_hooks
+# func_name' which executes all functions added with `func_add_hook
+# func_name my_func'.
 #
 # You might notice that many of these functions begin with a series of
 # `$require_foo' lines.  See the docu-comments at the start of the
@@ -407,13 +233,13 @@ func_bootstrap ()
     # Save the current positional parameters to prevent them being
     # corrupted by calls to `set' in `func_init'.
     func_quote_for_eval ${1+"$@"}
-    my_saved_positional_parameters="$func_quote_for_eval_result"
+    _G_saved_positional_parameters="$func_quote_for_eval_result"
 
     # Initialisation.
     func_init
 
     # Option processing.
-    eval func_options "$my_saved_positional_parameters"
+    eval func_options "$_G_saved_positional_parameters"
 
     # Post-option preparation.
     func_prep
@@ -445,214 +271,6 @@ func_init ()
     $debug_cmd
 
     func_run_hooks func_init
-}
-
-
-# func_options [ARG]...
-# ---------------------
-# All the functions called inside func_options are hookable. See the
-# individual implementations for details.
-func_hookable func_options
-func_options ()
-{
-    $debug_cmd
-
-    func_options_prep ${1+"$@"}
-    eval func_parse_options \
-        ${func_options_prep_result+"$func_options_prep_result"}
-    eval func_validate_options \
-        ${func_parse_options+"$func_parse_options_result"}
-
-    eval func_run_hooks func_options \
-        ${func_validate_options_result+"$func_validate_options_result"}
-
-    # save modified positional parameters for caller
-    func_options_result="$func_run_hooks_result"
-}
-
-
-# func_options_prep [ARG]...
-# --------------------------
-# All initialisations required before starting the option parse loop.
-# Note that when calling hook functions, we pass through the list of
-# positional parameters.  If a hook function modifies that list, and
-# needs to propogate that back to rest of this script, then the complete
-# modified list must be put in `func_run_hooks_result' before
-# returning.
-func_hookable func_options_prep
-func_options_prep ()
-{
-    $debug_cmd
-
-    warning_func=func_error
-
-    # Option defaults:
-    opt_copy=${copy-false}
-    opt_dry_run=false
-    opt_force=false
-    opt_gnulib_srcdir="$GNULIB_SRCDIR"
-    opt_skip_git=false
-    opt_skip_po=false
-    opt_warning=
-    opt_verbose=false
-
-    func_run_hooks func_options_prep ${1+"$@"}
-
-    # save modified positional parameters for caller
-    func_options_prep_result="$func_run_hooks_result"
-}
-
-
-# func_parse_options [ARG]...
-# ---------------------------
-# The main option parsing loop.
-#
-# In order to add your own option parsing hooks, you must accept the
-# full positional parameter list in your hook function, remove any
-# options that you action, and then pass back the remaining unprocessed
-# options in `func_run_hooks_result', escaped suitably for `eval'.  Like
-# this:
-#
-#    my_silent_option ()
-#    {
-#        $debug_cmd
-#
-#        case $1 in
-#          --silent|-s) opt_silent=:; shift ;;
-#        esac
-#
-#        func_quote_for_eval ${1+"$@"}
-#        func_run_hooks_result="$func_quote_for_eval_result"
-#    }
-#    func_add_hook func_parse_options my_silent_option
-#
-func_hookable func_parse_options
-func_parse_options ()
-{
-    $debug_cmd
-
-    func_parse_options_result=
-
-    # this just eases exit handling
-    while test $# -gt 0; do
-
-      # Defer to hook functions for initial option parsing, so they
-      # get priority in the event of reusing an option name.
-      func_run_hooks func_parse_options ${1+"$@"}
-
-      # Adjust func_parse_options positional parameters to match
-      eval set dummy "$func_run_hooks_result"; shift
-
-      opt="$1"
-      shift
-      case $opt in
-        --debug|-x)   debug_cmd='set -x'
-                      func_echo "enabling shell trace mode"
-                      $debug_cmd
-                      ;;
-        --dry-run|--dryrun|-n)
-                      opt_dry_run=: ;;
-        --copy|-c)    opt_copy=: ;;
-        --force|-f)   opt_force=: ;;
-
-        --gnulib-srcdir)
-                      test $# = 0 && func_missing_arg $opt && break
-                      opt_gnulib_srcdir="$1"
-                      shift
-                      ;;
-
-        --skip-git)   opt_skip_git=: ;;
-        --skip-po)    opt_skip_po=: ;;
-        --verbose|-v) opt_verbose=: ;;
-
-        --warnings|--warning|-W)
-                      test $# = 0 && func_missing_arg $opt && break
-                      case " $1 " in
-                        " all ")
-                          opt_warning=" $warning_categories"
-                          ;;
-                        " none ")
-                          opt_warning=" none"
-                          warning_func=:
-                          ;;
-                        " error ")
-                          warning_func=func_fatal_error
-                          ;;
-                        *" $warning_categories "*)
-                          func_append_u opt_warning " $1"
-                          ;;
-                        *)
-                          func_fatal_error \
-                             "error: unsupported warning category: \`$1'"
-                          ;;
-                      esac
-                      shift
-                      ;;
-
-        --version)    func_version ;;
-        -\?|-h)       func_usage ;;
-        --help)       func_help ;;
-
-        # Separate optargs to long options:
-        --*=*)
-                      func_split_equals "$opt"
-                      set dummy "$func_split_equals_lhs" \
-                         "$func_split_equals_rhs" ${1+"$@"}
-                      shift
-                      ;;
-
-        # Separate optargs to short options:
-        -W*)
-                      func_split_short_opt "$opt"
-                      set dummy "$func_split_short_opt_name" \
-                          "$func_split_short_opt_arg" ${1+"$@"}
-                      shift
-                      ;;
-
-        # Separate non-argument short options:
-        -\?*|-h*|-c*|-f*|-n*|-v*|-x*)
-                      func_split_short_opt "$opt"
-                      set dummy "$func_split_short_opt_name" \
-                          "-$func_split_short_opt_arg" ${1+"$@"}
-                      shift
-                      ;;
-
-        --)           set dummy "$opt"; shift; break ;;
-        -*)           func_fatal_help "unrecognised option: \`$opt'" ;;
-        *)            set dummy "$opt"; shift; break ;;
-      esac
-    done
-
-    # save modified positional parameters for caller
-    func_quote_for_eval ${1+"$@"}
-    func_parse_options_result="$func_quote_for_eval_result"
-}
-
-
-# func_validate_options [ARG]...
-# ------------------------------
-# Perform any sanity checks on option settings and/or unconsumed
-# arguments.
-func_hookable func_validate_options
-func_validate_options ()
-{
-    $debug_cmd
-
-    # display all warnings if -W was not given
-    test -n "$opt_warning" || opt_warning="$warning_categories"
-
-    func_run_hooks func_validate_options ${1+"$@"}
-
-    # Validate options.
-    test $# -gt 0 \
-        && func_fatal_help "too many arguments"
-
-    # Bail if the options were screwed!
-    $exit_cmd $EXIT_FAILURE
-
-    # save modified positional parameters for caller
-    func_quote_for_eval ${1+"$@"}
-    func_validate_options_result="$func_quote_for_eval_result"
 }
 
 
@@ -860,7 +478,7 @@ func_gettext_configuration ()
       # function.  Note that adding a literal \\\ requires double escaping
       # here, once for the execution subshell, and again for the assignment,
       # which is why there are actually 12 (!!) backslashes in the script.
-      my_xgettext_options=`echo "$xgettext_options$nl" |$SED '/^$/d' |$SED '
+      _G_xgettext_options=`echo "$xgettext_options$nl" |$SED '/^$/d' |$SED '
           $b
           s|$| \\\\\\\\\\\\|'`
 
@@ -874,7 +492,7 @@ func_gettext_configuration ()
         /^XGETTEXT_OPTIONS *=/{
           s|$| \\|
           a\
-             '"$my_xgettext_options"' \\\
+             '"$_G_xgettext_options"' \\\
              $${end_of_xgettext_options+}
         }
       ' po/Makevars.template >po/Makevars || exit 1
@@ -918,11 +536,11 @@ func_libtoolize ()
     $require_libtoolize
 
     test true = "$LIBTOOLIZE" || {
-      my_libtoolize_options=
-      $opt_copy && func_append my_libtoolize_options " --copy"
-      $opt_force && func_append my_libtoolize_options " --force"
-      $opt_verbose || func_append my_libtoolize_options " --quiet"
-      func_show_eval "$LIBTOOLIZE$my_libtoolize_options" 'exit $?'
+      _G_libtoolize_options=
+      $opt_copy && func_append _G_libtoolize_options " --copy"
+      $opt_force && func_append _G_libtoolize_options " --force"
+      $opt_verbose || func_append _G_libtoolize_options " --quiet"
+      func_show_eval "$LIBTOOLIZE$_G_libtoolize_options" 'exit $?'
     }
 }
 
@@ -947,16 +565,16 @@ func_gnulib_tool_copy_file ()
       # distribution tarball), make sure that at least we have some
       # version of the required file already in place.
       test -f "$2" || func_fatal_error "\
-error: Can't find, copy or download \`$2', a required
-       gnulib supplied file, please provide the location of a
-       complete \`gnulib' tree by setting \`gnulib_path' in your
-       \`bootstrap.conf' or with the \`--gnulib-srcdir' option -
-       or else specify the location of your \`git' binary by
-       setting \`GIT' in the environment so that a fresh
-       \`gnulib' submodule can be cloned."
+Can't find, copy or download \`$2', a required
+gnulib supplied file, please provide the location of a
+complete \`gnulib' tree by setting \`gnulib_path' in your
+\`bootstrap.conf' or with the \`--gnulib-srcdir' option -
+or else specify the location of your \`git' binary by
+setting \`GIT' in the environment so that a fresh
+\`gnulib' submodule can be cloned."
     else
       test -f "$gnulib_path/$1" || {
-        func_error "error: \`$gnulib_path/$1' does not exist"
+        func_error "\`$gnulib_path/$1' does not exist"
         return 1
       }
 
@@ -1014,10 +632,10 @@ func_ensure_changelog ()
 ChangeLog is generated by gitlog-to-changelog.
 EOT
 
-    my_message="creating dummy \`ChangeLog'"
+    _G_message="creating dummy \`ChangeLog'"
     test -f ChangeLog~ \
-      && func_append my_message ' (backup in ChangeLog~)'
-    func_verbose "$my_message"
+      && func_append _G_message ' (backup in ChangeLog~)'
+    func_verbose "$_G_message"
 
     return 0
 }
@@ -1041,11 +659,11 @@ func_autoreconf ()
     save_AUTOPOINT="$AUTOPOINT"; AUTOPOINT=true
     save_LIBTOOLIZE="$LIBTOOLIZE"; LIBTOOLIZE=true
 
-    my_autoreconf_options=
-    $opt_copy || func_append my_autoreconf_options " --symlink"
-    $opt_force && func_append my_autoreconf_options " --force"
-    $opt_verbose && func_append my_autoreconf_options " --verbose"
-    func_show_eval "$AUTORECONF$my_autoreconf_options --install" 'exit $?'
+    _G_autoreconf_options=
+    $opt_copy || func_append _G_autoreconf_options " --symlink"
+    $opt_force && func_append _G_autoreconf_options " --force"
+    $opt_verbose && func_append _G_autoreconf_options " --verbose"
+    func_show_eval "$AUTORECONF$_G_autoreconf_options --install" 'exit $?'
 
     AUTOPOINT="$save_AUTOPOINT"
     LIBTOOLIZE="$save_LIBTOOLIZE"
@@ -1054,6 +672,8 @@ func_autoreconf ()
 
 # func_check_configuration VARNAME [CONFIGURE_MACRO]
 # --------------------------------------------------
+# Exit with a suitable diagnostic for an important configuration change
+# that needs to be made before bootstrap can run correctly.
 func_check_configuration ()
 {
     $debug_cmd
@@ -1061,13 +681,14 @@ func_check_configuration ()
     $require_configure_ac
 
     eval 'test -n "$'$1'"' || {
-      my_error_msg="error: please set \`$1' in \`bootstrap.conf'"
-      test -n "$2" \
-          && func_append my_error_msg "
-       or add the following (or similar) to your \`$configure_ac':
-       $2"
+      _G_error_msg="please set \`$1' in \`bootstrap.conf'"
+      if test -n "$configure_ac" && test -n "$2"; then
+        func_append _G_error_msg "
+or add the following (or similar) to your \`$configure_ac':
+$2"
+      fi
 
-      func_fatal_error "$my_error_msg"
+      func_fatal_error "$_G_error_msg"
     }
 }
 
@@ -1166,10 +787,10 @@ func_update_dotversion ()
     $debug_cmd
 
     test -f "$build_aux/git-version-gen" && {
-      my_message="updating .version"
+      _G_message="updating .version"
       test -f .version && {
         mv .version .version~
-	func_append my_message " (backup in .version~)"
+	func_append _G_message " (backup in .version~)"
       }
       func_verbose "updating .version"
 
@@ -1205,8 +826,8 @@ func_require_checkout_only_file ()
     $opt_force || {
       test -n "$checkout_only_file" && test ! -f "$checkout_only_file" \
           && func_fatal_error "\
-error: Bootstrapping from a non-checked-out distribution is risky.
-       If you wish to bootstrap anyway, use the \`--force' option."
+Bootstrapping from a non-checked-out distribution is risky.
+If you wish to bootstrap anyway, use the \`--force' option."
     }
 
     require_checkout_only_file=:
@@ -1224,15 +845,15 @@ func_require_aclocal_amflags ()
 
     $require_makefile_am
 
-    my_sed_extract_aclocal_amflags='s|#.*$||
+    _G_sed_extract_aclocal_amflags='s|#.*$||
         /^[	 ]*ACLOCAL_AMFLAGS[	 ]*=/ {
             s|^.*=[	 ]*\(.*\)|aclocal_amflags="\1"|
             p
         }'
 
-    my_aclocal_flags_cmd=`$SED -n "$my_sed_extract_aclocal_amflags" \
+    _G_aclocal_flags_cmd=`$SED -n "$_G_sed_extract_aclocal_amflags" \
         "$makefile_am"`
-    eval "$my_aclocal_flags_cmd"
+    eval "$_G_aclocal_flags_cmd"
 
     func_verbose "ACLOCAL_AMFLAGS='$aclocal_amflags'"
 
@@ -1253,8 +874,6 @@ func_require_autobuild_buildreq ()
     test -f "$macro_dir/autobuild.m4" \
         || printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*autobuild' \
         || {
-      $require_configure_ac
-
       func_extract_trace AB_INIT
       test -n "$func_extract_trace_result" && {
         func_append buildreq 'autobuild - http://josefsson.org/autobuild/
@@ -1293,16 +912,14 @@ for tool in autoconf libtoolize autopoint; do
     ${require_'$tool'-:}
 
     printf '%s\n' "$buildreq" |func_grep_q '\''^[	 ]*'$tool\'' || {
-      $require_configure_ac
-
       func_extract_trace '$m'
-      my_version="$func_extract_trace_result"
-      test -n "$my_version" && {
+      _G_version="$func_extract_trace_result"
+      test -n "$_G_version" && {
         func_append buildreq "\
-            '$tool' $my_version http://www.gnu.org/s/'$b'
+            '$tool' $_G_version http://www.gnu.org/s/'$b'
 "
         func_verbose \
-            "auto-adding \`'$tool'-$my_version'\'' to build requirements"
+            "auto-adding \`'$tool'-$_G_version'\'' to build requirements"
       }
     }
 
@@ -1426,8 +1043,6 @@ func_require_build_aux ()
     $debug_cmd
 
     test -n "$build_aux" || {
-      $require_configure_ac
-
       func_extract_trace AC_CONFIG_AUX_DIR
       build_aux="$func_extract_trace_result"
       func_check_configuration build_aux \
@@ -1467,43 +1082,22 @@ func_require_buildtools_uptodate ()
     $require_autopoint_buildreq
 
     test -n "$buildreq" && {
+      _G_error_hdr=
+
       func_check_versions $buildreq
       $func_check_versions_result || {
         test -n "$buildreq_readme" \
             && test -f "$buildreq_readme" \
-            && func_error "\
-error: $buildreq_readme explains how to obtain these prerequisite programs:
+            && _G_error_hdr="\
+$buildreq_readme explains how to obtain these prerequisite programs:
 "
-        func_strtable 7 11 12 36 \
+        func_strtable 0 11 12 36 \
             "Program" "Min_version" "Homepage" $buildreq
-        func_fatal_error "$func_strtable_result"
+        func_fatal_error "$_G_error_hdr$func_strtable_result"
       }
     }
 
     require_buildtools_uptodate=:
-}
-
-
-# require_configure_ac
-# --------------------
-# Ensure that there is a `configure.ac' or `configure.in' file in the
-# current directory, and that `$configure_ac' contains its name.
-require_configure_ac=func_require_configure_ac
-func_require_configure_ac ()
-{
-    $debug_cmd
-
-    test -n "$configure_ac" || {
-      for configure_ac in configure.ac configure.in; do
-        test -f $configure_ac && break
-      done
-
-      <$configure_ac
-    }
-
-    func_verbose "found \`$configure_ac'"
-
-    require_configure_ac=:
 }
 
 
@@ -1538,9 +1132,9 @@ func_require_dotgitmodules ()
 
     test true = "$GIT" || {
       # A gnulib entry in .gitmodules always takes precedence.
-      my_path="`$GIT config --file .gitmodules submodule.gnulib.path 2>/dev/null`"
+      _G_path="`$GIT config --file .gitmodules submodule.gnulib.path 2>/dev/null`"
 
-      test -n "$my_path" || {
+      test -n "$_G_path" || {
         $require_vc_ignore_files
 
         func_verbose "creating \`.gitmodules'"
@@ -1598,31 +1192,6 @@ func_require_git ()
     func_verbose "GIT='$GIT'"
 
     require_git=:
-}
-
-
-# require_gnu_m4
-# --------------
-# Search for GNU M4, and export it in $M4.
-require_gnu_m4=func_require_gnu_m4
-func_require_gnu_m4 ()
-{
-    $debug_cmd
-
-    test -n "$M4" || {
-      # Find the first m4 binary that responds to --version.
-      func_find_tool M4 gm4 gnum4 m4
-    }
-
-    test -n "$M4" || func_fatal_error "\
-error: Please install GNU M4, or \`export M4=/path/to/gnu/m4'."
-
-    func_verbose "export M4='$M4'"
-
-    # Make sure the search result is visible to subshells
-    export M4
-
-    require_gnu_m4=:
 }
 
 
@@ -1765,7 +1334,7 @@ func_require_gnulib_submodule ()
 
       if test -f .gitmodules && test -f "$gnulib_path/gnulib-tool"; then
         func_show_eval "$GIT submodule update" \
-            'func_fatal_error "error: Unable to update gnulib submodule."'
+            'func_fatal_error "Unable to update gnulib submodule."'
 
       elif test -n "$opt_gnulib_srcdir"; then
         # Older git can't clone into an empty directory.
@@ -1774,7 +1343,7 @@ func_require_gnulib_submodule ()
                 '$gnulib_url' '$gnulib_path'" \
             && func_show_eval "$GIT submodule init" \
             && func_show_eval "$GIT submodule update" \
-            || func_fatal_error "error: Unable to fetch gnulib submodule."
+            || func_fatal_error "Unable to fetch gnulib submodule."
 
       # Without --gnulib-srcdir, and no existing checked out submodule, we
       # create a new shallow clone of the remote gnulib repository.
@@ -1883,10 +1452,10 @@ func_require_macro_dir ()
     test -n "$macro_dir" || {
       $require_aclocal_amflags
 
-      my_sed_scan='s|^.*-I[	 ]*\([^	 ]*\) .*|\1|'
+      _G_sed_scan='s|^.*-I[	 ]*\([^	 ]*\) .*|\1|'
 
       # Trailing space in echo is required by the sed script.
-      macro_dir=`echo "$aclocal_amflags " |$SED "$my_sed_scan"`
+      macro_dir=`echo "$aclocal_amflags " |$SED "$_G_sed_scan"`
     }
 
     func_verbose "macro_dir='$macro_dir'"
@@ -2029,8 +1598,8 @@ func_require_package_version ()
       case " "`echo $gnulib_modules`" " in
 	*" git-version-gen "*)
 	  func_fatal_error "\
-error: cannot \$require_package_version in bootstrap.conf before
-       func_gnulib_tool has installed the \`git-version-gen' script."
+cannot \$require_package_version in bootstrap.conf before
+func_gnulib_tool has installed the \`git-version-gen' script."
 	  ;;
 	*)
           func_check_configuration package_version \
@@ -2152,8 +1721,8 @@ func_cmp_s ()
 }
 
 
-# func_grep_q EXPRESSION [FILENAME..].
-# ------------------------------------
+# func_grep_q EXPRESSION [FILENAME..]
+# -----------------------------------
 # Check whether EXPRESSION matches any line of any listed FILENAME,
 # without any output at all, even error messages.
 func_grep_q ()
@@ -2175,23 +1744,23 @@ func_ifcontains ()
     $debug_cmd
 
     # The embedded echo is to squase whitespace before globbing.
-    my_wslist=`echo " "$1" "`
-    my_member=$2
-    my_yes_cmd=$3
-    my_no_cmd=${4-":"}
+    _G_wslist=`echo " "$1" "`
+    _G_member=$2
+    _G_yes_cmd=$3
+    _G_no_cmd=${4-":"}
 
-    case $my_wslist in
-      *" $my_member "*)
-        eval "$my_yes_cmd"
-	my_status=$?
+    case $_G_wslist in
+      *" $_G_member "*)
+        eval "$_G_yes_cmd"
+	_G_status=$?
 	;;
       *)
-	eval "$my_no_cmd"
-	my_status=$?
+	eval "$_G_no_cmd"
+	_G_status=$?
 	;;
     esac
 
-    test "$my_status" -eq 0 || exit $my_status
+    test "$_G_status" -eq 0 || exit $_G_status
 }
 
 
@@ -2209,11 +1778,11 @@ func_append_u ()
 {
     $debug_cmd
 
-    eval my_current_value='`echo $'$1'`'
-    my_delim=`expr "$2" : '\(.\)'`
+    eval _G_current_value='`echo $'$1'`'
+    _G_delim=`expr "$2" : '\(.\)'`
 
-    case $my_delim$my_current_value$my_delim in
-      *"$2$my_delim"*) ;;
+    case $_G_delim$_G_current_value$_G_delim in
+      *"$2$_G_delim"*) ;;
       *) func_append "$@" ;;
     esac
 }
@@ -2226,10 +1795,10 @@ func_strpad ()
 {
     $debug_cmd
 
-    my_width=`expr "$2" - 1`
+    _G_width=`expr "$2" - 1`
     func_strpad_result=`echo "$1" |$SED '
         :a
-        s|^.\{0,'"$my_width"'\}$|&'"$3"'|
+        s|^.\{0,'"$_G_width"'\}$|&'"$3"'|
         ta
     '`
 }
@@ -2243,10 +1812,10 @@ func_strrpad ()
 {
     $debug_cmd
 
-    my_width=`expr "$2" - 1`
+    _G_width=`expr "$2" - 1`
     func_strrpad_result=`echo "$1" |$SED '
         :a
-        s|^.\{0,'"$my_width"'\}$|'"$3"'&|
+        s|^.\{0,'"$_G_width"'\}$|'"$3"'&|
         ta
     '`
 }
@@ -2263,15 +1832,15 @@ func_strrow ()
 
     func_strrow_linelen="$1"; shift
 
-    my_row=
+    _G_row=
     while test $# -gt 0; do
       func_strrow_linelen=`expr $func_strrow_linelen + $2`
       func_strpad "$1" $2 " "
-      func_append my_row "$func_strpad_result"
+      func_append _G_row "$func_strpad_result"
       shift; shift
     done
 
-    func_strrpad "$my_row" $func_strrow_linelen " "
+    func_strrpad "$_G_row" $func_strrow_linelen " "
     func_strrow_result="$func_strrpad_result"
 }
 
@@ -2309,27 +1878,27 @@ func_strtable ()
     $debug_cmd
 
     # Save the indent value, we'll need it for each row we render.
-    my_indent="$1"; shift
+    _G_indent="$1"; shift
 
     # Collect remaining numeric args into a list for reuse between
     # members of each row when we call func_strrow later.
-    my_widths="$1"; shift
+    _G_widths="$1"; shift
     while test 0 -lt `expr "$1" : '[1-9][0-9]*$'`; do
-      func_append my_widths " $1"; shift
+      func_append _G_widths " $1"; shift
     done
 
     # Extract the same number of positional parameters as there are
     # width elements - we'll do the header rows separately so that
     # we can insert a divider line.
-    my_header="$my_indent"
-    for my_width in $my_widths; do
-      func_append my_header " $1 $my_width"; shift
+    _G_header="$_G_indent"
+    for _G_width in $_G_widths; do
+      func_append _G_header " $1 $_G_width"; shift
     done
-    func_strrow $my_header
+    func_strrow $_G_header
 
     # Strip off the indent, and make a divider with `-' chars, then
     # reindent.
-    my_divider=`echo "$func_strrow_result" \
+    _G_divider=`echo "$func_strrow_result" \
         |$SED 's|[^ ]|-|g
             :a
             s|- |--|g
@@ -2339,89 +1908,24 @@ func_strtable ()
     # Append the header and divider to the running result.
     func_append func_strtable_result "\
 $func_strrow_result
-$my_divider
+$_G_divider
 "
 
     # The remaining rows are zipped between the width values we
     # unwound earlier just like the header row above.
     while test $# -gt 0; do
-      my_row="$my_indent"
-      for my_width in $my_widths; do
-        func_append my_row " $1 $my_width"; shift
+      _G_row="$_G_indent"
+      for _G_width in $_G_widths; do
+        func_append _G_row " $1 $_G_width"; shift
       done
-      func_strrow $my_row
+      func_strrow $_G_row
       func_append func_strtable_result "\
 $func_strrow_result
 "
     done
 
     # Mark the end of the table with a final divider line.
-    func_append func_strtable_result "$my_divider"
-}
-
-
-# func_echo ARG...
-# ----------------
-# Echo program name prefixed message, taking newlines into account.
-func_echo ()
-{
-    my_message="$*"
-
-    save_IFS="$IFS"
-    IFS="$nl"
-    for my_line in $my_message; do
-      IFS="$save_IFS"
-      echo "$progname: $my_line"
-    done
-    IFS="$save_IFS"
-}
-
-
-# func_verbose ARG...
-# -------------------
-# Echo program name prefixed message in verbose mode only.
-func_verbose ()
-{
-    $opt_verbose && func_echo ${1+"$@"}
-}
-
-
-# func_error ARG...
-# -----------------
-# Echo program name prefixed message to standard error.
-func_error ()
-{
-    my_message="$*"
-
-    save_IFS="$IFS"
-    IFS="$nl"
-    for my_line in $my_message; do
-      IFS="$save_IFS"
-      echo "$progname: $bold_on$my_line$bold_off" 1>&2
-    done
-    IFS="$save_IFS"
-}
-
-# Allow display of bold text on terminals that support it
-bold_on=
-bold_off=
-if test -t 1; then
-  if test -n "`tput bold 2>/dev/null`" \
-      && test -n "`tput sgr0 2>/dev/null`"
-  then
-    bold_on=`tput bold`
-    bold_off=`tput sgr0`
-  fi
-fi
-
-
-# func_fatal_error ARG...
-# -----------------------
-# Echo program name prefixed message to standard error, and exit.
-func_fatal_error ()
-{
-    func_error ${1+"$@"}
-    exit $EXIT_FAILURE
+    func_append func_strtable_result "$_G_divider"
 }
 
 
@@ -2430,9 +1934,9 @@ func_fatal_error ()
 # Echo program name prefixed message to standard error, and exit.
 func_internal_error ()
 {
-    func_fatal_error "INTERNAL ERROR: " ${1+"$@"} "
-                Please report this bug to \`bug-gnulib@gnu.org'
-                in as much detail as possible."
+    func_fatal_error "INTERNAL: " ${1+"$@"} "
+          Please report this bug to \`bug-gnulib@gnu.org'
+          in as much detail as possible."
 }
 
 
@@ -2444,7 +1948,7 @@ func_permissions_error ()
 {
     $debug_cmd
 
-    func_fatal_error "error: Failed to create \`$1', check permissions."
+    func_fatal_error "Failed to create \`$1', check permissions."
 }
 
 
@@ -2461,207 +1965,12 @@ func_warning ()
       *) func_internal_error "invalid warning category \`$1'" ;;
     esac
 
-    my_category="$1"
+    _G_category="$1"
     shift
 
     case " $opt_warning " in
-      *" $my_category "*) $warning_func ${1+"$@"} ;;
+      *" $_G_category "*) $warning_func ${1+"$@"} ;;
     esac
-}
-
-
-# func_fatal_help ARG...
-# ----------------------
-# Echo program name prefixed message to standard error, followed by
-# a help hint, and exit.
-func_fatal_help ()
-{
-    $debug_cmd
-
-    func_error ${1+"$@"}
-    func_fatal_error "$fatal_help"
-}
-fatal_help="Try \`$progname --help' for more information."  ## default
-
-
-# func_version
-# ------------
-# Echo version message to standard output and exit.
-func_version ()
-{
-    $debug_cmd
-
-    printf '%s\n' "$progname $scriptversion"
-    $SED -n '/(C)/!b go
-        :more
-        /\./!{
-          N
-          s|\n# | |
-          b more
-        }
-        :go
-        /^# Written by /,/# warranty; / {
-          s|^# ||
-          s|^# *$||
-          s|\((C)\)[ 0-9,-]*[ ,-]\([1-9][0-9]* \)|\1 \2|
-          p
-        }
-        /^# Written by / {
-          s|^# ||
-          p
-        }' < "$progpath"
-
-    exit $?
-}
-
-
-# func_usage_message
-# ------------------
-# Echo short help message to standard output.
-func_usage_message ()
-{
-    $debug_cmd
-
-    echo "$progpath [OPTION]..."
-    echo ""
-    echo "$usage_message"
-}
-
-
-# func_usage
-# ----------
-# Echo short help message to standard output and exit.
-func_usage ()
-{
-    $debug_cmd
-
-    func_usage_message
-    echo "Run \`$progname --help |more' for full usage"
-    exit 0
-}
-
-
-# func_help
-# ---------
-# Echo long help message to standard output and exit.
-func_help ()
-{
-    $debug_cmd
-
-    func_usage_message
-    echo "$long_help_message"
-    exit 0
-}
-
-
-# func_missing_arg ARGNAME
-# ------------------------
-# Echo program name prefixed message to standard error and set global
-# exit_cmd.
-func_missing_arg ()
-{
-    $debug_cmd
-
-    func_error "error: Missing argument for \`$1'."
-    exit_cmd=exit
-}
-
-
-# func_split_short_opt SHORTOPT
-# -----------------------------
-# Set func_split_short_opt_name and func_split_short_opt_arg shell
-# variables after splitting SHORTOPT after the 2nd character.
-if (eval 'x=-abc; y=${x#??}; z=${x%$y}; test x$y$z = xbc-a') 2>/dev/null
-then
-  # This is an XSI compatible shell, allowing a faster implementation...
-  eval 'func_split_short_opt ()
-  {
-      $debug_cmd
-
-      func_split_short_opt_arg=${1#??}
-      func_split_short_opt_name=${1%"$func_split_short_opt_arg"}
-  }'
-else
-  # ...otherwise fall back to using expr, which is often a shell builtin.
-  func_split_short_opt ()
-  {
-      $debug_cmd
-
-      func_split_short_opt_name=`expr "x$1" : 'x-\(.\)'`
-      func_split_short_opt_arg=`expr "x$1" : 'x-.\(.*\)$'`
-  }
-fi #func_split_short_opt
-
-
-# func_split_equals STRING
-# ------------------------
-# Set func_split_equals_lhs and func_split_equals_rhs shell variables after
-# splitting STRING at the `=' sign.
-if (eval 'x='--ab=cd'; y=${x#*=}; z=${x%%=*}; test x$y$z = xcd--ab') 2>/dev/null
-then
-  # This is an XSI compatible shell, allowing a faster implementation...
-  eval 'func_split_equals ()
-  {
-      $debug_cmd
-
-      func_split_equals_lhs=${1%%=*}
-      func_split_equals_rhs=${1#*=}
-      test "x$func_split_equals_lhs" = "x$1" \
-        && func_split_equals_rhs=""
-  }'
-else
-  # ...otherwise fall back to using expr, which is often a shell builtin.
-  func_split_equals ()
-  {
-      $debug_cmd
-
-      func_split_equals_lhs=`expr "x$1" : 'x\([^=]*)'`
-      func_split_equals_rhs=""
-      test "x$func_split_equals_lhs" = "x$1" \
-        || func_split_equals_rhs=`expr "x$1" : 'x[^=]*=\(.*\)$'`
-  }
-fi #func_split_equals
-
-
-# func_quote_for_eval ARG...
-# --------------------------
-# Aesthetically quote ARGs to be evaled later.
-# This function returns two values: FUNC_QUOTE_FOR_EVAL_RESULT
-# is double-quoted, suitable for a subsequent eval, whereas
-# FUNC_QUOTE_FOR_EVAL_UNQUOTED_RESULT has merely all characters
-# which are still active within double quotes backslashified.
-sed_quote_subst='s|\([`"$\\]\)|\\\1|g'
-func_quote_for_eval ()
-{
-    $debug_cmd
-
-    func_quote_for_eval_result=
-
-    while test $# -gt 0; do
-      case $1 in
-        *[\\\`\"\$]*)
-          my_unquoted_arg=`printf '%s\n' "$1" |$SED "$sed_quote_subst"` ;;
-        *)
-          my_unquoted_arg="$1" ;;
-      esac
-
-      case $my_unquoted_arg in
-        # Double-quote args containing shell metacharacters to delay
-        # word splitting, command substitution and variable expansion
-        # for a subsequent eval.
-        # Many Bourne shells cannot handle close brackets correctly
-        # in scan sets, so we specify it separately.
-        *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-          my_quoted_arg="\"$my_unquoted_arg\""
-          ;;
-        *)
-          my_quoted_arg="$my_unquoted_arg" ;;
-      esac
-      test -n "$func_quote_for_eval_result" \
-          && func_append func_quote_for_eval_result " "
-      func_append func_quote_for_eval_result "$my_quoted_arg"
-      shift
-    done
 }
 
 
@@ -2674,19 +1983,19 @@ func_show_eval ()
 {
     $debug_cmd
 
-    my_cmd="$1"
-    my_fail_exp="${2-:}"
+    _G_cmd="$1"
+    _G_fail_exp="${2-:}"
 
     ${opt_silent-false} || {
-      func_quote_for_eval $my_cmd
+      func_quote_for_eval $_G_cmd
       eval func_truncate_cmd $func_quote_for_eval_result
       func_echo "running: $func_truncate_cmd_result"
     }
 
     ${opt_dry_run-false} || {
-      eval "$my_cmd"
-      my_status=$?
-      test "$my_status" -eq 0 || eval "(exit $my_status); $my_fail_exp"
+      eval "$_G_cmd"
+      _G_status=$?
+      test "$_G_status" -eq 0 || eval "(exit $_G_status); $_G_fail_exp"
     }
 }
 
@@ -2700,139 +2009,31 @@ func_truncate_cmd ()
 {
     $debug_cmd
 
-    my_last_arg_opt_p=false
+    _G_last_arg_opt_p=false
     func_truncate_cmd_result=
 
     set dummy "$@"; shift
 
     while test $# -gt 0; do
-      my_opt="$1"; shift
+      _G_opt="$1"; shift
 
       test -n "$func_truncate_cmd_result" \
           && func_append func_truncate_cmd_result ' '
-      func_append func_truncate_cmd_result "$my_opt"
+      func_append func_truncate_cmd_result "$_G_opt"
 
       func_len "x$func_truncate_cmd_result"
 
-      case $my_opt in
-        -*) my_last_arg_opt_p=: ;;
-        *)  $my_last_arg_opt_p \
+      case $_G_opt in
+        -*) _G_last_arg_opt_p=: ;;
+        *)  $_G_last_arg_opt_p \
                 || test $min_cmd_len -gt $func_len_result \
                 || break
-            my_last_arg_opt_p=false
+            _G_last_arg_opt_p=false
             ;;
       esac
     done
 
     test $# -gt 0 && func_append func_truncate_cmd_result "..."
-}
-
-
-# func_extract_trace MACRO_NAME [FILENAME]...
-# -------------------------------------------
-# set `$func_extract_trace_result' to a colon delimited list of
-# arguments to MACRO_NAME in FILENAME. If no FILENAME is not given,
-# then `configure.ac' is assumed.
-func_extract_trace ()
-{
-    $debug_cmd
-
-    $require_configure_ac
-    $require_gnu_m4
-
-    my_macro="$1"; shift
-    test $# -gt 0 || {
-      set dummy $configure_ac
-      shift
-    }
-
-    # Generate an error if the first file is missing
-    <"$1"
-
-    # Sadly, we can't use `autom4te' tracing to extract macro
-    # arguments, because it complains about things we want to
-    # ignore at bootstrap time - like missing m4_include files;
-    # AC_PREREQ being newer than the installed autoconf; and
-    # returns nothing when tracing `AM_INIT_AUTOMAKE' when
-    # aclocal hasn't been generated yet.
-    #
-    # The following tries to emulate a less persnickety version
-    # of (and due to not having to wait for Perl startup on
-    # every invocation, it's probably faster too):
-    #
-    #    autom4te --language=Autoconf --trace=$my_macro:\$% "$@"
-    #
-    # First we give a minimal set of macro declarations to M4
-    # to prime it for reading Autoconf macros, while still
-    # providing some of the functionality generally used at
-    # m4-time to supply dynamic arguments to Autocof functions,
-    # but without following `m4_s?include' files.
-    #
-    # We discard M4's stdout, but the M4 trace output from reading
-    # our "autoconf.mini" followed by any other files passed to
-    # this function is then scanned by sed to transform it into
-    # a colon delimited argument list assigned to a shell variable.
-    #
-    # Finally, we `eval' the sed generated assignment to get
-    # the result back into this script for further use by callers
-    # of this function.
-
-    func_extract_trace_result=
-    eval `echo '
-        # Initialisation.
-        m4_changequote([,])
-        m4_define([m4_copy],   [m4_define([$2], m4_defn([$1]))])
-        m4_define([m4_rename], [m4_copy([$1], [$2])m4_undefine([$1])])
-
-        # Disable these macros.
-        m4_undefine([m4_dnl])
-        m4_undefine([m4_include])
-        m4_undefine([m4_m4exit])
-        m4_undefine([m4_m4wrap])
-        m4_undefine([m4_maketemp])
-
-        # Copy and rename macros not handled by "m4 --prefix".
-        m4_define([dnl],         [m4_builtin([dnl])])
-        m4_copy([m4_define],     [m4_defun])
-        m4_rename([m4_ifelse],   [m4_if])
-        m4_ifdef([m4_mkstemp],   [m4_undefine([m4_mkstemp])])
-        m4_rename([m4_patsubst], [m4_bpatsubst])
-        m4_rename([m4_regexp],   [m4_bregexp])
-
-        # "m4sugar.mini" - useful m4-time macros for dynamic arguments.
-        # If we discover packages that need more m4 macros defined in
-        # order to bootstrap correctly, add them here:
-        m4_define([m4_bmatch],
-            [m4_if([$#], 0, [], [$#], 1, [], [$#], 2, [$2],
-                   [m4_if(m4_bregexp([$1], [$2]), -1,
-                          [$0([$1], m4_shift3($@))], [$3])])])
-        m4_define([m4_ifndef], [m4_ifdef([$1], [$3], [$2])])
-        m4_define([m4_ifset],
-            [m4_ifdef([$1], [m4_ifval(m4_defn([$1]), [$2], [$3])], [$3])])
-        m4_define([m4_require], [$1])
-        m4_define([m4_shift3], [m4_shift(m4shift(m4shift($@)))])
-
-        # "autoconf.mini" - things from autoconf macros we care about.
-        m4_copy([m4_defun], [AC_DEFUN])
-
-        # Dummy definition for the macro we want to trace.
-        # AM_INIT_AUTOMAKE at least produces no trace without this.
-        AC_DEFUN(['"$my_macro"'])' \
-    |$M4 -daq --prefix --trace="$my_macro" - "$@" 2>&1 1>/dev/null \
-    |$SED -n 's|#.*$||
-        /^m4trace: -1- '"$my_macro"'/ {
-          s|^m4trace: -1- '"$my_macro"'[([]*|func_extract_trace_result='\''|
-          s|], [[]|:|g
-          s|[])]*$|:'\''|
-          s|[^'\'']$|\&'\''|
-          p
-        }'`
-
-    # Leave the ':' sentinel in place for successfully traced macros
-    # without arguments, otherwise remove it so that the results of
-    # single-argument macros can be used without additional parsing.
-    test : = "$func_extract_trace_result" \
-        || func_extract_trace_result=`echo "$func_extract_trace_result" |$SED 's|:$||'`
 }
 
 
@@ -2915,13 +2116,11 @@ func_get_version ()
 {
     $debug_cmd
 
-    app=$1
+    _G_app=$1
 
-    { $app --version || $app --version </dev/null; } >/dev/null 2>&1 \
-      || return 1
-
-    $app --version 2>&1 \
-    |$SED -n '# extract version within line
+    # Rather than uncomment the sed script in-situ, strip the comments
+    # programatically before passing the result to $SED for evaluation.
+    sed_get_version=`echo '# extract version within line
           s|.*[v ]\{1,\}\([0-9]\{1,\}\.[.a-z0-9-]*\).*|\1|
           t done
 
@@ -2932,10 +2131,19 @@ func_get_version ()
           d
 
           :done
-          #the following essentially does s|5.005|5.5|
+          # the following essentially does s|5.005|5.5|
           s|\.0*\([1-9]\)|.\1|g
           p
-          q'
+          q' \
+    |$SED '/^[	 ]*#.*$/d'`
+
+    func_tool_version_output $_G_app >/dev/null
+    _G_status=$?
+
+    test $_G_status -ne 0 \
+      || $_G_app --version 2>&1 |$SED -n "$sed_get_version"
+
+    (exit $_G_status)
 }
 
 
@@ -2948,31 +2156,31 @@ func_check_versions ()
     func_check_versions_result=:
 
     while test $# -gt 0; do
-      my_app="$1"; shift
-      my_reqver="$1"; shift
-      my_url="$1"; shift
+      _G_app="$1"; shift
+      _G_reqver="$1"; shift
+      _G_url="$1"; shift
 
       # Honor $APP variables ($TAR, $AUTOCONF, etc.)
-      my_appvar=`echo $my_app |tr '[a-z]' '[A-Z]'`
-      test "$my_appvar" = TAR && my_appvar=AMTAR
-      eval "my_app=\${$my_appvar-$my_app}"
-      my_instver=`func_get_version $my_app`
+      _G_appvar=`echo $_G_app |tr '[a-z]' '[A-Z]'`
+      test "$_G_appvar" = TAR && _G_appvar=AMTAR
+      eval "_G_app=\${$_G_appvar-$_G_app}"
+      _G_instver=`func_get_version $_G_app`
 
-      test -z "$my_instver" \
-          || func_verbose "found \`$my_app' version $my_instver"
+      test -z "$_G_instver" \
+          || func_verbose "found \`$_G_app' version $_G_instver"
 
       # Fail if --version didn't work.
-      if test -z "$my_instver"; then
-        func_error "error: \`$my_app' not found"
+      if test -z "$_G_instver"; then
+        func_error "\`$_G_app' not found"
         func_check_versions_result=false
 
       # Fail if a new version than what we have is required.
-      elif test "$my_reqver" != "-"; then
-        my_newer=`func_sort_ver $my_reqver $my_instver |cut -d' ' -f2`
-        test "$my_newer" != "$my_instver" && {
+      elif test "$_G_reqver" != "-"; then
+        _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
+        test "$_G_newer" != "$_G_instver" && {
           func_error "\
-error: \`$my_app' version == $my_instver is too old
-       \`$my_app' version >= $my_reqver is required"
+\`$_G_app' version == $_G_instver is too old
+\`$_G_app' version >= $_G_reqver is required"
           func_check_versions_result=false
         }
       fi
@@ -2988,9 +2196,9 @@ func_cleanup_gnulib ()
 {
     $debug_cmd
 
-    my_status=$?
+    _G_status=$?
     $RM -fr "$gnulib_path"
-    exit $my_status
+    exit $_G_status
 }
 
 
@@ -3001,46 +2209,8 @@ func_download_po_files ()
     $debug_cmd
 
     func_echo "getting translations into $1 for $2..."
-    cmd=`printf "$po_download_command_format" "$2" "$1"`
-    eval "$cmd"
-}
-
-
-# func_find_tool ENVVAR NAMES...
-# ------------------------------
-# Search for a required program.  Use the value of ENVVAR, if set,
-# otherwise find the first of the NAMES that can be run (i.e.,
-# supports --version).  If found, set ENVVAR to the program name,
-# die otherwise.
-func_find_tool ()
-{
-    $debug_cmd
-
-    find_tool_envvar=$1
-    shift
-    find_tool_names=$@
-    eval "find_tool_res=\$$find_tool_envvar"
-    if test x"$find_tool_res" = x; then
-      for i
-      do
-        if ($i --version </dev/null) >/dev/null 2>&1; then
-          find_tool_res=$i
-          break
-        fi
-      done
-    else
-      find_tool_error_prefix="\$$find_tool_envvar: "
-    fi
-    test x"$find_tool_res" = x && func_fatal_error "\
-error: One of these is required:
-       $find_tool_names"
-
-    ($find_tool_res --version </dev/null) >/dev/null 2>&1 \
-      || func_fatal_error "\
-error: ${find_tool_error_prefix}Cannot run \`$find_tool_res --version'"
-
-    eval "$find_tool_envvar=\$find_tool_res"
-    eval "export $find_tool_envvar"
+    _G_cmd=`printf "$po_download_command_format" "$2" "$1"`
+    eval "$_G_cmd"
 }
 
 
@@ -3056,71 +2226,220 @@ func_update_po_files ()
 
     # Directory containing primary .po files.
     # Overwrite them only when we're sure a .po file is new.
-    po_dir=$1
-    domain=$2
+    _G_po_dir=$1
+    _G_domain=$2
 
     # Mirror *.po files into this dir.
     # Usually contains *.s1 checksum files.
-    ref_po_dir="$po_dir/.reference"
+    _G_ref_po_dir="$_G_po_dir/.reference"
 
-    test -d $ref_po_dir || mkdir $ref_po_dir || return
-    func_download_po_files $ref_po_dir $domain \
-      && ls "$ref_po_dir"/*.po 2>/dev/null \
-         |$SED 's|.*/||; s|\.po$||' > "$po_dir/LINGUAS" || return
+    test -d $_G_ref_po_dir || mkdir $_G_ref_po_dir || return
+    func_download_po_files $_G_ref_po_dir $_G_domain \
+      && ls "$_G_ref_po_dir"/*.po 2>/dev/null \
+         |$SED 's|.*/||; s|\.po$||' > "$_G_po_dir/LINGUAS" || return
 
-    # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6.
+    # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6+.
     func_find_tool SHA1SUM sha1sum gsha1sum shasum
 
-    langs=`cd $ref_po_dir && echo *.po|$SED 's|\.po||g'`
-    test "$langs" = '*' && langs=x
-    for po in $langs; do
-      case $po in x) continue;; esac
-      new_po="$ref_po_dir/$po.po"
-      cksum_file="$ref_po_dir/$po.s1"
-      if ! test -f "$cksum_file" ||
-          ! test -f "$po_dir/$po.po" ||
-          ! $SHA1SUM -c --status "$cksum_file" \
-              < "$new_po" > /dev/null; then
-        echo "updated $po_dir/$po.po..."
-        cp "$new_po" "$po_dir/$po.po" \
-          && $SHA1SUM < "$new_po" > "$cksum_file"
+    _G_langs=`cd $_G_ref_po_dir && echo *.po|$SED 's|\.po||g'`
+    test "$_G_langs" = '*' && _G_langs=x
+    for _G_po in $_G_langs; do
+      case $_G_po in x) continue;; esac
+      _G_new_po="$_G_ref_po_dir/$_G_po.po"
+      _G_cksum_file="$_G_ref_po_dir/$_G_po.s1"
+      if ! test -f "$_G_cksum_file" ||
+          ! test -f "$_G_po_dir/$_G_po.po" ||
+          ! $SHA1SUM -c --status "$_G_cksum_file" \
+              < "$_G_new_po" > /dev/null; then
+        echo "updated $_G_po_dir/$_G_po.po..."
+        cp "$_G_new_po" "$_G_po_dir/$_G_po.po" \
+          && $SHA1SUM < "$_G_new_po" > "$_G_cksum_file"
       fi
     done
 }
 
 
 
-## ----------------- ##
-## Global variables. ##
-## ----------------- ##
+## --------------- ##
+## Option parsing. ##
+## --------------- ##
 
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
-EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
-EXIT_SKIP=77      # $? = 77 is used to indicate a skipped test to automake.
+# Hook in the functions to make sure our own options are parsed during
+# the option parsing loop.
 
-exit_status=$EXIT_SUCCESS
-
-# Allow overriding, eg to get a function call trace:
-#    debug_cmd='eval echo "${FUNCNAME[0]} $*" >&2' bash bootstrap
-debug_cmd="${debug_cmd-:}"
-exit_cmd=:
-
-dirname='s|/[^/]*$||'
-basename='s|^.*/||'
-
-nl='
+# Short help message in response to `-h'.  Add to this in `bootstrap.conf'
+# if you accept any additional options.
+usage_message='Common Bootstrap Options:
+  -c, --copy         copy files instead of creating symbolic links.
+      --debug        enable verbose shell tracing
+  -n, --dry-run      print commands rather than running them
+  -f, --force        attempt to bootstrap even if the sources seem not
+                     to have been checked out.
+      --gnulib-srcdir=DIRNAME
+                     specify a local directory where gnulib sources
+                     reside. Use this if you already have the gnulib
+                     sources on your machine, and don'\''t want to waste
+                     your bandwidth downloading them again.  Defaults to
+                     \$GNULIB_SRCDIR.
+      --skip-git     do not fetch files from remote repositories
+      --skip-po      do not download po files.
+  -v, --verbose      verbosely report processing
+      --version      print version information and exit
+  -W, --warnings=CATEGORY
+                     report the warnings falling in CATEGORY [all]
+  -h, --help         print short or long help message and exit
 '
 
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath="$0"
+# Additional text appended to `usage_message' in response to `--help'.
+long_help_message="
+Warning categories include:
+  \`all'         show all warnings
+  \`none'        turn off all the warnings
+  \`error'       warnings are treated as fatal errors
+  \`recommend'   show warnings about missing recommended packages
+  \`settings'    show warnings about missing \`bootstrap.conf' settings
+  \`upgrade'     show warnings about out-dated files
 
-# The name of this program.
-progname=`echo "$progpath" |$SED "$basename"`
+If the file $progpath.conf exists in the same directory as this script,
+its contents are read as shell variables to configure the bootstrap.
+
+For build prerequisites, environment variables like \$AUTOCONF and
+\$AMTAR are honored.
+
+Running without arguments will suffice in most cases.
+"
+
+# Warning categories used by `bootstrap', append others if you use them
+# in your `bootstrap.conf'.
+warning_categories='recommend settings upgrade'
+
+
+# bootstrap_options_prep [ARG]...
+# -------------------------------
+# Preparation for options parsed by Bootstrap.
+bootstrap_options_prep ()
+{
+    $debug_cmd
+
+    warning_func=func_error
+
+    # Option defaults:
+    opt_copy=${copy-false}
+    opt_dry_run=false
+    opt_force=false
+    opt_gnulib_srcdir="$GNULIB_SRCDIR"
+    opt_skip_git=false
+    opt_skip_po=false
+    opt_warning=
+
+    # Pass back the list of options we consumed.
+    func_quote_for_eval ${1+"$@"}
+    func_run_hooks_result="$func_quote_for_eval_result"
+}
+func_add_hook func_options_prep bootstrap_options_prep
+
+
+# bootstrap_parse_options [ARG]...
+# --------------------------------
+# Provide handling for Bootstrap specific options.  Note
+# `func_parse_options' passes in the unconsumed positional parameters, and
+# this function has to pass back whatever remains after its own
+# processing in the `func_run_hooks_result' variable.
+bootstrap_parse_options ()
+{
+    $debug_cmd
+
+    # Perform our own loop to consume as many options as possible in
+    # each iteration.
+    while test $# -gt 0; do
+      _G_opt="$1"
+      shift
+      case $_G_opt in
+        --dry-run|--dryrun|-n)
+                      opt_dry_run=: ;;
+        --copy|-c)    opt_copy=: ;;
+        --force|-f)   opt_force=: ;;
+
+        --gnulib-srcdir)
+                      test $# = 0 && func_missing_arg $_G_opt && break
+                      opt_gnulib_srcdir="$1"
+                      shift
+                      ;;
+
+        --skip-git)   opt_skip_git=: ;;
+        --skip-po)    opt_skip_po=: ;;
+
+        --warnings|--warning|-W)
+                      test $# = 0 && func_missing_arg $_G_opt && break
+                      case " $1 " in
+                        " all ")
+                          opt_warning=" $warning_categories"
+                          ;;
+                        " none ")
+                          opt_warning=" none"
+                          warning_func=:
+                          ;;
+                        " error ")
+                          warning_func=func_fatal_error
+                          ;;
+                        *" $warning_categories "*)
+                          func_append_u opt_warning " $1"
+                          ;;
+                        *)
+                          func_fatal_error \
+                             "unsupported warning category: \`$1'"
+                          ;;
+                      esac
+                      shift
+                      ;;
+
+        # Separate optargs to short options:
+        -W*)
+                      func_split_short_opt "$_G_opt"
+                      set dummy "$func_split_short_opt_name" \
+                          "$func_split_short_opt_arg" ${1+"$@"}
+                      shift
+                      ;;
+
+        # Separate non-argument short options:
+        -c*|-f*|-n*)
+                      func_split_short_opt "$_G_opt"
+                      set dummy "$func_split_short_opt_name" \
+                          "-$func_split_short_opt_arg" ${1+"$@"}
+                      shift
+                      ;;
+
+        *)            set dummy "$_G_opt" ${1+"$@"}; shift; break ;;
+      esac
+    done
+
+    # save modified positional parameters for caller
+    func_quote_for_eval ${1+"$@"}
+    func_parse_options_result="$func_quote_for_eval_result"
+}
+func_add_hook func_parse_options bootstrap_parse_options
+
+
+# bootstrap_validate_options [ARG]...
+# -----------------------------------
+# Perform any sanity checks on option settings and/or unconsumed
+# arguments.
+bootstrap_validate_options ()
+{
+    $debug_cmd
+
+    # Display all warnings if -W was not given.
+    test -n "$opt_warning" || opt_warning="$warning_categories"
+
+    # Validate options.
+    test $# -gt 0 \
+        && func_fatal_help "too many arguments"
+
+    # Pass back the list of unconsumed options left.
+    func_quote_for_eval ${1+"$@"}
+    func_validate_options_result="$func_quote_for_eval_result"
+}
+
 
 ## -------------------------------------------------- ##
 ## Source package customisations in `bootstrap.conf'. ##
@@ -3142,7 +2461,7 @@ esac
 func_bootstrap ${1+"$@"}
 
 # The End.
-exit $exit_status
+exit ${exit_status-$EXIT_SUCCESS}
 
 # Local variables:
 # mode: shell-script

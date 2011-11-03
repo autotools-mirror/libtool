@@ -92,14 +92,17 @@ CLEANFILES     += libtool libtoolize
 ## and dependencies with `$(srcdir)' consistently.
 configure_ac	= $(srcdir)/configure.ac
 config_status	= $(top_builddir)/config.status
+extract_trace	= $(srcdir)/$(aux_dir)/extract-trace
 libtoolize_in	= $(srcdir)/libtoolize.in
 ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
 ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
+options_parser	= $(srcdir)/$(aux_dir)/options-parser
 
-EXTRA_DIST     += $(libtoolize_in) $(libtoolize_m4sh) $(ltmain_m4sh) \
-		  $(ltmain_sh) $(ltversion_in) $(ltversion_m4)
+EXTRA_DIST     += $(extract_trace) $(libtoolize_in) $(libtoolize_m4sh) \
+		  $(ltmain_m4sh) $(ltmain_sh) $(ltversion_in) \
+		  $(ltversion_m4) $(options_parser)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -479,7 +482,8 @@ install-data-local: $(lt_Makefile_in)
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
 ## install the helper scripts
-	@list='$(pkgaux_scripts)' && for p in $$list; do \
+	@list='config/extract-trace config/options-parser $(pkgaux_scripts)' && \
+	for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
