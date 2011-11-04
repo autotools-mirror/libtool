@@ -378,60 +378,6 @@ func_extract_trace ()
 }
 
 
-# func_scan_files
-# Scan configure.(ac|in) and aclocal.m4 (if present) for use of libltdl
-# and libtool.  Possibly running some of these tools if necessary.
-# Libtoolize affects the contents of aclocal.m4, and should be run before
-# aclocal, so we can't use configure --trace which relies on a consistent
-# configure.(ac|in) and aclocal.m4.
-func_scan_files ()
-{
-    $debug_cmd
-
-    $require_configure_ac
-
-    test -n "$configure_ac" || return
-
-    # ---------------------------------------------------- #
-    # Probe macro usage in configure.ac and/or aclocal.m4. #
-    # ---------------------------------------------------- #
-
-    my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,
-        s,^.*AC_REQUIRE(.*$,,; s,^.*m4@&t@_require(.*$,,;
-	s,^.*m4@&t@_define(.*$,,
-	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
-	/\@<:@A[CM]_PROG_LIBTOOL/d
-	/A[CM]_PROG_LIBTOOL/ {
-	    s,^.*$,seen_libtool=:,
-	    p
-	}
-	/the.*option into.*LT_INIT.*parameter/d
-	/\@<:@LT_INIT/d
-	/LT_INIT/		 {
-	    s,^.*$,seen_libtool=:,
-	    p
-	}
-	/\@<:@LTDL_INIT/d
-	/LTDL_INIT/          {
-	    s,^.*$,seen_ltdl=:,
-	    p
-	}
-	/LT_WITH_LTDL/       {
-	    s,^.*$,seen_ltdl=:,
-	    p
-	}
-	/AC_LIB_LTDL/        {
-	    s,^.*$,seen_ltdl=:,
-	    p
-	}
-	/AC_WITH_LTDL/       {
-	    s,^.*$,seen_ltdl=:,
-	    p
-	}
-	d'
-    eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
-}
-
 # func_included_files searchfile
 # Output INCLUDEFILE if SEARCHFILE m4_includes it, else output SEARCHFILE.
 func_included_files ()
@@ -1237,6 +1183,8 @@ func_check_macros ()
     $require_ltdl_dir
     $require_ltdl_mode
     $require_macro_dir
+    $require_seen_ltdl
+    $require_seen_libtool
 
     $opt_quiet && return
     test -n "$configure_ac" || return
@@ -1704,6 +1652,48 @@ func_require_makefile_am ()
 }
 
 
+# require_seen_ltdl
+# -----------------
+# Determine from contents of $configure_ac whether this project contains
+# libltdl.
+require_seen_ltdl=func_require_seen_ltdl
+func_require_seen_ltdl ()
+{
+    $debug_cmd
+
+    $require_configure_ac
+
+    if test -n "$configure_ac"; then
+      func_extract_trace AC_LIB_LTDL,AC_WITH_LTDL,LT_WITH_LTDL,LTDL_INIT
+      test -n "$func_extract_trace_result" && seen_ltdl=:
+    fi
+    test -n "$seen_ltdl" || seen_ltdl=false
+
+    require_seen_ltdl=:
+}
+
+
+# require_seen_libtool
+# --------------------
+# Determine from contents of $configure_ac whether this project is using
+# Libtool to compile (some of) its objects.
+require_seen_libtool=func_require_seen_libtool
+func_require_seen_libtool ()
+{
+    $debug_cmd
+
+    $require_configure_ac
+
+    if test -n "$configure_ac"; then
+      func_extract_trace AM_PROG_LIBTOOL,AC_PROG_LIBTOOL,LT_INIT
+      test -n "$func_extract_trace_result" && seen_libtool=:
+    fi
+    test -n "$seen_libtool" || seen_libtool=false
+
+    require_seen_libtool=:
+}
+
+
 
 ## ----------- ##
 ##    Main.    ##
@@ -1725,9 +1715,6 @@ func_require_makefile_am ()
   pkgdatadir=@pkgdatadir@
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
-
-  seen_libtool=false
-  seen_ltdl=false
 
   # test EBCDIC or ASCII
   case `echo X|tr X '\101'` in
@@ -1754,8 +1741,6 @@ func_require_makefile_am ()
 
   extract_trace=$pkgdatadir/config/extract-trace
 
-  func_scan_files
-
   $require_ltdl_dir
   case $ltdl_dir in
   .) ltdlprefix= ;;
@@ -1770,6 +1755,7 @@ func_require_makefile_am ()
   # conditions, or that check will be impossible.   No need to clutter the
   # rest of the code with '$opt_ltdl || $seen_ltdl' though, because we CAN
   # safely set opt_ltdl to true if LTDL_INIT was seen:
+  $require_seen_ltdl
   $seen_ltdl && opt_ltdl=:
 
   func_install_pkgconfig_files

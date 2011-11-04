@@ -5,6 +5,13 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 ** New features:
 
   - Moved to gnulib release infrastructure.
+
+  - M4 is now used for scanning the M4 macros in your configure.ac that
+   `libtoolize' looks at to determine what files you want, and where you
+    would like them installed.  This means that you can compose your
+    version number or any other argument that Libtoolize needs to know at
+    M4 time using git-version-gen from gnulib, for example.
+
   - The Autotest testsuite can be run without the especially time consuming
     tests with:
 
