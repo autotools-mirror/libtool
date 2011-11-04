@@ -75,11 +75,6 @@ m4_divert_pop
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
-# ltdl can be installed to be self-contained (subproject, the default);
-# or to be configured by a parent project, either with a recursive or
-# nonrecursive automake driven make:
-ltdl_mode=
-
 # Parse environment options
 {
   my_sed_env_opt='1s/^\([^,:; ]*\).*$/\1/;q'
@@ -395,13 +390,7 @@ func_scan_files ()
 
     $require_configure_ac
 
-    test -n "$configure_ac" || {
-	# Make sure ltdl_mode has a sensible default
-        # since we return early here:
-	test -n "$ltdl_mode" || ltdl_mode=subproject
-
-	return
-    }
+    test -n "$configure_ac" || return
 
     # ---------------------------------------------------- #
     # Probe macro usage in configure.ac and/or aclocal.m4. #
@@ -424,8 +413,7 @@ func_scan_files ()
 	}
 	/\@<:@LTDL_INIT/d
 	/LTDL_INIT/          {
-	    s,^.*LTDL_INIT([[	 ]*\([^])]*\).*$,ltdl_options="\1",
-	    s,^.*LTDL_INIT[	 ]*$,seen_ltdl=:,
+	    s,^.*$,seen_ltdl=:,
 	    p
 	}
 	/LT_WITH_LTDL/       {
@@ -442,42 +430,6 @@ func_scan_files ()
 	}
 	d'
     eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
-
-    # ------------------- #
-    # Validate ltdl_mode. #
-    # ------------------- #
-
-    test -n "$ltdl_options" && seen_ltdl=:
-
-    # If $configure_ac contains LTDL_INIT, check that its
-    # arguments were not given in terms of a shell variable!
-    case "$ltdl_options" in
-      *\$*)
-        func_fatal_error "can not handle variables in LTDL_INIT"
-        ;;
-    esac
-
-    # Extract mode name from ltdl_options
-    # FIXME: Diagnose multiple conflicting modes in ltdl_options
-    ac_ltdl_mode=
-    case " $ltdl_options " in
-      *" nonrecursive "*)  ac_ltdl_mode=nonrecursive	;;
-      *" recursive "*)     ac_ltdl_mode=recursive	;;
-      *" subproject "*)    ac_ltdl_mode=subproject	;;
-    esac
-
-    # If neither --ltdl nor an LTDL_INIT mode are specified, default to
-    # `subproject'.  If both are specified, they must be the same.  Otherwise,
-    # take the one that is given!
-    case x$ac_ltdl_mode,x$ltdl_mode in
-      x,x)	ltdl_mode=subproject	;;
-      x*,x)	ltdl_mode=$ac_ltdl_mode	;;
-      x,x*)	ltdl_mode=$ltdl_mode	;;
-      *)
-        test x"$ac_ltdl_mode" = x"$ltdl_mode" || \
-	    func_fatal_error "--$ltdl_mode does not match LTDL_INIT($ac_ltdl_mode)"
-	;;
-    esac
 }
 
 # func_included_files searchfile
@@ -989,6 +941,7 @@ func_install_pkgmacro_files ()
     $require_ac_macro_dir
     $require_am_macro_dir
     $require_configure_ac
+    $require_ltdl_mode
     $require_macro_dir
 
     # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
@@ -1068,6 +1021,7 @@ func_install_pkgltdl_files ()
 
     $require_ac_ltdl_dir
     $require_ltdl_dir
+    $require_ltdl_mode
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -1219,6 +1173,7 @@ func_install_pkgconfig_files ()
 
     $require_aux_dir
     $require_configure_ac
+    $require_ltdl_mode
 
     func_massage_pkgconfig_files
 
@@ -1280,6 +1235,7 @@ func_check_macros ()
     $require_aux_dir
     $require_configure_ac
     $require_ltdl_dir
+    $require_ltdl_mode
     $require_macro_dir
 
     $opt_quiet && return
@@ -1490,6 +1446,52 @@ can not expand unknown variable in LT_CONFIG_LTDL_DIR argument."
 }
 
 
+# require_ac_ltdl_mode
+# --------------------
+# Extract mode name from LTDL_INIT options.
+require_ac_ltdl_mode=func_require_ac_ltdl_mode
+func_require_ac_ltdl_mode ()
+{
+    $debug_cmd
+
+    $require_ac_ltdl_options
+
+    case " $ac_ltdl_options " in
+      *" nonrecursive "*) ac_ltdl_mode=nonrecursive ;;
+      *" recursive "*)    ac_ltdl_mode=recursive    ;;
+      *" subproject "*)   ac_ltdl_mode=subproject   ;;
+    esac
+      
+    require_ac_ltdl_mode=:
+}
+
+
+# require_ac_ltdl_options
+# -----------------------
+# Extract ac_ltdl_options from LTDL_INIT.
+require_ac_ltdl_options=func_require_ac_ltdl_options
+func_require_ac_ltdl_options ()
+{
+    $debug_cmd
+
+    $require_configure_ac
+
+    if test -n "$configure_ac"; then
+      func_extract_trace LTDL_INIT
+      ac_ltdl_options=$func_extract_trace_result
+
+      case $ac_ltdl_options in
+        *\$*)
+          func_fatal_error "\
+can not expand unknown variable in LTDL_INIT argument."
+          ;;
+      esac
+    fi
+
+    require_ac_ltdl_mode=:
+}
+
+
 # require_ac_macro_dir
 # --------------------
 # Extract ac_macro_dir from AC_CONFIG_MACRO_DIR.
@@ -1630,6 +1632,29 @@ func_require_ltdl_dir ()
     fi
 
     require_ltdl_dir=:
+}
+
+
+# require_ltdl_mode
+# -----------------
+# If both are specified, ensure both command line setting and LTDL_INIT
+# option agree, and set ltdl_mode to the value of either.
+require_ltdl_mode=func_require_ltdl_mode
+func_require_ltdl_mode ()
+{
+    $debug_cmd
+
+    $require_ac_ltdl_mode
+
+    test -n "$ltdl_mode" || ltdl_mode=$ac_ltdl_mode
+    test -n "$ltdl_mode" || ltdl_mode=subproject
+
+    if test -n "$ac_ltdl_mode"; then
+      test "$ac_ltdl_mode" = "$ltdl_mode" || func_fatal_error "\
+--$ltdl_mode does not match LTDL_INIT($ac_ltdl_mode)"
+    fi
+
+    require_ltdl_mode=:
 }
 
 
