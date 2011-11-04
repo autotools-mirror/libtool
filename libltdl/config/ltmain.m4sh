@@ -394,7 +394,7 @@ M4SH_GETOPTS(
   fi
 
   # preserve --debug
-  test "$opt_debug" = : || func_append preserve_args " --debug"
+  test "$debug_cmd" = : || func_append preserve_args " --debug"
 
   case $host in
     *cygwin* | *mingw* | *pw32* | *cegcc*)
@@ -520,7 +520,8 @@ func_ltwrapper_p ()
 # FAIL_CMD may read-access the current command in variable CMD!
 func_execute_cmds ()
 {
-    $opt_debug
+    $debug_cmd
+
     save_ifs=$IFS; IFS='~'
     for cmd in $1; do
       IFS=$save_ifs
@@ -539,7 +540,8 @@ func_execute_cmds ()
 # `FILE.' does not work on cygwin managed mounts.
 func_source ()
 {
-    $opt_debug
+    $debug_cmd
+
     case $1 in
     */* | *\\*)	. "$1" ;;
     *)		. "./$1" ;;
@@ -586,7 +588,8 @@ func_replace_sysroot ()
 # arg is usually of the form 'gcc ...'
 func_infer_tag ()
 {
-    $opt_debug
+    $debug_cmd
+
     if test -n "$available_tags" && test -z "$tagname"; then
       CC_quoted=
       for arg in $CC; do
@@ -694,7 +697,8 @@ EOF
 # be empty on error (or when ARG is empty)
 func_convert_core_file_wine_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_convert_core_file_wine_to_w32_result="$1"
   if test -n "$1"; then
     # Unfortunately, winepath does not exit with a non-zero error code, so we
@@ -726,7 +730,8 @@ func_convert_core_file_wine_to_w32 ()
 # are convertible, then the result may be empty.
 func_convert_core_path_wine_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   # unfortunately, winepath doesn't convert paths, only file names 
   func_convert_core_path_wine_to_w32_result=""
   if test -n "$1"; then
@@ -766,7 +771,8 @@ func_convert_core_path_wine_to_w32 ()
 # environment variable; do not put it in $PATH.
 func_cygpath ()
 {
-  $opt_debug
+  $debug_cmd
+
   if test -n "$LT_CYGPATH" && test -f "$LT_CYGPATH"; then
     func_cygpath_result=`$LT_CYGPATH "$@" 2>/dev/null`
     if test "$?" -ne 0; then
@@ -786,7 +792,8 @@ func_cygpath ()
 # result in func_convert_core_msys_to_w32_result.
 func_convert_core_msys_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   # awkward: cmd appends spaces to result
   func_convert_core_msys_to_w32_result=`( cmd //c echo "$1" ) 2>/dev/null |
     $SED -e 's/[ ]*$//' -e "$lt_sed_naive_backslashify"`
@@ -800,7 +807,8 @@ func_convert_core_msys_to_w32 ()
 # func_to_host_file_result to ARG1).
 func_convert_file_check ()
 {
-  $opt_debug
+  $debug_cmd
+
   if test -z "$2" && test -n "$1" ; then
     func_error "Could not determine host file name corresponding to"
     func_error "  \`$1'"
@@ -818,7 +826,8 @@ func_convert_file_check ()
 # func_to_host_file_result to a simplistic fallback value (see below).
 func_convert_path_check ()
 {
-  $opt_debug
+  $debug_cmd
+
   if test -z "$4" && test -n "$3"; then
     func_error "Could not determine the host path corresponding to"
     func_error "  \`$3'"
@@ -842,7 +851,8 @@ func_convert_path_check ()
 # and appending REPL if ORIG matches BACKPAT.
 func_convert_path_front_back_pathsep ()
 {
-  $opt_debug
+  $debug_cmd
+
   case $4 in
   $1 ) func_to_host_path_result="$3$func_to_host_path_result"
     ;;
@@ -869,7 +879,8 @@ func_convert_path_front_back_pathsep ()
 # in func_to_host_file_result.
 func_to_host_file ()
 {
-  $opt_debug
+  $debug_cmd
+
   $to_host_file_cmd "$1"
 }
 # end func_to_host_file
@@ -881,7 +892,8 @@ func_to_host_file ()
 # in (the comma separated) LAZY, no conversion takes place.
 func_to_tool_file ()
 {
-  $opt_debug
+  $debug_cmd
+
   case ,$2, in
     *,"$to_tool_file_cmd",*)
       func_to_tool_file_result=$1
@@ -910,7 +922,8 @@ func_convert_file_noop ()
 # func_to_host_file_result.
 func_convert_file_msys_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_file_result="$1"
   if test -n "$1"; then
     func_convert_core_msys_to_w32 "$1"
@@ -926,7 +939,8 @@ func_convert_file_msys_to_w32 ()
 # func_to_host_file_result.
 func_convert_file_cygwin_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_file_result="$1"
   if test -n "$1"; then
     # because $build is cygwin, we call "the" cygpath in $PATH; no need to use
@@ -943,7 +957,8 @@ func_convert_file_cygwin_to_w32 ()
 # and a working winepath. Returns result in func_to_host_file_result.
 func_convert_file_nix_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_file_result="$1"
   if test -n "$1"; then
     func_convert_core_file_wine_to_w32 "$1"
@@ -959,7 +974,8 @@ func_convert_file_nix_to_w32 ()
 # Returns result in func_to_host_file_result.
 func_convert_file_msys_to_cygwin ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_file_result="$1"
   if test -n "$1"; then
     func_convert_core_msys_to_w32 "$1"
@@ -977,7 +993,8 @@ func_convert_file_msys_to_cygwin ()
 # in func_to_host_file_result.
 func_convert_file_nix_to_cygwin ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_file_result="$1"
   if test -n "$1"; then
     # convert from *nix to w32, then use cygpath to convert from w32 to cygwin.
@@ -1017,7 +1034,8 @@ func_convert_file_nix_to_cygwin ()
 to_host_path_cmd=
 func_init_to_host_path_cmd ()
 {
-  $opt_debug
+  $debug_cmd
+
   if test -z "$to_host_path_cmd"; then
     func_stripname 'func_convert_file_' '' "$to_host_file_cmd"
     to_host_path_cmd="func_convert_path_${func_stripname_result}"
@@ -1030,7 +1048,8 @@ func_init_to_host_path_cmd ()
 # in func_to_host_path_result.
 func_to_host_path ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_init_to_host_path_cmd
   $to_host_path_cmd "$1"
 }
@@ -1052,7 +1071,8 @@ func_convert_path_noop ()
 # func_to_host_path_result.
 func_convert_path_msys_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_path_result="$1"
   if test -n "$1"; then
     # Remove leading and trailing path separator characters from ARG.  MSYS
@@ -1075,7 +1095,8 @@ func_convert_path_msys_to_w32 ()
 # func_to_host_file_result.
 func_convert_path_cygwin_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_path_result="$1"
   if test -n "$1"; then
     # See func_convert_path_msys_to_w32:
@@ -1095,7 +1116,8 @@ func_convert_path_cygwin_to_w32 ()
 # a working winepath.  Returns result in func_to_host_file_result.
 func_convert_path_nix_to_w32 ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_path_result="$1"
   if test -n "$1"; then
     # See func_convert_path_msys_to_w32:
@@ -1116,7 +1138,8 @@ func_convert_path_nix_to_w32 ()
 # Returns result in func_to_host_file_result.
 func_convert_path_msys_to_cygwin ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_path_result="$1"
   if test -n "$1"; then
     # See func_convert_path_msys_to_w32:
@@ -1139,7 +1162,8 @@ func_convert_path_msys_to_cygwin ()
 # func_to_host_file_result.
 func_convert_path_nix_to_cygwin ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_host_path_result="$1"
   if test -n "$1"; then
     # Remove leading and trailing path separator characters from
@@ -1161,7 +1185,8 @@ func_convert_path_nix_to_cygwin ()
 # func_mode_compile arg...
 func_mode_compile ()
 {
-    $opt_debug
+    $debug_cmd
+
     # Get the compilation command and the source file.
     base_compile=
     srcfile="$nonopt"  #  always keep a non-empty value in "srcfile"
@@ -1728,7 +1753,8 @@ fi
 # func_mode_execute arg...
 func_mode_execute ()
 {
-    $opt_debug
+    $debug_cmd
+
     # The first argument is the command name.
     cmd="$nonopt"
     test -z "$cmd" && \
@@ -1861,7 +1887,8 @@ test "$opt_mode" = execute && func_mode_execute ${1+"$@"}
 # func_mode_finish arg...
 func_mode_finish ()
 {
-    $opt_debug
+    $debug_cmd
+
     libs=
     libdirs=
     admincmds=
@@ -1980,7 +2007,8 @@ test "$opt_mode" = finish && func_mode_finish ${1+"$@"}
 # func_mode_install arg...
 func_mode_install ()
 {
-    $opt_debug
+    $debug_cmd
+
     # There may be an optional sh(1) argument at the beginning of
     # install_prog (especially on Windows NT).
     if test "$nonopt" = "$SHELL" || test "$nonopt" = /bin/sh ||
@@ -2447,7 +2475,8 @@ test "$opt_mode" = install && func_mode_install ${1+"$@"}
 # a dlpreopen symbol table.
 func_generate_dlsyms ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_outputname="$1"
     my_originator="$2"
     my_pic_p="${3-no}"
@@ -2753,7 +2782,8 @@ static const void *lt_preloaded_setup() {
 # Despite the name, also deal with 64 bit binaries.
 func_win32_libid ()
 {
-  $opt_debug
+  $debug_cmd
+
   win32_libid_type="unknown"
   win32_fileres=`file -L $1 2>/dev/null`
   case $win32_fileres in
@@ -2805,7 +2835,8 @@ func_win32_libid ()
 #    $sharedlib_from_linklib_result
 func_cygming_dll_for_implib ()
 {
-  $opt_debug
+  $debug_cmd
+
   sharedlib_from_linklib_result=`$DLLTOOL --identify-strict --identify "$1"`
 }
 
@@ -2822,7 +2853,8 @@ func_cygming_dll_for_implib ()
 # specified import library.
 func_cygming_dll_for_implib_fallback_core ()
 {
-  $opt_debug
+  $debug_cmd
+
   match_literal=`$ECHO "$1" | $SED "$sed_make_literal_regex"`
   $OBJDUMP -s --section "$1" "$2" 2>/dev/null |
     $SED '/^Contents of section '"$match_literal"':/{
@@ -2876,7 +2908,8 @@ func_cygming_dll_for_implib_fallback_core ()
 # with nonzero status (FALSE) otherwise.
 func_cygming_gnu_implib_p ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_tool_file "$1" func_convert_file_msys_to_w32
   func_cygming_gnu_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $EGREP ' (_head_[A-Za-z0-9_]+_[ad]l*|[A-Za-z0-9_]+_[ad]l*_iname)$'`
   test -n "$func_cygming_gnu_implib_tmp"
@@ -2888,7 +2921,8 @@ func_cygming_gnu_implib_p ()
 # with nonzero status (FALSE) otherwise.
 func_cygming_ms_implib_p ()
 {
-  $opt_debug
+  $debug_cmd
+
   func_to_tool_file "$1" func_convert_file_msys_to_w32
   func_cygming_ms_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $GREP '_NULL_IMPORT_DESCRIPTOR'`
   test -n "$func_cygming_ms_implib_tmp"
@@ -2907,7 +2941,8 @@ func_cygming_ms_implib_p ()
 #    $sharedlib_from_linklib_result
 func_cygming_dll_for_implib_fallback ()
 {
-  $opt_debug
+  $debug_cmd
+
   if func_cygming_gnu_implib_p "$1" ; then
     # binutils import library
     sharedlib_from_linklib_result=`func_cygming_dll_for_implib_fallback_core '.idata$7' "$1"`
@@ -2924,7 +2959,8 @@ func_cygming_dll_for_implib_fallback ()
 # func_extract_an_archive dir oldlib
 func_extract_an_archive ()
 {
-    $opt_debug
+    $debug_cmd
+
     f_ex_an_ar_dir="$1"; shift
     f_ex_an_ar_oldlib="$1"
     if test "$lock_old_archive_extraction" = yes; then
@@ -2950,7 +2986,8 @@ func_extract_an_archive ()
 # func_extract_archives gentop oldlib ...
 func_extract_archives ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_gentop="$1"; shift
     my_oldlibs=${1+"$@"}
     my_oldobjs=""
@@ -4294,7 +4331,8 @@ EOF
 # True if ARG is an import lib, as indicated by $file_magic_cmd
 func_win32_import_lib_p ()
 {
-    $opt_debug
+    $debug_cmd
+
     case `eval $file_magic_cmd \"\$1\" 2>/dev/null | $SED -e 10q` in
     *import*) : ;;
     *) false ;;
@@ -4304,7 +4342,8 @@ func_win32_import_lib_p ()
 # func_mode_link arg...
 func_mode_link ()
 {
-    $opt_debug
+    $debug_cmd
+
     case $host in
     *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-cegcc*)
       # It is impossible to link a dll without this setting, and
@@ -8653,7 +8692,8 @@ relink_command=\"$relink_command\""
 # func_mode_uninstall arg...
 func_mode_uninstall ()
 {
-    $opt_debug
+    $debug_cmd
+
     RM="$nonopt"
     files=
     rmforce=

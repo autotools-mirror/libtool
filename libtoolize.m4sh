@@ -170,7 +170,8 @@ M4SH_VERBATIM([[
 # that subsequent calls have no effect.
 func_echo_once ()
 {
-    $opt_debug
+    $debug_cmd
+
     if test -n "$1"; then
       eval my_msg=\$$1
 
@@ -187,7 +188,7 @@ func_echo_once ()
 # as the cp(1) shell command.
 func_copy ()
 {
-    $opt_debug
+    $debug_cmd
 
     test -f "$1" || \
       { func_error "\`$1' not copied:  not a regular file"; return 1; }
@@ -225,7 +226,8 @@ func_copy ()
 # possible).
 func_copy_cb ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_file="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -282,7 +284,8 @@ func_copy_cb ()
 # spaces in file and directory names.
 func_copy_some_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_srcfile_spec="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -316,7 +319,8 @@ func_copy_some_files ()
 # func_fixup_Makefile srcfile srcdir destdir
 func_fixup_Makefile ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -370,7 +374,8 @@ func_fixup_Makefile ()
 # configure.(ac|in) and aclocal.m4.
 func_scan_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     # Prefer configure.ac to configure.in
     test -f configure.ac && configure_ac=configure.ac
     test -f "$configure_ac" || configure_ac=
@@ -594,7 +599,8 @@ func_scan_files ()
 # Output INCLUDEFILE if SEARCHFILE m4_includes it, else output SEARCHFILE.
 func_included_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_searchfile="$1"
 
     my_include_regex=
@@ -622,7 +628,8 @@ func_included_files ()
 # comment line must also match MACRO_REGEX, if given.
 func_serial ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_filename="$1"
     my_macro_regex="$2"
     my_sed_serial='
@@ -661,7 +668,8 @@ func_serial ()
 # same, func_serial_max_result will be empty.
 func_serial_max ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_serial1="$1"
     my_serial2="$2"
 
@@ -707,7 +715,8 @@ func_serial_max ()
 # to 'false'.
 func_serial_update_check ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_srcfile="$1"
     my_src_serial="$2"
     my_destfile="$3"
@@ -744,7 +753,8 @@ func_serial_update_check ()
 # in aclocal.m4, set $func_aclocal_update_check to 'false'.
 func_aclocal_update_check ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_srcfile="$aclocaldir/$1"
     my_destfile="aclocal.m4"
 
@@ -784,7 +794,8 @@ func_aclocal_update_check ()
 # OLD_MACRO_REGEX must match any text after "# serial N" in both files.
 func_serial_update ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -860,7 +871,8 @@ func_serial_update ()
 # `--force' at the command line.
 func_keyword_update ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -904,7 +916,8 @@ func_keyword_update ()
 # specified `--force' at the command line.
 func_ltmain_update ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_sed_ltmain='
 	/^package_revision='\''*[0-9][1-9.]*'\''*/ {
 	    s,^package_revision='\''*\([0-9.]*\)'\''*[	 ]*$,\1,
@@ -924,7 +937,8 @@ func_ltmain_update ()
 # specified `--force' at the command line.
 func_config_update ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_sed_config='
 	/^timestamp='\''*[0-9][1-9-]*'\''*/ {
 	    s,^timestamp='\''*\([0-9-]*\)'\''*,\1,
@@ -945,7 +959,8 @@ func_config_update ()
 # specified `--force' at the command line.
 func_install_update ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_sed_install='
 	/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
 	    s,[#;].*,,
@@ -966,7 +981,8 @@ func_install_update ()
 # this function massages it into a suitable format for func_copy_some_files.
 func_massage_aclocal_DATA ()
 {
-    $opt_debug
+    $debug_cmd
+
     pkgmacro_files=     # GLOBAL VAR
 
     my_glob_exclude="$1"
@@ -996,7 +1012,7 @@ func_massage_aclocal_DATA ()
 # from libtool installation tree to subproject libltdl tree.
 func_install_pkgmacro_subproject ()
 {
-    $opt_debug
+    $debug_cmd
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -1024,7 +1040,7 @@ func_install_pkgmacro_subproject ()
 # from the libtool installation tree.
 func_install_pkgmacro_parent ()
 {
-    $opt_debug
+    $debug_cmd
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -1073,7 +1089,7 @@ func_install_pkgmacro_parent ()
 # Install copies of the libtool and libltdl m4 macros into this package.
 func_install_pkgmacro_files ()
 {
-    $opt_debug
+    $debug_cmd
 
     # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
     func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
@@ -1107,7 +1123,8 @@ func_install_pkgmacro_files ()
 # function massages it into a suitable format for func_copy_some_files.
 func_massage_pkgltdl_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     pkgltdl_files=	# GLOBAL VAR
 
     my_glob_exclude="$1"
@@ -1143,7 +1160,8 @@ func_massage_pkgltdl_files ()
 # func_install_pkgconfig_files and func_install_pkgmacro_files resp.
 func_install_pkgltdl_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     $opt_ltdl || return
 
     # Remove any lingering files that my have been installed by some
@@ -1188,7 +1206,8 @@ func_install_pkgltdl_files ()
 # function massages it into a suitable format for func_copy_some_files.
 func_massage_pkgconfig_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     pkgconfig_files=	# GLOBAL VAR
 
     my_glob_exclude="$1"
@@ -1220,7 +1239,7 @@ func_massage_pkgconfig_files ()
 # from libtool installation tree to subproject libltdl tree.
 func_install_pkgconfig_subproject ()
 {
-    $opt_debug
+    $debug_cmd
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -1248,7 +1267,7 @@ func_install_pkgconfig_subproject ()
 # available from the libtool installation tree.
 func_install_pkgconfig_parent ()
 {
-    $opt_debug
+    $debug_cmd
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -1282,7 +1301,8 @@ func_install_pkgconfig_parent ()
 # shares the AC_CONFIG_AUX_DIR setting.
 func_install_pkgconfig_files ()
 {
-    $opt_debug
+    $debug_cmd
+
     func_massage_pkgconfig_files
 
   # 1. Parent shares aux_dir with subproject ltdl:
@@ -1316,7 +1336,8 @@ func_install_pkgconfig_files ()
 # a directory that exists and is non-empty abort with a diagnostic.
 func_nonemptydir_p ()
 {
-    $opt_debug
+    $debug_cmd
+
     my_dirvar="$1"
     my_dir=`eval echo "\\\$$my_dirvar"`
 
@@ -1334,7 +1355,8 @@ func_nonemptydir_p ()
 # Sanity check macros from aclocal.m4 against installed versions.
 func_check_macros ()
 {
-    $opt_debug
+    $debug_cmd
+
     $opt_quiet && return
     $seen_autoconf || return
 

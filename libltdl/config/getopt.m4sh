@@ -465,7 +465,7 @@ m4_define([m4go_optional_file_arg],
 m4_define([m4go_printopts],
 [
 # Option defaults:
-opt_debug=:
+debug_cmd="${debug_cmd-:}"
 m4go_defaults
 
 # Parse options once, thoroughly.  This comes as soon as possible in the
@@ -476,9 +476,9 @@ m4go_defaults
     opt="[$]1"
     shift
     case $opt in
-      --debug|-x)	opt_debug='set -x'
+      --debug|-x)	debug_cmd='set -x'
 			func_echo "enabling shell trace mode"
-			$opt_debug
+			$debug_cmd
 			;;
 m4go_branches
       -\?|-h)		func_usage				;;
@@ -538,7 +538,7 @@ m4_divert_pop([KILL])M4SH_VERBATIM([[
 # Echo version message to standard output and exit.
 func_version ()
 {
-    $opt_debug
+    $debug_cmd
 
     $SED -n '/(C)/!b go
 	:more
@@ -561,7 +561,7 @@ func_version ()
 # Echo short help message to standard output and exit.
 func_usage ()
 {
-    $opt_debug
+    $debug_cmd
 
     $SED -n '/^# Usage:/,/^#  *.*--help/ {
         s/^# //
@@ -579,7 +579,7 @@ func_usage ()
 # unless 'noexit' is passed as argument.
 func_help ()
 {
-    $opt_debug
+    $debug_cmd
 
     $SED -n '/^# Usage:/,/# Report bugs to/ {
 	:print
@@ -611,7 +611,7 @@ func_help ()
 # exit_cmd.
 func_missing_arg ()
 {
-    $opt_debug
+    $debug_cmd
 
     func_error "missing argument for $1."
     exit_cmd=exit
