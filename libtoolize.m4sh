@@ -80,9 +80,6 @@ M4SH_VERBATIM([[
 # nonrecursive automake driven make:
 ltdl_mode=
 
-# Locations for important files:
-ltdldir=
-
 # Parse environment options
 {
   my_sed_env_opt='1s/^\([^,:; ]*\).*$/\1/;q'
@@ -131,12 +128,12 @@ M4SH_GETOPTS(
   [?],		[--ltdl],			[false],		[
 	# This is tricky, since we're overloading $opt_ltdl to be the
 	# optarg for --ltdl during option processing, but then stashing
-	# the (optional) optarg in $ltdldir and reusing $opt_ltdl to
+	# the (optional) optarg in $ltdl_dir and reusing $opt_ltdl to
 	# indicate that --ltdl was seen during option processing.  Also,
-	# be careful that --ltdl=foo --ltdl=bar results in ltdldir=bar:
+	# be careful that --ltdl=foo --ltdl=bar results in ltdl_dir=bar:
 	case $opt_ltdl in
           false|:) ;;  # a bare '--ltdl' followed by another option
-	  *)       ltdldir=`$ECHO "$optarg" | $SED 's,/*$,,'` ;;
+	  *)       ltdl_dir=`$ECHO "$optarg" |$SED 's,/*$,,'` ;;
 	esac
 	opt_ltdl=:],
 [
@@ -321,6 +318,8 @@ func_fixup_Makefile ()
 {
     $debug_cmd
 
+    $require_ltdl_dir
+
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -341,7 +340,7 @@ func_fixup_Makefile ()
 		sed 's,libltdl/,,'`
 	my_fixup_inc_paths_script= ;;
       Makefile.inc)
-	repl=$ltdldir
+	repl=$ltdl_dir
 	repl_uscore=`$ECHO "$repl" | $SED 's,[/.+-],_,g'`
 	my_fixup_inc_paths_script="\
 	  s,libltdl_,@repl_uscore@_,
@@ -397,9 +396,8 @@ func_scan_files ()
     $require_configure_ac
 
     test -n "$configure_ac" || {
-	# Make sure ltdldir and ltdl_mode have sensible defaults
+	# Make sure ltdl_mode has a sensible default
         # since we return early here:
-	test -n "$ltdldir" || ltdldir=libltdl
 	test -n "$ltdl_mode" || ltdl_mode=subproject
 
 	return
@@ -413,11 +411,6 @@ func_scan_files ()
         s,^.*AC_REQUIRE(.*$,,; s,^.*m4@&t@_require(.*$,,;
 	s,^.*m4@&t@_define(.*$,,
 	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
-	/_LT_CONFIG_LTDL_DIR(/d
-	/LT_CONFIG_LTDL_DIR(/ {
-	    s,^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^])]*\).*$,ac_ltdldir=\1,
-	    p
-	}
 	/\@<:@A[CM]_PROG_LIBTOOL/d
 	/A[CM]_PROG_LIBTOOL/ {
 	    s,^.*$,seen_libtool=:,
@@ -449,36 +442,6 @@ func_scan_files ()
 	}
 	d'
     eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
-
-
-    # ----------------- #
-    # Validate ltdldir. #
-    # ----------------- #
-
-    ac_ltdldir=`$ECHO "$ac_ltdldir" | $SED 's,/*$,,'`
-
-    # If $configure_ac contains AC_CONFIG_LTDL_DIR, check that its
-    # arguments were not given in terms of a shell variable!
-    case "$ac_ltdldir" in
-      *\$*)
-        func_fatal_error "can not handle variables in LT_CONFIG_LTDL_DIR"
-        ;;
-    esac
-
-    # If neither --ltdl nor LT_CONFIG_LTDL_DIR are specified, default to
-    # `libltdl'.  If both are specified, they must be the same.  Otherwise,
-    # take the one that is given! (If LT_CONFIG_LTDL_DIR is not specified
-    # we suggest adding it later in this code.)
-    case x$ac_ltdldir,x$ltdldir in
-      x,x)	ltdldir=libltdl		;;
-      x*,x)	ltdldir=$ac_ltdldir	;;
-      x,x*)	ltdldir=$ltdldir	;;
-      *)
-        test x"$ac_ltdldir" = x"$ltdldir" || \
-	    func_fatal_error "--ltdl='$ltdldir' does not match LT_CONFIG_LTDL_DIR($ac_ltdldir)"
-	;;
-    esac
-
 
     # ------------------- #
     # Validate ltdl_mode. #
@@ -639,6 +602,7 @@ func_serial_update_check ()
 {
     $debug_cmd
 
+    $require_ac_ltdl_dir
     $require_ac_macro_dir
 
     my_srcfile="$1"
@@ -662,7 +626,7 @@ func_serial_update_check ()
 
       if test "X$my_dest_serial" = "X$func_serial_max_result"; then
         func_verbose "\`$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in \`$my_destfile'"
-	$opt_force || if test -n "$ac_macro_dir$ac_ltdldir"; then
+	$opt_force || if test -n "$ac_macro_dir$ac_ltdl_dir"; then
            func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
         fi
       fi
@@ -1102,19 +1066,22 @@ func_install_pkgltdl_files ()
 
     $opt_ltdl || return
 
+    $require_ac_ltdl_dir
+    $require_ltdl_dir
+
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
     $opt_force && for file in $all_pkgltdl_files; do
-      test -f "$ltdldir/$file" && func_verbose "rm -f '$ltdldir/$file'"
-      rm -f "$ltdldir/$file"
+      test -f "$ltdl_dir/$file" && func_verbose "rm -f '$ltdl_dir/$file'"
+      rm -f "$ltdl_dir/$file"
     done
 
     # Copy all the files from installed libltdl to this project, if the
     # user specified `--ltdl'.
-    $opt_quiet || if test -n "$ac_ltdldir"; then
-      pkgltdl_header="putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdldir'."
-    elif test -n "$ltdldir"; then
-      pkgltdl_header="putting libltdl files in \`$ltdldir'."
+    $opt_quiet || if test -n "$ac_ltdl_dir"; then
+      pkgltdl_header="putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdl_dir'."
+    else
+      pkgltdl_header="putting libltdl files in \`$ltdl_dir'."
     fi
 
     # These files are handled specially, depending on ltdl_mode:
@@ -1125,15 +1092,15 @@ func_install_pkgltdl_files ()
     fi
 
     func_copy_some_files "$pkgltdl_files" \
-      "$pkgltdldir/libltdl" "$ltdldir" pkgltdl_header
+      "$pkgltdldir/libltdl" "$ltdl_dir" pkgltdl_header
 
     # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
     case $ltdl_mode in
       recursive)
-        func_fixup_Makefile "Makefile.am" "$pkgltdldir/libltdl" "$ltdldir"
+        func_fixup_Makefile "Makefile.am" "$pkgltdldir/libltdl" "$ltdl_dir"
         ;;
       nonrecursive)
-        func_fixup_Makefile "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir"
+        func_fixup_Makefile "Makefile.inc" "$pkgltdldir/libltdl" "$ltdl_dir"
         ;;
     esac
 }
@@ -1181,6 +1148,7 @@ func_install_pkgconfig_subproject ()
 
     $require_ac_aux_dir
     $require_aux_dir
+    $require_ltdl_dir
 
     # Remove any lingering files that my have been installed by some
     # previous libtoolize release:
@@ -1200,7 +1168,7 @@ func_install_pkgconfig_subproject ()
     fi
 
     func_copy_some_files "$pkgconfig_files" \
-      "$pkgdatadir" "$ltdldir" pkgconfig_header
+      "$pkgdatadir" "$ltdl_dir" pkgconfig_header
 }
 
 
@@ -1306,10 +1274,12 @@ func_check_macros ()
 {
     $debug_cmd
 
+    $require_ac_ltdl_dir
     $require_ac_macro_dir
     $require_am_macro_dir
     $require_aux_dir
     $require_configure_ac
+    $require_ltdl_dir
     $require_macro_dir
 
     $opt_quiet && return
@@ -1317,7 +1287,7 @@ func_check_macros ()
 
     ac_config_macro_dir_advised=false
 
-    if test -n "$ac_macro_dir$ltdldir" && test -z "$ac_macro_dir$am_macro_dir"; then
+    if test -n "$ac_macro_dir$ltdl_dir" && test -z "$ac_macro_dir$am_macro_dir"; then
       my_ac_config_macro_srcdir="$aclocaldir"
       if $opt_ltdl && test "$macro_dir" != "$subproject_macro_dir"; then
 	my_ac_config_macro_srcdir="$subproject_macro_dir"
@@ -1369,8 +1339,8 @@ func_check_macros ()
 
     if $opt_ltdl; then
       # Remind the user to call LT_CONFIG_LTDL_DIR:
-      test -n "$ac_ltdldir" ||
-        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
+      test -n "$ac_ltdl_dir" ||
+        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdl_dir])' to \`$configure_ac'."
 
       # For subproject mode, offer some suggestions for avoiding duplicate
       # files in a project that uses libltdl:
@@ -1389,7 +1359,7 @@ func_check_macros ()
       func_echo "rerunning $progname, to keep the correct libtool macros in-tree."
       ac_config_macro_dir_advised=:
 
-    elif test -z "$ac_macro_dir$ltdldir"; then
+    elif test -z "$ac_macro_dir"; then
       func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macro_dir])' to $configure_ac,"
       func_echo "and rerunning $progname and aclocal."
       ac_config_macro_dir_advised=:
@@ -1488,6 +1458,35 @@ can not expand unknown variable in AC_CONFIG_AUX_DIR argument."
     fi
 
     require_ac_aux_dir=:
+}
+
+
+# require_ac_ltdl_dir
+# -------------------
+# Extract ac_ltdl_dir from LT_CONFIG_LTDL_DIR.
+require_ac_ltdl_dir=func_require_ac_ltdl_dir
+func_require_ac_ltdl_dir ()
+{
+    $debug_cmd
+
+    $require_configure_ac
+
+    if test -n "$configure_ac"; then
+      func_extract_trace LT_CONFIG_LTDL_DIR
+      ac_ltdl_dir=`expr "$func_extract_trace_result" : '\([^:]*\)'`
+
+      case $ac_ltdl_dir in
+        *\$*)
+          func_fatal_error "\
+can not expand unknown variable in LT_CONFIG_LTDL_DIR argument."
+          ;;
+      esac
+    fi
+
+    # Strip trailing slashes.
+    ac_ltdl_dir=`echo "$ac_ltdl_dir" |$SED 's,/*$,,'`
+
+    require_ac_ltdl_dir=:
 }
 
 
@@ -1611,6 +1610,29 @@ func_require_configure_ac ()
 }
 
 
+# require_ltdl_dir
+# ----------------
+# If both are specified, ensure both --ltdl=LTDL_DIR and
+# LT_CONFIG_LTDL_DIR agree, and set ltdl_dir to the value of either.
+require_ltdl_dir=func_require_ltdl_dir
+func_require_ltdl_dir ()
+{
+    $debug_cmd
+
+    $require_ac_ltdl_dir
+
+    test -n "$ltdl_dir" || ltdl_dir=$ac_ltdl_dir
+    test -n "$ltdl_dir" || ltdl_dir=libltdl
+
+    if test -n "$ac_ltdl_dir"; then
+      test "$ac_ltdl_dir" = "$ltdl_dir" || func_fatal_error "\
+--ltdl='$ltdl_dir' does not match LT_CONFIG_LTDL_DIR($ac_ltdl_dir)"
+    fi
+
+    require_ltdl_dir=:
+}
+
+
 # require_macro_dir
 # -----------------
 # If both are specified, ensure both ACLOCAL_AMFLAGS and
@@ -1709,9 +1731,10 @@ func_require_makefile_am ()
 
   func_scan_files
 
-  case $ltdldir in
+  $require_ltdl_dir
+  case $ltdl_dir in
   .) ltdlprefix= ;;
-  *) ltdlprefix=$ltdldir/ ;;
+  *) ltdlprefix=$ltdl_dir/ ;;
   esac
   subproject_aux_dir=${ltdlprefix}config
   subproject_macro_dir=${ltdlprefix}m4
