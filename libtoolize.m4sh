@@ -755,10 +755,12 @@ func_aclocal_update_check ()
 {
     $debug_cmd
 
+    my_filename=$1
+
     my_srcfile="$aclocaldir/$1"
     my_destfile="aclocal.m4"
 
-    case $need in
+    case $my_filename in
       libtool.m4)
 	my_src_serial=`func_serial "$my_srcfile" LT_INIT`
 	my_dest_serial=`func_serial "$my_destfile" LT_INIT`
@@ -775,8 +777,8 @@ func_aclocal_update_check ()
 	my_dest_serial=`func_serial "$my_destfile" LTDL_INIT`
 	;;
       *)
-	my_src_serial=`func_serial "$my_srcfile" "$need"`
-	my_dest_serial=`func_serial "$my_destfile" "$need"`
+	my_src_serial=`func_serial "$my_srcfile" "$my_filename"`
+	my_dest_serial=`func_serial "$my_destfile" "$my_filename"`
 	;;
     esac
 
