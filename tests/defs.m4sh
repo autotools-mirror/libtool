@@ -185,7 +185,7 @@ func_configure_nofail ()
     my_args=${1+"$@"}
     func_dirname_and_basename "`pwd`"
     my_dir=$func_basename_result
-    my_testdir="$srcdir/tests/$my_dir"
+    my_testdir="$abs_srcdir/tests/$my_dir"
     conf_status=$EXIT_FAILURE
 
     test -n "$my_args" && my_args=" $my_args"
@@ -349,10 +349,10 @@ func_exec ()
 
 # Shared global variables for test scripts
 prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
-srcdir=`cd '@srcdir@' && pwd`
-macro_dir=`cd '@srcdir@/@macro_dir@' && pwd`
-aux_dir=`cd '@srcdir@/@aux_dir@' && pwd`
-scripts="$aux_dir/ltmain.m4sh $srcdir/libtoolize.m4sh"
+abs_srcdir=`cd '@srcdir@' && pwd`
+abs_macro_dir=`cd '@srcdir@/@macro_dir@' && pwd`
+abs_aux_dir=`cd '@srcdir@/@aux_dir@' && pwd`
+scripts="$abs_aux_dir/ltmain.m4sh $abs_srcdir/libtoolize.m4sh"
 
 # Unset some MAKE... variables that may cause $MAKE to act like a
 # recursively invoked sub-make.  Any $MAKE invocation in a test is

@@ -24,7 +24,7 @@
 
 . tests/defs || exit 1
 
-: ${fnord=$srcdir/fnord$$}
+: ${fnord=$abs_srcdir/fnord$$}
 
 $AUTOCONF --version > /dev/null 2>&1 || func_skip "This test requires GNU Autoconf"
 if touch $fnord; then
@@ -33,7 +33,7 @@ else
   func_skip "This test requires write access to the source tree"
 fi
 
-( cd "$srcdir" && $AUTOCONF --trace 'LT_SUPPORTED_TAG:$1' ) >/dev/null
+( cd "$abs_srcdir" && $AUTOCONF --trace 'LT_SUPPORTED_TAG:$1' ) >/dev/null
 ret=$?
 if test $ret -eq 63 || test $ret -eq 1; then
   func_error "This test requires the same Autoconf version"
@@ -46,7 +46,7 @@ fi
 set -e
 
 # Retrieve the list of tags supported by our main libtool script.
-traced_tags=`cd "$srcdir" && $AUTOCONF --trace 'LT_SUPPORTED_TAG:$1'`
+traced_tags=`cd "$abs_srcdir" && $AUTOCONF --trace 'LT_SUPPORTED_TAG:$1'`
 
 test -n "$traced_tags"
 
