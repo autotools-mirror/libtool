@@ -470,28 +470,26 @@ install-data-local: $(lt_Makefile_in)
 	@$(NORMAL_INSTALL)
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf '$(DESTDIR)$(pkgdatadir)'/*
-## To avoid spurious reconfiguration when the user installs these files
-## with libtoolize, we have to install them in the correct order:
 ## First, put a copy of the libtool m4 macros in the aclocal dir
-	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@list='$(aclocalfiles)'; for p in $$list; do \
 	  f=`echo "$$p" |'$(SED)' 's|^.*/||'`; \
+	  d=`echo "$(DESTDIR)$(aclocaldir)/$$f" |$(SED) 's,[^/]*$$,,'`; \
+	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
 ## install the helper scripts
-	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)'
-	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/config'
 	@list='$(pkgaux_scripts)' && for p in $$list; do \
+	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_SCRIPT) "$(srcdir)/$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 	$(INSTALL_DATA) "$(ltmain_sh)" "$(DESTDIR)$(pkgdatadir)/config/ltmain.sh" 
 ## install the libltdl files
-	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/libltdl'
-	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/libltdl/libltdl'
-	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/libltdl/loaders'
 	@list='$(ltdldatafiles)' && for p in $$list; do \
+	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_DATA) '$(srcdir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_DATA) "$(srcdir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
