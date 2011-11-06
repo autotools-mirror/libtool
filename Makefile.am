@@ -46,12 +46,12 @@ EXTRA_LTLIBRARIES	=
 
 m4sh_dir		= $(aux_dir)
 
-LT_M4SH			= $(M4SH) -B '$(m4sh_dir)'
+LT_M4SH			= $(M4SH) -B '$(srcdir)/$(m4sh_dir)'
 
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
-git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '.tarball-version'
+git_version_gen = '$(SHELL)' '$(srcdir)/$(aux_dir)/git-version-gen' '.tarball-version'
 rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's,-.*$$,,g'`
 
 
@@ -60,17 +60,21 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 # ---------- #
 
 defs_m4sh	= $(tests_dir)/defs.m4sh
-general_m4sh	= $(m4sh_dir)/general.m4sh
-getopt_m4sh	= $(m4sh_dir)/getopt.m4sh
+general_m4sh	= $(srcdir)/$(m4sh_dir)/general.m4sh
+getopt_m4sh	= $(srcdir)/$(m4sh_dir)/getopt.m4sh
 libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
-ltmain_m4sh	= $(m4sh_dir)/ltmain.m4sh
+ltmain_m4sh	= $(srcdir)/$(m4sh_dir)/ltmain.m4sh
 
 sh_files	= $(general_m4sh) $(getopt_m4sh)
-build_scripts	= $(aux_dir)/announce-gen $(aux_dir)/cvsu \
-		  $(aux_dir)/do-release-commit-and-tag \
-		  $(aux_dir)/gendocs.sh $(aux_dir)/git-version-gen \
-		  $(aux_dir)/gnu-web-doc-update $(aux_dir)/gnupload \
-		  $(aux_dir)/useless-if-before-free $(aux_dir)/vc-list-files
+build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
+		  $(srcdir)/$(aux_dir)/cvsu \
+		  $(srcdir)/$(aux_dir)/do-release-commit-and-tag \
+		  $(srcdir)/$(aux_dir)/gendocs.sh \
+		  $(srcdir)/$(aux_dir)/git-version-gen \
+		  $(srcdir)/$(aux_dir)/gnu-web-doc-update \
+		  $(srcdir)/$(aux_dir)/gnupload \
+		  $(srcdir)/$(aux_dir)/useless-if-before-free \
+		  $(srcdir)/$(aux_dir)/vc-list-files
 
 EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
 		  $(sh_files) ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
@@ -89,10 +93,10 @@ CLEANFILES     += libtool libtoolize
 configure_ac	= $(srcdir)/configure.ac
 config_status	= $(top_builddir)/config.status
 libtoolize_in	= $(srcdir)/libtoolize.in
-ltmain_sh	= $(aux_dir)/ltmain.sh
-libtool_m4	= $(macro_dir)/libtool.m4
-ltversion_in	= $(macro_dir)/ltversion.in
-ltversion_m4	= $(macro_dir)/ltversion.m4
+ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
+libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
+ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
+ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 
 EXTRA_DIST     += $(libtoolize_in) $(libtoolize_m4sh) $(ltmain_m4sh) \
 		  $(ltmain_sh) $(ltversion_in) $(ltversion_m4)
@@ -180,9 +184,9 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
 $(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
 	$(AM_V_GEN)$(LT_M4SH) '$(libtoolize_m4sh)' | $(bootstrap_edit) > '$@'
 
-lt_Makefile_am	= $(ltdl_dir)/Makefile.am
-lt_Makefile_in	= $(ltdl_dir)/Makefile.in
-lt_Makefile_inc	= $(ltdl_dir)/Makefile.inc
+lt_Makefile_am	= $(srcdir)/$(ltdl_dir)/Makefile.am
+lt_Makefile_in	= $(srcdir)/$(ltdl_dir)/Makefile.in
+lt_Makefile_inc	= $(srcdir)/$(ltdl_dir)/Makefile.inc
 
 $(lt_Makefile_am): $(lt_Makefile_inc)
 	$(AM_V_at)rm -f '$@'
@@ -325,24 +329,24 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 include libltdl/Makefile.inc
 
-lt_aclocal_m4	= $(ltdl_dir)/aclocal.m4
-lt_config_h_in	= $(ltdl_dir)/config-h.in
-lt_configure	= $(ltdl_dir)/configure
-stamp_mk	= $(ltdl_dir)/stamp-mk
+lt_aclocal_m4	= $(srcdir)/$(ltdl_dir)/aclocal.m4
+lt_config_h_in	= $(srcdir)/$(ltdl_dir)/config-h.in
+lt_configure	= $(srcdir)/$(ltdl_dir)/configure
+stamp_mk	= $(srcdir)/$(ltdl_dir)/stamp-mk
 
-lt_obsolete_m4	= $(macro_dir)/lt~obsolete.m4
+lt_obsolete_m4	= $(srcdir)/$(macro_dir)/lt~obsolete.m4
 
 EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
 
 $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
-	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOMAKE) Makefile
+	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOMAKE) Makefile
 
 # Don't let unused scripts leak into the libltdl Makefile
 $(stamp_mk): $(lt_Makefile_in)
-	$(AM_V_at)T='$(ltdl_dir)/Makefile.tmp'; \
-	for p in $(ltdl_dir)/config/*; do \
+	$(AM_V_at)T='$(srcdir)/$(ltdl_dir)/Makefile.tmp'; \
+	for p in $(srcdir)/$(ltdl_dir)/config/*; do \
 	  test -f "$$p" || continue; \
-	  f=`echo "$$p" | $(SED) 's,^$(ltdl_dir)/,,'`; \
+	  f=`echo "$$p" | $(SED) 's,^$(srcdir)/$(ltdl_dir)/,,'`; \
 	  case " $(pkgaux_scripts) " in \
 	    *" $$f "*) ;; \
 	    *) '$(SED)' \
@@ -358,22 +362,22 @@ lt_aclocal_m4_deps = \
 	$(lt_obsolete_m4) \
 	$(ltversion_m4) \
 	$(libtool_m4) \
-	$(macro_dir)/ltoptions.m4 \
-	$(macro_dir)/ltdl.m4 \
-	$(macro_dir)/ltsugar.m4 \
-	$(macro_dir)/argz.m4 \
-	$(ltdl_dir)/configure.ac
+	$(srcdir)/$(macro_dir)/ltoptions.m4 \
+	$(srcdir)/$(macro_dir)/ltdl.m4 \
+	$(srcdir)/$(macro_dir)/ltsugar.m4 \
+	$(srcdir)/$(macro_dir)/argz.m4 \
+	$(srcdir)/$(ltdl_dir)/configure.ac
 
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
 
 $(lt_aclocal_m4): $(lt_aclocal_m4_deps)
-	$(AM_V_GEN)cd '$(ltdl_dir)' && $(ACLOCAL) -I m4
+	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(ACLOCAL) -I m4
 
 $(lt_configure): $(lt_configure_deps)
-	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOCONF)
+	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOCONF)
 
 $(lt_config_h_in): $(lt_configure_deps)
-	$(AM_V_GEN)cd '$(ltdl_dir)' && $(AUTOHEADER)
+	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOHEADER)
 	$(AM_V_at)touch '$@'
 
 
@@ -472,17 +476,17 @@ install-data-local: $(lt_Makefile_in)
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@list='$(aclocalfiles)'; for p in $$list; do \
 	  f=`echo "$$p" |'$(SED)' 's|^.*/||'`; \
-	  echo " $(INSTALL_DATA) '$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
-	  $(INSTALL_DATA) "$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
 ## install the helper scripts
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)'
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/config'
 	@list='$(pkgaux_scripts)' && for p in $$list; do \
-	  echo " $(INSTALL_SCRIPT) '$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_SCRIPT) "$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_SCRIPT) "$(srcdir)/$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
-	$(INSTALL_DATA) "$(srcdir)/libltdl/config/ltmain.sh" "$(DESTDIR)$(pkgdatadir)/config/ltmain.sh" 
+	$(INSTALL_DATA) "$(ltmain_sh)" "$(DESTDIR)$(pkgdatadir)/config/ltmain.sh" 
 ## install the libltdl files
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/libltdl'
 	$(mkinstalldirs) '$(DESTDIR)$(pkgdatadir)/libltdl/libltdl'
@@ -498,8 +502,8 @@ install-data-local: $(lt_Makefile_in)
 ## Distribution. ##
 ## ------------- ##
 
-edit_readme_alpha	= $(aux_dir)/edit-readme-alpha
-gitlog_to_changelog	= $(aux_dir)/gitlog-to-changelog
+edit_readme_alpha	= $(srcdir)/$(aux_dir)/edit-readme-alpha
+gitlog_to_changelog	= $(srcdir)/$(aux_dir)/gitlog-to-changelog
 
 dotserial		= $(distdir)/.serial
 dotversion		= $(srcdir)/.version

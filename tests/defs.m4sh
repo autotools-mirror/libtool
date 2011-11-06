@@ -350,8 +350,8 @@ func_exec ()
 # Shared global variables for test scripts
 prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
 srcdir=`cd '@srcdir@' && pwd`
-macro_dir=`cd '@macro_dir@' && pwd`
-aux_dir=`cd '@aux_dir@' && pwd`
+macro_dir=`cd '@srcdir@/@macro_dir@' && pwd`
+aux_dir=`cd '@srcdir@/@aux_dir@' && pwd`
 scripts="$aux_dir/ltmain.m4sh $srcdir/libtoolize.m4sh"
 
 # Unset some MAKE... variables that may cause $MAKE to act like a

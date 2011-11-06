@@ -42,11 +42,11 @@ m4_ifndef([AC_PACKAGE_URL],
 # them in two places making renames error prone, and where copies
 # might get out of sync.
 m4_define([AC_CONFIG_AUX_DIR],
-     m4_defn([AC_CONFIG_AUX_DIR])[AC_SUBST([aux_dir], ['${srcdir}/$1'])])
+     m4_defn([AC_CONFIG_AUX_DIR])[AC_SUBST([aux_dir], [$1])])
 m4_define([LT_CONFIG_LTDL_DIR],
-     m4_defn([LT_CONFIG_LTDL_DIR])[AC_SUBST([ltdl_dir], ['${srcdir}/$1'])])
+     m4_defn([LT_CONFIG_LTDL_DIR])[AC_SUBST([ltdl_dir], [$1])])
 m4_define([AC_CONFIG_MACRO_DIR],
-     m4_defn([AC_CONFIG_MACRO_DIR])[AC_SUBST([macro_dir], ['${srcdir}/$1'])])
+     m4_defn([AC_CONFIG_MACRO_DIR])[AC_SUBST([macro_dir], [$1])])
 
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.m4sh])
