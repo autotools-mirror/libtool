@@ -144,7 +144,7 @@ M4SH_GETOPTS(
   test -n "$env_warning" &&
     echo "$env_warning" |while read line; do func_warning "$line"; done
 
-  # validate $opt_nonrecursive, $opt_recursive and $ot_subproject
+  # validate $opt_nonrecursive, $opt_recursive and $opt_subproject
   if $opt_nonrecursive; then
     if $opt_recursive || $opt_subproject; then
       func_error "you can have at most one of --non-recursive, --recursive and --subproject"
