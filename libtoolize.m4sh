@@ -1060,6 +1060,7 @@ func_install_pkgmacro_files ()
 
     $require_ac_macro_dir
     $require_am_macro_dir
+    $require_configure_ac
     $require_macro_dir
 
     # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
@@ -1069,7 +1070,9 @@ func_install_pkgmacro_files ()
     if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
        test "x$macro_dir" != "x$subproject_macro_dir"
     then
-      func_install_pkgmacro_parent
+      # No point installing configure macros in the parent project when
+      # there's no $configure_ac to use them.
+      test -f "$configure_ac" && func_install_pkgmacro_parent
       func_install_pkgmacro_subproject
 
   # 2. Parent shares macro_dir with subproject ltdl:

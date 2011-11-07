@@ -19,6 +19,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     sed script.
   - Fix a long-standing bug in libtoolize, by outputting the `putting
     auxiliary files in' header with `libtoolize --ltdl --subproject'.
+  - Fix a long-standing bug in libtoolize subproject installation, by not
+    installing a set of autoconf macro files into the parent project if
+    there is no configure.ac present to use them.
   - The libtoolize subproject mode selector is now named `--subproject'
     and is equivalent to the implied `--subproject' mode when no other
     mode is selected; `--standalone' never worked, and is no longer
