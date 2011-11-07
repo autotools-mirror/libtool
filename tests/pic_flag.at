@@ -47,7 +47,7 @@ fi
 AT_CHECK([test "$at_srcdir" != . || exit 77])
 LT_AT_CONFIGURE([lt_cv_prog_compiler_pic="$C_pic_flag" ]dnl
 		[lt_cv_prog_compiler_pic_CXX="$CXX_pic_flag"],
-		["$abs_top_srcdir"/configure])
+		["$abs_top_srcdir"/configure --disable-silent-rules])
 : ${MAKE=make}
 AT_CHECK([$MAKE], [], [stdout], [ignore])
 AT_CHECK([if ./libtool --features | grep 'enable shared libraries'; then ]dnl
