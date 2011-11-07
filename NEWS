@@ -17,6 +17,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix a long-standing latent bug in libtoolize which could delete lines
     from libltdl/Makefile.am in recursive mode due to underquoting in a
     sed script.
+  - Fix a long-standing bug in libtoolize, by outputting the `putting
+    auxiliary files in' header with `libtoolize --ltdl --subproject'.
   - The libtoolize subproject mode selector is now named `--subproject'
     and is equivalent to the implied `--subproject' mode when no other
     mode is selected; `--standalone' never worked, and is no longer

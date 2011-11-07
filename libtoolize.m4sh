@@ -1225,6 +1225,8 @@ func_install_pkgconfig_subproject ()
       pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_aux_dir'."
     elif test -n "$aux_dir"; then
       pkgconfig_header="putting auxiliary files in \`$aux_dir'."
+    else
+      pkgconfig_header="putting auxiliary files in \`$subproject_aux_dir'."
     fi
 
     func_copy_some_files "$pkgconfig_files" \
