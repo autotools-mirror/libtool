@@ -460,12 +460,12 @@ pkgltdl_files	= COPYING.LIB \
 		  Makefile.in \
 		  Makefile.inc \
 		  README \
+		  configure.ac \
 		  aclocal.m4 \
 		  argz_.h \
 		  argz.c \
 		  config-h.in \
 		  configure \
-		  configure.ac \
 		  libltdl/lt__alloc.h \
 		  libltdl/lt__dirent.h \
 		  libltdl/lt__glibc.h \
