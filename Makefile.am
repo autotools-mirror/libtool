@@ -507,14 +507,14 @@ install-data-local: $(lt_Makefile_in)
 	for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_SCRIPT) "$(srcdir)/$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_SCRIPT) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 	@list='$(auxfiles)' && for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$(ltdl_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$(ltdl_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 ## install the libltdl files
 	@list='$(pkgltdl_files)' && for p in $$list; do \
