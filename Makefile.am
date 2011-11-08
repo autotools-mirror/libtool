@@ -51,7 +51,7 @@ LT_M4SH			= $(M4SH) -B '$(srcdir)/$(m4sh_dir)'
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
-git_version_gen = '$(SHELL)' '$(srcdir)/$(aux_dir)/git-version-gen' '.tarball-version'
+git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '.tarball-version'
 rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's,-.*$$,,g'`
 
 
