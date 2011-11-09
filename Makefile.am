@@ -440,7 +440,7 @@ $(libtoolize_1): $(libtoolize_in)
 ## ------------- ##
 
 ltdldir		= $(srcdir)/libltdl
-pkgauxdir	= $(pkgdatadir)/build-aux
+pkgauxdir	= $(pkgdatadir)/config
 
 # The timestamps on these files must be preserved carefully so we install,
 # uninstall and set executable with custom rules here.
@@ -503,18 +503,18 @@ install-data-local: $(lt_Makefile_in)
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$p" "$(DESTDIR)$(aclocaldir)/$$p"; \
 	done
 ## install the helper scripts
-	@list='config/extract-trace config/options-parser $(pkgaux_scripts)' && \
+	@list='extract-trace options-parser $(pkgaux_scripts)' && \
 	for p in $$list; do \
-	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_SCRIPT) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
+	  $(INSTALL_SCRIPT) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
 	done
-	@list='$(auxfiles)' && for p in $$list; do \
-	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	@list='$(pkgaux_data_files)' && for p in $$list; do \
+	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
 	done
 ## install the libltdl files
 	@list='$(pkgltdl_files)' && for p in $$list; do \
@@ -583,10 +583,15 @@ dist-hook: $(changelog) $(dotversion) $(readme)
 
 uninstall-hook:
 	@$(NORMAL_UNINSTALL)
-	@list='$(pkgltdl_files) $(pkgaux_scripts) $(pkgaux_data_files)'; \
+	@list='$(pkgltdl_files)'; \
 	for f in $$list; do \
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
+	done
+	@list='extract-trace options-parser $(pkgaux_scripts) $(pkgaux_data_files)'; \
+	for f in $$list; do \
+	  echo " rm -f '$(DESTDIR)$(pkgauxdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(pkgauxdir)/$$f"; \
 	done
 	@for p in $(pkgmacro_files); do \
 	  f=`echo "$$p" |$(SED) 's|^.*/||'`; \
