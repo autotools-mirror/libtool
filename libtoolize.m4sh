@@ -157,10 +157,19 @@ M4SH_GETOPTS(
 
 
 M4SH_VERBATIM([[
-# func_echo_once msg_var
-# Calls func_echo with the value of MSG_VAR, and then sets MSG_VAR="" so
-# that subsequent calls have no effect.
-func_echo_once ()
+# func_whisper arg...
+# Echo program name prefixed message unless $opt_quiet was given.
+func_whisper ()
+{
+    $debug_cmd
+
+    $opt_quiet || func_echo ${1+"$@"}
+}
+
+# func_whisper_once msg_var
+# Call func_whisper with the value of MSG_VAR, and then set MSG_VAR="" so
+# that subsequent calls will have no effect.
+func_whisper_once ()
 {
     $debug_cmd
 
@@ -168,10 +177,40 @@ func_echo_once ()
       eval my_msg=\$$1
 
       if test -n "$my_msg"; then
-        func_echo "$my_msg"
+        func_whisper "$my_msg"
         eval $1=""
       fi
     fi
+}
+
+
+# func_whisper_hdr msg_var arg...
+# With at least 1 non-empty ARG, call func_whisper_once with MSG_VAR,
+# and then func_whisper with the remaining arguments.
+func_whisper_hdr ()
+{
+    $debug_cmd
+
+    my_msg_var=$1; shift
+    test -n "$*" || return
+
+    func_whisper_once "$my_msg_var"
+    func_whisper "$*"
+}
+
+
+# func_whisper_error_hdr msg_var arg...
+# Much the same as func_whisper_header, but for (non-fatal) error
+# messages.
+func_whisper_error_hdr ()
+{
+    $debug_cmd
+
+    my_msg_var=$1; shift
+    test -n "$*" || return
+
+    func_whisper_once "$my_msg_var"
+    func_error "$*"
 }
 
 
@@ -242,8 +281,7 @@ func_copy_cb ()
       if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
            | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
 	 && touch "$my_destdir/$my_file"; then
-	$opt_quiet || func_echo_once "$my_msg_var"
-	$opt_quiet || func_echo "copying $my_copy_msg"
+	func_whisper_hdr "$my_msg_var" "copying $my_copy_msg"
 	copy_return_status=0
       fi
     else
@@ -251,21 +289,19 @@ func_copy_cb ()
 	if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
 	     | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1 ; }
 	then
-	  $opt_quiet || func_echo_once "$my_msg_var"
-	  $opt_quiet || func_echo "copying $my_copy_msg"
+	  func_whisper_hdr "$my_msg_var" "copying $my_copy_msg"
 	  copy_return_status=0
 	fi
       else
 	if $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
-	  $opt_quiet || func_echo_once "$my_msg_var"
-	  $opt_quiet || func_echo "linking $my_copy_msg"
+	  func_whisper_hdr "$my_msg_var" "linking $my_copy_msg"
 	  copy_return_status=0
 	fi
       fi
     fi
     if test "$copy_return_status" != 0; then
-      $opt_quiet || func_echo_once "$my_msg_var"
-      func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
+      func_whisper_error_hdr "$my_msg_var" \
+          "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
       exit_status=$EXIT_FAILURE
     fi
 }
@@ -288,15 +324,14 @@ func_copy_some_files ()
       if test -f "$my_srcdir/$my_filename"; then
         if test "X$my_copy_cb" = Xfunc_copy_cb; then
 	  $opt_force || if test -f "$my_destdir/$my_filename"; then
-	    $opt_quiet || func_echo_once "$my_msg_var"
-	    $opt_quiet \
-	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
+	    func_whisper_error_hdr "$my_msg_var" \
+	      "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
 	    continue
 	  fi
         fi
       else
-	func_echo_once "$my_msg_var"
-	func_fatal_error "\`$my_filename' not found in \`$my_srcdir'"
+	func_whisper_error_hdr "$my_msg_var" \
+	  "\`$my_filename' not found in \`$my_srcdir'"
       fi
 
       $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
@@ -346,7 +381,7 @@ func_fixup_Makefile ()
     esac
 
     $RM "$my_destdir/$my_filename" 2>/dev/null
-    $opt_quiet || func_echo "creating file \`$my_destdir/$my_filename'"
+    func_whisper "creating file \`$my_destdir/$my_filename'"
     if $opt_dry_run; then :;
     else
       $SED "$my_fixup_non_subpackage_script
@@ -615,9 +650,7 @@ func_serial_update ()
       func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
       my_return_status=$?
     elif $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
-      $opt_quiet || func_echo_once "$my_msg_var"
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
+      func_whisper_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
     fi
 
     # Do this after the copy for hand maintained `aclocal.m4', incase
@@ -638,8 +671,8 @@ func_serial_update ()
           func_serial_max \
               "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
           if test "X$my_src_serial" = "X$func_serial_max_result"; then
-              func_echo_once "$my_msg_var"
-	      func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
+	      func_whisper_hdr "$my_msg_var" \
+                "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
           fi
         fi
         ;;
@@ -688,8 +721,7 @@ func_keyword_update ()
     if $my_keyword_update_p || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
     elif $opt_verbose || $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
-      func_echo_once "$my_msg_var"
-      func_echo "\`$my_destfile' is already up to date."
+      func_whisper_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
     fi
 }
 
