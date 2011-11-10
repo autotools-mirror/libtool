@@ -213,9 +213,10 @@ func_copy ()
 
 
 # func_copy_cb filename srcdir destdir [msg_var]
-# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
-# then try to copy SRCFILE to DESTFILE (without changing the timestamp if
-# possible).
+# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE
+# fails, then try to copy SRCFILE to DESTFILE (making sure to update the
+# timestamp so that a series of files with dependencies can be copied
+# in the right order that their timestamps won't trigger rebuilds).
 func_copy_cb ()
 {
     $debug_cmd
