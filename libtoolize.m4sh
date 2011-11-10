@@ -67,8 +67,6 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # GNU @PACKAGE@ home page: <@PACKAGE_URL@>.
 # General help using GNU software: <http://www.gnu.org/gethelp/>.
 
-: ${TAR=tar}
-
 PROGRAM=libtoolize
 
 m4_divert_pop
@@ -112,8 +110,7 @@ M4SH_GETOPTS(
 	CP="func_echo_all $CP"
 	test -n "$LN_S" && LN_S="func_echo_all $LN_S"
 	MKDIR="func_echo_all $MKDIR"
-	RM="func_echo_all $RM"
-	TAR="func_echo_all $TAR"],
+	RM="func_echo_all $RM"],
   [q],		[--quiet|--automake],		[],			[],
   [v],		[--verbose],			[],			[],
   [],		[--no-warning|--no-warn],	[],			[],
@@ -211,131 +208,70 @@ func_whisper_error_hdr ()
 
     func_whisper_once "$my_msg_var"
     func_error "$*"
+
+    exit_status=$EXIT_FAILURE
 }
 
 
-# func_copy srcfile destfile [msg_var]
-# A wrapper for func_copy_cb that accepts arguments in the same order
-# as the cp(1) shell command.
-func_copy ()
-{
-    $debug_cmd
-
-    test -f "$1" || \
-      { func_error "\`$1' not copied:  not a regular file"; return 1; }
-
-    func_dirname_and_basename "$1"
-    my_f1=$func_basename_result
-
-    if test -d "$2"; then
-
-      func_copy_cb "$my_f1" \
-	`$ECHO "$1" | $SED "$dirname"` "$2" "$3"
-
-    else
-
-      # Supporting this would mean changing the timestamp:
-      func_dirname_and_basename "$2"
-      my_tname=$func_basename_result
-      test "X$my_f1" = "X$my_tname" \
-        || func_fatal_error "func_copy() cannot change filename on copy"
-
-      func_copy_cb "$my_f1" \
-        `$ECHO "$1" | $SED "$dirname"` \
-        `$ECHO "$2" | $SED "$dirname"` \
-	"$3"
-
-    fi
-
-    return $copy_return_status # set in func_copy_cb
-}
-
-
-# func_copy_cb filename srcdir destdir [msg_var]
+# func_copy filename srcdir destdir [msg_var]
 # If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE
 # fails, then try to copy SRCFILE to DESTFILE (making sure to update the
 # timestamp so that a series of files with dependencies can be copied
 # in the right order that their timestamps won't trigger rebuilds).
-func_copy_cb ()
+# MSG_VAR names a variable for use with func_whisper_hdr.
+func_copy ()
 {
     $debug_cmd
 
-    my_file="$1"
-    my_srcdir="$2"
-    my_destdir="$3"
-    my_msg_var="$4"
-    copy_return_status=1
+    my_filename=$1
+    my_srcdir=$2
+    my_destdir=$3
+    my_msg_var=$4
+
+    my_srcfile=$my_srcdir/$my_filename
+    my_destfile=$my_destdir/$my_filename
 
     # Libtool is probably misinstalled if this happens:
-    test -f "$my_srcdir/$my_file" ||
-        func_fatal_error "\`$my_file' not found in \`$my_srcdir'"
+    test -f "$my_srcfile" || {
+      func_whisper_error_hdr "$my_msg_var" "\`$my_srcfile' not found"
+      return 1
+    }
 
-    case $opt_verbose in
-      false) my_copy_msg="file \`$my_destdir/$my_file'"     ;;
-      *)     my_copy_msg="file from \`$my_srcdir/$my_file'" ;;
-    esac
-    func_mkdir_p `$ECHO "$my_destdir/$my_file" | $SED "$dirname"`
-
-    $RM "$my_destdir/$my_file"
-    if $opt_copy; then
-      if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
-           | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
-	 && touch "$my_destdir/$my_file"; then
-	func_whisper_hdr "$my_msg_var" "copying $my_copy_msg"
-	copy_return_status=0
-      fi
-    else
-      if test "$my_file" = "aclocal.m4"; then
-	if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
-	     | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1 ; }
-	then
-	  func_whisper_hdr "$my_msg_var" "copying $my_copy_msg"
-	  copy_return_status=0
-	fi
-      else
-	if $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
-	  func_whisper_hdr "$my_msg_var" "linking $my_copy_msg"
-	  copy_return_status=0
-	fi
-      fi
-    fi
-    if test "$copy_return_status" != 0; then
+    # Require --force to remove existing $my_destfile.
+    $opt_force && $RM "$my_destfile"
+    test -f "$my_destfile" && {
       func_whisper_error_hdr "$my_msg_var" \
-          "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
-      exit_status=$EXIT_FAILURE
+        "\`$my_destfile' exists: use \`--force' to overwrite"
+      return 1
+    }
+
+    # Be careful to support `func_copy dir/target srcbase destbase'.
+    func_dirname "$my_destfile"
+    func_mkdir_p "$func_dirname_result"
+
+    # Copy or link according to `--copy' option.
+    if $opt_copy; then
+      my_copycmd=$CP
+      my_copy_type=copying
+    else
+      my_copycmd=$LN_S
+      my_copy_type=linking
     fi
-}
+    my_copy_msg="$my_copy_type file \`$my_destfile'"
+    $opt_verbose && my_copy_msg="$my_copycmd $my_srcfile $my_destdir"
 
-
-# func_copy_some_files srcfile_list srcdir destdir [msg_var] [cb=func_copy_cb]
-# Call COPY_CB for each regular file in SRCDIR named by the space delimited
-# names in SRCFILE_LIST.
-func_copy_some_files ()
-{
-    $debug_cmd
-
-    my_srcfile_list="$1"
-    my_srcdir="$2"
-    my_destdir="$3"
-    my_msg_var="$4"
-    my_copy_cb="${5-func_copy_cb}"
-
-    for my_filename in $my_srcfile_list; do
-      if test -f "$my_srcdir/$my_filename"; then
-        if test "X$my_copy_cb" = Xfunc_copy_cb; then
-	  $opt_force || if test -f "$my_destdir/$my_filename"; then
-	    func_whisper_error_hdr "$my_msg_var" \
-	      "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
-	    continue
-	  fi
-        fi
-      else
-	func_whisper_error_hdr "$my_msg_var" \
-	  "\`$my_filename' not found in \`$my_srcdir'"
-      fi
-
-      $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
-    done
+    if $opt_dry_run || {
+        ( umask 0
+          $my_copycmd "$my_srcfile" "$my_destfile"
+        ) >/dev/null 2>&1
+      }
+    then
+      func_whisper_hdr "$my_msg_var" "$my_copy_msg"
+    else
+      func_whisper_error_hdr "$my_msg_var" \
+        "$my_copy_type \`$my_srcdir/$my_filename' to \`$my_destdir/' failed"
+      return 1
+    fi
 }
 
 
@@ -647,7 +583,8 @@ func_serial_update ()
     fi
 
     if $my_serial_update_p || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
+      $RM "$my_destfile"
+      func_copy "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
       my_return_status=$?
     elif $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
       func_whisper_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
@@ -719,7 +656,8 @@ func_keyword_update ()
     fi
 
     if $my_keyword_update_p || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
+      $RM "$my_destfile"
+      func_copy "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
     elif $opt_verbose || $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
       func_whisper_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
     fi
@@ -816,8 +754,9 @@ func_install_pkgmacro_subproject ()
       pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macro_dir'."
     fi
 
-    func_copy_some_files "$pkgmacro_files" \
-      "$aclocaldir" "$subproject_macro_dir" pkgmacro_header
+    for file in $pkgmacro_files; do
+      func_copy "$file" "$aclocaldir" "$subproject_macro_dir" pkgmacro_header
+    done
 }
 
 
@@ -948,18 +887,26 @@ func_install_pkgltdl_files ()
           test recursive = "$ltdl_mode" \
             && func_fixup_Makefile "$file" "$pkgltdldir" "$ltdl_dir"
           test subproject = "$ltdl_mode" \
-            && func_copy "$pkgltdldir/$file" "$ltdl_dir/$file" pkgltdl_header
+            && func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
           ;;
         Makefile.inc)
           test nonrecursive = "$ltdl_mode" \
             && func_fixup_Makefile "$file" "$pkgltdldir" "$ltdl_dir"
           ;;
-        aclocal.m4|config-h.in|configure|configure.ac)
+        aclocal.m4|configure)
+          # Always copy aclocal.m4 and configure, otherwise regenerating
+	  # them can overwrite the destination if they are symlinked.
+          test subproject = "$ltdl_mode" || continue
+          ( opt_copy=:
+            func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
+          )
+	  ;;
+        config-h.in|configure.ac)
           test subproject = "$ltdl_mode" \
-            && func_copy "$pkgltdldir/$file" "$ltdl_dir/$file" pkgltdl_header
+            && func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
           ;;
         *)
-          func_copy "$pkgltdldir/$file" "$ltdl_dir/$file" pkgltdl_header
+          func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
           ;;
       esac
     done
@@ -994,8 +941,9 @@ func_install_pkgaux_subproject ()
       pkgaux_header="putting auxiliary files in \`$subproject_aux_dir'."
     fi
 
-    func_copy_some_files "$pkgaux_files" \
-      "$pkgdatadir/config" "$ltdl_dir/config" pkgaux_header
+    for file in $pkgaux_files; do
+      func_copy "$file" "$pkgdatadir/config" "$ltdl_dir/config" pkgaux_header
+    done
 }
 
 
