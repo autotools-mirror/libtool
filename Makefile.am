@@ -337,11 +337,19 @@ include libltdl/Makefile.inc
 lt_aclocal_m4	= $(srcdir)/$(ltdl_dir)/aclocal.m4
 lt_config_h_in	= $(srcdir)/$(ltdl_dir)/config-h.in
 lt_configure	= $(srcdir)/$(ltdl_dir)/configure
+lt_configure_ac	= $(srcdir)/$(ltdl_dir)/configure.ac
 stamp_mk	= $(srcdir)/$(ltdl_dir)/stamp-mk
 
 lt_obsolete_m4	= $(srcdir)/$(macro_dir)/lt~obsolete.m4
 
-EXTRA_DIST     += $(stamp_mk) $(lt_obsolete_m4)
+EXTRA_DIST     += $(lt_aclocal_m4) \
+		  $(lt_configure) \
+		  $(lt_configure_ac) \
+		  $(lt_config_h_in) \
+		  $(lt_Makefile_am) \
+		  $(lt_Makefile_in) \
+		  $(lt_obsolete_m4) \
+		  $(stamp_mk)
 
 $(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
 	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOMAKE) Makefile

@@ -213,12 +213,13 @@ func_whisper_error_hdr ()
 }
 
 
-# func_copy filename srcdir destdir [msg_var]
+# func_copy filename srcdir destdir [msg_var [filter]]
 # If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE
 # fails, then try to copy SRCFILE to DESTFILE (making sure to update the
 # timestamp so that a series of files with dependencies can be copied
-# in the right order that their timestamps won't trigger rebuilds).
-# MSG_VAR names a variable for use with func_whisper_hdr.
+# in the right order that their timestamps won't trigger rebuilds). If
+# FILTER is non-empty, it is a sed script to apply to SRCFILE as it is
+# copied.  MSG_VAR names a variable for use with func_whisper_hdr.
 func_copy ()
 {
     $debug_cmd
@@ -227,6 +228,7 @@ func_copy ()
     my_srcdir=$2
     my_destdir=$3
     my_msg_var=$4
+    my_filter=$5
 
     my_srcfile=$my_srcdir/$my_filename
     my_destfile=$my_destdir/$my_filename
@@ -249,7 +251,28 @@ func_copy ()
     func_dirname "$my_destfile"
     func_mkdir_p "$func_dirname_result"
 
-    # Copy or link according to `--copy' option.
+    # Filters always take priority.
+    if test -n "$my_filter"; then
+      if $opt_dry_run || {
+          ( umask 0
+            $SED -e "$my_filter" "$my_srcfile" > "$my_destfile"
+          ) >/dev/null 2>&1
+        }
+      then
+        func_whisper_once "$my_msg_var"
+        if $opt_verbose; then
+          func_whisper "$SED -e '$my_filter' $my_srcfile > $my_destfile"
+         else
+          func_whisper "creating file \`$my_destfile'"
+         fi
+      else
+        func_whisper_error_hdr "$my_msg_var" "creating \`$my_destfile' from \`$my_srcfile' failed"
+        return 1
+      fi
+      return 0
+    fi
+
+    # Otherwise copy or link according to `--copy' option.
     if $opt_copy; then
       my_copycmd=$CP
       my_copy_type=copying
@@ -271,59 +294,6 @@ func_copy ()
       func_whisper_error_hdr "$my_msg_var" \
         "$my_copy_type \`$my_srcdir/$my_filename' to \`$my_destdir/' failed"
       return 1
-    fi
-}
-
-
-# func_fixup_Makefile srcfile srcdir destdir
-func_fixup_Makefile ()
-{
-    $debug_cmd
-
-    $require_ltdl_dir
-
-    my_filename="$1"
-    my_srcdir="$2"
-    my_destdir="$3"
-    my_fixup_non_subpackage_script='/^[^#]/{
-      s,(LIBOBJS),(ltdl_LIBOBJS),g
-      s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
-      s,libltdl/configure.ac,,
-      s,libltdl/configure,,
-      s,libltdl/aclocal.m4,,
-      s,libltdl/config-h.in,,
-      s,libltdl/Makefile.am,,
-      s,libltdl/Makefile.in,,
-      /^[	 ]*\\\\$/d
-    }'
-    case $my_filename in
-      Makefile.am)
-	my_fixup_non_subpackage_script=`echo "$my_fixup_non_subpackage_script" | \
-		sed 's,libltdl/,,'`
-	my_fixup_inc_paths_script= ;;
-      Makefile.inc)
-	repl=$ltdl_dir
-	repl_uscore=`$ECHO "$repl" | $SED 's,[/.+-],_,g'`
-	my_fixup_inc_paths_script="\
-	  s,libltdl_,@repl_uscore@_,
-	  s,libltdl/,@repl@/,
-	  s,: libltdl/,: @repl@/,
-	  s, -Ilibltdl , -I@repl@ ,
-	  s,\\\$(libltdl_,\$(@repl_uscore@_,
-	  s,)/libltdl ,)/@repl@ ,
-	  s,@repl_uscore@,${repl_uscore},g
-	  s,@repl@,${repl},g"
-	;;
-    esac
-
-    $RM "$my_destdir/$my_filename" 2>/dev/null
-    func_whisper "creating file \`$my_destdir/$my_filename'"
-    if $opt_dry_run; then :;
-    else
-      $SED "$my_fixup_non_subpackage_script
-	    $my_fixup_inc_paths_script" \
-	< "$my_srcdir/$my_filename" > "$my_destdir/$my_filename" ||
-	func_fatal_error "cannot create $my_destdir/$my_filename"
     fi
 }
 
@@ -880,35 +850,45 @@ func_install_pkgltdl_files ()
       pkgltdl_header="putting libltdl files in \`$ltdl_dir'."
     fi
 
+    $require_Makefile_am_filter
+    $require_Makefile_inc_filter
+
     # Copy ltdl sources appropriate to the requested ltdl_mode.
     for file in $pkgltdl_files; do
+      my_copy_filter=
       case $file in
         Makefile.am|Makefile.in)
-          test recursive = "$ltdl_mode" \
-            && func_fixup_Makefile "$file" "$pkgltdldir" "$ltdl_dir"
-          test subproject = "$ltdl_mode" \
-            && func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
+          case $ltdl_mode in
+            nonrecursive) continue ;;
+            recursive)    my_copy_filter=$Makefile_am_filter ;;
+            *)            ;; # fall through to unfiltered func_copy
+          esac
           ;;
+
         Makefile.inc)
-          test nonrecursive = "$ltdl_mode" \
-            && func_fixup_Makefile "$file" "$pkgltdldir" "$ltdl_dir"
+          test nonrecursive = "$ltdl_mode" || continue
+          my_copy_filter=$Makefile_inc_filter
           ;;
+
         aclocal.m4|configure)
           # Always copy aclocal.m4 and configure, otherwise regenerating
 	  # them can overwrite the destination if they are symlinked.
-          test subproject = "$ltdl_mode" || continue
-          ( opt_copy=:
-            func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
-          )
+          test subproject = "$ltdl_mode" && {
+            ( opt_copy=:
+              func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
+            )
+          }
+          continue
 	  ;;
+
         config-h.in|configure.ac)
-          test subproject = "$ltdl_mode" \
-            && func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
-          ;;
-        *)
-          func_copy "$file" "$pkgltdldir" "$ltdl_dir" pkgltdl_header
+          test subproject = "$ltdl_mode" || continue
           ;;
       esac
+
+      # Still here?  Copy the file then, with selected filters.
+      func_copy "$file" "$pkgltdldir" "$ltdl_dir" \
+        pkgltdl_header "$my_copy_filter"
     done
 }
 
@@ -1210,6 +1190,64 @@ func_autoconf_configure ()
 # used in preference to deriving the default. Call them using their
 # associated `require_*' variable to ensure that they are executed, at
 # most, once.
+
+
+# require_Makefile_am_filter
+# --------------------------
+# Set `Makefile_am_filter' ready for passing to func_copy when libltdl's
+# stock Makefile.am contents need to be filtered to work in recursive
+# mode.
+require_Makefile_am_filter=func_require_Makefile_am_filter
+func_require_Makefile_am_filter ()
+{
+    $debug_cmd
+
+    Makefile_am_filter='
+      /^[^#]/{
+        s,(LIBOBJS),(ltdl_LIBOBJS),g
+        s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
+      }'
+
+    require_Makefile_am_filter=:
+}
+
+
+# require_Makefile_inc_filter
+# ---------------------------
+# Set `Makefile_inc_filter' ready for passing to func_copy in order for
+# the contents of Makefile.inc to match the nonrecursive libltdl
+# directory into which it is copied.
+require_Makefile_inc_filter=func_require_Makefile_inc_filter
+func_require_Makefile_inc_filter ()
+{
+    $debug_cmd
+
+    $require_ltdl_dir
+
+    # Note that we strip comments right here, rather than rely on
+    # using a $SED that allows comments.
+    my_uscore=`$ECHO "$ltdl_dir" | $SED 's,[/.+-],_,g'`
+    Makefile_inc_filter=`$ECHO '
+      /^[^#]/{
+
+        # Use only libltdl conditional objects.
+        s,(LIBOBJS),(ltdl_LIBOBJS),g
+        s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
+
+        # Convert libltdl path and variable sections to $ltdl_dir.
+        s,libltdl_,@my_uscore@_,
+        s,libltdl/,@ltdl_dir@/,
+        s,: libltdl/,: @ltdl_dir@/,
+        s, -Ilibltdl , -I@ltdl_dir@ ,
+        s,\$(libltdl_,\$(@my_uscore@_,
+        s,)/libltdl ,)/@ltdl_dir@ ,
+        s,@my_uscore@,'"$my_uscore"',g
+        s,@ltdl_dir@,'"$ltdl_dir"',g
+
+      }' | $SED '/^[	 ]*#/d;/^$/d'`
+
+    require_Makefile_inc_filter=:
+}
 
 
 # require_ac_aux_dir

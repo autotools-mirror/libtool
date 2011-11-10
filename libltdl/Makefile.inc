@@ -126,12 +126,6 @@ CLEANFILES		       += libltdl/libltdl.la \
 CLEANFILES	       += $(LIBOBJS) $(LTLIBOBJS)
 
 EXTRA_DIST	       += libltdl/COPYING.LIB \
-			  libltdl/configure.ac \
-			  libltdl/Makefile.am \
-			  libltdl/aclocal.m4 \
-			  libltdl/Makefile.in \
-			  libltdl/configure \
-			  libltdl/config-h.in \
 			  libltdl/README
 
 ## --------------------------- ##
