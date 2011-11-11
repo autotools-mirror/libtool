@@ -1378,9 +1378,9 @@ func_require_aclocal_amflags ()
 {
     $debug_cmd
 
-    $require_makefile_am
+    $require_Makefile_am
 
-    test -n "$makefile_am" && {
+    test -n "$Makefile_am" && {
       _G_sed_extract_aclocal_amflags='s|#.*$||
         /^[	 ]*ACLOCAL_AMFLAGS[	 ]*=/ {
             s|^.*=[	 ]*\(.*\)|aclocal_amflags="\1"|
@@ -1388,7 +1388,7 @@ func_require_aclocal_amflags ()
         }'
 
       _G_aclocal_flags_cmd=`$SED -n "$_G_sed_extract_aclocal_amflags" \
-          "$makefile_am"`
+          "$Makefile_am"`
       eval "$_G_aclocal_flags_cmd"
 
       func_verbose "ACLOCAL_AMFLAGS='$aclocal_amflags'"
@@ -1542,24 +1542,24 @@ AC_CONFIG_MACRO_DIR([$ac_macro_dir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macro
 }
 
 
-# require_makefile_am
+# require_Makefile_am
 # -------------------
-# If not already set, set makefile_am to `Makefile.am' if that file is
+# If not already set, set Makefile_am to `Makefile.am' if that file is
 # present in the current directory.
-require_makefile_am=func_require_makefile_am
-func_require_makefile_am ()
+require_Makefile_am=func_require_Makefile_am
+func_require_Makefile_am ()
 {
     $debug_cmd
 
-    test -n "$makefile_am" || makefile_am=Makefile.am
+    test -n "$Makefile_am" || Makefile_am=Makefile.am
 
     if test -f Makefile.am; then
-      func_verbose "found \`$makefile_am'"
+      func_verbose "found \`$Makefile_am'"
     else
-      makefile_am=
+      Makefile_am=
     fi
 
-    require_makefile_am=:
+    require_Makefile_am=:
 }
 
 
