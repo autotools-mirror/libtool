@@ -221,9 +221,7 @@ func_normal_abspath ()
 }
 
 # func_relative_path SRCDIR DSTDIR
-# generates a relative path from SRCDIR to DSTDIR, with a trailing
-# slash if non-empty, suitable for immediately appending a filename
-# without needing to append a separator.
+# generates a relative path from SRCDIR to DSTDIR.
 #             value returned in "$func_relative_path_result"
 func_relative_path ()
 {
@@ -274,10 +272,9 @@ func_relative_path ()
   fi
 
   # Normalisation. If bindir is libdir, return empty string,
-  # else relative path ending with a slash; either way, target
-  # file name can be directly appended.
+  # else relative path.
   if test ! -z "$func_relative_path_result"; then
-    func_stripname './' '' "$func_relative_path_result/"
+    func_stripname './' '' "$func_relative_path_result"
     func_relative_path_result=$func_stripname_result
   fi
 }

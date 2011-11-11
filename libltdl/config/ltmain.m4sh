@@ -8621,7 +8621,7 @@ EOF
 	      if test "x$bindir" != x ;
 	      then
 		func_relative_path "$install_libdir" "$bindir"
-		tdlname=$func_relative_path_result$dlname
+		tdlname=$func_relative_path_result/$dlname
 	      else
 		# Otherwise fall back on heuristic.
 		tdlname=../bin/$dlname
