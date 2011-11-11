@@ -1190,6 +1190,106 @@ func_autoconf_configure ()
 # used in preference to deriving the default. Call them using their
 # associated `require_*' variable to ensure that they are executed, at
 # most, once.
+#
+# Some of the require functions are very similar, so we generate those
+# as this file is sourced. They look complicated, but they are the same
+# as normal function declarations wrapped in "eval '<definition>'", so
+# that embedded single quotes need to be escaped, and wherever a symbol
+# is generated, we drop out of the single quotes and expand a variable
+# that holds the symbol.
+#
+# After that, the rest appear in asciibetical order.
+
+base=
+p=
+
+  # require_Makefile_am
+  # -------------------
+  # If not already set, set Makefile_am to `Makefile.am' if that file is
+  # present in the current directory.
+  r=${base}Makefile_am
+  v=require_$r
+  f=func_$v
+  eval $v'='$f'
+  '$f' ()
+  {
+    $debug_cmd
+
+    test -n "$'$r'" || '$r'='$p'Makefile.am
+
+    if test -f "$'$r'"; then
+      func_verbose "found \`$'$r\''"
+    else
+      '$r'=
+    fi
+
+    '$v'=:
+  }'
+  # Some of these functions need to acquire the resource managed by the
+  # lexically preceding function; $o serves that purpose.
+  o=$r
+
+
+  # require_aclocal_amflags
+  # -----------------------
+  # Extract `$aclocal_amflags' from `Makefile.am' if present.
+  r=${base}aclocal_amflags
+  v=require_$r
+  f=func_$v
+  eval $v'='$f'
+  '$f' ()
+  {
+    $debug_cmd
+
+    $require_'$o'
+
+    test -n "$'$o'" && {
+      _G_sed_extract_aclocal_amflags='\''s|#.*$||
+        /^[	 ]*ACLOCAL_AMFLAGS[	 ]*=/ {
+            s|^.*=[	 ]*\(.*\)|'$r'="\1"|
+            p
+        }'\''
+
+      _G_aclocal_flags_cmd=`$SED -n "$_G_sed_extract_aclocal_amflags" \
+          "$'$o'"`
+      eval "$_G_aclocal_flags_cmd"
+
+      test -n "$'$r'" && func_verbose "'$r'='\$$r\''"
+    }
+
+    '$v'=:
+  }'
+  o=$r
+
+
+  # require_am_macro_dir
+  # --------------------
+  # Set am_macro_dir to the first directory specified in
+  # ACLOCAL_AMFLAGS from `Makefile.am'.
+  r=${base}am_macro_dir
+  v=require_$r
+  f=func_$v
+  eval $v'='$f'
+  '$f' ()
+  {
+    $debug_cmd
+
+    $require_'$o'
+
+    _G_minus_I_seen=false
+    for _G_arg in $'$o'; do
+      case $_G_minus_I_seen,$_G_arg in
+        :,*)   '$r'=$_G_arg; break ;;
+        *,-I)  _G_minus_I_seen=: ;;
+        *,-I*) '$r'=`expr x$_G_opt : '\''x-I\(.*\)$'\''`; break ;;
+      esac
+    done
+
+    test -n "$'$r'" && func_verbose "'$r'='\'\$$r\''"
+
+    '$v'=:
+  }'
+  o=$r
 
 
 # require_Makefile_am_filter
@@ -1370,57 +1470,6 @@ func_require_ac_macro_dir ()
 }
 
 
-# require_aclocal_amflags
-# -----------------------
-# Extract `$aclocal_amflags' from `Makefile.am' if present.
-require_aclocal_amflags=func_require_aclocal_amflags
-func_require_aclocal_amflags ()
-{
-    $debug_cmd
-
-    $require_Makefile_am
-
-    test -n "$Makefile_am" && {
-      _G_sed_extract_aclocal_amflags='s|#.*$||
-        /^[	 ]*ACLOCAL_AMFLAGS[	 ]*=/ {
-            s|^.*=[	 ]*\(.*\)|aclocal_amflags="\1"|
-            p
-        }'
-
-      _G_aclocal_flags_cmd=`$SED -n "$_G_sed_extract_aclocal_amflags" \
-          "$Makefile_am"`
-      eval "$_G_aclocal_flags_cmd"
-
-      func_verbose "ACLOCAL_AMFLAGS='$aclocal_amflags'"
-    }
-
-    require_aclocal_amflags=:
-}
-
-
-# require_am_macro_dir
-# --------------------
-# Set am_macro_dir to the first directory specified in ACLOCAL_AMFLAGS.
-require_am_macro_dir=func_require_am_macro_dir
-func_require_am_macro_dir ()
-{
-    $debug_cmd
-
-    $require_aclocal_amflags
-
-    _G_minus_I_seen=false
-    for _G_arg in $aclocal_amflags; do
-      case $_G_minus_I_seen,$_G_arg in
-        :,*)   am_macro_dir=$_G_arg; break ;;
-        *,-I)  _G_minus_I_seen=: ;;
-        *,-I*) am_macro_dir=`expr x$_G_opt : 'x-I\(.*\)$'`; break ;;
-      esac
-    done
-
-    require_am_macro_dir=:
-}
-
-
 # require_aux_dir
 # ---------------
 # Set aux_dir according to AC_CONFIG_AUX_DIR or else use the same
@@ -1539,27 +1588,6 @@ AC_CONFIG_MACRO_DIR([$ac_macro_dir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macro
     fi
 
     require_macro_dir=:
-}
-
-
-# require_Makefile_am
-# -------------------
-# If not already set, set Makefile_am to `Makefile.am' if that file is
-# present in the current directory.
-require_Makefile_am=func_require_Makefile_am
-func_require_Makefile_am ()
-{
-    $debug_cmd
-
-    test -n "$Makefile_am" || Makefile_am=Makefile.am
-
-    if test -f Makefile.am; then
-      func_verbose "found \`$Makefile_am'"
-    else
-      Makefile_am=
-    fi
-
-    require_Makefile_am=:
 }
 
 
