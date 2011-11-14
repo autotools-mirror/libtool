@@ -271,12 +271,13 @@ func_relative_path ()
     func_relative_path_result=${func_relative_path_result}/${func_stripname_result}
   fi
 
-  # Normalisation. If bindir is libdir, return empty string,
-  # else relative path.
+  # Normalisation. If bindir is libdir, return `.' else relative path.
   if test ! -z "$func_relative_path_result"; then
     func_stripname './' '' "$func_relative_path_result"
     func_relative_path_result=$func_stripname_result
   fi
+
+  test -n "$func_relative_path_result" || func_relative_path_result=.
 }
 
 # The name of this program:
