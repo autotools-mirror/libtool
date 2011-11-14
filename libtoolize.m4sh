@@ -1149,6 +1149,38 @@ func_autoconf_configure ()
 #
 # After that, the rest appear in asciibetical order.
 
+for base in aux_dir macro_dir; do
+
+  # require_ltdl_relative_aux_dir
+  # require_ltdl_relative_macro_dir
+  # -------------------------------
+  # Set ltdl_relative_aux_dir to the relative path from $ltdl_dir to
+  # the parent project auxiliary directory, and similarly for relative
+  # macro directory.
+  r=ltdl_relative_$base	# _r_esource acquired by calling this function
+  v=require_$r		# _v_ariable pointing to the function
+  f=func_$v		# _f_unction name
+  eval $v'='$f'
+  '$f' ()
+  {
+    $debug_cmd
+
+    $require_ltdl_dir
+    $require_'$base'
+
+    func_relative_path "$ltdl_dir" "$'$base'"
+    '$r'=$func_relative_path_result
+
+    test -n "$'$r'" && func_verbose "'$r'='\'\$$r\''"
+
+    '$v'=:
+  }'
+  # Some of these functions need to acquire the resource managed by the
+  # lexically preceding function; $o serves that purpose.
+  o=$r
+
+done
+
 for base in '' ltdl_; do
   if test ltdl_ = "$base"; then p='$pkgltdldir/'; else p=; fi
 
@@ -1158,9 +1190,9 @@ for base in '' ltdl_; do
   # If not already set, set Makefile_am to `Makefile.am' if that file is
   # present in the current directory, and similarly for
   # `$pkgltdldir/Makefile.am'.
-  r=${base}Makefile_am	# _r_esource acquired by calling this function
-  v=require_$r		# _v_ariable pointing to the function
-  f=func_$v		# _f_unction name
+  r=${base}Makefile_am
+  v=require_$r
+  f=func_$v
   eval $v'='$f'
   '$f' ()
   {
@@ -1176,8 +1208,6 @@ for base in '' ltdl_; do
 
     '$v'=:
   }'
-  # Some of these functions need to acquire the resource managed by the
-  # lexically preceding function; $o serves that purpose.
   o=$r
 
 
@@ -1577,27 +1607,6 @@ func_require_ltdl_mode ()
     func_verbose "ltdl mode='$ltdl_mode'"
 
     require_ltdl_mode=:
-}
-
-
-# require_ltdl_relative_macro_dir
-# -------------------------------
-# Set ltdl_relative_macro_dir to the relative path from $ltdl_dir to
-# the parent project macro directory.
-require_ltdl_relative_macro_dir=func_require_ltdl_relative_macro_dir
-func_require_ltdl_relative_macro_dir ()
-{
-    $debug_cmd
-
-    $require_ltdl_dir
-    $require_macro_dir
-
-    func_relative_path "$ltdl_dir" "$macro_dir"
-    ltdl_relative_macro_dir=$func_relative_path_result
-
-    func_verbose "relative ltdl macro_dir='$ltdl_relative_macro_dir'"
-
-    require_ltdl_relative_macro_dir=:
 }
 
 
