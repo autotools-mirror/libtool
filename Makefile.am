@@ -282,6 +282,7 @@ configure_edit = $(SED) \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@LN_S\@,$(LN_S),g' \
 	-e 's,@macro_dir\@,$(macro_dir),g' \
+	-e 's,@pkgauxdir\@,$(pkgauxdir),g' \
 	-e 's,@pkgaux_files\@,$(pkgaux_scripts) $(pkgaux_data_files),g' \
 	-e 's,@pkgaux_install_files\@,$(pkgaux_install_files),g' \
 	-e 's,@pkgaux_parent_files\@,$(pkgaux_parent_files),g' \

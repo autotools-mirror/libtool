@@ -877,7 +877,7 @@ func_install_pkgaux_subproject ()
     fi
 
     for file in $pkgaux_files; do
-      func_copy "$file" "$pkgdatadir/config" "$ltdl_dir/config" pkgaux_header
+      func_copy "$file" "$pkgauxdir" "$ltdl_dir/config" pkgaux_header
     done
 }
 
@@ -907,15 +907,11 @@ func_install_pkgaux_parent ()
     fi
 
     if $opt_install; then
-      func_config_update config.guess \
-        "$pkgdatadir/config" "$aux_dir" pkgaux_header
-      func_config_update config.sub \
-        "$pkgdatadir/config" "$aux_dir" pkgaux_header
-      func_install_update install-sh \
-        "$pkgdatadir/config" "$aux_dir" pkgaux_header
+      func_config_update config.guess "$pkgauxdir" "$aux_dir" pkgaux_header
+      func_config_update config.sub "$pkgauxdir" "$aux_dir" pkgaux_header
+      func_install_update install-sh "$pkgauxdir" "$aux_dir" pkgaux_header
     fi
-    func_ltmain_update ltmain.sh \
-      "$pkgdatadir/config" "$aux_dir" pkgaux_header
+    func_ltmain_update ltmain.sh "$pkgauxdir" "$aux_dir" pkgaux_header
 }
 
 
@@ -1717,21 +1713,22 @@ func_require_seen_libtool ()
   # Locations for important files:
   prefix=@prefix@
   datadir=@datadir@
-  pkgdatadir=@pkgdatadir@
+  pkgauxdir=@pkgauxdir@
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
 
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
+    pkgauxdir="$_lt_pkgdatadir/libltdl/config"
     pkgltdldir="$_lt_pkgdatadir/libltdl"
     pkgdatadir="$_lt_pkgdatadir/libltdl"
     aclocaldir="$_lt_pkgdatadir/m4"
   fi
+  func_nonemptydir_p pkgauxdir
   func_nonemptydir_p pkgltdldir
-  func_nonemptydir_p pkgdatadir
   func_nonemptydir_p aclocaldir
 
-  extract_trace=$pkgdatadir/config/extract-trace
+  extract_trace=$pkgauxdir/extract-trace
 
   $require_ltdl_dir
   case $ltdl_dir in
