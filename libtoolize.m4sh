@@ -657,7 +657,7 @@ func_serial_update ()
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
     my_included_files=`func_included_files aclocal.m4`
-    case `echo " $my_included_files " | $NL2SP` in
+    case `echo " "$my_included_files" "` in
 
       # Skip included files:
       *" $my_destfile "*) ;;
@@ -1647,19 +1647,6 @@ func_require_seen_libtool ()
   pkgdatadir=@pkgdatadir@
   pkgltdldir=@pkgdatadir@
   aclocaldir=@aclocaldir@
-
-  # test EBCDIC or ASCII
-  case `echo X|tr X '\101'` in
-   A) # ASCII based system
-      # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
-    SP2NL='tr \040 \012'
-    NL2SP='tr \015\012 \040\040'
-    ;;
-   *) # EBCDIC based system
-    SP2NL='tr \100 \n'
-    NL2SP='tr \r\n \100\100'
-    ;;
-  esac
 
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
