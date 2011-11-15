@@ -596,6 +596,8 @@ dist-hook: $(changelog) $(dotversion) $(readme)
 	  else :; fi; \
 	done
 
+distcheck-hook: syntax-check
+
 uninstall-hook:
 	@$(NORMAL_UNINSTALL)
 	@list='$(pkgltdl_files)'; \
