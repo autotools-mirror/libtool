@@ -79,14 +79,14 @@ func_get_config ()
 {
   $debug_cmd
 
-  my_varname_list="$1"
-  my_src="$2"
-  my_failp="false";  test -z "$3" || my_failp=:
-  my_regex="$4"
+  my_varname_list=$1
+  my_src=$2
+  my_failp=false;  test -z "$3" || my_failp=:
+  my_regex=$4
 
   my_exitp=false
   if test -z "$my_regex"; then
-    my_regex="^("
+    my_regex='^('
     my_build_regex=:
   else
     my_build_regex=false
@@ -97,7 +97,7 @@ func_get_config ()
     if $my_build_regex; then
       $my_first || my_regex="$my_regex|"
       my_first=false
-      my_regex="$my_regex$my_varname"
+      my_regex=$my_regex$my_varname
     fi
     eval $my_varname=NONE
   done
@@ -151,7 +151,7 @@ func_cd ()
 {
     $debug_cmd
 
-    my_dir="$1"
+    my_dir=$1
 
     # Maybe we have a VPATH build, in which case, create a new subdir.
     func_mkdir_p "$my_dir"
@@ -167,7 +167,7 @@ func_require ()
 {
     $debug_cmd
 
-    my_prereq="$1"; shift
+    my_prereq=$1; shift
     my_files=${1+"$@"}
 
     for my_file in $my_files; do
@@ -185,13 +185,13 @@ func_configure_nofail ()
     my_args=${1+"$@"}
     func_dirname_and_basename "`pwd`"
     my_dir=$func_basename_result
-    my_testdir="$abs_srcdir/tests/$my_dir"
+    my_testdir=$abs_srcdir/tests/$my_dir
     conf_status=$EXIT_FAILURE
 
     test -n "$my_args" && my_args=" $my_args"
-    my_args="--srcdir="\""$my_testdir"\"" --prefix="\""$prefix"\""$my_args"
-    test -n "$host_alias" && my_args="$my_args --host=\"$host_alias\""
-    test -n "$build_alias" && my_args="$my_args --build=\"$build_alias\""
+    my_args=--srcdir=\"$my_testdir\"" "--prefix=\"$prefix\"$my_args
+    test -n "$host_alias" && my_args=$my_args" "--host=\"$host_alias\"
+    test -n "$build_alias" && my_args=$my_args" "--build=\"$build_alias\"
 
     func_msg "Configuring in $my_dir"
 
@@ -225,8 +225,8 @@ func_check_static_shared ()
 {
     $debug_cmd
 
-    my_staticp="$1"
-    my_sharedp="$2"
+    my_staticp=$1
+    my_sharedp=$2
 
     if func_grep "^build_old_libs=$staticp" libtool &&
        func_grep "^build_libtool_libs=$sharedp" libtool; then :
@@ -302,7 +302,7 @@ func_exec_check ()
 {
     $debug_cmd
 
-    my_program="$1"
+    my_program=$1
 
     if test -f "$my_program"; then :
     else
@@ -319,13 +319,13 @@ func_exec ()
 {
     $debug_cmd
 
-    my_program="$1"
-    my_exp_output="$2"
+    my_program=$1
+    my_exp_output=$2
     func_dirname_and_basename "`pwd`"
     my_dir=$func_basename_result
 
     test -n "$my_exp_output" \
-      && my_exp_output="| $EGREP -e "\""$my_exp_output"\"
+      && my_exp_output="| $EGREP -e "\"$my_exp_output\"
 
     if eval $my_program $my_exp_output; then :
     else

@@ -164,7 +164,7 @@ func_whisper ()
 }
 
 # func_whisper_once msg_var
-# Call func_whisper with the value of MSG_VAR, and then set MSG_VAR="" so
+# Call func_whisper with the value of MSG_VAR, and then set MSG_VAR='' so
 # that subsequent calls will have no effect.
 func_whisper_once ()
 {
@@ -175,7 +175,7 @@ func_whisper_once ()
 
       if test -n "$my_msg"; then
         func_whisper "$my_msg"
-        eval $1=""
+        eval $1=
       fi
     fi
 }
@@ -321,7 +321,7 @@ func_included_files ()
 {
     $debug_cmd
 
-    my_searchfile="$1"
+    my_searchfile=$1
 
     my_include_regex=
     my_sed_include='
@@ -350,8 +350,8 @@ func_serial ()
 {
     $debug_cmd
 
-    my_filename="$1"
-    my_macro_regex="$2"
+    my_filename=$1
+    my_macro_regex=$2
     my_sed_serial='
 	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
 	    s,^# serial \([1-9][0-9.]*\).*$,\1,
@@ -390,8 +390,8 @@ func_serial_max ()
 {
     $debug_cmd
 
-    my_serial1="$1"
-    my_serial2="$2"
+    my_serial1=$1
+    my_serial2=$2
 
     my_sed_dot='s/\..*$//g'
     my_sed_rest='s/^[0-9][1-9]*\.*//'
@@ -413,16 +413,16 @@ func_serial_max ()
         && break
 
       test -z "$my_serial1_part" \
-        && { func_serial_max_result="$2"; break; }
+        && { func_serial_max_result=$2; break; }
 
       test -z "$my_serial2_part" \
-        && { func_serial_max_result="$1"; break; }
+        && { func_serial_max_result=$1; break; }
 
       test "$my_serial1_part" -gt "$my_serial2_part" \
-        && { func_serial_max_result="$1"; break; }
+        && { func_serial_max_result=$1; break; }
 
       test "$my_serial2_part" -gt "$my_serial1_part" \
-        && { func_serial_max_result="$2"; break; }
+        && { func_serial_max_result=$2; break; }
 
       my_serial1=`$ECHO "$my_serial1" | $SED "$my_sed_rest"`
       my_serial2=`$ECHO "$my_serial2" | $SED "$my_sed_rest"`
@@ -440,10 +440,10 @@ func_serial_update_check ()
     $require_ac_ltdl_dir
     $require_ac_macro_dir
 
-    my_srcfile="$1"
-    my_src_serial="$2"
-    my_destfile="$3"
-    my_dest_serial="$4"
+    my_srcfile=$1
+    my_src_serial=$2
+    my_destfile=$3
+    my_dest_serial=$4
     my_update_p=:
 
     if test -f "$my_destfile"; then
@@ -467,7 +467,7 @@ func_serial_update_check ()
       fi
     fi
 
-    func_serial_update_check_result="$my_update_p"
+    func_serial_update_check_result=$my_update_p
 }
 
 
@@ -480,8 +480,8 @@ func_aclocal_update_check ()
 
     my_filename=$1
 
-    my_srcfile="$aclocaldir/$1"
-    my_destfile="aclocal.m4"
+    my_srcfile=$aclocaldir/$1
+    my_destfile=aclocal.m4
 
     case $my_filename in
       libtool.m4)
@@ -508,7 +508,7 @@ func_aclocal_update_check ()
     func_serial_update_check \
       "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
 
-    func_aclocal_update_check_result="$func_serial_update_check_result"
+    func_aclocal_update_check_result=$func_serial_update_check_result
 }
 
 
@@ -521,17 +521,17 @@ func_serial_update ()
 {
     $debug_cmd
 
-    my_filename="$1"
-    my_srcdir="$2"
-    my_destdir="$3"
-    my_msg_var="$4"
-    my_macro_regex="$5"
-    my_old_macro_regex="$6"
+    my_filename=$1
+    my_srcdir=$2
+    my_destdir=$3
+    my_msg_var=$4
+    my_macro_regex=$5
+    my_old_macro_regex=$6
 
     my_serial_update_p=:
     my_return_status=1
-    my_srcfile="$my_srcdir/$my_filename"
-    my_destfile="$my_destdir/$my_filename"
+    my_srcfile=$my_srcdir/$my_filename
+    my_destfile=$my_destdir/$my_filename
 
     test -f "$my_srcfile" || func_fatal_error "\`$my_srcfile' does not exist."
 
@@ -549,7 +549,7 @@ func_serial_update ()
 
       func_serial_update_check \
         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_serial_update_p="$func_serial_update_check_result"
+      my_serial_update_p=$func_serial_update_check_result
     fi
 
     if $my_serial_update_p || $opt_force; then
@@ -597,14 +597,14 @@ func_keyword_update ()
 {
     $debug_cmd
 
-    my_filename="$1"
-    my_srcdir="$2"
-    my_destdir="$3"
-    my_sed_script="$4"
-    my_msg_var="$5"
+    my_filename=$1
+    my_srcdir=$2
+    my_destdir=$3
+    my_sed_script=$4
+    my_msg_var=$5
 
-    my_srcfile="$my_srcdir/$my_filename"
-    my_destfile="$my_destdir/$my_filename"
+    my_srcfile=$my_srcdir/$my_filename
+    my_destfile=$my_destdir/$my_filename
 
     my_keyword_update_p=:
 
@@ -622,7 +622,7 @@ func_keyword_update ()
 
       func_serial_update_check \
          "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_keyword_update_p="$func_serial_update_check_result"
+      my_keyword_update_p=$func_serial_update_check_result
     fi
 
     if $my_keyword_update_p || $opt_force; then
@@ -938,7 +938,7 @@ func_nonemptydir_p ()
 {
     $debug_cmd
 
-    my_dirvar="$1"
+    my_dirvar=$1
     my_dir=`eval echo "\\\$$my_dirvar"`
 
     # Is it a directory at all?
@@ -1007,7 +1007,7 @@ func_check_macros ()
     # Suggest using LTDL_INIT if appropriate:
     $opt_ltdl && if test x$seen_ltdl != x:; then
       case $ltdl_mode in
-	subproject) ltdl_init_args=""               ;;
+	subproject) ltdl_init_args=                 ;;
 	*)          ltdl_init_args="([$ltdl_mode])" ;;
       esac
       func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
@@ -1510,7 +1510,7 @@ func_require_aux_dir ()
         $require_ltdl_dir
         $require_ltdl_mode
 
-        test subproject = "$ltdl_mode" && aux_dir="$ltdl_dir"
+        test subproject = "$ltdl_mode" && aux_dir=$ltdl_dir
       }
     }
 
@@ -1672,7 +1672,7 @@ func_require_macro_dir ()
       $require_ltdl_dir
       $require_ltdl_mode
 
-      test subproject = "$ltdl_mode" && macro_dir="$ltdl_dir/m4"
+      test subproject = "$ltdl_mode" && macro_dir=$ltdl_dir/m4
     }
 
     # Use ./m4 as the last resort.
@@ -1753,17 +1753,17 @@ func_require_seen_libtool ()
   pkgmacro_files="@pkgmacro_files@"
 
   # Locations for important files:
-  prefix=@prefix@
-  datadir=@datadir@
-  pkgauxdir=@pkgauxdir@
-  pkgltdldir=@pkgdatadir@
-  aclocaldir=@aclocaldir@
+  prefix="@prefix@"
+  datadir="@datadir@"
+  pkgauxdir="@pkgauxdir@"
+  pkgltdldir="@pkgdatadir@"
+  aclocaldir="@aclocaldir@"
 
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
-    pkgauxdir="$_lt_pkgdatadir/build-aux"
-    pkgltdldir="$_lt_pkgdatadir/libltdl"
-    aclocaldir="$_lt_pkgdatadir/m4"
+    pkgauxdir=$_lt_pkgdatadir/build-aux
+    pkgltdldir=$_lt_pkgdatadir/libltdl
+    aclocaldir=$_lt_pkgdatadir/m4
   fi
   func_nonemptydir_p pkgauxdir
   func_nonemptydir_p pkgltdldir

@@ -52,23 +52,23 @@ for mode in compile link install; do
     preargs="$CC -c"
     preflag=
     match_preflag=
-    flag="-DVAR="
-    postargs="foo.c"
+    flag=-DVAR=
+    postargs=foo.c
     ;;
 
   link)
     preargs="$CC -o hell -g -O"
     preflag=-Wl,
-    match_preflag="$wl"
-    flag="-someflag="
-    postargs="foo.o"
+    match_preflag=$wl
+    flag=-someflag=
+    postargs=foo.o
     ;;
 
   install)
     preargs="install -c"
     preflag=
     match_preflag=
-    flag="--something="
+    flag=--something=
     postargs="hell /usr/local/bin/hell"
     ;;
   esac

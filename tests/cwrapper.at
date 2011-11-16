@@ -83,7 +83,7 @@ done
 # Test run-time activation of wrapper debugging.
 # This is not part of the loop above, because we
 # need to check, not ignore, the output.
-CFLAGS="$orig_CFLAGS"
+CFLAGS=$orig_CFLAGS
 LIBTOOL=$orig_LIBTOOL
 
 AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
@@ -178,7 +178,7 @@ done
 IFS=$save_IFS
 
 until $ECHO "PATH=$PATH" | grep 'PATH=.\{250\}'; do
-  PATH="$PATH$PATH_SEPARATOR$dirpath"
+  PATH=$PATH$PATH_SEPARATOR$dirpath
 done
 export PATH
 

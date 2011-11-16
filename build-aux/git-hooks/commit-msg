@@ -11,7 +11,7 @@ basename="$SED -e "'s|^.*/||'
 nl='
 '
 
-progpath="$0"
+progpath=$0
 progname=`$ECHO "$progpath" |$basename`
 
 log_file=$1

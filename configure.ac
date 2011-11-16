@@ -94,7 +94,7 @@ AM_SILENT_RULES([yes])
 # You can set autobuild_mode at configure time to specify a "unique"
 # string for this build.
 : ${autobuild_mode=default}
-AB_VERSION="AC_PACKAGE_VERSION"
+AB_VERSION='AC_PACKAGE_VERSION'
 AB_INIT([$autobuild_mode])
 
 

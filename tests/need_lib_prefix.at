@@ -151,7 +151,7 @@ AT_CHECK([case $LIBLTDL in #(
 esac], [], [ignore])
 
 CPPFLAGS="$LTDLINCL $CPPFLAGS"
-LDFLAGS="$LDFLAGS"
+LDFLAGS=$LDFLAGS
 
 # Skip this test when libraries are not normally prefixed with lib.
 # E.g., for MSVC and OS/2.

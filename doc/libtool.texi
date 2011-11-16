@@ -4757,15 +4757,15 @@ LTDL_INIT
 
 # The lt_dladvise_init symbol was added with libtool-2.2
 if test "x$with_included_ltdl" != "xyes"; then
-  save_CFLAGS="$CFLAGS"
-  save_LDFLAGS="$LDFLAGS"
+  save_CFLAGS=$CFLAGS
+  save_LDFLAGS=$LDFLAGS
   CFLAGS="$CFLAGS $LTDLINCL"
   LDFLAGS="$LDFLAGS $LIBLTDL"
   AC_CHECK_LIB([ltdl], [lt_dladvise_init],
                 [],
         [AC_MSG_ERROR([installed libltdl is too old])])
-  LDFLAGS="$save_LDFLAGS"
-  CFLAGS="$save_CFLAGS"
+  LDFLAGS=$save_LDFLAGS
+  CFLAGS=$save_CFLAGS
 fi
 @end example
 

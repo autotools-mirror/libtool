@@ -131,7 +131,7 @@ usage_message="\
 "
 
 # Additional text appended to `usage_message' in response to `--help'.
-long_help_message=""
+long_help_message=
 
 # Help message printed before fatal option parsing errors.
 fatal_help='Try \`$progname --help'\'' for more information.'
@@ -164,7 +164,7 @@ EXIT_SKIP=77      # $? = 77 is used to indicate a skipped test to automake.
 # putting `$debug_cmd' at the start of all your functions, you can get
 # bash to show function call trace with:
 #    debug_cmd='eval echo "${FUNCNAME[0]} $*" >&2' bash bootstrap
-debug_cmd="${debug_cmd-:}"
+debug_cmd=${debug_cmd-":"}
 exit_cmd=:
 
 dirname="$SED -e "'s|/[^/]*$||'
@@ -178,7 +178,7 @@ nl='
 # the _XPG environment variable is not equal to 1 (one), the special
 # positional parameter $0, within a function call, is the name of the
 # function.
-progpath="$0"
+progpath=$0
 
 # The name of this program.
 progname=`echo "$progpath" |$basename`
@@ -272,7 +272,7 @@ func_run_hooks ()
       *) func_fatal_error "\`$1' does not support hook funcions.n" ;;
     esac
 
-    eval _G_hook_fns="\$$1_hooks"; shift
+    eval _G_hook_fns=\$$1_hooks; shift
 
     for _G_hook in $_G_hook_fns; do
       eval $_G_hook '"$@"'
@@ -303,7 +303,7 @@ func_run_hooks ()
 #        $debug_cmd
 #
 #        # Extend the existing usage message.
-#        usage_message="$usage_message"'
+#        usage_message=$usage_message'
 #      -s, --silent       don'\''t print informational messages
 #    '
 #
@@ -376,7 +376,7 @@ func_options ()
         ${func_validate_options_result+"$func_validate_options_result"}
 
     # save modified positional parameters for caller
-    func_options_result="$func_run_hooks_result"
+    func_options_result=$func_run_hooks_result
 }
 
 
@@ -638,7 +638,7 @@ func_quote_for_eval ()
         *[\\\`\"\$]*)
           _G_unquoted_arg=`printf '%s\n' "$1" |$SED "$_G_sed_quote_subst"` ;;
         *)
-          _G_unquoted_arg="$1" ;;
+          _G_unquoted_arg=$1 ;;
       esac
 
       case $_G_unquoted_arg in
@@ -648,10 +648,10 @@ func_quote_for_eval ()
         # Many Bourne shells cannot handle close brackets correctly
         # in scan sets, so we specify it separately.
         *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-          _G_quoted_arg="\"$_G_unquoted_arg\""
+          _G_quoted_arg=\"$_G_unquoted_arg\"
           ;;
         *)
-          _G_quoted_arg="$_G_unquoted_arg" ;;
+          _G_quoted_arg=$_G_unquoted_arg ;;
       esac
       test -n "$func_quote_for_eval_result" \
           && func_append func_quote_for_eval_result " "
@@ -675,7 +675,7 @@ then
       func_split_equals_lhs=${1%%=*}
       func_split_equals_rhs=${1#*=}
       test "x$func_split_equals_lhs" = "x$1" \
-        && func_split_equals_rhs=""
+        && func_split_equals_rhs=
   }'
 else
   # ...otherwise fall back to using expr, which is often a shell builtin.
@@ -684,7 +684,7 @@ else
       $debug_cmd
 
       func_split_equals_lhs=`expr "x$1" : 'x\([^=]*)'`
-      func_split_equals_rhs=""
+      func_split_equals_rhs=
       test "x$func_split_equals_lhs" = "x$1" \
         || func_split_equals_rhs=`expr "x$1" : 'x[^=]*=\(.*\)$'`
   }

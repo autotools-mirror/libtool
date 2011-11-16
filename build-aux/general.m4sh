@@ -39,7 +39,7 @@ m4_divert_pop([KILL])M4SH_IN_HEADER([dnl
 # the _XPG environment variable is not equal to 1 (one), the special
 # positional parameter $0, within a function call, is the name of the
 # function.
-progpath="$0"
+progpath=$0
 ])
 
 M4SH_VERBATIM([[
@@ -70,8 +70,8 @@ lt_nl='
 '
 IFS="	 $lt_nl"
 
-dirname="s,/[^/]*$,,"
-basename="s,^.*/,,"
+dirname='s,/[^/]*$,,'
+basename='s,^.*/,,'
 
 # func_dirname file append nondir_replacement
 # Compute the dirname of FILE.  If nonempty, add APPEND to the result,
@@ -80,9 +80,9 @@ func_dirname ()
 {
     func_dirname_result=`$ECHO "${1}" | $SED "$dirname"`
     if test "X$func_dirname_result" = "X${1}"; then
-      func_dirname_result="${3}"
+      func_dirname_result=${3}
     else
-      func_dirname_result="$func_dirname_result${2}"
+      func_dirname_result=$func_dirname_result${2}
     fi
 } # func_dirname may be replaced by extended shell implementation
 
@@ -111,9 +111,9 @@ func_dirname_and_basename ()
     # Extract subdirectory from the argument.
     func_dirname_result=`$ECHO "${1}" | $SED -e "$dirname"`
     if test "X$func_dirname_result" = "X${1}"; then
-      func_dirname_result="${3}"
+      func_dirname_result=${3}
     else
-      func_dirname_result="$func_dirname_result${2}"
+      func_dirname_result=$func_dirname_result${2}
     fi
     func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
 } # func_dirname_and_basename may be replaced by extended shell implementation
@@ -290,24 +290,24 @@ case $progpath in
   *[\\/]*)
      progdir=$func_dirname_result
      progdir=`cd "$progdir" && pwd`
-     progpath="$progdir/$progname"
+     progpath=$progdir/$progname
      ;;
   *)
-     save_IFS="$IFS"
+     save_IFS=$IFS
      IFS=${PATH_SEPARATOR-:}
      for progdir in $PATH; do
-       IFS="$save_IFS"
+       IFS=$save_IFS
        test -x "$progdir/$progname" && break
      done
-     IFS="$save_IFS"
+     IFS=$save_IFS
      test -n "$progdir" || progdir=`pwd`
-     progpath="$progdir/$progname"
+     progpath=$progdir/$progname
      ;;
 esac
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-Xsed="${SED}"' -e 1s/^X//'
+Xsed="$SED -e 1s/^X//"
 sed_quote_subst='s/\([`"$\\]\)/\\\1/g'
 
 # Same as above, but do not quote variable references.
@@ -420,21 +420,21 @@ func_grep ()
 # Make sure the entire path to DIRECTORY-PATH is available.
 func_mkdir_p ()
 {
-    my_directory_path="$1"
+    my_directory_path=$1
     my_dir_list=
 
     if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
 
       # Protect directory names starting with `-'
       case $my_directory_path in
-        -*) my_directory_path="./$my_directory_path" ;;
+        -*) my_directory_path=./$my_directory_path ;;
       esac
 
       # While some portion of DIR does not yet exist...
       while test ! -d "$my_directory_path"; do
         # ...make a list in topmost first order.  Use a colon delimited
 	# list incase some portion of path contains whitespace.
-        my_dir_list="$my_directory_path:$my_dir_list"
+        my_dir_list=$my_directory_path:$my_dir_list
 
         # If the last portion added has no slash in it, the list is done
         case $my_directory_path in */*) ;; *) break ;; esac
@@ -444,15 +444,15 @@ func_mkdir_p ()
       done
       my_dir_list=`$ECHO "$my_dir_list" | $SED 's,:*$,,'`
 
-      save_mkdir_p_IFS="$IFS"; IFS=':'
+      save_mkdir_p_IFS=$IFS; IFS=:
       for my_dir in $my_dir_list; do
-	IFS="$save_mkdir_p_IFS"
+	IFS=$save_mkdir_p_IFS
         # mkdir can fail with a `File exist' error if two processes
         # try to create one of the directories concurrently.  Don't
         # stop in that case!
         $MKDIR "$my_dir" 2>/dev/null || :
       done
-      IFS="$save_mkdir_p_IFS"
+      IFS=$save_mkdir_p_IFS
 
       # Bail out if we (or some other process) failed to create a directory.
       test -d "$my_directory_path" || \
@@ -467,11 +467,11 @@ func_mkdir_p ()
 # given, STRING is the basename for that directory.
 func_mktempdir ()
 {
-    my_template="${TMPDIR-/tmp}/${1-$progname}"
+    my_template=${TMPDIR-/tmp}/${1-$progname}
 
     if test "$opt_dry_run" = ":"; then
       # Return a directory name, but don't create it in dry-run mode
-      my_tmpdir="${my_template}-$$"
+      my_tmpdir=${my_template}-$$
     else
 
       # If mktemp works, use that first and foremost
@@ -479,7 +479,7 @@ func_mktempdir ()
 
       if test ! -d "$my_tmpdir"; then
         # Failing that, at least try and use $RANDOM to avoid a race
-        my_tmpdir="${my_template}-${RANDOM-0}$$"
+        my_tmpdir=${my_template}-${RANDOM-0}$$
 
         save_mktempdir_umask=`umask`
         umask 0077
@@ -508,7 +508,7 @@ func_quote_for_eval ()
       *[\\\`\"\$]*)
 	func_quote_for_eval_unquoted_result=`$ECHO "$1" | $SED "$sed_quote_subst"` ;;
       *)
-        func_quote_for_eval_unquoted_result="$1" ;;
+        func_quote_for_eval_unquoted_result=$1 ;;
     esac
 
     case $func_quote_for_eval_unquoted_result in
@@ -518,10 +518,10 @@ func_quote_for_eval ()
       # Many Bourne shells cannot handle close brackets correctly
       # in scan sets, so we specify it separately.
       *[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*@:>@*|"")
-        func_quote_for_eval_result="\"$func_quote_for_eval_unquoted_result\""
+        func_quote_for_eval_result=\"$func_quote_for_eval_unquoted_result\"
         ;;
       *)
-        func_quote_for_eval_result="$func_quote_for_eval_unquoted_result"
+        func_quote_for_eval_result=$func_quote_for_eval_unquoted_result
     esac
 }
 
@@ -536,7 +536,7 @@ func_quote_for_expand ()
 	my_arg=`$ECHO "$1" | $SED \
 	    -e "$double_quote_subst" -e "$sed_double_backslash"` ;;
       *)
-        my_arg="$1" ;;
+        my_arg=$1 ;;
     esac
 
     case $my_arg in
@@ -545,11 +545,11 @@ func_quote_for_expand ()
       # Many Bourne shells cannot handle close brackets correctly
       # in scan sets, so we specify it separately.
       *[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*@:>@*|"")
-        my_arg="\"$my_arg\""
+        my_arg=\"$my_arg\"
         ;;
     esac
 
-    func_quote_for_expand_result="$my_arg"
+    func_quote_for_expand_result=$my_arg
 }
 
 
@@ -559,8 +559,8 @@ func_quote_for_expand ()
 # is given, then evaluate it.
 func_show_eval ()
 {
-    my_cmd="$1"
-    my_fail_exp="${2-:}"
+    my_cmd=$1
+    my_fail_exp=${2-':'}
 
     ${opt_silent-false} || {
       func_quote_for_expand "$my_cmd"
@@ -583,8 +583,8 @@ func_show_eval ()
 # is given, then evaluate it.  Use the saved locale for evaluation.
 func_show_eval_locale ()
 {
-    my_cmd="$1"
-    my_fail_exp="${2-:}"
+    my_cmd=$1
+    my_fail_exp=${2-':'}
 
     ${opt_silent-false} || {
       func_quote_for_expand "$my_cmd"

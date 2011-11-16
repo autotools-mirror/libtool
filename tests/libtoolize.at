@@ -696,7 +696,7 @@ LT_AT_ACLOCAL([-I $abs_top_srcdir/m4])
 : ${GREP="grep"}
 : ${SED="sed"}
 
-basename="s,^.*/,,"
+basename="$SED -e s,^.*/,,"
 
 # func_grep expression filename
 # Check whether EXPRESSION matches any line of FILENAME, without output.
@@ -710,8 +710,8 @@ func_grep ()
 # comment line must also match MACRO_REGEX, if given.
 func_serial ()
 {
-    my_filename="$1"
-    my_macro_regex="$2"
+    my_filename=$1
+    my_macro_regex=$2
     my_sed_serial='
 	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
 	    s,^# serial \([1-9][0-9.]*\).*$,\1,
@@ -724,7 +724,7 @@ func_serial ()
     my_serial=
     if test -z "$my_macro_regex" ||
        test "$my_filename" = aclocal.m4 ||
-       test "$my_macro_regex" = `echo "$my_filename" | $SED "$basename"` ||
+       test "$my_macro_regex" = `echo "$my_filename" | $basename` ||
        func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_filename"
     then
       my_serial=`$SED -e "$my_sed_serial" "$my_filename"`
@@ -1003,7 +1003,7 @@ AT_SETUP([LIBTOOLIZE_OPTIONS])
 
 _LT_CONFIGURE_AC
 
-LIBTOOLIZE_OPTIONS="narf"
+LIBTOOLIZE_OPTIONS=narf
 export LIBTOOLIZE_OPTIONS
 
 AT_DATA(experr,

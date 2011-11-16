@@ -50,7 +50,7 @@ AC_PROG_CC
 LT_INIT([dlopen])
 AC_SUBST(LIBTOOL_DEPS)
 
-STATIC=""
+STATIC=
 test "X$enable_static" = Xyes && STATIC="-static"
 AC_SUBST([STATIC])
 

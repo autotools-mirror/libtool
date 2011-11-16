@@ -60,6 +60,26 @@ sc_trailing_blank-non-rfc3676:
 	halt='found trailing blank(s)'					\
 	  $(_sc_search_regexp)
 
+# Avoid useless quotes around assignments with no shell metacharacters.
+# Backtick and dollar expansions are not resplit on the RHS of an
+# assignment, so those metachars are not listed in the prohibit regex,
+# although @ is listed, since it most likely indicates that something
+# will be spliced in before the shell executes, and it may need to be
+# quoted if it contains any metacharacters after splicing.
+define _sc_search_regexp_or_exclude
+  files=$$($(VC_LIST_EXCEPT));						\
+  if test -n "$$files"; then						\
+    grep -nE "$$prohibit" $$files | grep -v '## exclude from $@'	\
+      && { msg="$$halt" $(_sc_say_and_exit) } || :;			\
+  else :;								\
+  fi || :;
+endef
+
+sc_useless_quotes_in_assignment:
+	@prohibit='^[	 ]*[A-Za-z_][A-Za-z0-9_]*="[^	 !#&()*;<>?@~^{|}]*"$$'	\
+	halt='found spurious quotes around assignment value'		\
+	  $(_sc_search_regexp_or_exclude)
+
 # Avoid useless quotes around case arguments such as:
 #   case "$foo" in ...
 exclude_file_name_regexp--sc_useless_quotes_in_case = ^cfg.mk$$

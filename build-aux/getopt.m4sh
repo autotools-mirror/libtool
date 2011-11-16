@@ -385,15 +385,15 @@ m4_define([_m4go_option],
 [			test [$]# = 0 && func_missing_arg $opt && break
 ])m4_n(m4_bmatch([$3],
     [\^],      [			func_quote_for_eval "[$]1"
-			optarg="$func_quote_for_eval_result"],
-    [[?!;+@]], [			optarg="[$]1"]))[]dnl
+			optarg=$func_quote_for_eval_result],
+    [[?!;+@]], [			optarg=[$]1]))[]dnl
 m4_n(m4_bmatch([$3],
     [+],       [			$1_num=`expr 1 + ${$1_num-0}`
 			eval $1_${$1_num}=\"$optarg\"],
     [?],       [m4_bmatch([$3],
                     [@], [m4go_expand([m4go_optional_file_arg([$1])])],
                          [m4go_expand([m4go_optional_arg([$1])])])],
-    [[!@]],    [			$1="$optarg"],
+    [[!@]],    [			$1=$optarg],
     [;],       [			$1="${$1+[$]$1
 }$optarg"],
     [~],       [			$1=false],
@@ -422,7 +422,7 @@ m4_define([m4go_optional_arg],
 [			if test [$]# -gt 0; then
 			    case $optarg in # ((
 			        -*) ;;
-			        *) $1="$optarg"; shift ;;
+			        *) $1=$optarg; shift ;;
 			    esac
 			fi])
 
@@ -444,7 +444,7 @@ m4_define([m4go_optional_file_arg],
 [			if test [$]# -gt 0; then
 			    case $optarg in # ((
 			        -*) ;;
-			        *)  $1="$optarg"
+			        *)  $1=$optarg
 			            test -r "$optarg" || {
 			                func_error "$opt: cannot read file \`$optarg'."
 			                exit_cmd=exit
@@ -465,7 +465,7 @@ m4_define([m4go_optional_file_arg],
 m4_define([m4go_printopts],
 [
 # Option defaults:
-debug_cmd="${debug_cmd-:}"
+debug_cmd=${debug_cmd-':'}
 m4go_defaults
 
 # Parse options once, thoroughly.  This comes as soon as possible in the
@@ -473,7 +473,7 @@ m4go_defaults
 {
   # this just eases exit handling
   while test [$]# -gt 0; do
-    opt="[$]1"
+    opt=[$]1
     shift
     case $opt in
       --debug|-x)	debug_cmd='set -x'

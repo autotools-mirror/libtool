@@ -38,7 +38,7 @@ EXIT_FAILURE=1
 # the _XPG environment variable is not equal to 1 (one), the special
 # positional parameter $0, within a function call, is the name of the
 # function.
-progpath="$0"
+progpath=$0
 
 # The name of this program:
 progname=`echo "$progpath" |sed 's|^.*/||'`

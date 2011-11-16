@@ -172,14 +172,14 @@ AC_ARG_ENABLE([shared],
     *)
       enable_shared=no
       # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
+      lt_save_ifs=$IFS; IFS=${IFS}$PATH_SEPARATOR,
       for pkg in $enableval; do
-	IFS="$lt_save_ifs"
+	IFS=$lt_save_ifs
 	if test "X$pkg" = "X$p"; then
 	  enable_shared=yes
 	fi
       done
-      IFS="$lt_save_ifs"
+      IFS=$lt_save_ifs
       ;;
     esac],
     [enable_shared=]_LT_ENABLE_SHARED_DEFAULT)
@@ -226,14 +226,14 @@ AC_ARG_ENABLE([static],
     *)
      enable_static=no
       # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
+      lt_save_ifs=$IFS; IFS=${IFS}$PATH_SEPARATOR,
       for pkg in $enableval; do
-	IFS="$lt_save_ifs"
+	IFS=$lt_save_ifs
 	if test "X$pkg" = "X$p"; then
 	  enable_static=yes
 	fi
       done
-      IFS="$lt_save_ifs"
+      IFS=$lt_save_ifs
       ;;
     esac],
     [enable_static=]_LT_ENABLE_STATIC_DEFAULT)
@@ -280,14 +280,14 @@ AC_ARG_ENABLE([fast-install],
     *)
       enable_fast_install=no
       # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
+      lt_save_ifs=$IFS; IFS=${IFS}$PATH_SEPARATOR,
       for pkg in $enableval; do
-	IFS="$lt_save_ifs"
+	IFS=$lt_save_ifs
 	if test "X$pkg" = "X$p"; then
 	  enable_fast_install=yes
 	fi
       done
-      IFS="$lt_save_ifs"
+      IFS=$lt_save_ifs
       ;;
     esac],
     [enable_fast_install=]_LT_ENABLE_FAST_INSTALL_DEFAULT)
@@ -334,14 +334,14 @@ m4_define([_LT_WITH_PIC],
     *)
       pic_mode=default
       # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
+      lt_save_ifs=$IFS; IFS=${IFS}$PATH_SEPARATOR,
       for lt_pkg in $withval; do
-	IFS="$lt_save_ifs"
+	IFS=$lt_save_ifs
 	if test "X$lt_pkg" = "X$lt_p"; then
 	  pic_mode=yes
 	fi
       done
-      IFS="$lt_save_ifs"
+      IFS=$lt_save_ifs
       ;;
     esac],
     [pic_mode=default])

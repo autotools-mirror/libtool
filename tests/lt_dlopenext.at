@@ -219,7 +219,7 @@ eval shared_ext=\"$shrext_cmds\"
 if test -n "$shared_ext"; then
   have_lafile="with without"
 else
-  have="with"
+  have=with
 fi
 
 if test "$shlibpath_var" = PATH; then

@@ -104,7 +104,7 @@ AC_SUBST([LTDLDEPS])
 AC_SUBST([LTDLINCL])
 
 # For backwards non-gettext consistent compatibility...
-INCLTDL="$LTDLINCL"
+INCLTDL=$LTDLINCL
 AC_SUBST([INCLTDL])
 ])# _LTDL_CONVENIENCE
 
@@ -147,10 +147,10 @@ dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 # Code shared by LTDL_INSTALLABLE and LTDL_INIT([installable]).
 m4_defun([_LTDL_INSTALLABLE],
 [if test -f $prefix/lib/libltdl.la; then
-  lt_save_LDFLAGS="$LDFLAGS"
+  lt_save_LDFLAGS=$LDFLAGS
   LDFLAGS="-L$prefix/lib $LDFLAGS"
   AC_CHECK_LIB([ltdl], [lt_dlinit], [lt_lib_ltdl=yes])
-  LDFLAGS="$lt_save_LDFLAGS"
+  LDFLAGS=$lt_save_LDFLAGS
   if test x"${lt_lib_ltdl-no}" = xyes; then
     if test x"$enable_ltdl_install" != xyes; then
       # Don't overwrite $prefix/lib/libltdl.la without --enable-ltdl-install
@@ -166,7 +166,7 @@ fi
 # with --disable-ltdl-install, we will install the shipped libltdl.
 case $enable_ltdl_install in
   no) ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
-      LIBLTDL="-lltdl"
+      LIBLTDL=-lltdl
       LTDLDEPS=
       LTDLINCL=
       ;;
@@ -183,7 +183,7 @@ AC_SUBST([LTDLDEPS])
 AC_SUBST([LTDLINCL])
 
 # For backwards non-gettext consistent compatibility...
-INCLTDL="$LTDLINCL"
+INCLTDL=$LTDLINCL
 AC_SUBST([INCLTDL])
 ])# LTDL_INSTALLABLE
 
@@ -197,8 +197,8 @@ m4_if(_LTDL_DIR, [],
     dnl if _LTDL_MODE was not set already, the default value is `subproject':
     [m4_case(m4_default(_LTDL_MODE, [subproject]),
 	  [subproject], [AC_CONFIG_SUBDIRS(_LTDL_DIR)
-			  _LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
-	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"; lt_libobj_prefix="$lt_ltdl_dir/"])],
+			  _LT_SHELL_INIT([lt_dlopen_dir=$lt_ltdl_dir])],
+	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir=$lt_ltdl_dir; lt_libobj_prefix=$lt_ltdl_dir/])],
 	  [recursive], [],
 	[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])dnl
 dnl Be careful not to expand twice:
@@ -312,10 +312,10 @@ case ,$with_included_ltdl,$with_ltdl_include,$with_ltdl_lib, in
   *)	with_included_ltdl=no
 	LIBLTDL="-L$with_ltdl_lib -lltdl"
 	LTDLDEPS=
-	LTDLINCL="-I$with_ltdl_include"
+	LTDLINCL=-I$with_ltdl_include
 	;;
 esac
-INCLTDL="$LTDLINCL"
+INCLTDL=$LTDLINCL
 
 # Report our decision...
 AC_MSG_CHECKING([where to find libltdl headers])
@@ -579,7 +579,7 @@ dnl AC_DEFUN([AC_LTDL_SHLIBEXT], [])
 AC_DEFUN([LT_SYS_MODULE_PATH],
 [m4_require([_LT_SYS_DYNAMIC_LINKER])dnl
 AC_CACHE_CHECK([which variable specifies run-time module search path],
-  [lt_cv_module_path_var], [lt_cv_module_path_var="$shlibpath_var"])
+  [lt_cv_module_path_var], [lt_cv_module_path_var=$shlibpath_var])
 if test -n "$lt_cv_module_path_var"; then
   m4_pattern_allow([LT_MODULE_PATH_VAR])dnl
   AC_DEFINE_UNQUOTED([LT_MODULE_PATH_VAR], ["$lt_cv_module_path_var"],
@@ -599,14 +599,14 @@ AC_DEFUN([LT_SYS_DLSEARCH_PATH],
 [m4_require([_LT_SYS_DYNAMIC_LINKER])dnl
 AC_CACHE_CHECK([for the default library search path],
   [lt_cv_sys_dlsearch_path],
-  [lt_cv_sys_dlsearch_path="$sys_lib_dlsearch_path_spec"])
+  [lt_cv_sys_dlsearch_path=$sys_lib_dlsearch_path_spec])
 if test -n "$lt_cv_sys_dlsearch_path"; then
   sys_dlsearch_path=
   for dir in $lt_cv_sys_dlsearch_path; do
     if test -z "$sys_dlsearch_path"; then
-      sys_dlsearch_path="$dir"
+      sys_dlsearch_path=$dir
     else
-      sys_dlsearch_path="$sys_dlsearch_path$PATH_SEPARATOR$dir"
+      sys_dlsearch_path=$sys_dlsearch_path$PATH_SEPARATOR$dir
     fi
   done
   m4_pattern_allow([LT_DLSEARCH_PATH])dnl
@@ -654,9 +654,9 @@ AC_SEARCH_LIBS([dlopen], [dl],
 	[AC_DEFINE([HAVE_LIBDL], [1],
 		   [Define if you have the libdl library or equivalent.])
 	if test "$ac_cv_search_dlopen" != "none required" ; then
-	  LIBADD_DLOPEN="-ldl"
+	  LIBADD_DLOPEN=-ldl
 	fi
-	libltdl_cv_lib_dl_dlopen="yes"
+	libltdl_cv_lib_dl_dlopen=yes
 	LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"],
     [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#if HAVE_DLFCN_H
 #  include <dlfcn.h>
@@ -664,19 +664,19 @@ AC_SEARCH_LIBS([dlopen], [dl],
     ]], [[dlopen(0, 0);]])],
 	    [AC_DEFINE([HAVE_LIBDL], [1],
 		       [Define if you have the libdl library or equivalent.])
-	    libltdl_cv_func_dlopen="yes"
+	    libltdl_cv_func_dlopen=yes
 	    LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"],
 	[AC_CHECK_LIB([svld], [dlopen],
 		[AC_DEFINE([HAVE_LIBDL], [1],
 			 [Define if you have the libdl library or equivalent.])
-	        LIBADD_DLOPEN="-lsvld" libltdl_cv_func_dlopen="yes"
+	        LIBADD_DLOPEN=-lsvld libltdl_cv_func_dlopen=yes
 		LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"])])])
 if test x"$libltdl_cv_func_dlopen" = xyes || test x"$libltdl_cv_lib_dl_dlopen" = xyes
 then
-  lt_save_LIBS="$LIBS"
+  lt_save_LIBS=$LIBS
   LIBS="$LIBS $LIBADD_DLOPEN"
   AC_CHECK_FUNCS([dlerror])
-  LIBS="$lt_save_LIBS"
+  LIBS=$lt_save_LIBS
 fi
 AC_SUBST([LIBADD_DLOPEN])
 
@@ -689,7 +689,7 @@ AC_CHECK_FUNC([shl_load],
 	    [AC_DEFINE([HAVE_SHL_LOAD], [1],
 		       [Define if you have the shl_load function.])
 	    LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}shl_load.la"
-	    LIBADD_SHL_LOAD="-ldld"])])
+	    LIBADD_SHL_LOAD=-ldld])])
 AC_SUBST([LIBADD_SHL_LOAD])
 
 case $host_os in
@@ -795,12 +795,12 @@ if test x"$lt_cv_sys_symbol_underscore" = xyes; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
 	  [libltdl_cv_need_uscore],
 	  [libltdl_cv_need_uscore=unknown
-          save_LIBS="$LIBS"
+          save_LIBS=$LIBS
           LIBS="$LIBS $LIBADD_DLOPEN"
 	  _LT_TRY_DLOPEN_SELF(
 	    [libltdl_cv_need_uscore=no], [libltdl_cv_need_uscore=yes],
 	    [],				 [libltdl_cv_need_uscore=cross])
-	  LIBS="$save_LIBS"
+	  LIBS=$save_LIBS
 	])
   fi
 fi
