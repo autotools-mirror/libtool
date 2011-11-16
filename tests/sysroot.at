@@ -37,7 +37,7 @@ prefix=
 for i in crt0.o crt1.o crt2.o crti.o; do
   j=`$CC --print-file-name $i 2> /dev/null`
   test $? = 0 || continue
-  case "$j" in
+  case $j in
     $gcc_sysroot*/lib/$i)
       prefix=`echo "$j" | sed "s,^$gcc_sysroot\\(.*\\)/lib/$i\$,\\1,"`
       break ;;

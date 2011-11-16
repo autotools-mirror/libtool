@@ -41,7 +41,7 @@ rm -f hell.lo
 test $res -eq 0 || exit $EXIT_FAILURE
 
 echo "$linkresult"
-case "$linkresult" in
+case $linkresult in
 *".lo "*)
   func_fail "$progname: .lo files should not be linked into programs"
   ;;

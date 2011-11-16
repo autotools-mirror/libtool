@@ -25,7 +25,7 @@
 
 . tests/defs || exit 1
 
-case "$host" in
+case $host in
 hppa*|x86_64*|s390*)
 	func_skip "$host doesn't like non-PIC shared libs"
 	;;
@@ -36,10 +36,10 @@ esac
 
 if test "$build" = "$host" && test -d "/etc/selinux"; then
 	_selinux=`getenforce 2>/dev/null || echo "Disabled"`
-	case "${_selinux}" in
+	case ${_selinux} in
 	*Enforcing)
 		_sebool_allow_execmod=`getsebool allow_execmod 2>/dev/null`
-		case "${_sebool_allow_execmod}" in
+		case ${_sebool_allow_execmod} in
 			*off)
 				func_skip "SELinux policy disallows"
 				;;

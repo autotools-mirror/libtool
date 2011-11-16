@@ -25,7 +25,7 @@
 AT_BANNER([Mac OS X tests])
 AT_SETUP([darwin fat compile])
 noskip=:
-case "$host_os" in
+case $host_os in
 darwin*) ;;
 *) noskip=false ;;
 esac

@@ -49,7 +49,7 @@ hardcode_libdir_flag_spec' "./libtool --config" ": fatal"
 
 echo "= Searching for hardcoded library directories in each program"
 for file in hc-*; do
-  case "$file" in
+  case $file in
   hc-direct)  expected="$hardcode_direct" ;;
   hc-libpath) expected="$hardcode_shlibpath_var" ;;
   hc-minusL)  expected="$hardcode_minus_L" ;;
@@ -96,7 +96,7 @@ for file in hc-*; do
   fi
 
   # Check the result.
-  case "$hardcoded" in
+  case $hardcoded in
   yes)
     if test $expected = yes; then
       echo "$objdir was hardcoded in \`$file', as libtool expected"

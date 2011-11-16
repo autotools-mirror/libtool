@@ -1198,7 +1198,7 @@ func_echo_all ()
     $ECHO "$*"
 }
 
-case "$ECHO" in
+case $ECHO in
   printf*) AC_MSG_RESULT([printf]) ;;
   print*) AC_MSG_RESULT([print -r]) ;;
   *) AC_MSG_RESULT([cat]) ;;

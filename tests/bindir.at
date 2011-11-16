@@ -64,7 +64,7 @@
 AT_SETUP([bindir basic lib test])
 
 bindirneeded=:
-case "$host_os" in
+case $host_os in
   cygwin*|mingw*|cegcc*)
     ;;
   *)
@@ -173,7 +173,7 @@ AT_CLEANUP
 AT_SETUP([bindir install tests])
 
 bindirneeded=:
-case "$host_os" in
+case $host_os in
   cygwin*|mingw*|cegcc*)
     ;;
   *)

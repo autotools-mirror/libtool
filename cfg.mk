@@ -60,6 +60,14 @@ sc_trailing_blank-non-rfc3676:
 	halt='found trailing blank(s)'					\
 	  $(_sc_search_regexp)
 
+# Avoid useless quotes around case arguments such as:
+#   case "$foo" in ...
+exclude_file_name_regexp--sc_useless_quotes_in_case = ^cfg.mk$$
+sc_useless_quotes_in_case:
+	@prohibit='case "[^	 "]*"[	 ][	 ]*in'			\
+	halt='found spurious quotes around case argument'		\
+	  $(_sc_search_regexp)
+
 # List syntax-check exempted files.
 exclude_file_name_regexp--sc_bindtextdomain = ^tests/.*demo[0-9]*/.*\.c$$
 exclude_file_name_regexp--sc_error_message_uppercase = \

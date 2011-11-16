@@ -47,7 +47,7 @@ for mode in compile link install; do
   # try metacharacters in the options it needs to pass to other programs.
 
   # preargs and postargs need to go through libtool unmodified.
-  case "$mode" in
+  case $mode in
   compile)
     preargs="$CC -c"
     preflag=
@@ -83,7 +83,7 @@ for mode in compile link install; do
   # may modify them.  For example, on Cygwin, ``libtool --mode=link gcc -o
   # foo foo.o''  becomes ``gcc -o foo.exe foo.o''.
   match="${match_preflag}${flag}test "
-  case "$result" in
+  case $result in
   *"$match"*)
     $ECHO "= passed: $result"
     ;;
@@ -99,7 +99,7 @@ for mode in compile link install; do
     result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
     match="${match_preflag}${flag}\\${mchar}test\\${mchar} "
     alt_match="${match_preflag}\"${flag}\\${mchar}test\\${mchar}\" "
-    case "$result" in
+    case $result in
     *"$match"*)
       $ECHO "= passed: $result"
       ;;
@@ -120,7 +120,7 @@ for mode in compile link install; do
     $ECHO "= trying: \"$mchar\" quoting"
     result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
     match="${match_preflag}\"${flag}${mchar}test${mchar}\" "
-    case "$result" in
+    case $result in
     *"$match"*)
       $ECHO "= passed: $result"
       ;;

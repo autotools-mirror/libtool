@@ -45,7 +45,7 @@ fi
 # How verbose should we be?  Default is test output in log file.
 # Setting VERBOSE=debug puts the shell in debug mode.
 debug_cmd=:
-case "$VERBOSE" in
+case $VERBOSE in
 DEBUG | debug )
   debug_cmd='set -x'
   $debug_cmd

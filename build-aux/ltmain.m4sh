@@ -461,7 +461,7 @@ func_lalib_unsafe_p ()
 	for lalib_p_l in 1 2 3 4
 	do
 	    read lalib_p_line
-	    case "$lalib_p_line" in
+	    case $lalib_p_line in
 		\#\ Generated\ by\ *$PACKAGE* ) lalib_p=yes; break;;
 	    esac
 	done
@@ -568,7 +568,7 @@ func_resolve_sysroot ()
 # store the result into func_replace_sysroot_result.
 func_replace_sysroot ()
 {
-  case "$lt_sysroot:$1" in
+  case $lt_sysroot:$1 in
   ?*:"$lt_sysroot"*)
     func_stripname "$lt_sysroot" '' "$1"
     func_replace_sysroot_result="=$func_stripname_result"
@@ -3625,7 +3625,7 @@ main (int argc, char *argv[])
       if (STREQ (argv[i], dumpscript_opt))
 	{
 EOF
-	    case "$host" in
+	    case $host in
 	      *mingw* | *cygwin* )
 		# make stdout use "unix" line endings
 		echo "          setmode(1,_O_BINARY);"
@@ -5796,7 +5796,7 @@ func_mode_link ()
 	  if test -z "$libdir" && test "$linkmode" = prog; then
 	    func_fatal_error "only libraries may -dlpreopen a convenience library: \`$lib'"
 	  fi
-	  case "$host" in
+	  case $host in
 	    # special handling for platforms with PE-DLLs.
 	    *cygwin* | *mingw* | *cegcc* )
 	      # Linker will automatically link against shared library if both
@@ -5896,7 +5896,7 @@ func_mode_link ()
 	    # We need to hardcode the library path
 	    if test -n "$shlibpath_var" && test -z "$avoidtemprpath" ; then
 	      # Make sure the rpath contains only unique directories.
-	      case "$temp_rpath:" in
+	      case $temp_rpath: in
 	      *"$absdir:"*) ;;
 	      *) func_append temp_rpath "$absdir:" ;;
 	      esac
@@ -8765,7 +8765,7 @@ func_mode_uninstall ()
 	  done
 	  test -n "$old_library" && func_append rmfiles " $odir/$old_library"
 
-	  case "$opt_mode" in
+	  case $opt_mode in
 	  clean)
 	    case " $library_names " in
 	    *" $dlname "*) ;;
