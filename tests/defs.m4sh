@@ -141,7 +141,7 @@ func_rmprefixdir ()
 {
     $debug_cmd
 
-    test -d $prefix && rm -rf $prefix
+    test -d "$prefix" && rm -rf "$prefix"
     prefix=NONE
 }
 
@@ -338,7 +338,7 @@ func_exec ()
 	exec_status=$EXIT_SKIP
       else
 	# Simple check to see if they are superuser.
-	if test $exec_status = $EXIT_FAILURE || test -w /; then :
+	if test "$exec_status" = "$EXIT_FAILURE" || test -w /; then :
 	else
 	  func_msg "You may need to run $0 as the superuser."
 	fi

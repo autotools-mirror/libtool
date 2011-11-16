@@ -110,8 +110,8 @@ LT_AT_AUTORECONF([--force --verbose --install])
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
 LT_AT_MAKE([all install $tst_dist])
 
-AT_CHECK([test -f $prefix/lib/libltdl.la])
-AT_CHECK([test -f $prefix/include/ltdl.h])
+AT_CHECK([test -f "$prefix/lib/libltdl.la"])
+AT_CHECK([test -f "$prefix/include/ltdl.h"])
 
 AT_CLEANUP
 

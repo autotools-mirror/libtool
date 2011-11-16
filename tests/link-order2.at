@@ -100,7 +100,7 @@ $LIBTOOL --mode=clean rm -f liba0.la
 
 for type_of_depdepl in libtool non-libtool; do
   echo "type of depdepl: $type_of_depdepl"
-  if test $type_of_depdepl = non-libtool; then
+  if test non-libtool = "$type_of_depdepl"; then
     # Simulate a non-Libtool system library.
     rm $deflibdir/liba1.la
     addpath=$deflibdir
@@ -126,7 +126,7 @@ for type_of_depdepl in libtool non-libtool; do
     # Now test that if we reverse the link order, the program fails.
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o wrong$EXEEXT main.$OBJEXT -la0 libb.la],
 	     [], [ignore], [ignore])
-    if test $shared_fails,$static != yes,; then
+    if test yes, != "$shared_fails,$static"; then
       LT_AT_EXEC_CHECK([./wrong], [1], [], [ignore], [|| (exit 1)])
     fi
 
@@ -136,13 +136,13 @@ for type_of_depdepl in libtool non-libtool; do
     $LIBTOOL --mode=install cp wrong$EXEEXT $bindir/wrong$EXEEXT
     $LIBTOOL --mode=clean rm -f liba1.la libb.la
     LT_AT_EXEC_CHECK([$bindir/main])
-    if test $shared_fails,$static != yes,; then
+    if test yes, = "$shared_fails,$static"; then
       LT_AT_EXEC_CHECK([$bindir/wrong], [1], [], [ignore], [|| (exit 1)])
     fi
   done
 done
 
-AT_CHECK([test $shared_fails = no || (exit 77)])
+AT_CHECK([test no = "$shared_fails" || (exit 77)])
 
 # Now the converse: if both the program and the library need libm, then
 # it needs to be sorted last.  (TODO)

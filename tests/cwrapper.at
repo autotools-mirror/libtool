@@ -187,7 +187,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -no-fast-install ]dnl
 	 [], [ignore], [ignore])
 
 # Skip if no cwrapper is generated.
-AT_CHECK([test -f $objdir/lt-usea.c || exit 77])
+AT_CHECK([test -f "$objdir/lt-usea.c" || exit 77])
 
 # Try to make sure the test is relevant.
 AT_CHECK([grep ' *fputs' $objdir/lt-usea.c > /dev/null])

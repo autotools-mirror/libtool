@@ -139,7 +139,7 @@ int vb1 = 3;
 # Skip this test when called from:
 #    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
 AT_CHECK([case $LIBLTDL in #(
- */_inst/lib/*) test -f $LIBLTDL || (exit 77) ;;
+ */_inst/lib/*) test -f "$LIBLTDL" || (exit 77) ;;
 esac], [], [ignore])
 
 CPPFLAGS="$LTDLINCL $CPPFLAGS"

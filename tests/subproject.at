@@ -96,8 +96,8 @@ LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
 	[--add-missing --copy], [], [--enable-ltdl-install --prefix=$prefix],
 	[all install $tst_dist])
 
-AT_CHECK([test -f $prefix/lib/libltdl.la])
-AT_CHECK([test -f $prefix/include/ltdl.h])
+AT_CHECK([test -f "$prefix/lib/libltdl.la"])
+AT_CHECK([test -f "$prefix/include/ltdl.h"])
 
 AT_CLEANUP
 

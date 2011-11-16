@@ -738,20 +738,20 @@ func_clean_unused_macros ()
 
       # We use `ls|grep' instead of `ls *.m4' to avoid exceeding
       # command line length limits in some shells.
-      for file in `cd $macro_dir && ls -1 |grep '\.m4$'`; do
+      for file in `cd "$macro_dir" && ls -1 |grep '\.m4$'`; do
 
 	# Remove a macro file when aclocal.m4 does not m4_include it...
         func_grep_q 'm4_include([[]'$macro_dir/$file'])' $aclocal_m4s \
-            || test ! -f $gnulib_path/m4/$file || {
+            || test ! -f "$gnulib_path/m4/$file" || {
 
               # ...and there is an identical file in gnulib...
-              if func_cmp_s $gnulib_path/m4/$file $macro_dir/$file; then
+              if func_cmp_s "$gnulib_path/m4/$file" "$macro_dir/$file"; then
 
                 # ...and it's not in the precious list (`echo' is needed
                 # here to squash whitespace for the match expression).
                 case " "`echo $gnulib_precious`" " in
                   *" $file "*) ;;
-                  *) rm -f $macro_dir/$file
+                  *) rm -f "$macro_dir/$file"
                      func_verbose \
                        "removing unused gnulib file \`$macro_dir/$file'"
                 esac
@@ -1619,7 +1619,7 @@ func_gnulib_tool has installed the \`git-version-gen' script."
 # `gnulib-cache.m4' if possible.
 require_source_base=func_require_source_base
 func_require_source_base ()
-  {
+{
     $debug_cmd
 
     $require_gnulib_cache
@@ -2027,7 +2027,7 @@ func_truncate_cmd ()
       case $_G_opt in
         -*) _G_last_arg_opt_p=: ;;
         *)  $_G_last_arg_opt_p \
-                || test $min_cmd_len -gt $func_len_result \
+                || test "$min_cmd_len" -gt "$func_len_result" \
                 || break
             _G_last_arg_opt_p=false
             ;;
@@ -2065,13 +2065,14 @@ func_insert_sorted_if_absent ()
 
 # func_sort_ver VER1 VER2
 # -----------------------
+# `sort -V' is not generally available.
 # Note this deviates from the version comparison in automake
 # in that it treats 1.5 < 1.5.0, and treats 1.4.4a < 1.4-p3a
 # but this should suffice as we won't be specifying old
 # version formats or redundant trailing .0 in bootstrap.conf.
 # If we did want full compatibility then we should probably
 # use m4_version_compare from autoconf.
-func_sort_ver ()  # sort -V is not generally available
+func_sort_ver ()
 {
     $debug_cmd
 
@@ -2141,7 +2142,7 @@ func_get_version ()
     func_tool_version_output $_G_app >/dev/null
     _G_status=$?
 
-    test $_G_status -ne 0 \
+    test "$_G_status" -ne 0 \
       || $_G_app --version 2>&1 |$SED -n "$sed_get_version"
 
     (exit $_G_status)
@@ -2234,7 +2235,7 @@ func_update_po_files ()
     # Usually contains *.s1 checksum files.
     _G_ref_po_dir=$_G_po_dir/.reference
 
-    test -d $_G_ref_po_dir || mkdir $_G_ref_po_dir || return
+    test -d "$_G_ref_po_dir" || mkdir $_G_ref_po_dir || return
     func_download_po_files $_G_ref_po_dir $_G_domain \
       && ls "$_G_ref_po_dir"/*.po 2>/dev/null \
          |$SED 's|.*/||; s|\.po$||' > "$_G_po_dir/LINGUAS" || return

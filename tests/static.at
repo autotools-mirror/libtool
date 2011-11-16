@@ -327,7 +327,7 @@ for withdep in no yes; do
   # - remove the library images to catch failure to link statically/dynamically,
   # - add false other deplibs in the paths to catch (some) wrongly added run paths.
 
-  # if -all-static does not work, do not exercise it any more.
+  # if `-all-static' does not work, do not exercise it any more.
   all_static=-all-static
   test -z "$link_static_flag" && all_static=
 

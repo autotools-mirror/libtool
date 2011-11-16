@@ -91,7 +91,7 @@ mkdir -p $bindir
 
 AT_CHECK([$LIBTOOL --mode=install cp plugin.la $libdir],[], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp main$EXEEXT $bindir],[], [ignore], [ignore])
-AT_CHECK([test -f $libdir/plugin.a || exit 77])
+AT_CHECK([test -f "$libdir/plugin.a" || exit 77])
 LT_AT_EXEC_CHECK([$bindir/main], [], [ignore], [ignore],[$libdir/plugin.la])
 
 AT_CLEANUP

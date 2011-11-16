@@ -264,7 +264,7 @@ do
 	         [0],[ignore],[ignore])
 	for st in '' '-static' '-no-install'
 	do
-	  # if -static is not passed, and the library is shared, then we have
+	  # if `-static' is not passed, and the library is shared, then we have
 	  # to use -DLIBA_DLL_IMPORT, thus main.lo (and not main-static.lo).
 	  case $st,$l3 in
 	  -static,*) mst=-static ;;

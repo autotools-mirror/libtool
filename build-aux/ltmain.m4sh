@@ -7901,7 +7901,7 @@ EOF
       test "$build_libtool_libs" != yes && libobjs=$non_pic_objects
 
       # Create the old-style object.
-      reload_objs="$objs$old_deplibs "`$ECHO "$libobjs" | $SP2NL | $SED "/\.${libext}$/d; /\.lib$/d; $lo2o" | $NL2SP`" $reload_conv_objs" ### testsuite: skip nested quoting test
+      reload_objs=$objs$old_deplibs' '`$ECHO "$libobjs" | $SP2NL | $SED "/\.${libext}$/d; /\.lib$/d; $lo2o" | $NL2SP`' '$reload_conv_objs
 
       output=$obj
       func_execute_cmds "$reload_cmds" 'exit $?'

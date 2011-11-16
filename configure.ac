@@ -114,7 +114,7 @@ AC_SUBST([pkgdatadir], ["\${datadir}/$PACKAGE"])
 
 AC_ARG_ENABLE(ltdl-install,
     [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
-if test x"${enable_ltdl_install+set}" != xset; then
+if test "x${enable_ltdl_install+set}" != xset; then
   enable_ltdl_install=yes
 fi
 
@@ -200,7 +200,7 @@ END
    cd ..
    rm -rf conftest.dir
 ])
-if test $lt_cv_make_order_only = yes; then
+if test yes = "$lt_cv_make_order_only"; then
   ORDER='|'
 else
   ORDER=''

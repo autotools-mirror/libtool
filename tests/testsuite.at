@@ -262,7 +262,7 @@ LT_AT_UNIFY_NL([$1.t], [m4_default([$2], [$1])])[]dnl
 m4_define([LT_AT_EXEC_CHECK],
 [lt_exe=$1; if test -f "$1$EXEEXT"; then lt_exe=$lt_exe$EXEEXT; fi
 AT_CHECK([if "$lt_exe" $5; then :; else lt_status=$?; ]dnl
-	 [  m4_ifval([$2], [test $lt_status != $2 && ])]dnl
+	 [  m4_ifval([$2], [test "$lt_status" != $2 && ])]dnl
 	 [  test "X$host" != "X$build" && test -x "$lt_exe" && exit 77; ]dnl
 	 [  exit $lt_status; fi],[$2],[$3],[$4])
 ])
@@ -281,7 +281,7 @@ AT_CHECK([if "$lt_exe" $5; then :; else lt_status=$?; ]dnl
 m4_define([LT_AT_NOINST_EXEC_CHECK],
 [lt_exe=$1; if test -f "$1$EXEEXT"; then lt_exe=$lt_exe$EXEEXT; fi
 AT_CHECK([if $LIBTOOL --mode=execute $2 "$lt_exe" $6; then :; else lt_status=$?; ]dnl
-	 [  m4_ifval([$3], [test $lt_status != $3 && ])]dnl
+	 [  m4_ifval([$3], [test "$lt_status" != $3 && ])]dnl
 	 [  test "X$host" != "X$build" && test -x "$lt_exe" && exit 77; ]dnl
 	 [  exit $lt_status; fi],[$3],[$4],[$5])
 ])

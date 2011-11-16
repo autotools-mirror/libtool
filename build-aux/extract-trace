@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Make sure we've evaluated the option-parser library.
-test -n "$progpath" || . `echo "$0" |${SED-sed} 's,[^/]*$,,'`"/options-parser"
+test -n "$progpath" || . `echo "$0" |${SED-sed} 's,[^/]*$,,'`/options-parser
 
 # Set a version string.
 scriptversion=2011-11-04.09; # UTC
@@ -86,7 +86,7 @@ func_autoconf_configure ()
     test -n "$_G_ac_init"
     _G_status=$?
 
-    test $_G_status -ne 0 \
+    test "$_G_status" -ne 0 \
       && func_verbose "\`$1' not using Autoconf"
 
     (exit $_G_status)
@@ -161,7 +161,7 @@ func_tool_version_output ()
     { $_G_cmd --version </dev/null || $_G_cmd --version; } 2>/dev/null
     _G_status=$?
 
-    test $_G_status -ne 0 && test -n "$_G_fatal_error_msg" \
+    test "$_G_status" -ne 0 && test -n "$_G_fatal_error_msg" \
         && func_fatal_error "$_G_fatal_error_msg"
 
     (exit $_G_status)

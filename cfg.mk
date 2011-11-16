@@ -55,6 +55,110 @@ local-checks-to-skip =				\
 # trailing_blank: flags valid rfc3676 separators
 # unmarked_diagnostics: libtool isn't internationalized
 
+
+# Check for correct usage of $cc_basename in libtool.m4.
+sc_libtool_m4_cc_basename:
+	@sed -n '/case \$$cc_basename in/,/esac/ {			\
+	  /^[	 ]*[a-zA-Z][a-zA-Z0-9+]*[^*][	 ]*)/p;			\
+	}' '$(srcdir)/$(macro_dir)/libtool.m4' | grep . && {		\
+	  msg="\$$cc_basename matches should include a trailing \`*'."	\
+	  $(_sc_say_and_exit) } || :
+
+# Check for uses of Xsed without corresponding echo "X
+exclude_file_name_regexp--sc_prohibit_Xsed_without_X = ^cfg.mk$$
+sc_prohibit_Xsed_without_X:
+	@files=$$($(VC_LIST_EXCEPT));					\
+	if test -n "$$files"; then					\
+	  grep -nE '\$$Xsed' $$files | grep -vE '(func_echo_all|\$$ECHO) \\*"X' && {	\
+	    msg='occurrences of `$$Xsed'\'' without `$$ECHO "X'\'' on the same line' \
+	    $(_sc_say_and_exit) } || :;					\
+	else :;								\
+	fi || :
+
+# Check for using `[' instead of `test'.
+exclude_file_name_regexp--sc_prohibit_bracket_as_test = ^cfg.mk$$
+sc_prohibit_bracket_as_test:
+	@prohibit='if[	 ]+\['						\
+	halt="use \`if test' instead of \`if ['"			\
+	  $(_sc_search_regexp)
+
+# Check for quotes within backquotes within quotes "`"bar"`"
+exclude_file_name_regexp--sc_prohibit_nested_quotes = ^cfg.mk$$
+sc_prohibit_nested_quotes:
+	@prohibit='"[^`"]*`[^"`]*"[^"`]*".*`[^`"]*"'			\
+	halt='found nested double quotes'				\
+	  $(_sc_search_regexp_or_exclude)
+
+# Check for using shift after set dummy (same or following line).
+exclude_file_name_regexp--sc_prohibit_set_dummy_without_shift = ^cfg.mk$$
+sc_prohibit_set_dummy_without_shift:
+	@files=$$($(VC_LIST_EXCEPT));					\
+	if test -n "$$files"; then					\
+	  grep -nE '(set dummy|shift)' $$files |			\
+	    sed -n '/set[	 ][	 ]*dummy/{			\
+	      /set.*dummy.*;.*shift/d;					\
+	      N;							\
+	      /\n.*shift/D;						\
+	      p;							\
+            }' | grep -n . && {						\
+	    msg="use \`shift' after \`set dummy'"			\
+	    $(_sc_say_and_exit) } || :;					\
+	else :;								\
+	fi || :
+
+# Check for using set -- instead of set dummy
+exclude_file_name_regexp--sc_prohibit_set_minus_minus = ^cfg.mk$$
+sc_prohibit_set_minus_minus:
+	@prohibit='set[	 ]+--[	 ]+'					\
+	halt="use \`set dummy ...' instead of \`set -- ...'"		\
+	  $(_sc_search_regexp)
+
+# Check for using test X"... instead of test "X...
+exclude_file_name_regexp--sc_prohibit_test_X = ^cfg.mk$$
+sc_prohibit_test_X:
+	@prohibit='test[	 ]+(![	 ])?(-.[	 ]+)?[Xx]["'\'']'	\
+	halt='use `test "X..."'\'' instead of `test X"'\'		\
+	  $(_sc_search_regexp)
+
+# Check for bad binary operators.
+sc_prohibit_test_binary_operators:
+	@prohibit='if[	 ]+["'\'']?\$$[^	 ]+[	 ]+(=|-[lg][te]|-eq|-ne)' \
+	halt="Use \`if test \$$something =' instead of \`if \$$something ='" \
+	  $(_sc_search_regexp)
+
+# Check for using test $... instead of test "$...
+exclude_file_name_regexp--sc_prohibit_test_dollar = ^cfg.mk$$
+sc_prohibit_test_dollar:
+	@prohibit='test[	 ]+(![	 ])?(-.[	 ]+)?X?\$$[^?#]' \
+	halt='use `test "$$..."'\'' instead of `test $$'\'		\
+	  $(_sc_search_regexp)
+
+# Never use test -e.
+exclude_file_name_regexp--sc_prohibit_test_minus_e = ^cfg.mk$$
+sc_prohibit_test_minus_e:
+	@prohibit='test[	 ]+(![	 ])?-e'				\
+	halt="use \`test -f' instead of \`test -e'"			\
+	  $(_sc_search_regexp)
+
+# Check for bad unary operators.
+sc_prohibit_test_unary_operators:
+	@prohibit='if[	 ]+-[a-z]'					\
+	halt="use \`if test -X' instead of \`if -X'"			\
+	  $(_sc_search_regexp)
+
+# Check for opening brace on next line in shell function definition.
+exclude_file_name_regexp--sc_require_function_nl_brace = (^HACKING|\.[ch])$$
+sc_require_function_nl_brace:
+	@for file in $$($(VC_LIST_EXCEPT)); do				\
+	  sed -n '/^func_[^	 ]*[	 ]*(/{				\
+	    N;								\
+	    /^func_[^	 ]* ()\n{$$/d;					\
+	    p;								\
+	  }' $$file | grep -E . && {					\
+	    msg="found malformed function_definition in $$file"		\
+	    $(_sc_say_and_exit) } || :;					\
+	done
+
 sc_trailing_blank-non-rfc3676:
 	@prohibit='([^-][^-][	 ][	 ]*|^[	 ][	 ]*)$$'		\
 	halt='found trailing blank(s)'					\

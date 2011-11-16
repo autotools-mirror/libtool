@@ -146,18 +146,18 @@ dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 # -----------------
 # Code shared by LTDL_INSTALLABLE and LTDL_INIT([installable]).
 m4_defun([_LTDL_INSTALLABLE],
-[if test -f $prefix/lib/libltdl.la; then
+[if test -f "$prefix/lib/libltdl.la"; then
   lt_save_LDFLAGS=$LDFLAGS
   LDFLAGS="-L$prefix/lib $LDFLAGS"
   AC_CHECK_LIB([ltdl], [lt_dlinit], [lt_lib_ltdl=yes])
   LDFLAGS=$lt_save_LDFLAGS
-  if test x"${lt_lib_ltdl-no}" = xyes; then
-    if test x"$enable_ltdl_install" != xyes; then
+  if test "x${lt_lib_ltdl-no}" = xyes; then
+    if test "x$enable_ltdl_install" != xyes; then
       # Don't overwrite $prefix/lib/libltdl.la without --enable-ltdl-install
       AC_MSG_WARN([not overwriting libltdl at $prefix, force with `--enable-ltdl-install'])
       enable_ltdl_install=no
     fi
-  elif test x"$enable_ltdl_install" = xno; then
+  elif test "x$enable_ltdl_install" = xno; then
     AC_MSG_WARN([libltdl not installed, but installation disabled])
   fi
 fi
@@ -433,8 +433,8 @@ case ,${enable_ltdl_install},${enable_ltdl_convenience} in
 esac
 
 m4_ifdef([AM_CONDITIONAL],
-[AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
- AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)])
+[AM_CONDITIONAL(INSTALL_LTDL, test "x${enable_ltdl_install-no}" != xno)
+ AM_CONDITIONAL(CONVENIENCE_LTDL, test "x${enable_ltdl_convenience-no}" != xno)])
 ])# _LT_ENABLE_INSTALL
 
 
@@ -633,7 +633,7 @@ AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
     libltdl_cv_preloaded_symbols=no
   fi
   ])
-if test x"$libltdl_cv_preloaded_symbols" = xyes; then
+if test "x$libltdl_cv_preloaded_symbols" = xyes; then
   AC_DEFINE([HAVE_PRELOADED_SYMBOLS], [1],
     [Define if libtool can extract symbol lists from object files.])
 fi
@@ -671,7 +671,7 @@ AC_SEARCH_LIBS([dlopen], [dl],
 			 [Define if you have the libdl library or equivalent.])
 	        LIBADD_DLOPEN=-lsvld libltdl_cv_func_dlopen=yes
 		LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"])])])
-if test x"$libltdl_cv_func_dlopen" = xyes || test x"$libltdl_cv_lib_dl_dlopen" = xyes
+if test "x$libltdl_cv_func_dlopen" = xyes || test "x$libltdl_cv_lib_dl_dlopen" = xyes
 then
   lt_save_LIBS=$LIBS
   LIBS="$LIBS $LIBADD_DLOPEN"
@@ -789,9 +789,9 @@ dnl AC_DEFUN([AC_LTDL_SYMBOL_USCORE], [])
 # --------------------
 AC_DEFUN([LT_FUNC_DLSYM_USCORE],
 [AC_REQUIRE([LT_SYS_SYMBOL_USCORE])dnl
-if test x"$lt_cv_sys_symbol_underscore" = xyes; then
-  if test x"$libltdl_cv_func_dlopen" = xyes ||
-     test x"$libltdl_cv_lib_dl_dlopen" = xyes ; then
+if test "x$lt_cv_sys_symbol_underscore" = xyes; then
+  if test "x$libltdl_cv_func_dlopen" = xyes ||
+     test "x$libltdl_cv_lib_dl_dlopen" = xyes ; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
 	  [libltdl_cv_need_uscore],
 	  [libltdl_cv_need_uscore=unknown
@@ -805,7 +805,7 @@ if test x"$lt_cv_sys_symbol_underscore" = xyes; then
   fi
 fi
 
-if test x"$libltdl_cv_need_uscore" = xyes; then
+if test "x$libltdl_cv_need_uscore" = xyes; then
   AC_DEFINE([NEED_USCORE], [1],
     [Define if dlsym() requires a leading underscore in symbol names.])
 fi

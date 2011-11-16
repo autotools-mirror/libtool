@@ -276,7 +276,7 @@ do
   # simplify this check by taking advantage of the fact that if it's a DLL,
   # it has to go in bindir, so we'll not check for both forms in libdir.
   if $bindirneeded; then
-    AT_CHECK([test -f $libdir/../bin/???foo-0.dll || ls $libdir/../bin/*foo*0*], [], [ignore], [ignore])
+    AT_CHECK([test -f "$libdir"/../bin/???foo-0.dll || ls "$libdir"/../bin/*foo*0*], [], [ignore], [ignore])
   else
     AT_CHECK([ls $libdir/*foo*], [], [ignore], [ignore])
   fi
@@ -335,14 +335,14 @@ do
     # Recreate directories (bindir already done) and install.
     AS_MKDIR_P($libdir)
     AS_MKDIR_P($curdir/sbin)
-    AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL libfoo.la $libdir], [], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL main$EXEEXT $curdir/sbin/main$EXEEXT], [], [ignore], [ignore])
+    AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL libfoo.la "$libdir"], [], [ignore], [ignore])
+    AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL main$EXEEXT "$curdir/sbin/main$EXEEXT"], [], [ignore], [ignore])
 
     # Ensure it went to bindir rather than default dir this time.
     if $bindirneeded; then
-      AT_CHECK([test -f $bindir/???foo-0.dll || ls $bindir/*foo*0*], [], [ignore], [ignore])
+      AT_CHECK([test -f "$bindir"/???foo-0.dll || ls "$bindir"/*foo*0*], [], [ignore], [ignore])
     else
-      AT_CHECK([ls $libdir/*foo*], [], [ignore], [ignore])
+      AT_CHECK([ls "$libdir"/*foo*], [], [ignore], [ignore])
     fi
 
     # And that it can be executed.

@@ -313,7 +313,7 @@ preload: 6
 # Skip this test when called from:
 #    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
 AT_CHECK([case $LIBLTDL in #(
- */_inst/lib/*) test -f $LIBLTDL || (exit 77) ;;
+ */_inst/lib/*) test -f "$LIBLTDL" || (exit 77) ;;
 esac], [], [ignore])
 
 CPPFLAGS="$LTDLINCL $CPPFLAGS"
@@ -357,7 +357,7 @@ $CC $CPPFLAGS $CFLAGS -c main.c
 for name in resident local global preload; do
   # FIXME: adding -static to libpreload shouldn't be necessary.
   #        Fix this properly in ltmain, then remove this workaround.
-  if test $name = preload; then
+  if test preload = "$name"; then
     st=-static
   else
     st=

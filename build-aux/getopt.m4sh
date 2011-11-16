@@ -239,7 +239,7 @@ m4_define([m4go_shortnoargs], [-\?*|-h*])
 #	injecting new arguments into the command line before the
 #	processing loop terminates.  For example:
 #
-#		`eval set -- `cat $rcfile` ${1+"$@"}'
+#	      eval set dummy `cat $rcfile` ${1+"$@"}; shift
 #
 #	Note that, because we look inside the content of INITn to
 #	determine whether there are newlines to be stripped, double

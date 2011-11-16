@@ -145,8 +145,8 @@ LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [], [--add-missing], [],
         [--with-included-ltdl --prefix=$prefix], [all install])
 
 # TODO: Check that the installed program `main' is linked against our libltdl
-AT_CHECK([test -f $prefix/lib/libltdl.la])
-AT_CHECK([test -f $prefix/include/ltdl.h])
+AT_CHECK([test -f "$prefix/lib/libltdl.la"])
+AT_CHECK([test -f "$prefix/include/ltdl.h"])
 
 # Check that main is rebuilt if libltdl.la is newer
 rm -f libltdl/libltdl.la
@@ -175,8 +175,8 @@ LT_AT_MAKE([all install])
 # Remove build files
 rm -rf ltdl/
 
-AT_CHECK([test -f $prefix/lib/libltdl.la])
-AT_CHECK([test -f $prefix/include/ltdl.h])
+AT_CHECK([test -f "$prefix/lib/libltdl.la"])
+AT_CHECK([test -f "$prefix/include/ltdl.h"])
 
 _LT_AT_LTDL_SETUP
 

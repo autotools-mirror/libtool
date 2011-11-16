@@ -57,7 +57,7 @@ func_fatal_error ()
 for file in "$@"; do
   # Assume that read-only README indicates that we are running inside
   # the latter part of a `make distcheck'.
-  test -w $file || {
+  test -w "$file" || {
     echo "$progname: not editing non-writeable \`$file' (distcheck?)" >&2
     continue
   }
@@ -85,7 +85,7 @@ support script.  Libtool hides the complexity of using shared libraries\
 behind a consistent, portable interface.' $file > $file.T
 
   # Diagnose redirection failure.
-  test -f $file.T || func_fatal_error "Unable to write $file.T"
+  test -f "$file.T" || func_fatal_error "Unable to write $file.T"
 
   # Overwrite the original file with our edited version.
   mv $file.T $file || func_fatal_error "Unable to edit $file"
