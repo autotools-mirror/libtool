@@ -2267,6 +2267,8 @@ func_update_po_files ()
 # Hook in the functions to make sure our own options are parsed during
 # the option parsing loop.
 
+usage='$progpath [OPTION]...'
+
 # Short help message in response to `-h'.  Add to this in `bootstrap.conf'
 # if you accept any additional options.
 usage_message='Common Bootstrap Options:
