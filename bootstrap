@@ -2336,17 +2336,14 @@ bootstrap_options_prep ()
 
     # Pass back the list of options we consumed.
     func_quote_for_eval ${1+"$@"}
-    func_run_hooks_result="$func_quote_for_eval_result"
+    bootstrap_options_prep_result="$func_quote_for_eval_result"
 }
 func_add_hook func_options_prep bootstrap_options_prep
 
 
 # bootstrap_parse_options [ARG]...
 # --------------------------------
-# Provide handling for Bootstrap specific options.  Note
-# `func_parse_options' passes in the unconsumed positional parameters, and
-# this function has to pass back whatever remains after its own
-# processing in the `func_run_hooks_result' variable.
+# Provide handling for Bootstrap specific options.
 bootstrap_parse_options ()
 {
     $debug_cmd
@@ -2417,7 +2414,7 @@ bootstrap_parse_options ()
 
     # save modified positional parameters for caller
     func_quote_for_eval ${1+"$@"}
-    func_run_hooks_result="$func_quote_for_eval_result"
+    bootstrap_parse_options_result="$func_quote_for_eval_result"
 }
 func_add_hook func_parse_options bootstrap_parse_options
 
@@ -2439,7 +2436,7 @@ bootstrap_validate_options ()
 
     # Pass back the list of unconsumed options left.
     func_quote_for_eval ${1+"$@"}
-    func_run_hooks_result="$func_quote_for_eval_result"
+    bootstrap_validate_options_result="$func_quote_for_eval_result"
 }
 
 

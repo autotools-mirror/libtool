@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Set a version string for this script.
-scriptversion=2011-11-04.03; # UTC
+scriptversion=2011-11-16.05; # UTC
 
 # A pluggable option parser for Bourne shell.
 # Written by Gary V. Vaughan, 2010
@@ -272,20 +272,18 @@ func_run_hooks ()
       *) func_fatal_error "\`$1' does not support hook funcions.n" ;;
     esac
 
-    eval _G_hook_fns="\$$1_hooks"
-
-    # shift away the first argument (FUNC_NAME)
-    shift
-    func_quote_for_eval ${1+"$@"}
-    func_run_hooks_result=$func_quote_for_eval_result
+    eval _G_hook_fns="\$$1_hooks"; shift
 
     for _G_hook in $_G_hook_fns; do
       eval $_G_hook '"$@"'
 
       # store returned options list back into positional
       # parameters for next `cmd' execution.
-      eval set dummy $func_run_hooks_result; shift
+      eval set dummy \$${_G_hook}_result; shift
     done
+
+    func_quote_for_eval ${1+"$@"}
+    func_run_hooks_result=$func_quote_for_eval_result
 }
 
 
@@ -297,8 +295,8 @@ func_run_hooks ()
 # In order to add your own option parsing hooks, you must accept the
 # full positional parameter list in your hook function, remove any
 # options that you action, and then pass back the remaining unprocessed
-# options in `func_run_hooks_result', escaped suitably for `eval'.  Like
-# this:
+# options in `<hooked_function_name>_result', escaped suitably for
+# `eval'.  Like this:
 #
 #    my_options_prep ()
 #    {
@@ -310,7 +308,7 @@ func_run_hooks ()
 #    '
 #
 #        func_quote_for_eval ${1+"$@"}
-#        func_run_hooks_result=$func_quote_for_eval_result
+#        my_options_prep_result=$func_quote_for_eval_result
 #    }
 #    func_add_hook func_options_prep my_options_prep
 #
@@ -337,7 +335,7 @@ func_run_hooks ()
 #        done
 #
 #        func_quote_for_eval ${1+"$@"}
-#        func_run_hooks_result=$func_quote_for_eval_result
+#        my_silent_option_result=$func_quote_for_eval_result
 #    }
 #    func_add_hook func_parse_options my_silent_option
 #
@@ -350,8 +348,9 @@ func_run_hooks ()
 #    \`--silent' and \`--verbose' options are mutually exclusive."
 #
 #        func_quote_for_eval ${1+"$@"}
-#        func_run_hooks_result=$func_quote_for_eval_result
+#        my_option_validation_result=$func_quote_for_eval_result
 #    }
+#    func_add_hook func_validate_options my_option_validation
 #
 # You'll alse need to manually amend $usage_message to reflect the extra
 # options you parse.  It's preferable to append if you can, so that
