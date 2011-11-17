@@ -1,0 +1,26 @@
+--- gnulib/build-aux/gitlog-to-changelog	2011-11-17 12:22:02.000000000 +0700
++++ gl/build-aux/gitlog-to-changelog	2011-11-17 12:19:01.000000000 +0700
+@@ -251,6 +251,11 @@
+ 
+       my $date_line = sprintf "%s  $2\n", strftime ("%F", localtime ($1));
+ 
++      # Format 'Copyright-paperwork-exempt: Yes' as a standard ChangeLog
++      # `(tiny change)' annotation.
++      my $tiny_change = grep /^Copyright-paperwork-exempt:\s+[Yy]es$/, @line;
++      $date_line =~ s/$/  (tiny change)/ if $tiny_change;
++
+       # Format 'Co-authored-by: A U Thor <email@example.com>' lines in
+       # standard multi-author ChangeLog format.
+       my @coauthors = grep /^Co-authored-by:.*$/, @line;
+@@ -277,9 +282,10 @@
+       $prev_date_line = $date_line;
+       @prev_coauthors = @coauthors;
+ 
+-      # Omit "Co-authored-by..." and "Signed-off-by..." lines.
++      # Omit meta-data lines we've already interpreted.
+       @line = grep !/^Signed-off-by: .*>$/, @line;
+       @line = grep !/^Co-authored-by: /, @line;
++      @line = grep !/^Copyright-paperwork-exempt: /, @line;
+ 
+       # Remove leading and trailing blank lines.
+       if (@line)

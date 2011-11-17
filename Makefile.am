@@ -532,6 +532,7 @@ install-data-local: $(lt_Makefile_in)
 
 edit_readme_alpha	= $(srcdir)/$(aux_dir)/edit-readme-alpha
 gitlog_to_changelog	= $(srcdir)/$(aux_dir)/gitlog-to-changelog
+git_log_fix		= $(srcdir)/$(aux_dir)/git-log-fix
 
 dotserial		= $(distdir)/.serial
 dotversion		= $(srcdir)/.version
@@ -543,8 +544,9 @@ changelog		= $(distdir)/ChangeLog
 # date is updated to the following year.
 changelog_start_date = 2011-01-01
 $(changelog): FORCE
-	$(AM_V_GEN)if test -d .git; then \
-	  $(gitlog_to_changelog) --since=$(changelog_start_date) > '$@T'; \
+	$(AM_V_GEN)if test -d $(srcdir)/.git; then \
+	  $(gitlog_to_changelog) --amend=$(git_log_fix) \
+	      --since=$(changelog_start_date) > '$@T'; \
 	  rm -f '$@'; mv '$@T' '$@'; \
 	fi
 

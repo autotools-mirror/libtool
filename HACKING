@@ -92,15 +92,30 @@ and is not part of a release distribution.
 5. Using git
 ============
 
-* Preferably, let the git commit message mirror the ChangeLog entry,
-  without the leading TABs.  Use --author for the (first, main) author
-  of patches from others, sign patches you have reviewed.  If the
-  ChangeLog entry is longer than a line, use a one line summary, then an
-  empty line, then the rest of the log entry; this makes for nice output
-  of `git log'.
+* ChangeLog is generated from git log messages, so you have to format
+  the git log carefully.  Use --author for the (first, main) author
+  of changesets from others, and sign patches you have reviewed.  If the
+  changeset has additional authors that need to be mentioned in the
+  generated ChangeLog, then add them to the git log message with:
 
-* You may find it useful to install the git-merge-changelog merge driver:
-  <http://git.sv.gnu.org/gitweb/?p=gnulib.git;a=blob;f=lib/git-merge-changelog.c>
+    Co-authored-by: A U Thor <email@example.com>
+
+  Similarly, if the ChangeLog will need a '(tiny change)' annotation,
+  then you should indicate that in the git log message with:
+
+    Copyright-paperwork-exempt: Yes
+
+  Start the git log message with a short one line summary, then an empty
+  line, then the rest of the log entry.
+
+  If you forgot to annotate correctly in the git log message, or made
+  any other mistake that needs correcting in the distributed ChangeLog
+  file, make an amendment against the SHA1 of the errored commit in
+  $aux_dir/git-log-fix.
+
+* You may find it useful to install the $aux_dir/git-hooks/commit-msg
+  script to .git/hooks in your libtool working directory to help you
+  make the best use of git log message metadata.
 
 * Do not ever rewind the public master branch nor any public release
   branch on savannah, neither any release tags once they have been

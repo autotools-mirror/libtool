@@ -1,0 +1,111 @@
+#!/bin/sh
+# An example hook script for catching duplicate or malformed
+# Co-authored-by or Copyright-paperwork-exempt lines in the
+# commit message.
+
+: ${SED="sed"}
+test set = ${ECHO+'set'} = set || ECHO='printf %s\n'
+
+basename="$SED -e "'s|^.*/||'
+
+nl='
+'
+
+progpath="$0"
+progname=`$ECHO "$progpath" |$basename`
+
+log_file=$1
+export log_file
+
+fn_error ()
+{
+    prefix="$progname: error: "
+
+    save_IFS=$IFS
+    IFS=$nl
+    for line in $*; do
+      IFS=$save_IFS
+      $ECHO "$prefix$line" 1>&2
+      prefix="$progname:        "
+    done
+    IFS=$save_IFS
+}
+
+fn_re_edit ()
+{
+    $ECHO 'Press return to edit. Ctrl-C to abort...' >&2
+    read v
+    ${EDITOR-'vi'} "$log_file"
+}
+
+fn_rewrite ()
+{
+    # Output once to stderr
+    fn_error "$*"
+
+    # And again as a comment in the log_file ready for re-editing
+    $ECHO "$*" |$SED 's,^,# ,'
+    echo
+    cat "$log_file"
+}
+
+fn_check_msg ()
+{
+    return_status=0
+
+    CAB_re='^Co-authored-by: '
+    CPR_re='^Copyright-paperwork-exempt: '
+
+    # Flag duplicated Co-authored-by lines.
+    dups=`grep "$CAB_re" "$log_file" 2>/dev/null \
+        |sort |uniq -c |sed -e '/^[	 ]*1[	 ]/d'`
+
+    test -n "$dups" && {
+	$ECHO 'Duplicate Co-authored-by lines:
+'"$dups"
+	return_status=1
+    }
+
+    # Make sure each Co-authored-by line contains a valid email.
+    email_re='<.*@.*\..*>'
+
+    grep "$CAB_re" "$log_file" 2>/dev/null \
+        |while read CAB; do
+            test 0 -eq `expr "$CAB" : ".*$email_re"` && {
+                echo "Malformed or missing email in \`$CAB'"
+	        return_status=1
+            }
+         done
+
+    # Flag duplicated Copyright-paperwork-exempt lines.
+    count=`grep "$CPR_re" "$log_file" 2>/dev/null \
+      |wc |sed -e 's,^[	 ]*,,;s,[ 	].*$,,'`
+
+    test 2 -gt "$count" || {
+      $ECHO 'More than one Copyright-paperwork-exempt line.'
+      return_status=1
+    }
+
+    # Make sure Copyright-paperwork-exempt line is valid.
+    if grep "${CPR_re}[Nn]" "$log_file" >/dev/null 2>&1; then
+      $ECHO "\
+\`Copyright-paperwork-exempt: No' is redundant, please remove."
+      return_status=1
+    else
+      not_yes=`grep "${CPR_re}" "$log_file" 2>/dev/null \
+        |grep -v "${CPR_re}Yes\$"`
+
+      test -n "$not_yes" && {
+        $ECHO "\`Copyright-paperwork-exempt' setting must be \`Yes'."
+        return_status=1
+      }
+    fi
+
+    return $return_status
+}
+
+while :; do
+    err=`fn_check_msg` && break
+    fn_rewrite "$err" > "${log_file}T" && mv "${log_file}T" "$log_file"
+    fn_re_edit
+done
