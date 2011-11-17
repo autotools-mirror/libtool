@@ -70,7 +70,8 @@ local-checks-to-skip =				\
 
 # GPL_version: checks for GPLv3, which we don't use
 # bindtextdomain: libtool isn't internationalized
-# cast_of_x_alloc_return_value: we don't use gnulib alloc modules
+# cast_of_x_alloc_return_value:
+#         We support C++ compilation which does require casting here.
 # error_message_uppercase: we like our error messages
 # program_name: libtool has no programs!
 # unmarked_diagnostics: libtool isn't internationalized
