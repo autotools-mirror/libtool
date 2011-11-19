@@ -1093,6 +1093,66 @@ func_autoconf_configure ()
 }
 
 
+# func_make_relative_dir_filter CURRDIR SRCDIR DESTDIR [PREFIX [SUFFIX]]
+# ----------------------------------------------------------------------
+# Make a sed script suitable for appending to a copy filter, which will
+# replace occurrences of CURRDIR with the relative path from SRCDIR to
+# DESTDIR if they are different, otherwise the result is the empty
+# string:
+#
+#    func_make_relative_dir_filter ltdl config ../build-aux
+#      => 's|\.\./build-aux|../config|g'
+#    func_make_relative_dir_filter ltdl ltdl/m4 ../m4
+#      => 's|\.\./m4|m4|g'
+#    func_make_relative_dir_filter libltdl build-aux ../build-aux
+#      => ''
+#
+# If PREFIX (and SUFFIX) are passed they are prepended (and appended)
+# to the match and replacement expressions literally:
+#
+#    func_make_relative_dir_filter ltdl ltdl/m4 ../m4 '-I ' ' '
+#      => 's|-I \.\./m4 |-I m4 |g'
+func_make_relative_dir_filter ()
+{
+    $debug_cmd
+
+    my_currdir=$1
+    my_srcdir=$2
+    my_destdir=$3
+
+    func_relative_path "$my_srcdir" "$my_destdir"
+
+    if test "$my_currdir" = "$func_relative_path_result"; then
+      func_make_relative_dir_filter_result=
+    else
+      my_match_currdir=`$ECHO "$my_currdir" |$SED "$sed_make_literal_regex"`
+
+      # Avoid substituting with `dir/./file' when current dir is `.'.
+      if test . = "$my_currdir"; then
+        func_make_relative_dir_filter_result="
+          s|$4$my_match_currdir/$5|$4$5|g"
+      else
+        func_make_relative_dir_filter_result="
+          s|$4$my_match_currdir$5|$4$func_relative_path_result$5|g"
+      fi
+    fi
+}
+
+# func_make_relative_ltdl_filter CURRDIR DESTDIR [PREFIX [SUFFIX]]
+# ----------------------------------------------------------------
+# As `func_make_relative_dir_filter' optimised for the common case where
+# SRCDIR is `$ltdl_dir'.
+func_make_relative_ltdl_filter ()
+{
+    $debug_cmd
+
+    $require_ltdl_dir
+
+    func_make_relative_dir_filter "$1" "$ltdl_dir" "$2" "$3" "$4"
+    func_make_relative_ltdl_filter_result=$func_make_relative_dir_filter_result
+}
+
+
 ## -------------------- ##
 ## Resource management. ##
 ## -------------------- ##
@@ -1114,38 +1174,6 @@ func_autoconf_configure ()
 # that holds the symbol.
 #
 # After that, the rest appear in asciibetical order.
-
-for base in aux_dir macro_dir; do
-
-  # require_ltdl_relative_aux_dir
-  # require_ltdl_relative_macro_dir
-  # -------------------------------
-  # Set ltdl_relative_aux_dir to the relative path from $ltdl_dir to
-  # the parent project auxiliary directory, and similarly for relative
-  # macro directory.
-  r=ltdl_relative_$base	# _r_esource acquired by calling this function
-  v=require_$r		# _v_ariable pointing to the function
-  f=func_$v		# _f_unction name
-  eval $v'='$f'
-  '$f' ()
-  {
-    $debug_cmd
-
-    $require_ltdl_dir
-    $require_'$base'
-
-    func_relative_path "$ltdl_dir" "$'$base'"
-    '$r'=$func_relative_path_result
-
-    test -n "$'$r'" && func_verbose "'$r'='\'\$$r\''"
-
-    '$v'=:
-  }'
-  # Some of these functions need to acquire the resource managed by the
-  # lexically preceding function; $o serves that purpose.
-  o=$r
-
-done
 
 for base in '' ltdl_; do
   if test ltdl_ = "$base"; then p='$pkgltdldir/'; else p=; fi
@@ -1453,31 +1481,23 @@ func_require_filter_Makefile_am ()
         ;;
 
       subproject)
-        $require_ltdl_ac_aux_dir
+        # Adjust default relative macro_dir paths.
         $require_ltdl_am_macro_dir
-        $require_ltdl_relative_aux_dir
-        $require_ltdl_relative_macro_dir
 
-        test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
-          my_am_macro_dir_regex=`$ECHO "\
-$ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
-
-          filter_Makefile_am="
-            /^ACLOCAL_AMFLAGS = /{
-              s| -I $my_am_macro_dir_regex\$| -I $ltdl_relative_macro_dir|
-            }
-            s|dir)/$my_am_macro_dir_regex|dir)/$ltdl_relative_macro_dir|g"
+        func_make_relative_ltdl_filter "$ltdl_am_macro_dir" "$macro_dir" '-I '
+        test -z "$func_make_relative_ltdl_filter_result" || {
+          func_append filter_Makefile_am "
+              /^ACLOCAL_AMFLAGS = /{
+                $func_make_relative_ltdl_filter_result
+              }"
         }
+        func_make_relative_ltdl_filter "$ltdl_am_macro_dir" "$macro_dir" 'dir)'
+        func_append filter_Makefile_am "$func_make_relative_ltdl_filter_result"
 
-        test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
-          my_aux_dir_regex=`$ECHO "\
-$ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
-
-          filter_Makefile_am="$filter_Makefile_am
-            s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
-            s|/\./|/|g
-          "
-        }
+        # Adjust default relative aux_dir paths.
+        $require_ltdl_ac_aux_dir
+        func_make_relative_ltdl_filter "$ltdl_ac_aux_dir" "$aux_dir"
+        func_append filter_Makefile_am "$func_make_relative_ltdl_filter_result"
         ;;
     esac
 
@@ -1496,18 +1516,16 @@ func_require_filter_aclocal_m4 ()
     $debug_cmd
 
     $require_ltdl_am_macro_dir
-    $require_ltdl_relative_macro_dir
 
-    test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
-      my_am_macro_dir_regex=`$ECHO "\
-$ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
+    func_make_relative_ltdl_filter "$ltdl_am_macro_dir" "$macro_dir"
 
-      # Tricky [m] quoting to stop m4sh processing from flagging an
-      # undefined macro.
-      filter_aclocal_m4="
-        /^[m]4_include(/{
-          s|$my_am_macro_dir_regex|$ltdl_relative_macro_dir|g
-        }"
+    # Tricky [m] quoting to stop m4sh processing from flagging an
+    # undefined macro.
+    test -z "$func_make_relative_ltdl_filter_result" || {
+      func_append filter_aclocal_m4 "
+          /^[m]4_include(/{
+            $func_make_relative_ltdl_filter_result
+          }"
     }
 
     require_filter_aclocal_m4=:
@@ -1525,16 +1543,9 @@ func_require_filter_configure_ac ()
     $debug_cmd
 
     $require_ltdl_ac_aux_dir
-    $require_ltdl_relative_aux_dir
 
-    test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
-      my_aux_dir_regex=`$ECHO "\
-$ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
-
-      filter_configure_ac="
-        s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
-      "
-    }
+    func_make_relative_ltdl_filter "$ltdl_ac_aux_dir" "$aux_dir"
+    func_append filter_configure_ac "$func_make_relative_ltdl_filter_result"
 
     require_filter_configure_ac=:
 }
