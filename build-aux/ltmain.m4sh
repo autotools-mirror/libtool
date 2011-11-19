@@ -148,37 +148,6 @@ extracted_serial=0
 # left over by shells.
 exec_cmd=
 
-# func_append var value
-# Append VALUE to the end of shell variable VAR.
-func_append ()
-{
-    eval "$1=\$$1\$2"
-} # func_append may be replaced by extended shell implementation
-
-# func_append_quoted var value
-# Quote VALUE and append to the end of shell variable VAR, separated
-# by a space.
-func_append_quoted ()
-{
-    func_quote_for_eval "$2"
-    eval "$1=\$$1\\ \$func_quote_for_eval_result"
-} # func_append_quoted may be replaced by extended shell implementation
-
-
-# func_arith arithmetic-term...
-func_arith ()
-{
-    func_arith_result=`expr "$@"`
-} # func_arith may be replaced by extended shell implementation
-
-
-# func_len string
-# STRING may not start with a hyphen.
-func_len ()
-{
-    func_len_result=`expr "$1" : ".*" 2>/dev/null || echo $max_cmd_len`
-} # func_len may be replaced by extended shell implementation
-
 
 # func_lo2o object
 func_lo2o ()
