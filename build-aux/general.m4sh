@@ -73,6 +73,40 @@ IFS="	 $lt_nl"
 dirname='s|/[^/]*$||'
 basename='s|^.*/||'
 
+
+# func_append var value
+# Append VALUE to the end of shell variable VAR.
+func_append ()
+{
+    eval "$1=\$$1\$2"
+} # func_append may be replaced by extended shell implementation
+
+
+# func_append_quoted var value
+# Quote VALUE and append to the end of shell variable VAR, separated
+# by a space.
+func_append_quoted ()
+{
+    func_quote_for_eval "$2"
+    eval "$1=\$$1\\ \$func_quote_for_eval_result"
+} # func_append_quoted may be replaced by extended shell implementation
+
+
+# func_arith arithmetic-term...
+func_arith ()
+{
+    func_arith_result=`expr "$@"`
+} # func_arith may be replaced by extended shell implementation
+
+
+# func_len string
+# STRING may not start with a hyphen.
+func_len ()
+{
+    func_len_result=`expr "$1" : ".*" 2>/dev/null || echo $max_cmd_len`
+} # func_len may be replaced by extended shell implementation
+
+
 # func_dirname file append nondir_replacement
 # Compute the dirname of FILE.  If nonempty, add APPEND to the result,
 # otherwise set result to NONDIR_REPLACEMENT.
@@ -82,7 +116,7 @@ func_dirname ()
     if test "X$func_dirname_result" = "X$1"; then
       func_dirname_result=$3
     else
-      func_dirname_result=$func_dirname_result$2
+      func_append func_dirname_result $2
     fi
 } # func_dirname may be replaced by extended shell implementation
 
@@ -113,7 +147,7 @@ func_dirname_and_basename ()
     if test "X$func_dirname_result" = "X$1"; then
       func_dirname_result=$3
     else
-      func_dirname_result=$func_dirname_result$2
+      func_append func_dirname_result $2
     fi
     func_basename_result=`$ECHO "$1" | $SED -e "$basename"`
 } # func_dirname_and_basename may be replaced by extended shell implementation
@@ -212,7 +246,7 @@ func_normal_abspath ()
       ;;
       *)
         # Actual path component, append it.
-        func_normal_abspath_result=$func_normal_abspath_result/$func_normal_abspath_tcomponent
+        func_append func_normal_abspath_result "/$func_normal_abspath_tcomponent"
       ;;
     esac
   done
@@ -267,8 +301,8 @@ func_relative_path ()
   func_stripname '' '/' "$func_relative_path_result"
   func_relative_path_result=$func_stripname_result
   func_stripname '/' '/' "$func_relative_path_tcancelled"
-  if test -n "$func_stripname_result" ; then
-    func_relative_path_result=$func_relative_path_result/$func_stripname_result
+  if test -n "$func_stripname_result"; then
+    func_append func_relative_path_result "/$func_stripname_result"
   fi
 
   # Normalisation. If bindir is libdir, return `.' else relative path.
