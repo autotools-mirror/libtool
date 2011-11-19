@@ -74,62 +74,139 @@ dirname='s|/[^/]*$||'
 basename='s|^.*/||'
 
 
-# func_append var value
-# Append VALUE to the end of shell variable VAR.
-func_append ()
-{
+# lt_HAVE_PLUSEQ_OP
+# Can be empty, in which case the shell is probed, "yes" if += is useable
+# or anything else if += does not work.
+# NOTE: You can short-circuit the fork and test on every invocation (e.g.
+# on Windows where fork emulations are unreasonably slow) by setting this
+# in the environment of this script.
+test -z "$lt_HAVE_PLUSEQ_OP" \
+    && (eval 'x=a; x+=" b"; test "a b" = "$x"') 2>/dev/null \
+    && lt_HAVE_PLUSEQ_OP=yes
+
+if test yes = "$lt_HAVE_PLUSEQ_OP"; then
+  # func_append var value
+  # Append VALUE to the end of shell variable VAR.
+  eval 'func_append ()
+  {
+    eval "$1+=\$2"
+  }'
+
+  # func_append_quoted var value
+  # Quote VALUE and append to the end of shell variable VAR, separated
+  # by a space.
+  eval 'func_append_quoted ()
+  {
+    func_quote_for_eval "$2"
+    eval "$1+=\\ \$func_quote_for_eval_result"
+  }'
+else
+  func_append ()
+  {
     eval "$1=\$$1\$2"
-} # func_append may be replaced by extended shell implementation
+  }
 
-
-# func_append_quoted var value
-# Quote VALUE and append to the end of shell variable VAR, separated
-# by a space.
-func_append_quoted ()
-{
+  func_append_quoted ()
+  {
     func_quote_for_eval "$2"
     eval "$1=\$$1\\ \$func_quote_for_eval_result"
-} # func_append_quoted may be replaced by extended shell implementation
+  }
+fi
 
+
+# lt_HAVE_ARITH_OP
+# Can be empty, in which case the shell is probed, "yes" if $((...)) is
+# useable or anything else if it does not work.
+# NOTE: You can short-circuit the fork and test on every invocation (e.g.
+# on Windows where fork emulations are unreasonably slow) by setting this
+# in the environment of this script.
+test -z "$lt_HAVE_ARITH_OP" \
+    && (eval 'test 2 = $(( 1 + 1 ))') 2>/dev/null \
+    && lt_HAVE_ARITH_OP=yes
 
 # func_arith arithmetic-term...
-func_arith ()
-{
+if test yes = "$lt_HAVE_ARITH_OP"; then
+  eval 'func_arith ()
+  {
+    func_arith_result=$(( $* ))
+  }'
+else
+  func_arith ()
+  {
     func_arith_result=`expr "$@"`
-} # func_arith may be replaced by extended shell implementation
+  }
+fi
+
+
+# lt_HAVE_XSI_OPS
+# Can be empty, in which case the shell is probed, "yes" if XSI length
+# and matching operators are useable or anything else if they do not work.
+# NOTE: You can short-circuit the fork and test on every invocation (e.g.
+# on Windows where fork emulations are unreasonably slow) by setting this
+# in the environment of this script.
+test -z "$lt_HAVE_XSI_OPS" \
+    && (eval 'x=a/b/c;
+      test 5aa/bb/cc = "${#x}${x%%/*}${x%/*}${x#*/}${x##*/}"') 2>/dev/null \
+    && lt_HAVE_XSI_OPS=yes
 
 
 # func_len string
 # STRING may not start with a hyphen.
-func_len ()
-{
+if test yes = "$lt_HAVE_XSI_OPS"; then
+  eval 'func_len ()
+  {
+    func_len_result=${#1}
+  }'
+else
+  func_len ()
+  {
     func_len_result=`expr "$1" : ".*" 2>/dev/null || echo $max_cmd_len`
-} # func_len may be replaced by extended shell implementation
+  }
+fi
 
+
+if test yes = "$lt_HAVE_XSI_OPS"; then
+  # If this shell supports suffix pattern removal, then use it to avoid
+  # forking. Hide the definitions single quotes in case the shell chokes
+  # on unsupported syntax...
+
+  _b='func_basename_result=${1##*/}'
+  _d='case $1 in
+        */*) func_dirname_result=${1%/*}$2 ;;
+        *  ) func_dirname_result=$3        ;;
+      esac'
+
+else
+  # ...otherwise fall back to using sed.
+
+  _b='func_basename_result=`$ECHO "$1" |$SED "$basename"`'
+  _d='func_dirname_result=`$ECHO "$1"  |$SED "$dirname"`
+      if test "X$func_dirname_result" = "X$1"; then
+        func_dirname_result=$3
+      else
+        func_append func_dirname_result "$2"
+      fi'
+fi
+
+
+# func_basename file
+eval 'func_basename ()
+{
+    $debug_cmd
+    '"$_b"'
+}'
 
 # func_dirname file append nondir_replacement
 # Compute the dirname of FILE.  If nonempty, add APPEND to the result,
 # otherwise set result to NONDIR_REPLACEMENT.
-func_dirname ()
+eval 'func_dirname ()
 {
-    func_dirname_result=`$ECHO "$1" | $SED "$dirname"`
-    if test "X$func_dirname_result" = "X$1"; then
-      func_dirname_result=$3
-    else
-      func_append func_dirname_result $2
-    fi
-} # func_dirname may be replaced by extended shell implementation
+    $debug_cmd
+    '"$_d"'
+}'
 
-
-# func_basename file
-func_basename ()
-{
-    func_basename_result=`$ECHO "$1" | $SED "$basename"`
-} # func_basename may be replaced by extended shell implementation
-
-
-# func_dirname_and_basename file append nondir_replacement
-# perform func_basename and func_dirname in a single function
+# func_dirname_and_basename file append nondir_replacement perform
+# func_basename and func_dirname in a single function
 # call:
 #   dirname:  Compute the dirname of FILE.  If nonempty,
 #             add APPEND to the result, otherwise set result
@@ -137,20 +214,14 @@ func_basename ()
 #             value returned in "$func_dirname_result"
 #   basename: Compute filename of FILE.
 #             value retuned in "$func_basename_result"
-# Implementation must be kept synchronized with func_dirname
-# and func_basename. For efficiency, we do not delegate to
-# those functions but instead duplicate the functionality here.
-func_dirname_and_basename ()
+# For efficiency, we do not delegate to the functions above but instead
+# duplicate the functionality here.
+eval 'func_dirname_and_basename ()
 {
-    # Extract subdirectory from the argument.
-    func_dirname_result=`$ECHO "$1" | $SED -e "$dirname"`
-    if test "X$func_dirname_result" = "X$1"; then
-      func_dirname_result=$3
-    else
-      func_append func_dirname_result $2
-    fi
-    func_basename_result=`$ECHO "$1" | $SED -e "$basename"`
-} # func_dirname_and_basename may be replaced by extended shell implementation
+    $debug_cmd
+    '"$_b"'
+    '"$_d"'
+}'
 
 
 # func_stripname prefix suffix name
@@ -159,13 +230,24 @@ func_dirname_and_basename ()
 # characters, hashes, percent signs, but SUFFIX may contain a leading
 # dot (in which case that matches only a dot).
 # func_strip_suffix prefix name
-func_stripname ()
-{
+if test yes = "$lt_HAVE_XSI_OPS"; then
+  eval 'func_stripname ()
+  {
+    # pdksh 5.2.14 does not do ${X%$Y} correctly if both X and Y are
+    # positional parameters, so assign one to ordinary variable first.
+    func_stripname_result=$3
+    func_stripname_result=${func_stripname_result#"$1"}
+    func_stripname_result=${func_stripname_result%"$2"}
+  }'
+else
+  func_stripname ()
+  {
     case $2 in
       .*) func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%\\\\$2\$%%"`;;
       *)  func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%$2\$%%"`;;
     esac
-} # func_stripname may be replaced by extended shell implementation
+  }
+fi
 
 
 # These SED scripts presuppose an absolute path with a trailing slash.
