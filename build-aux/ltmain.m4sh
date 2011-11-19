@@ -3027,7 +3027,8 @@ func_extract_archives ()
 	  cd $my_xdir || exit $?
 	  darwin_archive=$my_xabs
 	  darwin_curdir=`pwd`
-	  darwin_base_archive=`basename "$darwin_archive"`
+	  func_basename "$darwin_archive"
+	  darwin_base_archive=$func_basename_result
 	  darwin_arches=`$LIPO -info "$darwin_archive" 2>/dev/null | $GREP Architectures 2>/dev/null || true`
 	  if test -n "$darwin_arches"; then
 	    darwin_arches=`$ECHO "$darwin_arches" | $SED -e 's/.*are://'`

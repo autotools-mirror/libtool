@@ -167,8 +167,8 @@ EXIT_SKIP=77      # $? = 77 is used to indicate a skipped test to automake.
 debug_cmd=${debug_cmd-":"}
 exit_cmd=:
 
-dirname="$SED -e "'s|/[^/]*$||'
-basename="$SED -e "'s|^.*/||'
+dirname='s|/[^/]*$||'
+basename='s|^.*/||'
 
 nl='
 '
@@ -181,7 +181,7 @@ nl='
 progpath=$0
 
 # The name of this program.
-progname=`echo "$progpath" |$basename`
+progname=`echo "$progpath" |$SED "$basename"`
 
 
 ## ------------------------- ##

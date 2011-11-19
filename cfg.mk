@@ -75,6 +75,17 @@ sc_prohibit_Xsed_without_X:
 	else :;								\
 	fi || :
 
+# Use a consistent dirname and basename idiom.
+sc_prohibit_bare_basename:
+	@prohibit='\|[	 ]*\$$(base|dir)name' \
+	halt='use `|$$SED "$$basename"'\'' instead of `|$$basename'\'	\
+	  $(_sc_search_regexp)
+
+sc_prohibit_basename_with_dollar_sed:
+	@prohibit='(base|dir)name="?(\$$SED|sed)[ "]' \
+	halt='use `basename='\''s|^.*/||'\'' instead of `basename="$$SED...'	\
+	  $(_sc_search_regexp)
+
 # Check for using `[' instead of `test'.
 exclude_file_name_regexp--sc_prohibit_bracket_as_test = ^cfg.mk$$
 sc_prohibit_bracket_as_test:

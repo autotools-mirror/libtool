@@ -6,13 +6,13 @@
 : ${SED="sed"}
 test set = ${ECHO+'set'} = set || ECHO='printf %s\n'
 
-basename="$SED -e "'s|^.*/||'
+basename='s|^.*/||'
 
 nl='
 '
 
 progpath=$0
-progname=`$ECHO "$progpath" |$basename`
+progname=`$ECHO "$progpath" |$SED -e "$basename"`
 
 log_file=$1
 export log_file

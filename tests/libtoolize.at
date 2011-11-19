@@ -696,7 +696,7 @@ LT_AT_ACLOCAL([-I $abs_top_srcdir/m4])
 : ${GREP="grep"}
 : ${SED="sed"}
 
-basename="$SED -e s,^.*/,,"
+basename='s,^.*/,,'
 
 # func_grep expression filename
 # Check whether EXPRESSION matches any line of FILENAME, without output.
@@ -724,7 +724,7 @@ func_serial ()
     my_serial=
     if test -z "$my_macro_regex" ||
        test "$my_filename" = aclocal.m4 ||
-       test "$my_macro_regex" = `echo "$my_filename" | $basename` ||
+       test "$my_macro_regex" = `echo "$my_filename" | $SED "$basename"` ||
        func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_filename"
     then
       my_serial=`$SED -e "$my_sed_serial" "$my_filename"`
