@@ -756,8 +756,6 @@ _LT_EOF
   sed '$q' "$ltmain" >> "$cfgfile" \
      || (rm -f "$cfgfile"; exit 1)
 
-  _LT_PROG_REPLACE_SHELLFNS
-
    mv -f "$cfgfile" "$ofile" ||
     (rm -f "$ofile" && cp "$cfgfile" "$ofile" && rm -f "$cfgfile")
   chmod +x "$ofile"
@@ -7776,27 +7774,7 @@ dnl AC_DEFUN([LT_AC_PROG_SED], [])
 # Find out whether the shell is Bourne or XSI compatible,
 # or has some other useful features.
 m4_defun([_LT_CHECK_SHELL_FEATURES],
-[AC_MSG_CHECKING([whether the shell understands some XSI constructs])
-# Try some XSI features
-xsi_shell=no
-( _lt_dummy=a/b/c
-  test "${_lt_dummy##*/},${_lt_dummy%/*},${_lt_dummy#??}"${_lt_dummy%"$_lt_dummy"}, \
-      = c,a/b,b/c, \
-    && eval 'test 2 -eq $(( 1 + 1 )) \
-    && test "${#_lt_dummy}" -eq 5' ) >/dev/null 2>&1 \
-  && xsi_shell=yes
-AC_MSG_RESULT([$xsi_shell])
-_LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
-
-AC_MSG_CHECKING([whether the shell understands "+="])
-lt_shell_append=no
-( foo=bar; set foo baz; eval "$[1]+=\$[2]" && test "$foo" = barbaz ) \
-    >/dev/null 2>&1 \
-  && lt_shell_append=yes
-AC_MSG_RESULT([$lt_shell_append])
-_LT_CONFIG_LIBTOOL_INIT([lt_shell_append='$lt_shell_append'])
-
-if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
+[if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
   lt_unset=unset
 else
   lt_unset=false
@@ -7819,99 +7797,6 @@ _LT_DECL([SP2NL], [lt_SP2NL], [1], [turn spaces into newlines])dnl
 _LT_DECL([NL2SP], [lt_NL2SP], [1], [turn newlines into spaces])dnl
 ])# _LT_CHECK_SHELL_FEATURES
 
-
-# _LT_PROG_FUNCTION_REPLACE (FUNCNAME, REPLACEMENT-BODY)
-# ------------------------------------------------------
-# In `$cfgfile', look for function FUNCNAME delimited by `^FUNCNAME ()$' and
-# '^} FUNCNAME ', and replace its body with REPLACEMENT-BODY.
-m4_defun([_LT_PROG_FUNCTION_REPLACE],
-[dnl {
-sed -e '/^$1 ()$/,/^} # $1 /c\
-$1 ()\
-{\
-m4_bpatsubsts([$2], [$], [\\], [^\([	 ]\)], [\\\1])
-} # Extended-shell $1 implementation' "$cfgfile" > $cfgfile.tmp \
-  && mv -f "$cfgfile.tmp" "$cfgfile" \
-    || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
-test 0 -eq $? || _lt_function_replace_fail=:
-])
-
-
-# _LT_PROG_REPLACE_SHELLFNS
-# -------------------------
-# Replace existing portable implementations of several shell functions with
-# equivalent extended shell implementations where those features are available..
-m4_defun([_LT_PROG_REPLACE_SHELLFNS],
-[if test x"$xsi_shell" = xyes; then
-  _LT_PROG_FUNCTION_REPLACE([func_dirname], [dnl
-    case @S|@1 in
-      */*) func_dirname_result=${1%/*}@S|@2 ;;
-      *  ) func_dirname_result=@S|@3 ;;
-    esac])
-
-  _LT_PROG_FUNCTION_REPLACE([func_basename], [dnl
-    func_basename_result=${1##*/}])
-
-  _LT_PROG_FUNCTION_REPLACE([func_dirname_and_basename], [dnl
-    case @S|@1 in
-      */*) func_dirname_result=${1%/*}@S|@2 ;;
-      *  ) func_dirname_result=@S|@3 ;;
-    esac
-    func_basename_result=${1##*/}])
-
-  _LT_PROG_FUNCTION_REPLACE([func_stripname], [dnl
-    # pdksh 5.2.14 does not do ${X%$Y} correctly if both X and Y are
-    # positional parameters, so assign one to ordinary parameter first.
-    func_stripname_result=@S|@3
-    func_stripname_result=${func_stripname_result#"@S|@1"}
-    func_stripname_result=${func_stripname_result%"@S|@2"}])
-
-  _LT_PROG_FUNCTION_REPLACE([func_split_long_opt], [dnl
-    func_split_long_opt_name=${1%%=*}
-    func_split_long_opt_arg=${1#*=}])
-
-  _LT_PROG_FUNCTION_REPLACE([func_split_short_opt], [dnl
-    func_split_short_opt_arg=${1#??}
-    func_split_short_opt_name=${1%"$func_split_short_opt_arg"}])
-
-  _LT_PROG_FUNCTION_REPLACE([func_lo2o], [dnl
-    case @S|@1 in
-      *.lo) func_lo2o_result=${1%.lo}.$objext ;;
-      *)    func_lo2o_result=@S|@1 ;;
-    esac])
-
-  _LT_PROG_FUNCTION_REPLACE([func_xform], [    func_xform_result=${1%.*}.lo])
-
-  _LT_PROG_FUNCTION_REPLACE([func_arith], [    func_arith_result=$(( $[*] ))])
-
-  _LT_PROG_FUNCTION_REPLACE([func_len], [    func_len_result=${#1}])
-fi
-
-if test x"$lt_shell_append" = xyes; then
-  _LT_PROG_FUNCTION_REPLACE([func_append], [    eval "@S|@1+=\\@S|@2"])
-
-  _LT_PROG_FUNCTION_REPLACE([func_append_quoted], [dnl
-    func_quote_for_eval "@S|@2"
-dnl m4 expansion turns \\\\ into \\, and then the shell eval turns that into \
-    eval "@S|@1+=\\\\ \\$func_quote_for_eval_result"])
-
-  # Save a `func_append' function call where possible by direct use of '+='
-  sed -e 's%func_append \([[a-zA-Z_]]\{1,\}\) "%\1+="%g' $cfgfile > $cfgfile.tmp \
-    && mv -f "$cfgfile.tmp" "$cfgfile" \
-      || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
-  test 0 -eq $? || _lt_function_replace_fail=:
-else
-  # Save a `func_append' function call even when '+=' is not available
-  sed -e 's%func_append \([[a-zA-Z_]]\{1,\}\) "%\1="$\1%g' $cfgfile > $cfgfile.tmp \
-    && mv -f "$cfgfile.tmp" "$cfgfile" \
-      || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
-  test 0 -eq $? || _lt_function_replace_fail=:
-fi
-
-if test x"$_lt_function_replace_fail" = x":"; then
-  AC_MSG_WARN([Unable to substitute extended shell functions in $ofile])
-fi
-])
 
 # _LT_PATH_CONVERSION_FUNCTIONS
 # -----------------------------

@@ -49,6 +49,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     mode is selected; `--standalone' never worked, and is no longer
     accepted.
   - Libtool and libtoolize no longer choke on paths with a comma in them.
+  - In the case where $SHELL does not have the same enhanced features
+    (e.g. the ability to parse `var+=append') as $CONFIG_SHELL, libtool
+    will now correctly fallback to using only vanilla shell features
+    instead of failing with a parse at startup.
 
 ** Important incompatible changes:
 

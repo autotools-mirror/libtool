@@ -149,18 +149,36 @@ extracted_serial=0
 exec_cmd=
 
 
-# func_lo2o object
-func_lo2o ()
-{
+# If this shell supports prefix and suffix pattern removal, then
+# use them to avoid forking. Hide the definition in an eval in case
+# the shell chokes on unsupported syntax...
+if test yes = "$lt_HAVE_XSI_OPS"; then
+  # func_lo2o object
+  eval 'func_lo2o ()
+  {
+    case $1 in
+      *.lo) func_lo2o_result=${1%.lo}.$objext ;;
+      *   ) func_lo2o_result=$1               ;;
+    esac
+  }'
+
+  # func_xform libobj-or-source
+  eval 'func_xform ()
+  {
+    func_xform_result=${1%.*}.lo
+  }'
+else
+  # ...otherwise fall back to using sed.
+  func_lo2o ()
+  {
     func_lo2o_result=`$ECHO "$1" | $SED "$lo2o"`
-} # func_lo2o may be replaced by extended shell implementation
+  }
 
-
-# func_xform libobj-or-source
-func_xform ()
-{
-    func_xform_result=`$ECHO "$1" | $SED 's/\.[^.]*$/.lo/'`
-} # func_xform may be replaced by extended shell implementation
+  func_xform ()
+  {
+    func_xform_result=`$ECHO "$1" | $SED 's|\.[^.]*$|.lo|'`
+  }
+fi
 
 
 # func_fatal_configuration arg...

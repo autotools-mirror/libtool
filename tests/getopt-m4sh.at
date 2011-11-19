@@ -40,9 +40,22 @@ M4SH_GETOPTS(
   [a!],	[--append],	[],	[func_append list "$optarg$nl"],
   [f],	[--force],	[],	[opts="$opts force"],
   [i],	[--install],	[],	[opts="$opts install"],
+  [l;],	[--length],	[],	[],
+  [p!],	[--path],	[],	[func_dirname_and_basename "$optarg"],
   [v],	[--verbose],	[],	[opts="$opts verbose"],
   [!],	[--ltdl],	[false],[opts="$opts ltdl=$optarg"],
-[echo "$list" $opts])
+[test -z "$opt_length" || {
+  for s in $opt_length; do
+    func_len "$s"
+    func_arith ${len-0} + $func_len_result; len=$func_arith_result
+  done
+  echo len=$len
+}
+test -z "$opt_path" || {
+  func_stripname b_ .d "$func_basename_result"
+  echo "$func_dirname_result:$func_stripname_result"
+}
+test -z "$list$opts" || echo "$list" $opts])
 ]])
 m4_pattern_forbid([m4_include])
 m4_pattern_forbid([AS_INIT])
@@ -53,22 +66,11 @@ $SED "s|@LN_S\@|$LN_S|g;s|@SED\@|$SED|g" t-options > options
 ])# _LT_AT_GETOPT_M4SH_SETUP
 
 
-# _LT_AT_EXTENDED_SHELL_FUNC_EXTRACT(FUNC-NAME)
-# ---------------------------------------------
-# Extract the 'Extended-shell'-decorated function FUNC-NAME from libtool
-m4_define([_LT_AT_XSI_FUNC_EXTRACT],
-[dnl {{
-$SED '/^# $1/q' options > options.tmp
-$SED -n '/^$1 ()/,/^} # Extended-shell $1 /p' $abs_top_builddir/libtool >> options.tmp
-$SED '1,/^} # $1 /d' options >> options.tmp
-rm -f options && mv options.tmp options])
-
-
 ## ----------------------- ##
 ## Short option splitting. ##
 ## ----------------------- ##
 
-AT_SETUP([short option splitting])
+AT_SETUP([fallback short option splitting])
 
 AT_DATA(expout,
 [[ force verbose install
@@ -76,22 +78,18 @@ AT_DATA(expout,
 
 _LT_AT_GETOPT_M4SH_SETUP
 
-AT_CHECK([$SHELL ./options -fvi], 0, [expout])
+AT_CHECK([lt_HAVE_XSI_OPS=no $SHELL ./options -fvi], 0, [expout])
 
 AT_CLEANUP
 
 
-AT_SETUP([enhanced shell short option splitting])
-
-# Don't bother with additional XSI checks unless functions were substituted
-AT_CHECK([fgrep '@%:@ Extended-shell func_split_short_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+AT_SETUP([enhanced short option splitting])
 
 AT_DATA(expout,
 [[ force verbose install
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP
-_LT_AT_XSI_FUNC_EXTRACT(func_split_short_opt)
 
 AT_CHECK([$SHELL ./options -fvi], 0, [expout])
 
@@ -102,7 +100,7 @@ AT_CLEANUP
 ## Long option splitting. ##
 ## ---------------------- ##
 
-AT_SETUP([long option splitting])
+AT_SETUP([fallback long option splitting])
 
 AT_DATA(expout,
 [[ ltdl=long
@@ -110,22 +108,18 @@ AT_DATA(expout,
 
 _LT_AT_GETOPT_M4SH_SETUP
 
-AT_CHECK([$SHELL ./options --ltdl=long], 0, [expout])
+AT_CHECK([lt_HAVE_XSI_OPS=no $SHELL ./options --ltdl=long], 0, [expout])
 
 AT_CLEANUP
 
 
-AT_SETUP([XSI long option splitting])
-
-# Don't bother with additional XSI checks unless functions were substituted
-AT_CHECK([fgrep '@%:@ Extended-shell func_split_long_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+AT_SETUP([enhanced long option splitting])
 
 AT_DATA(expout,
 [[ ltdl=long
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP
-_LT_AT_XSI_FUNC_EXTRACT(func_split_long_opt)
 
 AT_CHECK([$SHELL ./options --ltdl=long], 0, [expout])
 
@@ -136,7 +130,22 @@ AT_CLEANUP
 ## Option appending. ##
 ## ----------------- ##
 
-AT_SETUP([option appending])
+AT_SETUP([fallback option appending])
+
+AT_DATA(expout,
+[[first   --append second
+third
+
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+
+AT_CHECK([lt_HAVE_PLUSEQ_OP=no $SHELL ./options -a "first   --append second" -athird], 0, [expout])
+
+AT_CLEANUP
+
+
+AT_SETUP([enhanced option appending])
 
 AT_DATA(expout,
 [[first   --append second
@@ -151,20 +160,61 @@ AT_CHECK([$SHELL ./options -a "first   --append second" -athird], 0, [expout])
 AT_CLEANUP
 
 
-AT_SETUP([enhanced shell option appending])
+## ----------------- ##
+## Shell arithmetic. ##
+## ----------------- ##
 
-# Don't bother with additional += check unless functions were substituted
-AT_CHECK([fgrep '@%:@ Extended-shell func_append ' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+AT_SETUP([fallback arithmetic])
 
 AT_DATA(expout,
-[[first   --append second
-third
-
+[[len=9
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP
-_LT_AT_XSI_FUNC_EXTRACT(func_append)
 
-AT_CHECK([$SHELL ./options -a "first   --append second" -athird], 0, [expout])
+AT_CHECK([lt_HAVE_ARITH_OP=no $SHELL ./options -l short --length long], 0, [expout])
+
+AT_CLEANUP
+
+
+AT_SETUP([enhanced arithmetic])
+
+AT_DATA(expout,
+[[len=9
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+
+AT_CHECK([$SHELL ./options -l short --length long], 0, [expout])
+
+AT_CLEANUP
+
+
+## ------------- ##
+## Path slicing. ##
+## ------------- ##
+
+AT_SETUP([fallback path slicing])
+
+AT_DATA(expout,
+[[a:c
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+
+AT_CHECK([lt_HAVE_XSI_OPS=no $SHELL ./options -p a/b_c.d], 0, [expout])
+
+AT_CLEANUP
+
+
+AT_SETUP([enhanced path slicing])
+
+AT_DATA(expout,
+[[a:c
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+
+AT_CHECK([$SHELL ./options -p a/b_c.d], 0, [expout])
 
 AT_CLEANUP
