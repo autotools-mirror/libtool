@@ -87,12 +87,12 @@ fn_check_msg ()
     }
 
     # Make sure Copyright-paperwork-exempt line is valid.
-    if grep "${CPR_re}[Nn]" "$log_file" >/dev/null 2>&1; then
+    if grep "$CPR_re[Nn]" "$log_file" >/dev/null 2>&1; then
       $ECHO "\
 \`Copyright-paperwork-exempt: No' is redundant, please remove."
       return_status=1
     else
-      not_yes=`grep "${CPR_re}" "$log_file" 2>/dev/null \
+      not_yes=`grep "$CPR_re" "$log_file" 2>/dev/null \
         |grep -v "${CPR_re}Yes\$"`
 
       test -n "$not_yes" && {

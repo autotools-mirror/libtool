@@ -41,16 +41,16 @@ m4_define([_LTDL_DIR], [])
 
 # _LT_BUILD_PREFIX
 # ----------------
-# If Autoconf is new enough, expand to `${top_build_prefix}', otherwise
-# to `${top_builddir}/'.
+# If Autoconf is new enough, expand to `$(top_build_prefix)', otherwise
+# to `$(top_builddir)/'.
 m4_define([_LT_BUILD_PREFIX],
 [m4_ifdef([AC_AUTOCONF_VERSION],
    [m4_if(m4_version_compare(m4_defn([AC_AUTOCONF_VERSION]), [2.62]),
 	  [-1], [m4_ifdef([_AC_HAVE_TOP_BUILD_PREFIX],
-			  [${top_build_prefix}],
-			  [${top_builddir}/])],
-	  [${top_build_prefix}])],
-   [${top_builddir}/])[]dnl
+			  [$(top_build_prefix)],
+			  [$(top_builddir)/])],
+	  [$(top_build_prefix)])],
+   [$(top_builddir)/])[]dnl
 ])
 
 
@@ -60,8 +60,8 @@ m4_define([_LT_BUILD_PREFIX],
 # LTDLINCL to the include flags for the libltdl header and adds
 # --enable-ltdl-convenience to the configure arguments.  Note that
 # AC_CONFIG_SUBDIRS is not called here.  LIBLTDL will be prefixed with
-# '${top_build_prefix}' if available, otherwise with '${top_builddir}/',
-# and LTDLINCL will be prefixed with '${top_srcdir}/' (note the single
+# '$(top_build_prefix)' if available, otherwise with '$(top_builddir)/',
+# and LTDLINCL will be prefixed with '$(top_srcdir)/' (note the single
 # quotes!).  If your package is not flat and you're not using automake,
 # define top_build_prefix, top_builddir, and top_srcdir appropriately
 # in your Makefiles.
@@ -97,7 +97,7 @@ m4_defun([_LTDL_CONVENIENCE],
 esac
 LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdlc.la"
 LTDLDEPS=$LIBLTDL
-LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
+LTDLINCL='-I$(top_srcdir)'"${lt_ltdl_dir+/$lt_ltdl_dir}"
 
 AC_SUBST([LIBLTDL])
 AC_SUBST([LTDLDEPS])
@@ -115,9 +115,9 @@ AC_SUBST([INCLTDL])
 # and LTDLINCL to the include flags for the libltdl header and adds
 # --enable-ltdl-install to the configure arguments.  Note that
 # AC_CONFIG_SUBDIRS is not called from here.  If an installed libltdl
-# is not found, LIBLTDL will be prefixed with '${top_build_prefix}' if
-# available, otherwise with '${top_builddir}/', and LTDLINCL will be
-# prefixed with '${top_srcdir}/' (note the single quotes!).  If your
+# is not found, LIBLTDL will be prefixed with '$(top_build_prefix)' if
+# available, otherwise with '$(top_builddir)/', and LTDLINCL will be
+# prefixed with '$(top_srcdir)/' (note the single quotes!).  If your
 # package is not flat and you're not using automake, define top_build_prefix,
 # top_builddir, and top_srcdir appropriately in your Makefiles.
 # In the future, this macro may have to be called after LT_INIT.
@@ -174,7 +174,7 @@ case $enable_ltdl_install in
       ac_configure_args="$ac_configure_args --enable-ltdl-install"
       LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdl.la"
       LTDLDEPS=$LIBLTDL
-      LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
+      LTDLINCL='-I$(top_srcdir)'"${lt_ltdl_dir+/$lt_ltdl_dir}"
       ;;
 esac
 
@@ -427,7 +427,7 @@ m4_define([_LT_ENABLE_INSTALL],
 [AC_ARG_ENABLE([ltdl-install],
     [AS_HELP_STRING([--enable-ltdl-install], [install libltdl])])
 
-case ,${enable_ltdl_install},${enable_ltdl_convenience} in
+case ,$enable_ltdl_install,$enable_ltdl_convenience in
   *yes*) ;;
   *) enable_ltdl_convenience=yes ;;
 esac

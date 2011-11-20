@@ -190,6 +190,12 @@ define _sc_search_regexp_or_exclude
   fi || :;
 endef
 
+exclude_file_name_regexp--sc_useless_braces_in_variable_derefs = /cvsu$$
+sc_useless_braces_in_variable_derefs:
+	@prohibit='\$${[0-9A-Za-z_]+}[^0-9A-Za-z_]'			\
+	halt='found spurious braces around variable dereference'	\
+	  $(_sc_search_regexp)
+
 sc_useless_quotes_in_assignment:
 	@prohibit='^[	 ]*[A-Za-z_][A-Za-z0-9_]*="[^	 !#&()*;<>?@~^{|}]*"$$'	\
 	halt='found spurious quotes around assignment value'		\

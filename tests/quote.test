@@ -75,14 +75,14 @@ for mode in compile link install; do
 
   # Trivial.
   echo "= trying: no quoting"
-  result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=$EXIT_FAILURE
+  result=`$LIBTOOL -n --mode=$mode $preargs $preflag"$flag:test" $postargs` || status=$EXIT_FAILURE
   # We used to have the contents of $match in the case statement,
   # without an intermediate variable, but it would fail on at least
   # Solaris' and HP-UX's /bin/sh.  Ugh!
   # We must not attempt to match $preargs in the output, because libtool
   # may modify them.  For example, on Cygwin, ``libtool --mode=link gcc -o
   # foo foo.o''  becomes ``gcc -o foo.exe foo.o''.
-  match="${match_preflag}${flag}test "
+  match="$match_preflag$flag:test "
   case $result in
   *"$match"*)
     $ECHO "= passed: $result"
@@ -96,9 +96,9 @@ for mode in compile link install; do
   # Metacharacters that should be backslashified.
   for mchar in \\ \" \` \$; do
     $ECHO "= trying: \\$mchar quoting"
-    result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
-    match="${match_preflag}${flag}\\${mchar}test\\${mchar} "
-    alt_match="${match_preflag}\"${flag}\\${mchar}test\\${mchar}\" "
+    result=`$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs` || status=$EXIT_FAILURE
+    match="$match_preflag$flag\\$mchar:test\\$mchar "
+    alt_match="$match_preflag\"$flag\\$mchar:test\\$mchar\" "
     case $result in
     *"$match"*)
       $ECHO "= passed: $result"
@@ -118,8 +118,8 @@ for mode in compile link install; do
       "'" " " "	"; do
 
     $ECHO "= trying: \"$mchar\" quoting"
-    result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
-    match="${match_preflag}\"${flag}${mchar}test${mchar}\" "
+    result=`$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs` || status=$EXIT_FAILURE
+    match="$match_preflag\"$flag$mchar:test$mchar\" "
     case $result in
     *"$match"*)
       $ECHO "= passed: $result"

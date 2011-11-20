@@ -30,7 +30,7 @@
 linkresult=`$LIBTOOL -n --mode=link $CC -objectlist nonexistant 2>&1`
 test $? -eq 0 && exit $EXIT_FAILURE
 
-echo "$linkresult" | ${EGREP} "nonexistant" >/dev/null 2>&1 && {
+echo "$linkresult" | $EGREP "nonexistant" >/dev/null 2>&1 && {
   func_msg "$progname: error message contains -objectlist argument as expected"
 }  || exit $EXIT_FAILURE
 
@@ -40,7 +40,7 @@ objlist="object list with spaces"
 linkresult=`$LIBTOOL -n --mode=link $CC -o a.out -objectlist "$objlist" 2>&1`
 rm -f "$objlist"
 
-echo "$linkresult" | ${EGREP} "spaces" >/dev/null 2>&1 && {
+echo "$linkresult" | $EGREP "spaces" >/dev/null 2>&1 && {
   func_msg "$progname: -objectlist with spaces in filename not recognized."
   exit $EXIT_FAILURE
 }

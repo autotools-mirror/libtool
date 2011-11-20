@@ -70,7 +70,7 @@ eval "`$LIBTOOL --tag=lt_tag --config | $EGREP '^(wl|archive_cmds)='`"
 AT_CHECK([$LIBTOOL --tag=lt_tag --mode=compile $compile -c $source],
 	 [], [ignore], [ignore])
 
-# Linker flags are prefixed with ${wl} iff they are passed to the
+# Linker flags are prefixed with $wl iff they are passed to the
 # compiler driver, instead of directly to the linker.
 case $archive_cmds in
 *\$LD*\$linker_flags*) maybe_wl= compiler_flags_in_liblink=false ;;

@@ -134,7 +134,7 @@ func_fix_path ()
     save_PATH=$PATH
     sep=
     test -z "$PATH" || sep=:
-    PATH=${2}/bin:${3}/bin:${1}/bin$sep$PATH
+    PATH=$2/bin:$3/bin:$1/bin$sep$PATH
   fi
 
 }
@@ -149,21 +149,21 @@ func_restore_path ()
 # func_move_libs srcdir_to_move prefix_to_move other_prefix other_prefix
 func_move_libs ()
 {
-  LT_AT_MVDIR(["${1}"], ["${1}-moved"])
-  LT_AT_MVDIR(["${2}"], ["${2}-moved"])
-  LT_AT_MVDIR(["$srcdir_broken"], ["${1}"])
-  LT_AT_MVDIR(["$prefix_broken"], ["${2}"])
-  func_fix_path ${2} ${3} ${4}
+  LT_AT_MVDIR(["$1"], ["$1-moved"])
+  LT_AT_MVDIR(["$2"], ["$2-moved"])
+  LT_AT_MVDIR(["$srcdir_broken"], ["$1"])
+  LT_AT_MVDIR(["$prefix_broken"], ["$2"])
+  func_fix_path "$2" "$3" "$4"
 }
 
 # func_restore_libs srcdir_to_restore prefix_to_restore
 func_restore_libs ()
 {
   func_restore_path
-  LT_AT_MVDIR(["${2}"], ["$prefix_broken"])
-  LT_AT_MVDIR(["${1}"], ["$srcdir_broken"])
-  LT_AT_MVDIR(["${2}-moved"], ["${2}"])
-  LT_AT_MVDIR(["${1}-moved"], ["${1}"])
+  LT_AT_MVDIR(["$2"], ["$prefix_broken"])
+  LT_AT_MVDIR(["$1"], ["$srcdir_broken"])
+  LT_AT_MVDIR(["$2-moved"], ["$2"])
+  LT_AT_MVDIR(["$1-moved"], ["$1"])
 }
 
 # make sure the program can be run.
@@ -178,7 +178,7 @@ func_test_exec ()
       LT_AT_EXEC_CHECK([./m$st])
       # For some per-deplib flag combinations there may be no installed program,
       # because liba2 is not yet installed.
-      if test -f "$bindir/m${st}$EXEEXT"; then
+      if test -f "$bindir/m$st$EXEEXT"; then
 	LT_AT_EXEC_CHECK([$bindir/m$st])
       fi
     done
@@ -198,7 +198,7 @@ func_test_exec_fail ()
       LT_AT_EXEC_CHECK([./m$st], [1], [], [ignore], [|| (exit 1)])
       # For some per-deplib flag combinations there may be no installed program,
       # because liba2 is not yet installed.
-      if test -f "$bindir/m${st}$EXEEXT"; then
+      if test -f "$bindir/m$st$EXEEXT"; then
 	LT_AT_EXEC_CHECK([$bindir/m$st], [1], [], [ignore], [|| (exit 1)])
       fi
     done
@@ -260,7 +260,7 @@ for withdep in no yes; do
 
   # global static flags.
   for st in -static -static-libtool-libs $can_link_all_static; do
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o m${st}$EXEEXT m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o m$st$EXEEXT m.$OBJEXT \
 	-L$libdir1 -la1 a2/liba2.la -L$libdir3 -R$libdir3 -la3],
        [0], [ignore], [ignore])
   done
@@ -309,7 +309,7 @@ for withdep in no yes; do
   # We can't install any program that links dynamically against liba2.
   for st in -static -static-libtool-libs $can_link_all_static `$per_deplib && echo 2 12 23 123 123a`; do
     echo "# m$st"
-    AT_CHECK([$LIBTOOL --mode=install cp m${st}$EXEEXT $bindir/m${st}$EXEEXT], [0], [ignore], [stderr])
+    AT_CHECK([$LIBTOOL --mode=install cp m$st$EXEEXT $bindir/m$st$EXEEXT], [0], [ignore], [stderr])
     if $have_static; then
       AT_CHECK([$EGREP 'relinking|has not been installed' stderr], [1], [], [])
     fi

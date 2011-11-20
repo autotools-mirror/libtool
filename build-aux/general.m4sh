@@ -78,11 +78,11 @@ basename='s,^.*/,,'
 # otherwise set result to NONDIR_REPLACEMENT.
 func_dirname ()
 {
-    func_dirname_result=`$ECHO "${1}" | $SED "$dirname"`
-    if test "X$func_dirname_result" = "X${1}"; then
-      func_dirname_result=${3}
+    func_dirname_result=`$ECHO "$1" | $SED "$dirname"`
+    if test "X$func_dirname_result" = "X$1"; then
+      func_dirname_result=$3
     else
-      func_dirname_result=$func_dirname_result${2}
+      func_dirname_result=$func_dirname_result$2
     fi
 } # func_dirname may be replaced by extended shell implementation
 
@@ -90,7 +90,7 @@ func_dirname ()
 # func_basename file
 func_basename ()
 {
-    func_basename_result=`$ECHO "${1}" | $SED "$basename"`
+    func_basename_result=`$ECHO "$1" | $SED "$basename"`
 } # func_basename may be replaced by extended shell implementation
 
 
@@ -109,13 +109,13 @@ func_basename ()
 func_dirname_and_basename ()
 {
     # Extract subdirectory from the argument.
-    func_dirname_result=`$ECHO "${1}" | $SED -e "$dirname"`
-    if test "X$func_dirname_result" = "X${1}"; then
-      func_dirname_result=${3}
+    func_dirname_result=`$ECHO "$1" | $SED -e "$dirname"`
+    if test "X$func_dirname_result" = "X$1"; then
+      func_dirname_result=$3
     else
-      func_dirname_result=$func_dirname_result${2}
+      func_dirname_result=$func_dirname_result$2
     fi
-    func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
+    func_basename_result=`$ECHO "$1" | $SED -e "$basename"`
 } # func_dirname_and_basename may be replaced by extended shell implementation
 
 
@@ -127,9 +127,9 @@ func_dirname_and_basename ()
 # func_strip_suffix prefix name
 func_stripname ()
 {
-    case ${2} in
-      .*) func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%\\\\${2}\$%%"`;;
-      *)  func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%${2}\$%%"`;;
+    case $2 in
+      .*) func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%\\\\$2\$%%"`;;
+      *)  func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%$2\$%%"`;;
     esac
 } # func_stripname may be replaced by extended shell implementation
 
@@ -251,7 +251,7 @@ func_relative_path ()
         ;;
       *)
         func_dirname $func_relative_path_tlibdir
-        func_relative_path_tlibdir=${func_dirname_result}
+        func_relative_path_tlibdir=$func_dirname_result
         if test "x$func_relative_path_tlibdir" = x ; then
           # Have to descend all the way to the root!
           func_relative_path_result=../$func_relative_path_result
@@ -268,7 +268,7 @@ func_relative_path ()
   func_relative_path_result=$func_stripname_result
   func_stripname '/' '/' "$func_relative_path_tcancelled"
   if test "x$func_stripname_result" != x ; then
-    func_relative_path_result=${func_relative_path_result}/${func_stripname_result}
+    func_relative_path_result=$func_relative_path_result/$func_stripname_result
   fi
 
   # Normalisation. If bindir is libdir, return `.' else relative path.
@@ -471,15 +471,15 @@ func_mktempdir ()
 
     if test "$opt_dry_run" = ":"; then
       # Return a directory name, but don't create it in dry-run mode
-      my_tmpdir=${my_template}-$$
+      my_tmpdir=$my_template-$$
     else
 
       # If mktemp works, use that first and foremost
-      my_tmpdir=`mktemp -d "${my_template}-XXXXXXXX" 2>/dev/null`
+      my_tmpdir=`mktemp -d "$my_template-XXXXXXXX" 2>/dev/null`
 
       if test ! -d "$my_tmpdir"; then
         # Failing that, at least try and use $RANDOM to avoid a race
-        my_tmpdir=${my_template}-${RANDOM-0}$$
+        my_tmpdir=$my_template-${RANDOM-0}$$
 
         save_mktempdir_umask=`umask`
         umask 0077

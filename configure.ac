@@ -109,8 +109,8 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(srcdir)/.version'])
 ## Libtool specific configuration. ##
 ## ------------------------------- ##
 
-AC_SUBST([aclocaldir], ["\${datadir}/aclocal"])
-AC_SUBST([pkgdatadir], ["\${datadir}/$PACKAGE"])
+AC_SUBST([aclocaldir], ["\$(datadir)/aclocal"])
+AC_SUBST([pkgdatadir], ["\$(datadir)/$PACKAGE"])
 
 AC_ARG_ENABLE(ltdl-install,
     [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
@@ -132,7 +132,7 @@ AC_SUBST([CONF_SUBDIRS])
 
 DIST_MAKEFILE_LIST=
 for dir in $CONF_SUBDIRS; do
-  DIST_MAKEFILE_LIST="${DIST_MAKEFILE_LIST}$dir/Makefile "
+  DIST_MAKEFILE_LIST="$DIST_MAKEFILE_LIST$dir/Makefile "
 done
 AC_SUBST([DIST_MAKEFILE_LIST])
 

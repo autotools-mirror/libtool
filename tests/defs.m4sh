@@ -172,7 +172,7 @@ func_require ()
 
     for my_file in $my_files; do
       test -f "$my_file" \
-        || func_skip "You must run ${my_prereq}.test before running $0"
+        || func_skip "You must run $my_prereq.test before running $0"
     done
 }
 
@@ -195,7 +195,7 @@ func_configure_nofail ()
 
     func_msg "Configuring in $my_dir"
 
-    test -f "$my_testdir/configure" || ${AUTORECONF} --force --install $my_testdir
+    test -f "$my_testdir/configure" || $AUTORECONF --force --install $my_testdir
     if test -f "$my_testdir/configure"; then
 
       eval func_msg $SHELL "$my_testdir/configure" $my_args

@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Set a version string for this script.
-scriptversion=2011-11-16.05; # UTC
+scriptversion=2011-11-20.12; # UTC
 
 # A pluggable option parser for Bourne shell.
 # Written by Gary V. Vaughan, 2010
@@ -555,13 +555,13 @@ func_error ()
     $require_term_colors
 
     _G_message=$*
-    _G_prefix="$progname: ${tc_standout}${tc_red}error${tc_reset}: "
+    _G_prefix="$progname: $tc_standout${tc_red}error$tc_reset: "
 
     save_IFS=$IFS
     IFS=$nl
     for _G_line in $_G_message; do
       IFS=$save_IFS
-      echo "$_G_prefix${tc_bold}$_G_line${tc_reset}" 1>&2
+      echo "$_G_prefix$tc_bold$_G_line$tc_reset" 1>&2
       _G_prefix="$progname:        "
     done
     IFS=$save_IFS

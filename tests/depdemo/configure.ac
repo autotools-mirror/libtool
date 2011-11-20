@@ -52,7 +52,7 @@ AC_SUBST([LIBTOOL_DEPS])
 ## ------------------------------- ##
 ## depdemo specific configuration. ##
 ## ------------------------------- ##
-STATIC="\`${CONFIG_SHELL} ./libtool --features | ${SED} -n -e '/enable static/s/^.*\$\$/-static/p'\`"
+STATIC="\`$CONFIG_SHELL ./libtool --features |$SED -n -e '/enable static/s/^.*\$\$/-static/p'\`"
 AC_SUBST([STATIC])
 
 ## ------------------------------ ##
