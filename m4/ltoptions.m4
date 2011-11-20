@@ -344,9 +344,7 @@ m4_define([_LT_WITH_PIC],
       IFS=$lt_save_ifs
       ;;
     esac],
-    [pic_mode=default])
-
-test -z "$pic_mode" && pic_mode=m4_default([$1], [default])
+    [pic_mode=m4_default([$1], [default])])
 
 _LT_DECL([], [pic_mode], [0], [What type of objects to build])dnl
 ])# _LT_WITH_PIC
