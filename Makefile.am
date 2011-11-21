@@ -626,13 +626,14 @@ TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
 		  tests/getopt-m4sh.at \
 		  tests/libtoolize.at \
+		  tests/cdemo.at \
+		  tests/convenience.at \
 		  tests/help.at \
 		  tests/duplicate_members.at \
 		  tests/duplicate_conv.at \
 		  tests/duplicate_deps.at \
 		  tests/flags.at \
 		  tests/inherited_flags.at \
-		  tests/convenience.at \
 		  tests/link-order.at \
 		  tests/link-order2.at \
 		  tests/fail.at \
@@ -872,9 +873,6 @@ COMMON_TESTS = \
 	tests/quote.test \
 	tests/suffix.test \
 	tests/tagtrace.test \
-	tests/cdemo-static.test \
-	tests/cdemo-static-make.test \
-	tests/cdemo-static-exec.test \
 	tests/demo-static.test \
 	tests/demo-static-make.test \
 	tests/demo-static-exec.test \
@@ -890,9 +888,6 @@ COMMON_TESTS = \
 	tests/mdemo-static-exec.test \
 	tests/mdemo-static-inst.test \
 	tests/mdemo-static-unst.test \
-	tests/cdemo-conf.test \
-	tests/cdemo-make.test \
-	tests/cdemo-exec.test \
 	tests/demo-conf.test \
 	tests/demo-make.test \
 	tests/demo-exec.test \
@@ -933,17 +928,11 @@ COMMON_TESTS = \
 	tests/demo-nopic.test \
 	tests/demo-nopic-make.test \
 	tests/demo-nopic-exec.test \
-	tests/cdemo-shared.test \
-	tests/cdemo-shared-make.test \
-	tests/cdemo-shared-exec.test \
 	tests/mdemo-shared.test \
 	tests/mdemo-shared-make.test \
 	tests/mdemo-shared-exec.test \
 	tests/mdemo-shared-inst.test \
-	tests/mdemo-shared-unst.test \
-	tests/cdemo-undef.test \
-	tests/cdemo-undef-make.test \
-	tests/cdemo-undef-exec.test
+	tests/mdemo-shared-unst.test
 
 # Actually, only demo-relink and depdemo-relink require interaction,
 # but they depend on the other tests being run beforehand.
@@ -962,18 +951,6 @@ INTERACTIVE_TESTS = \
 	tests/depdemo-shared-inst.test \
 	tests/depdemo-relink.test \
 	tests/depdemo-shared-unst.test
-
-tests/cdemo-undef-exec.log:	tests/cdemo-undef-make.log
-tests/cdemo-undef-make.log:	tests/cdemo-undef.log
-tests/cdemo-undef.log: $(ORDER)	tests/cdemo-shared-exec.log
-tests/cdemo-shared-exec.log:	tests/cdemo-shared-make.log
-tests/cdemo-shared-make.log:	tests/cdemo-shared.log
-tests/cdemo-shared.log: $(ORDER) tests/cdemo-exec.log
-tests/cdemo-exec.log:		tests/cdemo-make.log
-tests/cdemo-make.log:		tests/cdemo-conf.log
-tests/cdemo-conf.log: $(ORDER)	tests/cdemo-static-exec.log
-tests/cdemo-static-exec.log:	tests/cdemo-static-make.log
-tests/cdemo-static-make.log:	tests/cdemo-static.log
 
 tests/demo-shared-unst.log:	tests/demo-noinst-link.log
 tests/demo-noinst-link.log:	tests/demo-relink.log

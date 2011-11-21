@@ -208,6 +208,22 @@ m4_define([LT_AT_CHECK],
 [echo "LT_ESCAPE([$1])"; AT_CHECK($@)])
 
 
+# LT_AT_CHECK_CONFIG (CONFIGURE-ARGS, [GREP-EXPRESSION], ...)
+# -----------------------------------------------------------
+# Bootstrap and configure the project, and check each GREP-EXPRESSION
+# works on the resulting libtool script.
+m4_define([LT_AT_CHECK_CONFIG],
+[LT_AT_BOOTSTRAP([], [-I m4], [], [--add-missing], [],
+        [--prefix="$prefixdir" $1], [ignore])
+m4_if([$#], 0, [],
+      [$#], 1, [], [$0_(m4_shift($@))])
+])
+m4_define([LT_AT_CHECK_CONFIG_],
+[AT_CHECK([$EGREP '$1' libtool], 0, [ignore])
+ m4_if([$#], 1, [], [$0(m4_shift($@))])
+])
+
+
 # LT_AT_HOST_DATA(FILE, CONTENTS)
 # -------------------------------
 # Ensure correct line ending for expected output of host executables.
