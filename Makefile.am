@@ -52,7 +52,7 @@ LT_M4SH			= $(M4SH) -B '$(srcdir)/$(m4sh_dir)'
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
 git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '.tarball-version'
-rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's,-.*$$,,g'`
+rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's|-.*$$||g'`
 
 
 # ---------- #
@@ -108,18 +108,18 @@ EXTRA_DIST     += $(extract_trace) $(libtoolize_in) $(libtoolize_m4sh) \
 ## because they must be static in distributed files, and not accidentally
 ## changed by configure running on the build machine.
 bootstrap_edit  = $(SED) \
-		  -e 's,@MACRO_VERSION\@,$(VERSION),g' \
-		  -e "s,@MACRO_REVISION\@,$$revision,g" \
-		  -e "s,@MACRO_SERIAL\@,$$serial,g" \
-		  -e 's,@PACKAGE\@,$(PACKAGE),g' \
-		  -e 's,@PACKAGE_BUGREPORT\@,$(PACKAGE_BUGREPORT),g' \
-		  -e 's,@PACKAGE_URL\@,$(PACKAGE_URL),g' \
-		  -e 's,@PACKAGE_NAME\@,$(PACKAGE_NAME),g' \
-		  -e "s,@package_revision\@,$$revision,g" \
-		  -e 's,@PACKAGE_STRING\@,$(PACKAGE_NAME) $(VERSION),g' \
-		  -e 's,@PACKAGE_TARNAME\@,$(PACKAGE),g' \
-		  -e 's,@PACKAGE_VERSION\@,$(VERSION),g' \
-		  -e 's,@VERSION\@,$(VERSION),g'
+		  -e 's|@MACRO_VERSION\@|$(VERSION)|g' \
+		  -e "s|@MACRO_REVISION\@|$$revision|g" \
+		  -e "s|@MACRO_SERIAL\@|$$serial|g" \
+		  -e 's|@PACKAGE\@|$(PACKAGE)|g' \
+		  -e 's|@PACKAGE_BUGREPORT\@|$(PACKAGE_BUGREPORT)|g' \
+		  -e 's|@PACKAGE_URL\@|$(PACKAGE_URL)|g' \
+		  -e 's|@PACKAGE_NAME\@|$(PACKAGE_NAME)|g' \
+		  -e "s|@package_revision\@|$$revision|g" \
+		  -e 's|@PACKAGE_STRING\@|$(PACKAGE_NAME) $(VERSION)|g' \
+		  -e 's|@PACKAGE_TARNAME\@|$(PACKAGE)|g' \
+		  -e 's|@PACKAGE_VERSION\@|$(VERSION)|g' \
+		  -e 's|@VERSION\@|$(VERSION)|g'
 
 ## ltmain.sh needs some additional editing to remove unsubstituted
 ## variable defaulting lines, because ltmain.sh never gets passed
@@ -210,8 +210,8 @@ $(lt_Makefile_am): $(ltdl_mk)
 	  }; \
 	  '$(SED)' -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' \
 	      '$(ltdl_mk)' \
-	    |'$(SED)' -e 's,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,' \
-	      -e 's,\$$(libltdl_,$$(,' \
+	    |'$(SED)' -e 's|libltdl_||; s|libltdl/||; s|: libltdl/|: |' \
+	      -e 's|\$$(libltdl_|$$(|' \
 	) |'$(SED)' -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
 	      -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > '$@'
 	$(AM_V_at)chmod a-w '$@'
@@ -275,26 +275,26 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ltdl_ac_aux_dir = `$(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
 
 configure_edit = $(SED) \
-	-e 's,@aclocaldir\@,$(aclocaldir),g' \
-	-e 's,@aux_dir\@,$(aux_dir),g' \
-	-e 's,@datadir\@,$(datadir),g' \
-	-e 's,@EGREP\@,$(EGREP),g' \
-	-e 's,@FGREP\@,$(FGREP),g' \
-	-e 's,@GREP\@,$(GREP),g' \
-	-e 's,@host_triplet\@,$(host_triplet),g' \
-	-e 's,@LN_S\@,$(LN_S),g' \
-	-e "s,@ltdl_ac_aux_dir\@,$(ltdl_ac_aux_dir),g" \
-	-e 's,@macro_dir\@,$(macro_dir),g' \
-	-e 's,@pkgauxdir\@,$(pkgauxdir),g' \
-	-e 's,@pkgaux_files\@,$(pkgaux_scripts) $(pkgaux_data_files),g' \
-	-e 's,@pkgaux_install_files\@,$(pkgaux_install_files),g' \
-	-e 's,@pkgaux_parent_files\@,$(pkgaux_parent_files),g' \
-	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
-	-e 's,@pkgltdl_files\@,$(pkgltdl_files),g' \
-	-e 's,@pkgmacro_files\@,$(pkgmacro_files),g' \
-	-e 's,@prefix\@,$(prefix),g' \
-	-e 's,@SED\@,$(SED),g' \
-	-e 's,@srcdir\@,$(srcdir),g'
+	-e 's|@aclocaldir\@|$(aclocaldir)|g' \
+	-e 's|@aux_dir\@|$(aux_dir)|g' \
+	-e 's|@datadir\@|$(datadir)|g' \
+	-e 's|@EGREP\@|$(EGREP)|g' \
+	-e 's|@FGREP\@|$(FGREP)|g' \
+	-e 's|@GREP\@|$(GREP)|g' \
+	-e 's|@host_triplet\@|$(host_triplet)|g' \
+	-e 's|@LN_S\@|$(LN_S)|g' \
+	-e "s|@ltdl_ac_aux_dir\@|$(ltdl_ac_aux_dir)|g" \
+	-e 's|@macro_dir\@|$(macro_dir)|g' \
+	-e 's|@pkgauxdir\@|$(pkgauxdir)|g' \
+	-e 's|@pkgaux_files\@|$(pkgaux_scripts) $(pkgaux_data_files)|g' \
+	-e 's|@pkgaux_install_files\@|$(pkgaux_install_files)|g' \
+	-e 's|@pkgaux_parent_files\@|$(pkgaux_parent_files)|g' \
+	-e 's|@pkgdatadir\@|$(pkgdatadir)|g' \
+	-e 's|@pkgltdl_files\@|$(pkgltdl_files)|g' \
+	-e 's|@pkgmacro_files\@|$(pkgmacro_files)|g' \
+	-e 's|@prefix\@|$(prefix)|g' \
+	-e 's|@SED\@|$(SED)|g' \
+	-e 's|@srcdir\@|$(srcdir)|g'
 
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
@@ -326,7 +326,7 @@ libtool: $(ltmain_sh) $(config_status) $(dotversion)
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 $(DIST_MAKEFILE_LIST):
-	$(AM_V_at)dir=`echo '$@' |'$(SED)' 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
+	$(AM_V_at)dir=`echo '$@' |'$(SED)' 's|^[^/]*$$|.|;s|/[^/]*$$||'`; \
 	test -d "$$dir" || mkdir "$$dir" || exit 1; \
 	abs_srcdir=`$(lt__cd) '$(srcdir)' && pwd`; \
 	(cd "$$dir" && "$$abs_srcdir/$$dir/configure" --with-dist) || exit 1
@@ -363,12 +363,12 @@ $(stamp_mk): $(lt_Makefile_in)
 	$(AM_V_at)T='$(srcdir)/$(aux_dir)/Makefile.tmp'; \
 	for p in $(srcdir)/$(aux_dir)/*; do \
 	  test -f "$$p" || continue; \
-	  f=`echo "$$p" | $(SED) 's,^$(srcdir)/$(aux_dir)/,,'`; \
+	  f=`echo "$$p" | $(SED) 's|^$(srcdir)/$(aux_dir)/||'`; \
 	  case " $(pkgaux_scripts) ltmain.sh " in \
 	    *" $$f "*) ;; \
 	    *) '$(SED)' \
-		  -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"'\$$,,' \
-		  -e 's,\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"' ,,' \
+		  -e 's|\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"'\$$||' \
+		  -e 's|\(\$$([^)]*)/\)*'"$(ltdl_ac_aux_dir)/$$f"' ||' \
 		  -e '/^[	 ]*\\$$/d' \
 		'$(lt_Makefile_in)' > "$$T" \
 		  && mv -f "$$T" '$(lt_Makefile_in)';; \
@@ -510,7 +510,7 @@ install-data-local: $(lt_Makefile_in)
 	-rm -rf '$(DESTDIR)$(pkgdatadir)'/*
 ## First, put a copy of the libtool m4 macros in the aclocal dir
 	@list='$(pkgmacro_files)'; for p in $$list; do \
-	  d=`echo "$(DESTDIR)$(aclocaldir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  d=`echo "$(DESTDIR)$(aclocaldir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_DATA) '$(srcdir)/$(macro_dir)/$$p' '$(DESTDIR)$(aclocaldir)/$$p'"; \
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$p" "$(DESTDIR)$(aclocaldir)/$$p"; \
@@ -518,20 +518,20 @@ install-data-local: $(lt_Makefile_in)
 ## install the helper scripts
 	@list='extract-trace options-parser $(pkgaux_scripts)' && \
 	for p in $$list; do \
-	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_SCRIPT) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
 	  $(INSTALL_SCRIPT) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
 	done
 	@list='$(pkgaux_data_files)' && for p in $$list; do \
-	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
 	  $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
 	done
 ## install the libltdl files
 	@list='$(pkgltdl_files)' && for p in $$list; do \
-	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's,[^/]*$$,,'`; \
+	  d=`echo "$(DESTDIR)$(pkgdatadir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
@@ -580,7 +580,7 @@ $(readme): FORCE
 	  $(SHELL) $(edit_readme_alpha) '$@'; \
 	fi
 
-git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's,[	 ],,g'
+git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's|[	 ]||g'
 
 dist-hook: $(changelog) $(dotversion) $(readme)
 ## Arrange so that .tarball-version appears only in the distribution

@@ -348,7 +348,7 @@ func_exec ()
 }
 
 # Shared global variables for test scripts
-prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
+prefix=./_inst-`echo "$0" | sed 's|.*/||; s|-.*||'`
 abs_srcdir=`cd '@srcdir@' && pwd`
 abs_macro_dir=`cd '@srcdir@/@macro_dir@' && pwd`
 abs_aux_dir=`cd '@srcdir@/@aux_dir@' && pwd`

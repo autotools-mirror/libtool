@@ -48,6 +48,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     and is equivalent to the implied `--subproject' mode when no other
     mode is selected; `--standalone' never worked, and is no longer
     accepted.
+  - Libtool and libtoolize no longer choke on paths with a comma in them.
 
 ** Important incompatible changes:
 

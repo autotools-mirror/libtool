@@ -74,7 +74,7 @@ if test $# != 1; then
                   exit 1
 fi
 
-echo $1 | sed "s,^.*/,,"
+echo $1 | sed "s|^.*/||"
 ]])
 
 chmod +x bin/basename

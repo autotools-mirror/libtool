@@ -125,7 +125,7 @@ M4SH_GETOPTS(
 	# be careful that --ltdl=foo --ltdl=bar results in ltdl_dir=bar:
 	case $opt_ltdl in
           false|:) ;;  # a bare '--ltdl' followed by another option
-	  *)       ltdl_dir=`$ECHO "$optarg" |$SED 's,/*$,,'` ;;
+	  *)       ltdl_dir=`$ECHO "$optarg" |$SED 's|/*$||'` ;;
 	esac
 	opt_ltdl=:],
 [
@@ -326,7 +326,7 @@ func_included_files ()
     my_include_regex=
     my_sed_include='
         /^m4@&t@_include(\[.*\])$/ {
-	    s,^m4@&t@_include(\[\(.*\)\])$,\1,
+	    s|^m4@&t@_include(\[\(.*\)\])$|\1|
 	    p
 	}
         d'
@@ -354,7 +354,7 @@ func_serial ()
     my_macro_regex=$2
     my_sed_serial='
 	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
-	    s,^# serial \([1-9][0-9.]*\).*$,\1,
+	    s|^# serial \([1-9][0-9.]*\).*$|\1|
 	    q
 	}
 	d'
@@ -644,7 +644,7 @@ func_ltmain_update ()
 
     my_sed_ltmain='
 	/^package_revision='\''*[0-9][1-9.]*'\''*/ {
-	    s,^package_revision='\''*\([0-9.]*\)'\''*[	 ]*$,\1,
+	    s|^package_revision='\''*\([0-9.]*\)'\''*[	 ]*$|\1|
 	    p
 	}
 	d'
@@ -665,8 +665,8 @@ func_config_update ()
 
     my_sed_config='
 	/^timestamp='\''*[0-9][1-9-]*'\''*/ {
-	    s,^timestamp='\''*\([0-9-]*\)'\''*,\1,
-	    s/-/./g
+	    s|^timestamp='\''*\([0-9-]*\)'\''*|\1|
+	    s|-|.|g
 	    p
 	}
 	d'
@@ -687,9 +687,9 @@ func_install_update ()
 
     my_sed_install='
 	/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
-	    s,[#;].*,,
-	    s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,
-	    s/-/./g
+	    s|[#;].*||
+	    s|^scriptversion='\''*\([0-9.-]*\)'\''*|\1|
+	    s|-|.|g
 	    p
 	}
 	d'
@@ -1051,7 +1051,7 @@ func_check_macros ()
 
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
-    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
+    $SED 's|dnl .*$||; s|# .*$||' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
       func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
 
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
@@ -1075,7 +1075,7 @@ func_autoconf_configure ()
 {
     $debug_cmd
 
-    _G_sed_no_comment='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;'
+    _G_sed_no_comment='s|#.*$||; s|^dnl .*$||; s| dnl .*$||;'
     _G_ac_init=
 
     # If we were passed a genuine file, make sure it calls AC_INIT.
@@ -1261,8 +1261,8 @@ func_require_Makefile_am_filter ()
       recursive)
         Makefile_am_filter='
             /^[^#]/{
-              s,(LIBOBJS),(ltdl_LIBOBJS),g
-              s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
+              s|(LIBOBJS)|(ltdl_LIBOBJS)|g
+              s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
             }'
         ;;
 
@@ -1278,9 +1278,9 @@ $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
 
           Makefile_am_filter="
             /^ACLOCAL_AMFLAGS = /{
-              s, -I $my_am_macro_dir_regex\$, -I $ltdl_relative_macro_dir,
+              s| -I $my_am_macro_dir_regex\$| -I $ltdl_relative_macro_dir|
             }
-            s,dir)/$my_am_macro_dir_regex,dir)/$ltdl_relative_macro_dir,g"
+            s|dir)/$my_am_macro_dir_regex|dir)/$ltdl_relative_macro_dir|g"
         }
 
         test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
@@ -1288,8 +1288,8 @@ $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
 $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
 
           Makefile_am_filter="$Makefile_am_filter
-            s,$my_aux_dir_regex,$ltdl_relative_aux_dir,g
-            s,/\./,/,g
+            s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
+            s|/\./|/|g
           "
         }
         ;;
@@ -1313,23 +1313,23 @@ func_require_Makefile_inc_filter ()
 
     # Note that we strip comments right here, rather than rely on
     # using a $SED that allows comments.
-    my_uscore=`$ECHO "$ltdl_dir" | $SED 's,[/.+-],_,g'`
+    my_uscore=`$ECHO "$ltdl_dir" | $SED 's|[/.+-]|_|g'`
     Makefile_inc_filter=`$ECHO '
       /^[^#]/{
 
         # Use only libltdl conditional objects.
-        s,(LIBOBJS),(ltdl_LIBOBJS),g
-        s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
+        s|(LIBOBJS)|(ltdl_LIBOBJS)|g
+        s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
 
         # Convert libltdl path and variable sections to $ltdl_dir.
-        s,libltdl_,@my_uscore@_,
-        s,libltdl/,@ltdl_dir@/,
-        s,: libltdl/,: @ltdl_dir@/,
-        s, -Ilibltdl , -I@ltdl_dir@ ,
-        s,\$(libltdl_,\$(@my_uscore@_,
-        s,)/libltdl ,)/@ltdl_dir@ ,
-        s,@my_uscore@,'"$my_uscore"',g
-        s,@ltdl_dir@,'"$ltdl_dir"',g
+        s|libltdl_|@my_uscore@_|
+        s|libltdl/|@ltdl_dir@/|
+        s|: libltdl/|: @ltdl_dir@/|
+        s| -Ilibltdl | -I@ltdl_dir@ |
+        s|\$(libltdl_|\$(@my_uscore@_|
+        s|)/libltdl |)/@ltdl_dir@ |
+        s|@my_uscore@|'"$my_uscore"'|g
+        s|@ltdl_dir@|'"$ltdl_dir"'|g
 
       }' | $SED '/^[	 ]*#/d;/^$/d'`
 
@@ -1388,7 +1388,7 @@ cannot expand unknown variable in LT_CONFIG_LTDL_DIR argument."
     fi
 
     # Strip trailing slashes.
-    ac_ltdl_dir=`echo "$ac_ltdl_dir" |$SED 's,/*$,,'`
+    ac_ltdl_dir=`echo "$ac_ltdl_dir" |$SED 's|/*$||'`
 
     require_ac_ltdl_dir=:
 }
@@ -1480,7 +1480,7 @@ $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
       # undefined macro.
       aclocal_m4_filter="
         /^[m]4_include(/{
-          s,$my_am_macro_dir_regex,$ltdl_relative_macro_dir,g
+          s|$my_am_macro_dir_regex|$ltdl_relative_macro_dir|g
         }"
     }
 
@@ -1570,7 +1570,7 @@ func_require_configure_ac_filter ()
 $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
 
       configure_ac_filter="
-        s,$my_aux_dir_regex,$ltdl_relative_aux_dir,g
+        s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
       "
     }
 

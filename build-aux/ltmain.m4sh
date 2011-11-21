@@ -2798,7 +2798,7 @@ func_win32_libid ()
 	$SED -n -e '
 	    1,100{
 		/ I /{
-		    s,.*,import,
+		    s|.*|import|
 		    p
 		    q
 		}
@@ -7073,7 +7073,7 @@ EOF
 			potliblink=`ls -ld $potlib | $SED 's/.* -> //'`
 			case $potliblink in
 			[\\/]* | [A-Za-z]:[\\/]*) potlib=$potliblink;;
-			*) potlib=`$ECHO "$potlib" | $SED 's,[^/]*$,,'`"$potliblink";;
+			*) potlib=`$ECHO "$potlib" | $SED 's|[^/]*$||'`"$potliblink";;
 			esac
 		      done
 		      if eval $file_magic_cmd \"\$potlib\" 2>/dev/null |
@@ -7169,7 +7169,7 @@ EOF
 	  if test yes = "$allow_libtool_libs_with_static_runtimes"; then
 	    for i in $predeps $postdeps ; do
 	      # can't use Xsed below, because $i might contain '/'
-	      tmp_deplibs=`$ECHO " $tmp_deplibs" | $SED "s,$i,,"`
+	      tmp_deplibs=`$ECHO " $tmp_deplibs" | $SED "s|$i||"`
 	    done
 	  fi
 	  case $tmp_deplibs in
