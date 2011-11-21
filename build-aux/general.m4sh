@@ -70,8 +70,8 @@ lt_nl='
 '
 IFS="	 $lt_nl"
 
-dirname='s,/[^/]*$,,'
-basename='s,^.*/,,'
+dirname='s|/[^/]*$||'
+basename='s|^.*/||'
 
 # func_dirname file append nondir_replacement
 # Compute the dirname of FILE.  If nonempty, add APPEND to the result,
@@ -135,14 +135,14 @@ func_stripname ()
 
 
 # These SED scripts presuppose an absolute path with a trailing slash.
-pathcar='s,^/\([^/]*\).*$,\1,'
-pathcdr='s,^/[^/]*,,'
+pathcar='s|^/\([^/]*\).*$|\1|'
+pathcdr='s|^/[^/]*||'
 removedotparts=':dotsl
-		s@/\./@/@g
+		s|/\./|/|g
 		t dotsl
-		s,/\.$,/,'
-collapseslashes='s@/\{1,\}@/@g'
-finalslash='s,/*$,/,'
+		s|/\.$|/|'
+collapseslashes='s|/\{1,\}|/|g'
+finalslash='s|/*$|/|'
 
 # func_normal_abspath PATH
 # Remove doubled-up and trailing slashes, "." path components,
@@ -315,7 +315,7 @@ double_quote_subst='s/\(["`\\]\)/\\\1/g'
 
 # Sed substitution that turns a string into a regex matching for the
 # string literally.
-sed_make_literal_regex='s,[].[^$\\*\/],\\&,g'
+sed_make_literal_regex='s|[].[^$\\*\/]|\\&|g'
 
 # Sed substitution that converts a w32 file name or path
 # which contains forward slashes, into one that contains
@@ -442,7 +442,7 @@ func_mkdir_p ()
         # ...otherwise throw away the child directory and loop
         my_directory_path=`$ECHO "$my_directory_path" | $SED -e "$dirname"`
       done
-      my_dir_list=`$ECHO "$my_dir_list" | $SED 's,:*$,,'`
+      my_dir_list=`$ECHO "$my_dir_list" | $SED 's|:*$||'`
 
       save_mkdir_p_IFS=$IFS; IFS=:
       for my_dir in $my_dir_list; do

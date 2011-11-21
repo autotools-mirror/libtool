@@ -161,7 +161,7 @@ eval libname=\"$libname_spec\"
 AT_CHECK([test lib = "$libname" || exit 77])
 
 # Create our own libtool, forcing need_lib_prefix setting
-sed 's,^\(need_lib_prefix\)=.*$,\1=unknown,' $LIBTOOL > ./libtool
+sed 's|^\(need_lib_prefix\)=.*$|\1=unknown|' $LIBTOOL > ./libtool
 LIBTOOL="$SHELL ./libtool"
 
 # Installation directory:

@@ -100,6 +100,16 @@ sc_prohibit_nested_quotes:
 	halt='found nested double quotes'				\
 	  $(_sc_search_regexp_or_exclude)
 
+# Commas in filenames are quite common, so using them routinely for sed is
+# asking for trouble!
+sc_prohibit_sed_s_comma:
+	@explicit='($$SED|sed)[	 ]+(-e[	 ]+)?['\''"]?s,'		\
+	implicit='['\''";][	 ]*s,[^,]*,[^,]*,g?['\''";]'		\
+	literal='^[	 ]*s,[^,]*,[^,]*,g?['\''";]?$$'			\
+	prohibit='('$$implicit'|'$$explicit'|'$$literal')'		\
+	halt='found use of comma separator in sed substitution'		\
+	  $(_sc_search_regexp)
+
 # Check for using shift after set dummy (same or following line).
 exclude_file_name_regexp--sc_prohibit_set_dummy_without_shift = ^cfg.mk$$
 sc_prohibit_set_dummy_without_shift:

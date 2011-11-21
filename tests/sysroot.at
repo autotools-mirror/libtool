@@ -39,7 +39,7 @@ for i in crt0.o crt1.o crt2.o crti.o; do
   test $? = 0 || continue
   case $j in
     $gcc_sysroot*/lib/$i)
-      prefix=`echo "$j" | sed "s,^$gcc_sysroot\\(.*\\)/lib/$i\$,\\1,"`
+      prefix=`echo "$j" | sed "s|^$gcc_sysroot\\(.*\\)/lib/$i\$|\\1|"`
       break ;;
   esac
 done

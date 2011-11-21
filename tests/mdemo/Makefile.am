@@ -55,7 +55,7 @@ top_distdir = ../..
 $(LIBLTDL): $(top_distdir)/libtool \
     $(top_distdir)/config.h $(srcdir)/$(top_distdir)/libltdl/ltdl.c \
     $(srcdir)/$(top_distdir)/libltdl/ltdl.h
-	(cd $(top_distdir); $(MAKE) `echo $(LIBLTDL) | sed 's,.*\.\./libltdl/,libltdl/,g'`)
+	(cd $(top_distdir); $(MAKE) `echo $(LIBLTDL) | sed 's|.*\.\./libltdl/|libltdl/|g'`)
 # Do not error out if toplevel config.h does not exist:
 $(top_distdir)/config.h:
 

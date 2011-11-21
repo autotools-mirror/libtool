@@ -5,76 +5,76 @@
 a5ef08182ce0fb80b8adcff5872f190afd915908
 # Date:   Wed Nov 16 12:13:55 2011 +0700
 # Fix a typo.
-s,bootstraps,bootstrap's,
+s|bootstraps|bootstrap's|
 
 88224124e4f57166cdcc78be29730372762a147e
 # Date:   Tue Nov 15 16:44:15 2011 +0700
 # Fix a typo.
-s,todays,today's,
+s|todays|today's|
 
 e8db92c345b99acd9c6984a321fc241ed1d01d23
 # Date:   Tue Nov 15 13:26:53 2011 +0700
 # Email address of Reporters is in THANKS.
-s,(Reported by .*?) *<.*>,$1.,
+s|(Reported by .*?) *<.*>|$1.|
 
 0fe4d0740effaec9d08ee9683fb493d8ad0bd8b5
 # Date:   Mon Oct 17 16:43:18 2011 +0700
 # No empty lines in a single commit.
-s,\n\n,\n,g;
+s|\n\n|\n|g;
 # Fix a typo.
-s,soure,source,
+s|soure|source|
 
 789817d512111d063981446efc7493ce87696bb3
 # Date:   Mon Oct 17 12:40:55 2011 +0700
 # No empty lines in a single commit.
-s,\n\n,\n,g
+s|\n\n|\n|g
 
 49ae2888b43cad358e2ff60a69722341116e7b40
 # Date:   Sun Oct 2 10:02:18 2011 -0500
 # No leading tabs in git log message.
-s,\n\t,\n,g
+s|\n\t|\n|g
 
 920da81be698974faa50bd36a60248e2c18c4fd5
 # Date:   Sun Sep 25 17:39:04 2011 -0500
 # No leading tabs in git log message.
-s,\n\t,\n,g;
+s|\n\t|\n|g;
 # No empty lines in a single commit.
-s,\n\n,\n,g
+s|\n\n|\n|g
 
 dc28c2bfbcb4879bc04a73186d72ec0e7ef2ad4c
 # Date:   Thu Sep 1 18:45:03 2011 -0500
 # Typo in name.
-s,Davd,David,
+s|Davd|David|
 
 1ea9302bd1eadf25b466fcd7e8697e4bef111493
 # Date:   Sun Apr 10 10:17:21 2011 +0200
 # Add back missing annotation:
-s,$,\nCopyright-paperwork-exempt: Yes,
+s|$|\nCopyright-paperwork-exempt: Yes|
 
 1b76054f4763a28ae1b01fbeee86ba0c524d1923
 # Date:   Mon Mar 14 08:40:50 2011 +0100
 # Refill to 64 columns (72 in ChangeLog including leading \t):
-s,to add all\nnecessary,to\nadd all necessary,;
-s,support\. Currently,support.\nCurrently,;
-s,filters\n,filters ,;
-s,the case with,the\ncase with,;
-s,This change\nhandles,This change handles,;
-s,the situation for,the situation\nfor,;
-s,thread\nsupport was,thread support\nwas,;
+s|to add all\nnecessary|to\nadd all necessary|;
+s|support\. Currently|support.\nCurrently|;
+s|filters\n|filters |;
+s|the case with|the\ncase with|;
+s|This change\nhandles|This change handles|;
+s|the situation for|the situation\nfor|;
+s|thread\nsupport was|thread support\nwas|;
 # Indent urls slightly:
-s,\nhttp://,\n  http://,g;
+s|\nhttp://|\n  http://|g;
 # No empty lines in a single commit:
-s,\n\n,\n,g;
+s|\n\n|\n|g;
 # Add back missing annotation, and co-author:
-s,$,\nCopyright-paperwork-exempt: Yes,;
-s,$,\nCo-authored-by: Rhys Ulerich <rhys.ulerich\@gmail.com>,;
+s|$|\nCopyright-paperwork-exempt: Yes|;
+s|$|\nCo-authored-by: Rhys Ulerich <rhys.ulerich\@gmail.com>|;
 
 e94c6d6e0359d92f08f491f57e0ef3371e978952
 # Date:   Thu Jan 20 19:35:14 2011 +0100
 # Add back missing annotation:
-s,$,\nCopyright-paperwork-exempt: Yes,
+s|$|\nCopyright-paperwork-exempt: Yes|
 
 9167aecabd12c5afe7a65d45dc73f8c92ab42f05
 # Date:   Sun Jan 9 19:51:28 2011 +0100
 # Add back missing annotation:
-s,$,\nCopyright-paperwork-exempt: Yes,
+s|$|\nCopyright-paperwork-exempt: Yes|

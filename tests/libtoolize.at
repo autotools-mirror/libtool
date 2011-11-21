@@ -696,7 +696,7 @@ LT_AT_ACLOCAL([-I $abs_top_srcdir/m4])
 : ${GREP="grep"}
 : ${SED="sed"}
 
-basename='s,^.*/,,'
+basename='s|^.*/||'
 
 # func_grep expression filename
 # Check whether EXPRESSION matches any line of FILENAME, without output.
@@ -714,7 +714,7 @@ func_serial ()
     my_macro_regex=$2
     my_sed_serial='
 	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
-	    s,^# serial \([1-9][0-9.]*\).*$,\1,
+	    s|^# serial \([1-9][0-9.]*\).*$|\1|
 	    q
 	}
 	d'
@@ -742,11 +742,11 @@ libtool_serial=`func_serial "$tst_aclocaldir/libtool.m4" LT_INIT`
 ltversion_serial=`func_serial "$tst_aclocaldir/ltversion.m4" ltversion.m4`
 ltsugar_serial=`func_serial "$tst_aclocaldir/ltsugar.m4" ltsugar.m4`
 lt_obsolete_serial=`func_serial "$tst_aclocaldir/lt~obsolete.m4" lt~obsolete.m4`
-$SED -e 's,^#.*serial.*ltoptions.m4$,# serial 99999 ltoptions.m4,' \
-   -e "s,^#.*serial.*libtool.m4\$,# serial $libtool_serial libtool.m4," \
-  -e "s,^#.*serial.*ltversion.m4\$,# serial $ltversion_serial ltversion.m4," \
-  -e "s,^#.*serial.*ltsugar.m4\$,# serial $ltsugar_serial ltsugar.m4," \
-  -e "s,^#.*serial.*lt~obsolete.m4\$,# serial $lt_obsolete_serial lt~obsolete.m4," \
+$SED -e 's|^#.*serial.*ltoptions.m4$|# serial 99999 ltoptions.m4|' \
+   -e "s|^#.*serial.*libtool.m4\$|# serial $libtool_serial libtool.m4|" \
+  -e "s|^#.*serial.*ltversion.m4\$|# serial $ltversion_serial ltversion.m4|" \
+  -e "s|^#.*serial.*ltsugar.m4\$|# serial $ltsugar_serial ltsugar.m4|" \
+  -e "s|^#.*serial.*lt~obsolete.m4\$|# serial $lt_obsolete_serial lt~obsolete.m4|" \
  < aclocal.m4 > aclocal.m4t
 mv -f aclocal.m4t aclocal.m4
 

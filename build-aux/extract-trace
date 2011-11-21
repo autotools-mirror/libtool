@@ -1,10 +1,10 @@
 #! /bin/sh
 
 # Make sure we've evaluated the option-parser library.
-test -n "$progpath" || . `echo "$0" |${SED-sed} 's,[^/]*$,,'`/options-parser
+test -n "$progpath" || . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
 
 # Set a version string.
-scriptversion=2011-11-04.09; # UTC
+scriptversion=2011-11-21.10; # UTC
 
 # Extract macro arguments from autotools input with GNU M4.
 # Written by Gary V. Vaughan, 2010
@@ -75,7 +75,7 @@ func_autoconf_configure ()
 {
     $debug_cmd
 
-    _G_sed_no_comment='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;'
+    _G_sed_no_comment='s|#.*$||; s|^dnl .*$||; s| dnl .*$||;'
     _G_ac_init=
 
     # If we were passed a genuine file, make sure it calls AC_INIT.
@@ -335,7 +335,7 @@ func_extract_trace ()
     # "autoconf.mini" followed by any other files passed to this
     # function is then scanned by sed to transform it into a colon
     # delimited argument list assigned to a shell variable.
-    _G_transform='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;'
+    _G_transform='s|#.*$||; s|^dnl .*$||; s| dnl .*$||;'
 
     # Unfortunately, alternation in regexp addresses doesn't work in at
     # least BSD (and hence Mac OS X) sed, so we have to append a capture
@@ -346,7 +346,7 @@ func_extract_trace ()
       IFS=$_G_save
       func_append _G_transform '
         /^m4trace: -1- '"$_G_macro"'/ {
-          s,^m4trace: -1- '"$_G_macro"'[([]*,,
+          s|^m4trace: -1- '"$_G_macro"'[([]*||
           s|], [[]|:|g
           s|[])]*$|:|
           s|\(.\):$|\1|

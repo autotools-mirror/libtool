@@ -397,7 +397,7 @@ m4_pattern_allow([^LT_CONFIG_H$])dnl
 m4_ifset([AH_HEADER],
     [LT_CONFIG_H=AH_HEADER],
     [m4_ifset([AC_LIST_HEADERS],
-	    [LT_CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[      ]]*,,;s,[[ :]].*$,,'`],
+	    [LT_CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's|^[[      ]]*||;s|[[ :]].*$||'`],
 	[])])])
 AC_SUBST([LT_CONFIG_H])
 

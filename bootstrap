@@ -1,11 +1,11 @@
 #! /bin/sh
 
 # Source required external libraries.
-. `echo "$0" |${SED-sed} 's,[^/]*$,,'`"build-aux/options-parser"
-. `echo "$0" |${SED-sed} 's,[^/]*$,,'`"build-aux/extract-trace"
+. `echo "$0" |${SED-sed} 's|[^/]*$||'`"build-aux/options-parser"
+. `echo "$0" |${SED-sed} 's|[^/]*$||'`"build-aux/extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2011-11-15.06; # UTC
+scriptversion=2011-11-21.09; # UTC
 
 # Bootstrap this package from checked-out sources.
 # Written by Gary V. Vaughan, 2010
@@ -1296,13 +1296,13 @@ func_require_dotgitmodules_parameters ()
       test -n "$gnulib_path" \
         || gnulib_path=`$SED -e '/^.submodule "gnulib".$/,${
                                    /[	 ]*path *= */{
-			             s,[   ]*,,g;s,^[^=]*=,,;p
+			             s|[   ]*||g;s|^[^=]*=||;p
 			           }
 		                 };d' .gitmodules |$SED 1q`
       test -n "$gnulib_url" \
         || gnulib_url=`$SED -e '/^.submodule "gnulib".$/,${
                                   /[	 ]*url *= */{
-			            s,[   ]*,,g;s,^[^=]*=,,;p
+			            s|[   ]*||g;s|^[^=]*=||;p
 			          }
 		                };d' .gitmodules |$SED 1q`
 
