@@ -5,7 +5,7 @@
 . `echo "$0" |${SED-sed} 's,[^/]*$,,'`"build-aux/extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2011-11-15.06; # UTC
+scriptversion=2011-11-20.15; # UTC
 
 # Bootstrap this package from checked-out sources.
 # Written by Gary V. Vaughan, 2010
@@ -1760,7 +1760,7 @@ func_ifcontains ()
 	;;
     esac
 
-    test "$_G_status" -eq 0 || exit $_G_status
+    test 0 -eq $_G_status || exit $_G_status
 }
 
 
@@ -1996,7 +1996,7 @@ func_show_eval ()
     ${opt_dry_run-'false'} || {
       eval "$_G_cmd"
       _G_status=$?
-      test "$_G_status" -eq 0 || eval "(exit $_G_status); $_G_fail_exp"
+      test 0 -eq $_G_status || eval "(exit $_G_status); $_G_fail_exp"
     }
 }
 
@@ -2142,7 +2142,7 @@ func_get_version ()
     func_tool_version_output $_G_app >/dev/null
     _G_status=$?
 
-    test "$_G_status" -ne 0 \
+    test 0 -ne $_G_status \
       || $_G_app --version 2>&1 |$SED -n "$sed_get_version"
 
     (exit $_G_status)
@@ -2164,7 +2164,7 @@ func_check_versions ()
 
       # Honor $APP variables ($TAR, $AUTOCONF, etc.)
       _G_appvar=`echo $_G_app |tr '[a-z]' '[A-Z]'`
-      test "$_G_appvar" = TAR && _G_appvar=AMTAR
+      test TAR = "$_G_appvar" && _G_appvar=AMTAR
       eval "_G_app=\${$_G_appvar-$_G_app}"
       _G_instver=`func_get_version $_G_app`
 
@@ -2177,7 +2177,7 @@ func_check_versions ()
         func_check_versions_result=false
 
       # Fail if a new version than what we have is required.
-      elif test "$_G_reqver" != "-"; then
+      elif test "$_G_reqver" != -; then
         _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
         test "$_G_newer" != "$_G_instver" && {
           func_error "\
@@ -2244,7 +2244,7 @@ func_update_po_files ()
     func_find_tool SHA1SUM sha1sum gsha1sum shasum
 
     _G_langs=`cd $_G_ref_po_dir && echo *.po|$SED 's|\.po||g'`
-    test "$_G_langs" = '*' && _G_langs=x
+    test '*' = "$_G_langs" && _G_langs=x
     for _G_po in $_G_langs; do
       case $_G_po in x) continue;; esac
       _G_new_po=$_G_ref_po_dir/$_G_po.po

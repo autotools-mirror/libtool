@@ -51,13 +51,13 @@ LT_INIT([dlopen])
 AC_SUBST([LIBTOOL_DEPS])
 
 STATIC=
-test "X$enable_static" = Xyes && STATIC=-static
+test yes = "$enable_static" && STATIC=-static
 AC_SUBST([STATIC])
 
 case $lt_cv_sys_global_symbol_pipe in
   ?*) binary_helldl=yes ;;
 esac
-AM_CONDITIONAL([BINARY_HELLDL], [test "X$binary_helldl" = Xyes])
+AM_CONDITIONAL([BINARY_HELLDL], [test yes = "$binary_helldl"])
 
 
 ## ---------------------------- ##

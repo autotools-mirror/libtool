@@ -55,7 +55,7 @@ LT_INIT([dlopen win32-dll])
 AC_SUBST(LIBTOOL_DEPS)
 
 STATIC=
-test "X$enable_static" = Xyes && STATIC="-static"
+test yes = "$enable_static" && STATIC="-static"
 AC_SUBST([STATIC])
 
 

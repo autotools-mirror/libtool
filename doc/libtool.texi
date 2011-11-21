@@ -4756,7 +4756,7 @@ LT_INIT([dlopen])
 LTDL_INIT
 
 # The lt_dladvise_init symbol was added with libtool-2.2
-if test "x$with_included_ltdl" != "xyes"; then
+if test yes != "$with_included_ltdl"; then
   save_CFLAGS=$CFLAGS
   save_LDFLAGS=$LDFLAGS
   CFLAGS="$CFLAGS $LTDLINCL"

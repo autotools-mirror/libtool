@@ -366,7 +366,7 @@ func_serial ()
     my_filebase=$func_basename_result
     for my_file in `func_included_files "$my_filename"`; do
       if test -z "$my_macro_regex" ||
-         test "$my_filename" = aclocal.m4 ||
+         test aclocal.m4 = "$my_filename" ||
          test "X$my_macro_regex" = "X$my_filebase" ||
          func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_file"
       then
@@ -447,7 +447,7 @@ func_serial_update_check ()
     my_update_p=:
 
     if test -f "$my_destfile"; then
-      test "X$my_src_serial" = "X0" && {
+      test 0 = "$my_src_serial" && {
         func_warning "no serial number on \`$my_srcfile', not copying."
 	return
       }
@@ -490,9 +490,9 @@ func_aclocal_update_check ()
 
 	# Strictly, this libtoolize ought not to have to deal with ancient
 	# serial formats, but we accept them here to be complete:
-	test "X$my_src_serial" = "X0" &&
+	test 0 = "$my_src_serial" &&
 	  my_src_serial=`func_serial "$my_srcfile" 'A[CM]_PROG_LIBTOOL'`
-	test "X$my_dest_serial" = "X0" &&
+	test 0 = "$my_dest_serial" &&
 	  my_dest_serial=`func_serial "$my_destfile" 'A[CM]_PROG_LIBTOOL'`
 	;;
       ltdl.m4)
@@ -541,10 +541,10 @@ func_serial_update ()
 
       # Strictly, this libtoolize ought not to have to deal with ancient
       # serial formats, but we accept them here to be complete:
-      test "X$my_src_serial" = "X0" &&
+      test 0 = "$my_src_serial" &&
         my_src_serial=`func_serial "$my_srcfile" "$my_old_macro_regex"`
 
-      test "X$my_dest_serial" = "X0" &&
+      test 0 = "$my_dest_serial" &&
         my_dest_serial=`func_serial "$my_destfile" "$my_old_macro_regex"`
 
       func_serial_update_check \
@@ -1005,7 +1005,7 @@ func_check_macros ()
       func_echo "Remember to add \`LT_INIT' to $configure_ac."
 
     # Suggest using LTDL_INIT if appropriate:
-    $opt_ltdl && if test x$seen_ltdl != x:; then
+    $opt_ltdl && if test : != "$seen_ltdl"; then
       case $ltdl_mode in
 	subproject) ltdl_init_args=                 ;;
 	*)          ltdl_init_args="([$ltdl_mode])" ;;
@@ -1021,7 +1021,7 @@ func_check_macros ()
       # For nonrecursive mode, warn about continued use of Makefile.inc:
       # FIXME: Remove in 2013
       #        (along with last minute rename in func_install_pkgltdl_files)
-      if test "x$ltdl_mode" = "xnonrecursive"; then
+      if test nonrecursive = "$ltdl_mode"; then
 	if func_grep "^-\?include $ltdl_dir/Makefile.inc\$" Makefile.am;
 	then
 	  func_error "Use of \`include $ltdl_dir/Makefile.inc' is deprecated!"
@@ -1031,7 +1031,7 @@ func_check_macros ()
     fi
 
     # Suggest modern idioms for storing autoconf macros:
-    $ac_config_macro_dir_advised || if test -z "$ac_macro_dir" || test "x$macro_dir" = x.; then
+    $ac_config_macro_dir_advised || if test -z "$ac_macro_dir" || test . = "$macro_dir"; then
       func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
       func_echo "rerunning $progname, to keep the correct libtool macros in-tree."
       ac_config_macro_dir_advised=:
@@ -1086,7 +1086,7 @@ func_autoconf_configure ()
     test -n "$_G_ac_init"
     _G_status=$?
 
-    test "$_G_status" -ne 0 \
+    test 0 -ne $_G_status \
       && func_verbose "\`$1' not using Autoconf"
 
     (exit $_G_status)

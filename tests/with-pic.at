@@ -24,8 +24,8 @@
 AT_SETUP([test --with-pic])
 eval `$LIBTOOL --config | $EGREP '^(pic_flag|FGREP)='`
 
-AT_CHECK([test "z$pic_flag" != "z" || exit 77])
-AT_CHECK([test "$at_srcdir" != . || exit 77])
+AT_CHECK([test -n "$pic_flag" || exit 77])
+AT_CHECK([test . != "$at_srcdir" || exit 77])
 
 CONFIGURE=$abs_top_srcdir/tests/demo/configure
 : ${MAKE=make}
