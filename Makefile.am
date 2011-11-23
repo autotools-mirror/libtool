@@ -629,6 +629,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/demo.at \
 		  tests/cdemo.at \
 		  tests/convenience.at \
+		  tests/depdemo.at \
 		  tests/help.at \
 		  tests/duplicate_members.at \
 		  tests/duplicate_conv.at \
@@ -874,21 +875,11 @@ COMMON_TESTS = \
 	tests/quote.test \
 	tests/suffix.test \
 	tests/tagtrace.test \
-	tests/depdemo-static.test \
-	tests/depdemo-static-make.test \
-	tests/depdemo-static-exec.test \
-	tests/depdemo-static-inst.test \
-	tests/depdemo-static-unst.test \
 	tests/mdemo-static.test \
 	tests/mdemo-static-make.test \
 	tests/mdemo-static-exec.test \
 	tests/mdemo-static-inst.test \
 	tests/mdemo-static-unst.test \
-	tests/depdemo-conf.test \
-	tests/depdemo-make.test \
-	tests/depdemo-exec.test \
-	tests/depdemo-inst.test \
-	tests/depdemo-unst.test \
 	tests/mdemo-conf.test \
 	tests/mdemo-make.test \
 	tests/mdemo-exec.test \
@@ -902,47 +893,11 @@ COMMON_TESTS = \
 	tests/pdemo-make.test \
 	tests/pdemo-exec.test \
 	tests/pdemo-inst.test \
-	tests/depdemo-nofast.test \
-	tests/depdemo-nofast-make.test \
-	tests/depdemo-nofast-exec.test \
-	tests/depdemo-nofast-inst.test \
-	tests/depdemo-nofast-unst.test \
 	tests/mdemo-shared.test \
 	tests/mdemo-shared-make.test \
 	tests/mdemo-shared-exec.test \
 	tests/mdemo-shared-inst.test \
 	tests/mdemo-shared-unst.test
-
-# Actually, only demo-relink and depdemo-relink require interaction,
-# but they depend on the other tests being run beforehand.
-INTERACTIVE_TESTS = \
-	tests/depdemo-shared.test \
-	tests/depdemo-shared-make.test \
-	tests/depdemo-shared-exec.test \
-	tests/depdemo-shared-inst.test \
-	tests/depdemo-relink.test \
-	tests/depdemo-shared-unst.test
-
-tests/depdemo-shared-unst.log:	tests/depdemo-relink.log
-tests/depdemo-relink.log:	tests/depdemo-shared-inst.log
-tests/depdemo-shared-inst.log:	tests/depdemo-shared-exec.log
-tests/depdemo-shared-exec.log:	tests/depdemo-shared-make.log
-tests/depdemo-shared-make.log:	tests/depdemo-shared.log
-tests/depdemo-shared.log: $(ORDER) tests/depdemo-nofast-unst.log
-tests/depdemo-nofast-unst.log:	tests/depdemo-nofast-inst.log
-tests/depdemo-nofast-inst.log:	tests/depdemo-nofast-exec.log
-tests/depdemo-nofast-exec.log:	tests/depdemo-nofast-make.log
-tests/depdemo-nofast-make.log:	tests/depdemo-nofast.log
-tests/depdemo-nofast.log: $(ORDER) tests/depdemo-unst.log
-tests/depdemo-unst.log:		tests/depdemo-inst.log
-tests/depdemo-inst.log:		tests/depdemo-exec.log
-tests/depdemo-exec.log:		tests/depdemo-make.log
-tests/depdemo-make.log:		tests/depdemo-conf.log
-tests/depdemo-conf.log: $(ORDER) tests/depdemo-static-unst.log
-tests/depdemo-static-unst.log:	tests/depdemo-static-inst.log
-tests/depdemo-static-inst.log:	tests/depdemo-static-exec.log
-tests/depdemo-static-exec.log:	tests/depdemo-static-make.log
-tests/depdemo-static-make.log:	tests/depdemo-static.log
 
 tests/mdemo-shared-unst.log:	tests/mdemo-shared-inst.log
 tests/mdemo-shared-inst.log:	tests/mdemo-shared-exec.log
@@ -971,6 +926,7 @@ tests/pdemo-exec.log:		tests/pdemo-make.log
 tests/pdemo-make.log:		tests/pdemo-conf.log
 
 
+INTERACTIVE_TESTS =
 NONINTERACTIVE_TESTS = $(COMMON_TESTS)
 if HAVE_CXX
 NONINTERACTIVE_TESTS += $(CXX_TESTS)
