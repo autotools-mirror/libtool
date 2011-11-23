@@ -626,6 +626,7 @@ TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
 		  tests/getopt-m4sh.at \
 		  tests/libtoolize.at \
+		  tests/demo.at \
 		  tests/cdemo.at \
 		  tests/convenience.at \
 		  tests/help.at \
@@ -873,11 +874,6 @@ COMMON_TESTS = \
 	tests/quote.test \
 	tests/suffix.test \
 	tests/tagtrace.test \
-	tests/demo-static.test \
-	tests/demo-static-make.test \
-	tests/demo-static-exec.test \
-	tests/demo-static-inst.test \
-	tests/demo-static-unst.test \
 	tests/depdemo-static.test \
 	tests/depdemo-static-make.test \
 	tests/depdemo-static-exec.test \
@@ -888,12 +884,6 @@ COMMON_TESTS = \
 	tests/mdemo-static-exec.test \
 	tests/mdemo-static-inst.test \
 	tests/mdemo-static-unst.test \
-	tests/demo-conf.test \
-	tests/demo-make.test \
-	tests/demo-exec.test \
-	tests/demo-inst.test \
-	tests/demo-unst.test \
-	tests/demo-deplibs.test \
 	tests/depdemo-conf.test \
 	tests/depdemo-make.test \
 	tests/depdemo-exec.test \
@@ -912,22 +902,11 @@ COMMON_TESTS = \
 	tests/pdemo-make.test \
 	tests/pdemo-exec.test \
 	tests/pdemo-inst.test \
-	tests/demo-nofast.test \
-	tests/demo-nofast-make.test \
-	tests/demo-nofast-exec.test \
-	tests/demo-nofast-inst.test \
-	tests/demo-nofast-unst.test \
 	tests/depdemo-nofast.test \
 	tests/depdemo-nofast-make.test \
 	tests/depdemo-nofast-exec.test \
 	tests/depdemo-nofast-inst.test \
 	tests/depdemo-nofast-unst.test \
-	tests/demo-pic.test \
-	tests/demo-pic-make.test \
-	tests/demo-pic-exec.test \
-	tests/demo-nopic.test \
-	tests/demo-nopic-make.test \
-	tests/demo-nopic-exec.test \
 	tests/mdemo-shared.test \
 	tests/mdemo-shared-make.test \
 	tests/mdemo-shared-exec.test \
@@ -937,50 +916,12 @@ COMMON_TESTS = \
 # Actually, only demo-relink and depdemo-relink require interaction,
 # but they depend on the other tests being run beforehand.
 INTERACTIVE_TESTS = \
-	tests/demo-shared.test \
-	tests/demo-shared-make.test \
-	tests/demo-shared-exec.test \
-	tests/demo-shared-inst.test \
-	tests/demo-hardcode.test \
-	tests/demo-relink.test \
-	tests/demo-noinst-link.test \
-	tests/demo-shared-unst.test \
 	tests/depdemo-shared.test \
 	tests/depdemo-shared-make.test \
 	tests/depdemo-shared-exec.test \
 	tests/depdemo-shared-inst.test \
 	tests/depdemo-relink.test \
 	tests/depdemo-shared-unst.test
-
-tests/demo-shared-unst.log:	tests/demo-noinst-link.log
-tests/demo-noinst-link.log:	tests/demo-relink.log
-tests/demo-relink.log:		tests/demo-hardcode.log
-tests/demo-hardcode.log:	tests/demo-shared-inst.log
-tests/demo-shared-inst.log:	tests/demo-shared-exec.log
-tests/demo-shared-exec.log:	tests/demo-shared-make.log
-tests/demo-shared-make.log:	tests/demo-shared.log
-tests/demo-shared.log: $(ORDER)	tests/demo-nopic-exec.log
-tests/demo-nopic-exec.log:	tests/demo-nopic-make.log
-tests/demo-nopic-make.log:	tests/demo-nopic.log
-tests/demo-nopic.log: $(ORDER)	tests/demo-pic-exec.log
-tests/demo-pic-exec.log:	tests/demo-pic-make.log
-tests/demo-pic-make.log:	tests/demo-pic.log
-tests/demo-pic.log: $(ORDER)	tests/demo-nofast-unst.log
-tests/demo-nofast-unst.log:	tests/demo-nofast-inst.log
-tests/demo-nofast-inst.log:	tests/demo-nofast-exec.log
-tests/demo-nofast-exec.log:	tests/demo-nofast-make.log
-tests/demo-nofast-make.log:	tests/demo-nofast.log
-tests/demo-nofast.log: $(ORDER)	tests/demo-deplibs.log
-tests/demo-deplibs.log:		tests/demo-unst.log
-tests/demo-unst.log:		tests/demo-inst.log
-tests/demo-inst.log:		tests/demo-exec.log
-tests/demo-exec.log:		tests/demo-make.log
-tests/demo-make.log:		tests/demo-conf.log
-tests/demo-conf.log: $(ORDER)	tests/demo-static-unst.log
-tests/demo-static-unst.log:	tests/demo-static-inst.log
-tests/demo-static-inst.log:	tests/demo-static-exec.log
-tests/demo-static-exec.log:	tests/demo-static-make.log
-tests/demo-static-make.log:	tests/demo-static.log
 
 tests/depdemo-shared-unst.log:	tests/depdemo-relink.log
 tests/depdemo-relink.log:	tests/depdemo-shared-inst.log

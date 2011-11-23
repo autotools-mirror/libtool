@@ -36,6 +36,7 @@ for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
 done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
 eval `$LIBTOOL --config | grep '^EGREP='`
+eval `$LIBTOOL --config | $EGREP '^(FGREP|objdir)'`
 eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_file_cmd|to_tool_file_cmd)='`
 configure_options=--prefix=/nonexistent
 if test -n "$host_alias"; then
@@ -221,6 +222,31 @@ m4_if([$#], 0, [],
 m4_define([LT_AT_CHECK_CONFIG_],
 [AT_CHECK([$EGREP '$1' libtool], 0, [ignore])
  m4_if([$#], 1, [], [$0(m4_shift($@))])
+])
+
+
+# LT_AT_CHECK_EXECUTE([TARGETS], [PROGRAM], ...)
+# ----------------------------------------------
+# Run the listed make rules, and check that the following PROGRAMs work.
+m4_define([LT_AT_CHECK_EXECUTE],
+[LT_AT_MAKE([$1])
+m4_if([$#], 0, [],
+      [$#], 1, [], [$0_(m4_shift($@))])
+])
+m4_define([LT_AT_CHECK_EXECUTE_],
+[LT_AT_EXEC_CHECK([$1], 0, [expout])
+m4_if([$#], 1, [], [$0(m4_shift($@))])
+])
+
+
+# LT_AT_CHECK_UNINSTALL
+# ---------------------
+# Make sure uninstallation is complete.
+m4_define([LT_AT_CHECK_UNINSTALL],
+[LT_AT_MAKE([uninstall])
+
+leftovers=`find $prefixdir ! -type d ! -name '.*' -print`
+AT_CHECK([test -z "$leftovers"])
 ])
 
 
