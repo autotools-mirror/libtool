@@ -124,17 +124,6 @@ fi
 pkgaux_scripts="compile config.guess config.sub depcomp install-sh missing"
 AC_SUBST([pkgaux_scripts])
 
-# All subdirectories that are configured on demand, but that must be
-# included in the distribution.
-CONF_SUBDIRS="tests/fcdemo"
-AC_SUBST([CONF_SUBDIRS])
-
-DIST_MAKEFILE_LIST=
-for dir in $CONF_SUBDIRS; do
-  DIST_MAKEFILE_LIST="$DIST_MAKEFILE_LIST$dir/Makefile "
-done
-AC_SUBST([DIST_MAKEFILE_LIST])
-
 
 ## ---------------- ##
 ## compiler checks. ##

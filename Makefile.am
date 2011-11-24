@@ -317,14 +317,6 @@ libtool: $(ltmain_sh) $(config_status) $(dotversion)
 	  cd '$(top_builddir)' && '$(SHELL)' ./config.status '$@'; \
 	fi
 
-.PHONY: configure-subdirs
-configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
-$(DIST_MAKEFILE_LIST):
-	$(AM_V_at)dir=`echo '$@' |'$(SED)' 's|^[^/]*$$|.|;s|/[^/]*$$||'`; \
-	test -d "$$dir" || mkdir "$$dir" || exit 1; \
-	abs_srcdir=`$(lt__cd) '$(srcdir)' && pwd`; \
-	(cd "$$dir" && "$$abs_srcdir/$$dir/configure" --with-dist) || exit 1
-
 
 ## -------- ##
 ## Libltdl. ##
@@ -691,6 +683,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/cmdline_wrap.at \
 		  tests/pic_flag.at \
 		  tests/f77demo.at \
+		  tests/fcdemo.at \
 		  tests/darwin.at \
 		  tests/dumpbin-symbols.at \
 		  tests/deplibs-mingw.at \
@@ -786,7 +779,7 @@ check-interactive: $(testsuite_deps_uninstalled)
 check-noninteractive: check-noninteractive-old check-noninteractive-new
 
 # We need to remove any file droppings left behind by testsuite
-clean-local: clean-local-legacy
+clean-local:
 	-$(CD_TESTDIR); \
 	test -f "$$abs_srcdir/$(TESTSUITE)" && \
 	    '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" --clean
@@ -801,27 +794,7 @@ clean-local: clean-local-legacy
 #           using the new framework above.  When the migration is
 #           complete this section should be removed.
 
-FC_TESTS = \
-	tests/fcdemo-static.test \
-	tests/fcdemo-static-make.test \
-	tests/fcdemo-static-exec.test \
-	tests/fcdemo-conf.test \
-	tests/fcdemo-make.test \
-	tests/fcdemo-exec.test \
-	tests/fcdemo-shared.test \
-	tests/fcdemo-shared-make.test \
-	tests/fcdemo-shared-exec.test
-
-tests/fcdemo-shared-exec.log:	tests/fcdemo-shared-make.log
-tests/fcdemo-shared-make.log:	tests/fcdemo-shared.log
-tests/fcdemo-shared.log:	tests/fcdemo-exec.log
-tests/fcdemo-exec.log:		tests/fcdemo-make.log
-tests/fcdemo-make.log:		tests/fcdemo-conf.log
-tests/fcdemo-conf.log:		tests/fcdemo-static-exec.log
-tests/fcdemo-static-exec.log:	tests/fcdemo-static-make.log
-tests/fcdemo-static-make.log:	tests/fcdemo-static.log
-
-COMMON_TESTS = \
+TESTS = \
 	tests/link.test \
 	tests/link-2.test \
 	tests/nomode.test \
@@ -830,17 +803,11 @@ COMMON_TESTS = \
 	tests/suffix.test \
 	tests/tagtrace.test
 
-TESTS = $(COMMON_TESTS)
-if HAVE_FC
-TESTS += $(FC_TESTS)
-endif
-
 defs		= tests/defs
 defs_in		= $(tests_dir)/defs.in
 
 EXTRA_DIST     += $(defs_in) $(defs_m4sh) \
-		  $(COMMON_TESTS) $(FC_TESTS)
-DIST_SUBDIRS   += $(CONF_SUBDIRS)
+		  $(TESTS)
 
 # The defs script shouldn't be recreated whenever the Makefile is
 # regenerated since the source tree can be read-only.
@@ -852,29 +819,6 @@ $(defs): $(defs_in)
 $(defs_in): $(defs_m4sh) $(general_m4sh) Makefile.am
 	$(AM_V_at)rm -f '$@'
 	$(AM_V_GEN)$(LT_M4SH) '$(defs_m4sh)' > '$@'
-
-# We need to remove any files that the above tests created.
-clean-local-legacy:
-	-for dir in $(CONF_SUBDIRS); do \
-	  if test -f "$$dir/Makefile"; then \
-	    (cd "$$dir" && '$(MAKE)' $(AM_MAKEFLAGS) distclean); \
-	  else :; fi; \
-	done
-	rm -rf _inst _inst-*
-
-# For distclean, we may have to fake Makefiles in the test directories
-# so that descending in DIST_SUBDIRS works.
-# Hide the additional dependency from automake so it still outputs the rule.
-distclean_recursive = distclean-recursive
-$(distclean_recursive): fake-distclean-legacy
-.PHONY: fake-distclean-legacy
-fake-distclean-legacy:
-	-for dir in $(CONF_SUBDIRS); do \
-	  if test ! -f "$$dir/Makefile"; then \
-	    $(mkinstalldirs) "$$dir"; \
-	    echo 'distclean: ; rm -f Makefile' > "$$dir/Makefile"; \
-	  else :; fi; \
-	done
 
 $(TESTS): $(defs)
 DISTCLEANFILES += $(defs)

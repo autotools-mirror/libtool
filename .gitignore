@@ -48,7 +48,6 @@
 Makefile
 Makefile.in
 \#*#
-_inst-*demo
 _libs
 acinclude.m4
 aclocal.m4
