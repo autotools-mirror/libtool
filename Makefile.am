@@ -690,6 +690,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/stresstest.at \
 		  tests/cmdline_wrap.at \
 		  tests/pic_flag.at \
+		  tests/f77demo.at \
 		  tests/darwin.at \
 		  tests/dumpbin-symbols.at \
 		  tests/deplibs-mingw.at \
@@ -764,9 +765,7 @@ installcheck-local: $(testsuite_deps)
 	  AUTOTEST_PATH='$(exec_prefix)/bin'
 
 check-noninteractive-old:
-	$(AM_V_at)'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(NONINTERACTIVE_TESTS)'
-check-interactive-old:
-	$(AM_V_at)'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(INTERACTIVE_TESTS)'
+	$(AM_V_at)'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(TESTS)'
 
 # Run only noninteractive parts of the new testsuite.
 check-noninteractive-new: $(testsuite_deps_uninstalled)
@@ -777,14 +776,13 @@ check-noninteractive-new: $(testsuite_deps_uninstalled)
 	  $(TESTSUITEFLAGS)
 
 # Run only interactive parts of the new testsuite.
-check-interactive-new: $(testsuite_deps_uninstalled)
+check-interactive: $(testsuite_deps_uninstalled)
 	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
 	  -k interactive -k recursive INNER_TESTSUITEFLAGS=',interactive' \
 	  $(TESTSUITEFLAGS)
 
-check-interactive: check-interactive-old check-interactive-new
 check-noninteractive: check-noninteractive-old check-noninteractive-new
 
 # We need to remove any file droppings left behind by testsuite
@@ -802,26 +800,6 @@ clean-local: clean-local-legacy
 #           Autotest driven framework, please add new test cases
 #           using the new framework above.  When the migration is
 #           complete this section should be removed.
-
-F77_TESTS = \
-	tests/f77demo-static.test \
-	tests/f77demo-static-make.test \
-	tests/f77demo-static-exec.test \
-	tests/f77demo-conf.test \
-	tests/f77demo-make.test \
-	tests/f77demo-exec.test \
-	tests/f77demo-shared.test \
-	tests/f77demo-shared-make.test \
-	tests/f77demo-shared-exec.test
-
-tests/f77demo-shared-exec.log:	tests/f77demo-shared-make.log
-tests/f77demo-shared-make.log:	tests/f77demo-shared.log
-tests/f77demo-shared.log:	tests/f77demo-exec.log
-tests/f77demo-exec.log:		tests/f77demo-make.log
-tests/f77demo-make.log:		tests/f77demo-conf.log
-tests/f77demo-conf.log:		tests/f77demo-static-exec.log
-tests/f77demo-static-exec.log:	tests/f77demo-static-make.log
-tests/f77demo-static-make.log:	tests/f77demo-static.log
 
 FC_TESTS = \
 	tests/fcdemo-static.test \
@@ -852,23 +830,16 @@ COMMON_TESTS = \
 	tests/suffix.test \
 	tests/tagtrace.test
 
-INTERACTIVE_TESTS =
-NONINTERACTIVE_TESTS = $(COMMON_TESTS)
-if HAVE_F77
-# f77demo-static-exec.test might be interactive on MSYS.
-INTERACTIVE_TESTS += $(F77_TESTS)
-endif
+TESTS = $(COMMON_TESTS)
 if HAVE_FC
-NONINTERACTIVE_TESTS += $(FC_TESTS)
+TESTS += $(FC_TESTS)
 endif
-TESTS = $(NONINTERACTIVE_TESTS) $(INTERACTIVE_TESTS)
 
 defs		= tests/defs
 defs_in		= $(tests_dir)/defs.in
 
 EXTRA_DIST     += $(defs_in) $(defs_m4sh) \
-		  $(COMMON_TESTS) $(F77_TESTS) $(FC_TESTS) \
-		  $(INTERACTIVE_TESTS)
+		  $(COMMON_TESTS) $(FC_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
 
 # The defs script shouldn't be recreated whenever the Makefile is
