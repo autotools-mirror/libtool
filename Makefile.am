@@ -850,14 +850,7 @@ COMMON_TESTS = \
 	tests/objectlist.test \
 	tests/quote.test \
 	tests/suffix.test \
-	tests/tagtrace.test \
-	tests/mdemo2-conf.test \
-	tests/mdemo2-make.test \
-	tests/mdemo2-exec.test
-
-tests/mdemo2-exec.log:		tests/mdemo2-make.log
-tests/mdemo2-make.log:		tests/mdemo2-conf.log \
-				tests/mdemo-dryrun.log
+	tests/tagtrace.test
 
 INTERACTIVE_TESTS =
 NONINTERACTIVE_TESTS = $(COMMON_TESTS)
