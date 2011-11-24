@@ -798,3 +798,122 @@ AT_CHECK([$unset LIBTOOL LIBTOOLIZE; $MAKE hell$EXEEXT libhello_la_OBJECTS=hello
          [1], [ignore], [ignore])
 
 AT_CLEANUP
+
+
+## ----------- ##
+## Pdemo conf. ##
+## ----------- ##
+
+AT_SETUP([linking with long file names])
+
+_LT_DEMO_SETUP
+
+AT_DATA([Makefile.am],
+[[AUTOMAKE_OPTIONS = no-dependencies foreign
+ACLOCAL_AMFLAGS = -I m4
+
+# Build a libtool library, libhello.la for installation in libdir.
+lib_LTLIBRARIES = libhello.la
+libhello_la_SOURCES = longer_file_name_hello.c longer_file_name_foo.c longer_file_name_foo2.c
+libhello_la_LIBADD = $(LIBM)
+libhello_la_LDFLAGS = -no-undefined -version-info 3:12:1
+libhello_la_CPPFLAGS = $(AM_CPPFLAGS) -DBUILDING_LIBHELLO
+
+include_HEADERS = foo.h
+
+if BINARY_HELLDL
+BUILD_helldl = helldl
+else
+BUILD_helldl =
+endif
+
+bin_PROGRAMS = hell hell_static $(BUILD_helldl)
+
+# Build hell from longer_file_name_main.c and libhello.la
+hell_SOURCES = longer_file_name_main.c
+hell_LDADD = libhello.la
+
+# Create a statically linked version of hell.
+hell_static_SOURCES = longer_file_name_main.c
+hell_static_LDADD = libhello.la
+hell_static_LDFLAGS = $(STATIC)
+
+if BINARY_HELLDL
+
+# Create a version of hell that does a preloaded dlopen.
+helldl_SOURCES = longer_file_name_dlmain.c
+helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
+helldl_DEPENDENCIES = libhello.la
+
+else
+
+# Create a script that says that -dlopen is not supported.
+bin_SCRIPTS = helldl
+helldl helldl$(EXEEXT):
+	rm -rf $@
+	echo '#! /bin/sh' > $@
+	echo 'echo sorry, -dlopen is unsupported' >> $@
+	chmod +x $@
+
+endif
+
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck
+]])
+
+AT_DATA([main.c],
+[[#include <config.h>
+#include <stdio.h>
+
+#include "foo.h"
+
+int main ()
+{
+  printf ("Welcome to GNU Hell!\n");
+
+  /* Try assigning to the nothing variable. */
+  nothing = 1;
+
+  /* Just call the functions and check return values. */
+  if (foo () != FOO_RET)
+    return 1;
+
+  if (foo2 () != FOO_RET)
+    return 1;
+
+  if (hello () != HELLO_RET)
+    return 2;
+
+  return 0;
+}
+]])
+
+AT_DATA([foo2.c],
+[[#include <config.h>
+#include <stdio.h>
+#include <math.h>
+
+#include "foo.h"
+
+int foo2 (void) {
+  printf ("foo2 cos (0.0) = %g\n", (double) cos ((double) 0.0));
+  return FOO_RET;
+}
+]])
+
+AT_DATA([expout],
+[[Welcome to GNU Hell!
+cos (0.0) = 1
+foo2 cos (0.0) = 1
+** This is not GNU Hello. There is no built-in mail reader. **
+]])
+
+for file in dlmain.c foo.c foo2.c hello.c main.c; do
+  mv $file longer_file_name_$file
+done
+
+LT_AT_CHECK_CONFIG
+_LT_CHECK_EXECUTE
+_LT_CHECK_INSTALL
+
+AT_CLEANUP

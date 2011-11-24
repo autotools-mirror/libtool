@@ -864,10 +864,6 @@ COMMON_TESTS = \
 	tests/mdemo2-conf.test \
 	tests/mdemo2-make.test \
 	tests/mdemo2-exec.test \
-	tests/pdemo-conf.test \
-	tests/pdemo-make.test \
-	tests/pdemo-exec.test \
-	tests/pdemo-inst.test \
 	tests/mdemo-shared.test \
 	tests/mdemo-shared-make.test \
 	tests/mdemo-shared-exec.test \
@@ -895,11 +891,6 @@ tests/mdemo-static-make.log:	tests/mdemo-static.log
 tests/mdemo2-exec.log:		tests/mdemo2-make.log
 tests/mdemo2-make.log:		tests/mdemo2-conf.log \
 				tests/mdemo-dryrun.log
-
-tests/pdemo-inst.log:		tests/pdemo-exec.log
-tests/pdemo-exec.log:		tests/pdemo-make.log
-tests/pdemo-make.log:		tests/pdemo-conf.log
-
 
 INTERACTIVE_TESTS =
 NONINTERACTIVE_TESTS = $(COMMON_TESTS)
