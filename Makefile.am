@@ -673,6 +673,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/resident.at \
 		  tests/slist.at \
 		  tests/need_lib_prefix.at \
+		  tests/mdemo.at \
 		  tests/standalone.at \
 		  tests/subproject.at \
 		  tests/nonrecursive.at \
@@ -850,43 +851,9 @@ COMMON_TESTS = \
 	tests/quote.test \
 	tests/suffix.test \
 	tests/tagtrace.test \
-	tests/mdemo-static.test \
-	tests/mdemo-static-make.test \
-	tests/mdemo-static-exec.test \
-	tests/mdemo-static-inst.test \
-	tests/mdemo-static-unst.test \
-	tests/mdemo-conf.test \
-	tests/mdemo-make.test \
-	tests/mdemo-exec.test \
-	tests/mdemo-inst.test \
-	tests/mdemo-unst.test \
-	tests/mdemo-dryrun.test \
 	tests/mdemo2-conf.test \
 	tests/mdemo2-make.test \
-	tests/mdemo2-exec.test \
-	tests/mdemo-shared.test \
-	tests/mdemo-shared-make.test \
-	tests/mdemo-shared-exec.test \
-	tests/mdemo-shared-inst.test \
-	tests/mdemo-shared-unst.test
-
-tests/mdemo-shared-unst.log:	tests/mdemo-shared-inst.log
-tests/mdemo-shared-inst.log:	tests/mdemo-shared-exec.log
-tests/mdemo-shared-exec.log:	tests/mdemo-shared-make.log
-tests/mdemo-shared-make.log:	tests/mdemo-shared.log
-tests/mdemo-shared.log: $(ORDER) tests/mdemo-dryrun.log \
-				tests/mdemo2-exec.log
-
-tests/mdemo-dryrun.log:		tests/mdemo-unst.log
-tests/mdemo-unst.log:		tests/mdemo-inst.log
-tests/mdemo-inst.log:		tests/mdemo-exec.log
-tests/mdemo-exec.log:		tests/mdemo-make.log
-tests/mdemo-make.log:		tests/mdemo-conf.log
-tests/mdemo-conf.log: $(ORDER)	tests/mdemo-static-unst.log
-tests/mdemo-static-unst.log:	tests/mdemo-static-inst.log
-tests/mdemo-static-inst.log:	tests/mdemo-static-exec.log
-tests/mdemo-static-exec.log:	tests/mdemo-static-make.log
-tests/mdemo-static-make.log:	tests/mdemo-static.log
+	tests/mdemo2-exec.test
 
 tests/mdemo2-exec.log:		tests/mdemo2-make.log
 tests/mdemo2-make.log:		tests/mdemo2-conf.log \

@@ -1,3 +1,0 @@
-#! /bin/sh
-. tests/defs || exit 1
-. $abs_srcdir/tests/mdemo-inst.test

@@ -127,7 +127,7 @@ AC_SUBST([pkgaux_scripts])
 # All subdirectories that are configured on demand, but that must be
 # included in the distribution.
 CONF_SUBDIRS="tests/f77demo tests/fcdemo \
-	tests/mdemo tests/mdemo2"
+	tests/mdemo2"
 AC_SUBST([CONF_SUBDIRS])
 
 DIST_MAKEFILE_LIST=
