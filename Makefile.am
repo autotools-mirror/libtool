@@ -152,7 +152,7 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 	    serial=`$(git_commit_count)`; \
 	  fi; \
 	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
-	  else echo "$(bootstrap_edit) '$(ltversion_in)' > '$@'"; fi; \
+	  else echo $(bootstrap_edit) "'$(ltversion_in)' > '$@'"; fi; \
 	  $(bootstrap_edit) '$(ltversion_in)' > '$@'; \
 	  chmod a-w '$@'; \
 	fi
@@ -179,7 +179,7 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
 	if $$rebuild; then \
 	  rm -f '$@'; \
 	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
-	  else echo "$(LT_M4SH) '$(ltmain.m4sh)' | $(ltmain_sh_edit) > '$@'"; fi; \
+	  else echo "$(LT_M4SH) '$(ltmain.m4sh)' |" $(ltmain_sh_edit) "> '$@'"; fi; \
 	  $(LT_M4SH) '$(ltmain_m4sh)' | $(ltmain_sh_edit) > '$@'; \
 	  chmod a-w '$@'; \
 	fi
