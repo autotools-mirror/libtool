@@ -2051,13 +2051,13 @@ func_insert_sorted_if_absent ()
 
     for file
     do
-      test -f $file || touch $file
+      test -f "$file" || touch "$file"
 
       func_grep_q "$str" "$file" \
           && func_verbose "inserting \`$str' into \`$file'"
 
-      echo "$str" |sort -u - $file |func_cmp_s - $file \
-        || echo "$str" |sort -u - $file -o $file \
+      echo "$str" |sort -u - "$file" |func_cmp_s - "$file" \
+        || echo "$str" |sort -u - "$file" -o "$file" \
         || func_permissions_error "$file"
     done
 }
