@@ -2,6 +2,11 @@
 # option.  It specifies what changes to make to each given SHA1's commit
 # log and metadata, using Perl-eval'able expressions.
 
+11d16ab06c36948c053c507f5f9e06ff3de221c7
+# Date:   Fri Nov 25 14:39:57 2011 +0700
+# Spell Stefano's name correctly.
+s|Steffano|Stefano|
+
 a5ef08182ce0fb80b8adcff5872f190afd915908
 # Date:   Wed Nov 16 12:13:55 2011 +0700
 # Fix a typo.
@@ -17,8 +22,20 @@ e8db92c345b99acd9c6984a321fc241ed1d01d23
 # Email address of Reporters is in THANKS.
 s|(Reported by .*?) *<.*>|$1.|
 
+c188507816c4b43f3411677116ce4ab4b926958e
+# Date:   Mon Nov 7 23:43:56 2011 +0700
+# Use canonical gnu email address.
+s|vaughan\.pe|gnu.org|g
+
+fdb4c546784aebacaf697ebd5f96e0d91c566597
+# Date:   Tue Oct 18 13:20:53 2011 +0700
+# Use canonical gnu email address.
+s|vaughan\.pe|gnu.org|g
+
 0fe4d0740effaec9d08ee9683fb493d8ad0bd8b5
 # Date:   Mon Oct 17 16:43:18 2011 +0700
+# Use canonical gnu email address.
+s|vaughan\.pe|gnu.org|g;
 # No empty lines in a single commit.
 s|\n\n|\n|g;
 # Fix a typo.
@@ -26,6 +43,8 @@ s|soure|source|
 
 789817d512111d063981446efc7493ce87696bb3
 # Date:   Mon Oct 17 12:40:55 2011 +0700
+# Use canonical gnu email address.
+s|vaughan\.pe|gnu.org|g;
 # No empty lines in a single commit.
 s|\n\n|\n|g
 
