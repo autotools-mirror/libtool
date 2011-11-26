@@ -1532,7 +1532,7 @@ AC_CACHE_CHECK([$1], [$2],
    $RM conftest*
 ])
 
-if test yes != "[$]$2"; then
+if test yes = "[$]$2"; then
     m4_if([$5], , :, [$5])
 else
     m4_if([$6], , :, [$6])
