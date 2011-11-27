@@ -157,44 +157,6 @@ LT_LANG(Windows Resource)
 AC_SUBST([to_host_file_cmd])dnl
 AC_SUBST([to_tool_file_cmd])dnl
 
-## --------------------------- ##
-## Work out which tests to run ##
-## --------------------------- ##
-AM_CONDITIONAL(HAVE_CXX,[test -n "[$]_LT_TAGVAR(compiler, CXX)"])
-AM_CONDITIONAL(HAVE_F77,[test -n "[$]_LT_TAGVAR(compiler, F77)"])
-AM_CONDITIONAL(HAVE_FC,[test -n "[$]_LT_TAGVAR(compiler, FC)"])
-AM_CONDITIONAL(HAVE_GCJ, [test -n "[$]_LT_TAGVAR(compiler, GCJ)"])
-AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
-
-## Whether `make' supports order-only prerequisites.
-AC_CACHE_CHECK([whether ${MAKE-make} supports order-only prerequisites],
-  [lt_cv_make_order_only],
-  [mkdir conftest.dir
-   cd conftest.dir
-   touch b
-   touch a
-cat >confmk << 'END'
-ORDER = |
-a: b $(ORDER) c
-a b c:
-	touch $[]@
-END
-   touch c
-   if ${MAKE-make} -s -q -f confmk >/dev/null 2>&1; then
-     lt_cv_make_order_only=yes
-   else
-     lt_cv_make_order_only=no
-   fi
-   cd ..
-   rm -rf conftest.dir
-])
-if test yes = "$lt_cv_make_order_only"; then
-  ORDER='|'
-else
-  ORDER=''
-fi
-AC_SUBST([ORDER])
-
 ## ---------------------- ##
 ## Gnulib initialisation. ##
 ## ---------------------- ##
