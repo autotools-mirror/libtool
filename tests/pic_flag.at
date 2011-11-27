@@ -44,10 +44,17 @@ if $CXX $CPPFLAGS $CXXFLAGS $CXX_pic_flag -c foo.cpp; then :; else
   CXX_pic_flag=
 fi
 
-AT_CHECK([test . != "$at_srcdir" || exit 77])
+# Set up a tests/demo.at style project.
+_LT_DEMO_SETUP
+
+# Bootstrap, and configure it so that we can extract libtool --config
+# settings.
+LT_AT_BOOTSTRAP([], [-I m4], [], [--add-missing], [],
+    [ignore], [ignore])
+
 LT_AT_CONFIGURE([lt_cv_prog_compiler_pic="$C_pic_flag" ]dnl
 		[lt_cv_prog_compiler_pic_CXX="$CXX_pic_flag"],
-		["$abs_top_srcdir"/configure --disable-silent-rules])
+		[./configure])
 : ${MAKE=make}
 AT_CHECK([$MAKE], [], [stdout], [ignore])
 AT_CHECK([if ./libtool --features | grep 'enable shared libraries'; then ]dnl

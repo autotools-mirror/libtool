@@ -619,6 +619,8 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/getopt-m4sh.at \
 		  tests/libtoolize.at \
 		  tests/demo.at \
+		  tests/pic_flag.at \
+		  tests/with-pic.at \
 		  tests/cdemo.at \
 		  tests/convenience.at \
 		  tests/depdemo.at \
@@ -675,13 +677,11 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/ctor.at \
 		  tests/exceptions.at \
 		  tests/early-libtool.at \
-		  tests/with-pic.at \
 		  tests/no-executables.at \
 		  tests/deplibs-ident.at \
 		  tests/configure-iface.at \
 		  tests/stresstest.at \
 		  tests/cmdline_wrap.at \
-		  tests/pic_flag.at \
 		  tests/f77demo.at \
 		  tests/fcdemo.at \
 		  tests/darwin.at \
