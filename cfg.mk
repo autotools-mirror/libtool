@@ -38,7 +38,6 @@ endif
 VC_LIST_ALWAYS_EXCLUDE_REGEX = ^mail/
 
 local-checks-to-fix =				\
-	sc_prohibit_always-defined_macros	\
 	sc_require_config_h			\
 	sc_require_config_h_first
 
@@ -46,12 +45,16 @@ local-checks-to-skip =				\
 	$(local-checks-to-fix)			\
 	sc_GPL_version				\
 	sc_cast_of_x_alloc_return_value		\
+	sc_prohibit_always-defined_macros	\
 	sc_trailing_blank			\
 	sc_unmarked_diagnostics
 
 # GPL_version: checks for GPLv3, which we don't use
 # cast_of_x_alloc_return_value:
 #         We support C++ compilation which does require casting here.
+# prohibit_always-defined_macros:
+#	we have our own argz and dirent, which use the same macros but
+#	which are not always-defined in our case.
 # trailing_blank: flags valid rfc3676 separators
 # unmarked_diagnostics: libtool isn't internationalized
 
