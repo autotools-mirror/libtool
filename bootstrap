@@ -1013,8 +1013,8 @@ func_require_autopoint ()
 }
 
 
-# func_require_bootstrap_uptodate
-# -------------------------------
+# require_bootstrap_uptodate
+# --------------------------
 # Complain if the version of bootstrap in the gnulib directory differs
 # from the one we are running.
 require_bootstrap_uptodate=func_require_bootstrap_uptodate
@@ -1067,8 +1067,8 @@ func_require_build_aux ()
 }
 
 
-# func_require_buildtools_uptodate
-# --------------------------------
+# require_buildtools_uptodate
+# ---------------------------
 # Ensure all the packages listed in BUILDREQS are available on the build
 # machine at the minimum versions or better.
 require_buildtools_uptodate=func_require_buildtools_uptodate
