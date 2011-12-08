@@ -27,7 +27,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #define _FOO_H_ 1
 
 /* At some point, cygwin will stop defining __CYGWIN32__, but b19 and
- * earlier do not define __CYGWIN__.  This snippit allows us to check
+ * earlier do not define __CYGWIN__.  This snippet allows us to check
  * for __CYGWIN__ reliably for both current, old, and (probable) future
  * releases.
  */
