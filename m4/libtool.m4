@@ -198,7 +198,7 @@ aix3*)
   # AIX sometimes has problems with the GCC collect2 program.  For some
   # reason, if we set the COLLECT_NAMES environment variable, the problems
   # vanish in a puff of smoke.
-  if test "X${COLLECT_NAMES+set}" != Xset; then
+  if test set != "${COLLECT_NAMES+set}"; then
     COLLECT_NAMES=
     export COLLECT_NAMES
   fi
@@ -739,7 +739,7 @@ _LT_EOF
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
 # vanish in a puff of smoke.
-if test "X${COLLECT_NAMES+set}" != Xset; then
+if test set != "${COLLECT_NAMES+set}"; then
   COLLECT_NAMES=
   export COLLECT_NAMES
 fi
