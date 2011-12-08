@@ -862,11 +862,11 @@ func_require_aclocal_amflags ()
 }
 
 
-# require_autobuild_buildreq
+# require_buildreq_autobuild
 # --------------------------
 # Try to find whether the bootstrap requires autobuild.
-require_autobuild_buildreq=func_require_autobuild_buildreq
-func_require_autobuild_buildreq ()
+require_buildreq_autobuild=func_require_buildreq_autobuild
+func_require_buildreq_autobuild()
 {
     $debug_cmd
 
@@ -883,19 +883,19 @@ func_require_autobuild_buildreq ()
       }
     }
 
-    require_autobuild_buildreq=:
+    require_buildreq_autobuild=:
 }
 
 
-# require_autoconf_buildreq
-# require_autopoint_buildreq
-# require_libtoolize_buildreq
+# require_buildreq_autoconf
+# require_buildreq_autopoint
+# require_buildreq_libtoolize
 # ---------------------------
 # Try to find the minimum compatible version of autoconf/libtool
 # required to bootstrap successfully, and add it to `$buildreq'.
 for tool in autoconf libtoolize autopoint; do
   b=$tool
-  v=require_${tool}_buildreq
+  v=require_buildreq_${tool}
   f=func_$v
   case $tool in
     autoconf) m=AC_PREREQ ;;
@@ -957,12 +957,12 @@ func_require_autoheader ()
 }
 
 
-# require_automake_buildreq
+# require_buildreq_automake
 # -------------------------
 # Try to find the minimum compatible version of automake required to
 # bootstrap successfully, and add it to `$buildreq'.
-require_automake_buildreq=func_require_automake_buildreq
-func_require_automake_buildreq ()
+require_buildreq_automake=func_require_buildreq_automake
+func_require_buildreq_automake()
 {
     $debug_cmd
 
@@ -984,7 +984,7 @@ func_require_automake_buildreq ()
       }
     }
 
-    require_automake_buildreq=:
+    require_buildreq_automake=:
 }
 
 
@@ -1076,12 +1076,12 @@ func_require_buildtools_uptodate ()
 {
     $debug_cmd
 
-    $require_autobuild_buildreq
-    $require_autoconf_buildreq
-    $require_automake_buildreq
-    $require_libtoolize_buildreq
-    $require_autopoint_buildreq
-    $require_patch_buildreq
+    $require_buildreq_autobuild
+    $require_buildreq_autoconf
+    $require_buildreq_automake
+    $require_buildreq_libtoolize
+    $require_buildreq_autopoint
+    $require_buildreq_patch
 
     test -n "$buildreq" && {
       _G_error_hdr=
@@ -1639,12 +1639,12 @@ func_require_patch ()
 }
 
 
-# require_patch_buildreq
+# require_buildreq_patch
 # ----------------------
 # Automatically add a patch build-requirement if there are diff files
 # in $local_gl_dir.
-require_patch_buildreq=func_require_patch_buildreq
-func_require_patch_buildreq ()
+require_buildreq_patch=func_require_buildreq_patch
+func_require_buildreq_patch ()
 {
     $debug_cmd
 
@@ -1664,7 +1664,7 @@ func_require_patch_buildreq ()
       fi
     }
 
-    require_patch_buildreq=:
+    require_buildreq_patch=:
 }
 
 
