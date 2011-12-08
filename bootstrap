@@ -862,74 +862,6 @@ func_require_aclocal_amflags ()
 }
 
 
-# require_buildreq_autobuild
-# --------------------------
-# Try to find whether the bootstrap requires autobuild.
-require_buildreq_autobuild=func_require_buildreq_autobuild
-func_require_buildreq_autobuild()
-{
-    $debug_cmd
-
-    $require_macro_dir
-
-    test -f "$macro_dir/autobuild.m4" \
-        || printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*autobuild' \
-        || {
-      func_extract_trace AB_INIT
-      test -n "$func_extract_trace_result" && {
-        func_append buildreq 'autobuild - http://josefsson.org/autobuild/
-'
-        func_verbose "auto-adding \`autobuild' to build requirements"
-      }
-    }
-
-    require_buildreq_autobuild=:
-}
-
-
-# require_buildreq_autoconf
-# require_buildreq_autopoint
-# require_buildreq_libtoolize
-# ---------------------------
-# Try to find the minimum compatible version of autoconf/libtool
-# required to bootstrap successfully, and add it to `$buildreq'.
-for tool in autoconf libtoolize autopoint; do
-  b=$tool
-  v=require_buildreq_${tool}
-  f=func_$v
-  case $tool in
-    autoconf) m=AC_PREREQ ;;
-    libtoolize) m=LT_PREREQ; b=libtool ;;
-    autopoint) m=AM_GNU_GETTEXT_VERSION b=gettext ;;
-  esac
-
-  eval $v'='$f'
-  '$f' ()
-  {
-    $debug_cmd
-
-    # The following is ignored if undefined, but might be necessary
-    # in order for `func_find_tool` to run.
-    ${require_'$tool'-:}
-
-    printf '%s\n' "$buildreq" |func_grep_q '\''^[	 ]*'$tool\'' || {
-      func_extract_trace '$m'
-      _G_version=$func_extract_trace_result
-      test -n "$_G_version" && {
-        func_append buildreq "\
-            '$tool' $_G_version http://www.gnu.org/s/'$b'
-"
-        func_verbose \
-            "auto-adding \`'$tool'-$_G_version'\'' to build requirements"
-      }
-    }
-
-    '$v'=:
-  }
-'
-done
-
-
 # require_autoheader
 # ------------------
 # Skip autoheader if it's not needed.
@@ -954,37 +886,6 @@ func_require_autoheader ()
     }
 
     require_autoheader=:
-}
-
-
-# require_buildreq_automake
-# -------------------------
-# Try to find the minimum compatible version of automake required to
-# bootstrap successfully, and add it to `$buildreq'.
-require_buildreq_automake=func_require_buildreq_automake
-func_require_buildreq_automake()
-{
-    $debug_cmd
-
-    # if automake is not already listed in $buildreq...
-    printf '%s\n' "$buildreq" |func_grep_q automake || {
-      func_extract_trace AM_INIT_AUTOMAKE
-
-      # ...and AM_INIT_AUTOMAKE is declared...
-      test -n "$func_extract_trace_result" && {
-        automake_version=`echo "$func_extract_trace_result" \
-           |$SED 's|[^0-9]*||; s| .*$||'`
-        test -n "$automake_version" || automake_version=-
-
-        func_append buildreq "\
-            automake $automake_version http://www.gnu.org/s/automake
-"
-        func_verbose \
-            "auto-adding \`automake-$automake_version' to build requirements"
-      }
-    }
-
-    require_buildreq_automake=:
 }
 
 
@@ -1064,6 +965,134 @@ func_require_build_aux ()
     fi
 
     require_build_aux=:
+}
+
+
+# require_buildreq_autobuild
+# --------------------------
+# Try to find whether the bootstrap requires autobuild.
+require_buildreq_autobuild=func_require_buildreq_autobuild
+func_require_buildreq_autobuild()
+{
+    $debug_cmd
+
+    $require_macro_dir
+
+    test -f "$macro_dir/autobuild.m4" \
+        || printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*autobuild' \
+        || {
+      func_extract_trace AB_INIT
+      test -n "$func_extract_trace_result" && {
+        func_append buildreq 'autobuild - http://josefsson.org/autobuild/
+'
+        func_verbose "auto-adding \`autobuild' to build requirements"
+      }
+    }
+
+    require_buildreq_autobuild=:
+}
+
+
+# require_buildreq_autoconf
+# require_buildreq_autopoint
+# require_buildreq_libtoolize
+# ---------------------------
+# Try to find the minimum compatible version of autoconf/libtool
+# required to bootstrap successfully, and add it to `$buildreq'.
+for tool in autoconf libtoolize autopoint; do
+  b=$tool
+  v=require_buildreq_${tool}
+  f=func_$v
+  case $tool in
+    autoconf) m=AC_PREREQ ;;
+    libtoolize) m=LT_PREREQ; b=libtool ;;
+    autopoint) m=AM_GNU_GETTEXT_VERSION b=gettext ;;
+  esac
+
+  eval $v'='$f'
+  '$f' ()
+  {
+    $debug_cmd
+
+    # The following is ignored if undefined, but might be necessary
+    # in order for `func_find_tool` to run.
+    ${require_'$tool'-:}
+
+    printf '%s\n' "$buildreq" |func_grep_q '\''^[	 ]*'$tool\'' || {
+      func_extract_trace '$m'
+      _G_version=$func_extract_trace_result
+      test -n "$_G_version" && {
+        func_append buildreq "\
+            '$tool' $_G_version http://www.gnu.org/s/'$b'
+"
+        func_verbose \
+            "auto-adding \`'$tool'-$_G_version'\'' to build requirements"
+      }
+    }
+
+    '$v'=:
+  }
+'
+done
+
+
+# require_buildreq_automake
+# -------------------------
+# Try to find the minimum compatible version of automake required to
+# bootstrap successfully, and add it to `$buildreq'.
+require_buildreq_automake=func_require_buildreq_automake
+func_require_buildreq_automake()
+{
+    $debug_cmd
+
+    # if automake is not already listed in $buildreq...
+    printf '%s\n' "$buildreq" |func_grep_q automake || {
+      func_extract_trace AM_INIT_AUTOMAKE
+
+      # ...and AM_INIT_AUTOMAKE is declared...
+      test -n "$func_extract_trace_result" && {
+        automake_version=`echo "$func_extract_trace_result" \
+           |$SED 's|[^0-9]*||; s| .*$||'`
+        test -n "$automake_version" || automake_version=-
+
+        func_append buildreq "\
+            automake $automake_version http://www.gnu.org/s/automake
+"
+        func_verbose \
+            "auto-adding \`automake-$automake_version' to build requirements"
+      }
+    }
+
+    require_buildreq_automake=:
+}
+
+
+# require_buildreq_patch
+# ----------------------
+# Automatically add a patch build-requirement if there are diff files
+# in $local_gl_dir.
+require_buildreq_patch=func_require_buildreq_patch
+func_require_buildreq_patch ()
+{
+    $debug_cmd
+
+    # This ensures PATCH is set appropriately by the time
+    # func_check_versions enforces $buildreq.
+    $require_patch
+
+    # If patch is not already listed in $buildreq...
+    printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*patch' || {
+      # The ugly find invocation is necessary to exit with non-zero
+      # status for old find binaries that don't support -exec fully.
+      if test ! -d "$local_gl_dir" \
+          || find "$local_gl_dir" -name *.diff -exec false {} +; then :
+      else
+          func_append buildreq 'patch - http://www.gnu.org/s/patch
+'
+      fi
+    }
+
+    require_buildreq_patch=:
 }
 
 
@@ -1636,35 +1665,6 @@ func_require_patch ()
     export PATCH
 
     require_patch=:
-}
-
-
-# require_buildreq_patch
-# ----------------------
-# Automatically add a patch build-requirement if there are diff files
-# in $local_gl_dir.
-require_buildreq_patch=func_require_buildreq_patch
-func_require_buildreq_patch ()
-{
-    $debug_cmd
-
-    # This ensures PATCH is set appropriately by the time
-    # func_check_versions enforces $buildreq.
-    $require_patch
-
-    # If patch is not already listed in $buildreq...
-    printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*patch' || {
-      # The ugly find invocation is necessary to exit with non-zero
-      # status for old find binaries that don't support -exec fully.
-      if test ! -d "$local_gl_dir" \
-          || find "$local_gl_dir" -name *.diff -exec false {} +; then :
-      else
-          func_append buildreq 'patch - http://www.gnu.org/s/patch
-'
-      fi
-    }
-
-    require_buildreq_patch=:
 }
 
 
