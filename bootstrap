@@ -972,7 +972,7 @@ func_require_build_aux ()
 # --------------------------
 # Try to find whether the bootstrap requires autobuild.
 require_buildreq_autobuild=func_require_buildreq_autobuild
-func_require_buildreq_autobuild()
+func_require_buildreq_autobuild ()
 {
     $debug_cmd
 
@@ -1041,7 +1041,7 @@ done
 # Try to find the minimum compatible version of automake required to
 # bootstrap successfully, and add it to `$buildreq'.
 require_buildreq_automake=func_require_buildreq_automake
-func_require_buildreq_automake()
+func_require_buildreq_automake ()
 {
     $debug_cmd
 
