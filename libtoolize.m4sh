@@ -1245,98 +1245,6 @@ for base in '' ltdl_; do
 done
 
 
-# require_filter_Makefile_am
-# --------------------------
-# Set `filter_Makefile_am' ready for passing to func_copy when libltdl's
-# stock Makefile.am contents need to be filtered to work in recursive
-# mode.
-require_filter_Makefile_am=func_require_filter_Makefile_am
-func_require_filter_Makefile_am ()
-{
-    $debug_cmd
-
-    $require_ltdl_mode
-
-    case $ltdl_mode in
-      recursive)
-        filter_Makefile_am='
-            /^[^#]/{
-              s|(LIBOBJS)|(ltdl_LIBOBJS)|g
-              s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
-            }'
-        ;;
-
-      subproject)
-        $require_ltdl_ac_aux_dir
-        $require_ltdl_am_macro_dir
-        $require_ltdl_relative_aux_dir
-        $require_ltdl_relative_macro_dir
-
-        test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
-          my_am_macro_dir_regex=`$ECHO "\
-$ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
-
-          filter_Makefile_am="
-            /^ACLOCAL_AMFLAGS = /{
-              s| -I $my_am_macro_dir_regex\$| -I $ltdl_relative_macro_dir|
-            }
-            s|dir)/$my_am_macro_dir_regex|dir)/$ltdl_relative_macro_dir|g"
-        }
-
-        test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
-          my_aux_dir_regex=`$ECHO "\
-$ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
-
-          filter_Makefile_am="$filter_Makefile_am
-            s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
-            s|/\./|/|g
-          "
-        }
-        ;;
-    esac
-
-    require_filter_Makefile_am=:
-}
-
-
-# require_filter_ltdl_mk
-# ----------------------
-# Set `filter_ltdl_mk' ready for passing to func_copy in order for the
-# contents of ltdl.mk to match the nonrecursive libltdl directory into
-# which it is copied.
-require_filter_ltdl_mk=func_require_filter_ltdl_mk
-func_require_filter_ltdl_mk ()
-{
-    $debug_cmd
-
-    $require_ltdl_dir
-
-    # Note that we strip comments right here, rather than rely on
-    # using a $SED that allows comments.
-    my_uscore=`$ECHO "$ltdl_dir" | $SED 's|[/.+-]|_|g'`
-    filter_ltdl_mk=`$ECHO '
-      /^[^#]/{
-
-        # Use only libltdl conditional objects.
-        s|(LIBOBJS)|(ltdl_LIBOBJS)|g
-        s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
-
-        # Convert libltdl path and variable sections to $ltdl_dir.
-        s|libltdl_|@my_uscore@_|
-        s|libltdl/|@ltdl_dir@/|
-        s|: libltdl/|: @ltdl_dir@/|
-        s| -Ilibltdl | -I@ltdl_dir@ |
-        s|\$(libltdl_|\$(@my_uscore@_|
-        s|)/libltdl |)/@ltdl_dir@ |
-        s|@my_uscore@|'"$my_uscore"'|g
-        s|@ltdl_dir@|'"$ltdl_dir"'|g
-
-      }' | $SED '/^[	 ]*#/d;/^$/d'`
-
-    require_filter_ltdl_mk=:
-}
-
-
 # require_ac_aux_dir
 # ------------------
 # Extract ac_aux_dir from AC_CONFIG_AUX_DIR.
@@ -1459,35 +1367,6 @@ func_require_ac_macro_dir ()
 }
 
 
-# require_filter_aclocal_m4
-# -------------------------
-# Set `filter_aclocal_m4' ready for passing to func_copy when libltdl's
-# stock aclocal.m4 contents need to be filtered to work in recursive
-# mode.
-require_filter_aclocal_m4=func_require_filter_aclocal_m4
-func_require_filter_aclocal_m4 ()
-{
-    $debug_cmd
-
-    $require_ltdl_am_macro_dir
-    $require_ltdl_relative_macro_dir
-
-    test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
-      my_am_macro_dir_regex=`$ECHO "\
-$ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
-
-      # Tricky [m] quoting to stop m4sh processing from flagging an
-      # undefined macro.
-      filter_aclocal_m4="
-        /^[m]4_include(/{
-          s|$my_am_macro_dir_regex|$ltdl_relative_macro_dir|g
-        }"
-    }
-
-    require_filter_aclocal_m4=:
-}
-
-
 # require_aux_dir
 # ---------------
 # Set aux_dir according to AC_CONFIG_AUX_DIR or else use the same
@@ -1552,6 +1431,89 @@ func_require_configure_ac ()
 }
 
 
+# require_filter_Makefile_am
+# --------------------------
+# Set `filter_Makefile_am' ready for passing to func_copy when libltdl's
+# stock Makefile.am contents need to be filtered to work in recursive
+# mode.
+require_filter_Makefile_am=func_require_filter_Makefile_am
+func_require_filter_Makefile_am ()
+{
+    $debug_cmd
+
+    $require_ltdl_mode
+
+    case $ltdl_mode in
+      recursive)
+        filter_Makefile_am='
+            /^[^#]/{
+              s|(LIBOBJS)|(ltdl_LIBOBJS)|g
+              s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
+            }'
+        ;;
+
+      subproject)
+        $require_ltdl_ac_aux_dir
+        $require_ltdl_am_macro_dir
+        $require_ltdl_relative_aux_dir
+        $require_ltdl_relative_macro_dir
+
+        test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
+          my_am_macro_dir_regex=`$ECHO "\
+$ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
+
+          filter_Makefile_am="
+            /^ACLOCAL_AMFLAGS = /{
+              s| -I $my_am_macro_dir_regex\$| -I $ltdl_relative_macro_dir|
+            }
+            s|dir)/$my_am_macro_dir_regex|dir)/$ltdl_relative_macro_dir|g"
+        }
+
+        test "$ltdl_ac_aux_dir" = "$ltdl_relative_aux_dir" || {
+          my_aux_dir_regex=`$ECHO "\
+$ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
+
+          filter_Makefile_am="$filter_Makefile_am
+            s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
+            s|/\./|/|g
+          "
+        }
+        ;;
+    esac
+
+    require_filter_Makefile_am=:
+}
+
+
+# require_filter_aclocal_m4
+# -------------------------
+# Set `filter_aclocal_m4' ready for passing to func_copy when libltdl's
+# stock aclocal.m4 contents need to be filtered to work in recursive
+# mode.
+require_filter_aclocal_m4=func_require_filter_aclocal_m4
+func_require_filter_aclocal_m4 ()
+{
+    $debug_cmd
+
+    $require_ltdl_am_macro_dir
+    $require_ltdl_relative_macro_dir
+
+    test "$ltdl_am_macro_dir" = "$ltdl_relative_macro_dir" || {
+      my_am_macro_dir_regex=`$ECHO "\
+$ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
+
+      # Tricky [m] quoting to stop m4sh processing from flagging an
+      # undefined macro.
+      filter_aclocal_m4="
+        /^[m]4_include(/{
+          s|$my_am_macro_dir_regex|$ltdl_relative_macro_dir|g
+        }"
+    }
+
+    require_filter_aclocal_m4=:
+}
+
+
 # require_filter_configure_ac
 # ---------------------------
 # Set `filter_configure_ac' ready for passing to func_copy when
@@ -1575,6 +1537,44 @@ $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
     }
 
     require_filter_configure_ac=:
+}
+
+
+# require_filter_ltdl_mk
+# ----------------------
+# Set `filter_ltdl_mk' ready for passing to func_copy in order for the
+# contents of ltdl.mk to match the nonrecursive libltdl directory into
+# which it is copied.
+require_filter_ltdl_mk=func_require_filter_ltdl_mk
+func_require_filter_ltdl_mk ()
+{
+    $debug_cmd
+
+    $require_ltdl_dir
+
+    # Note that we strip comments right here, rather than rely on
+    # using a $SED that allows comments.
+    my_uscore=`$ECHO "$ltdl_dir" | $SED 's|[/.+-]|_|g'`
+    filter_ltdl_mk=`$ECHO '
+      /^[^#]/{
+
+        # Use only libltdl conditional objects.
+        s|(LIBOBJS)|(ltdl_LIBOBJS)|g
+        s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
+
+        # Convert libltdl path and variable sections to $ltdl_dir.
+        s|libltdl_|@my_uscore@_|
+        s|libltdl/|@ltdl_dir@/|
+        s|: libltdl/|: @ltdl_dir@/|
+        s| -Ilibltdl | -I@ltdl_dir@ |
+        s|\$(libltdl_|\$(@my_uscore@_|
+        s|)/libltdl |)/@ltdl_dir@ |
+        s|@my_uscore@|'"$my_uscore"'|g
+        s|@ltdl_dir@|'"$ltdl_dir"'|g
+
+      }' | $SED '/^[	 ]*#/d;/^$/d'`
+
+    require_filter_ltdl_mk=:
 }
 
 
