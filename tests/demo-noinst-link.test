@@ -38,13 +38,16 @@ func_save_files ()
     func_mkdir_p "$objdir/temp/libs"
     cp -f libhello.la "hell$EXEEXT" "$objdir/temp"
     cp -f "$objdir"/* "$objdir"/temp/libs
-    trap "func_restore_files" 0 1 2 13 15
 }
 
 func_require "demo-inst" "$prefix/lib/libhello.la"
 
 func_mkprefixdir
 func_cd "tests/demo"
+
+# AIX 5.3 `/bin/sh' will invoke the trap for 0 at the end of a
+# function, so we set the trap outside of a function to be portable.
+trap func_restore_files 0 1 2 13 15
 func_save_files
 
 func_msg "removing \`libhello.la' and \`hell' from demo"
