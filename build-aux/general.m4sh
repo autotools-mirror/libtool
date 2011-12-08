@@ -74,12 +74,21 @@ dirname='s|/[^/]*$||'
 basename='s|^.*/||'
 
 
+# We should try to minimise forks, especially on Windows where they are
+# unreasonably slow, so skip the feature probes when bash is being used:
+if test set = "${BASH_VERSION+set}"; then
+    : ${lt_HAVE_ARITH_OP="yes"}
+    : ${lt_HAVE_XSI_OPS="yes"}
+    # The += operator was introduced in bash 3.1
+    test -z "$lt_HAVE_PLUSEQ_OP" \
+      && test 3000 -lt "$((${BASH_VERSINFO[0]}*1000 + ${BASH_VERSINFO[1]}))" \
+      && lt_HAVE_PLUSEQ_OP=yes
+fi
+
+
 # lt_HAVE_PLUSEQ_OP
 # Can be empty, in which case the shell is probed, "yes" if += is useable
 # or anything else if += does not work.
-# NOTE: You can short-circuit the fork and test on every invocation (e.g.
-# on Windows where fork emulations are unreasonably slow) by setting this
-# in the environment of this script.
 test -z "$lt_HAVE_PLUSEQ_OP" \
     && (eval 'x=a; x+=" b"; test "a b" = "$x"') 2>/dev/null \
     && lt_HAVE_PLUSEQ_OP=yes
@@ -117,9 +126,6 @@ fi
 # lt_HAVE_ARITH_OP
 # Can be empty, in which case the shell is probed, "yes" if $((...)) is
 # useable or anything else if it does not work.
-# NOTE: You can short-circuit the fork and test on every invocation (e.g.
-# on Windows where fork emulations are unreasonably slow) by setting this
-# in the environment of this script.
 test -z "$lt_HAVE_ARITH_OP" \
     && (eval 'test 2 = $(( 1 + 1 ))') 2>/dev/null \
     && lt_HAVE_ARITH_OP=yes
@@ -141,9 +147,6 @@ fi
 # lt_HAVE_XSI_OPS
 # Can be empty, in which case the shell is probed, "yes" if XSI length
 # and matching operators are useable or anything else if they do not work.
-# NOTE: You can short-circuit the fork and test on every invocation (e.g.
-# on Windows where fork emulations are unreasonably slow) by setting this
-# in the environment of this script.
 test -z "$lt_HAVE_XSI_OPS" \
     && (eval 'x=a/b/c;
       test 5aa/bb/cc = "${#x}${x%%/*}${x%/*}${x#*/}${x##*/}"') 2>/dev/null \
