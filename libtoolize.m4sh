@@ -787,8 +787,8 @@ func_install_pkgltdl_files ()
       pkgltdl_header="putting libltdl files in \`$ltdl_dir'."
     fi
 
-    $require_Makefile_am_filter
-    $require_ltdl_mk_filter
+    $require_filter_Makefile_am
+    $require_filter_ltdl_mk
 
     # Copy ltdl sources appropriate to the requested ltdl_mode.
     for file in $pkgltdl_files; do
@@ -796,23 +796,23 @@ func_install_pkgltdl_files ()
       case $file in
         Makefile.am|Makefile.in)
           test nonrecursive = "$ltdl_mode" && continue
-          my_copy_filter=$Makefile_am_filter
+          my_copy_filter=$filter_Makefile_am
           ;;
 
         ltdl.mk)
           test nonrecursive = "$ltdl_mode" || continue
-          my_copy_filter=$ltdl_mk_filter
+          my_copy_filter=$filter_ltdl_mk
           ;;
 
         aclocal.m4)
           test subproject = "$ltdl_mode" && {
-            $require_aclocal_m4_filter
+            $require_filter_aclocal_m4
 
             # Always copy aclocal.m4, otherwise regenerating it can
             # overwrite the destination if it is symlinked.
             ( opt_copy=:
               func_copy "$file" "$pkgltdldir" "$ltdl_dir" \
-                pkgltdl_header "$aclocal_m4_filter"
+                pkgltdl_header "$filter_aclocal_m4"
             )
           }
           continue
@@ -824,13 +824,13 @@ func_install_pkgltdl_files ()
 
         configure)
           test subproject = "$ltdl_mode" && {
-            $require_configure_ac_filter
+            $require_filter_configure_ac
 
             # Always copy configure, otherwise regenerating it can
             # overwrite the destination if it is symlinked.
             ( opt_copy=:
               func_copy "$file" "$pkgltdldir" "$ltdl_dir" \
-                pkgltdl_header "$configure_ac_filter"
+                pkgltdl_header "$filter_configure_ac"
             )
           }
           continue
@@ -838,8 +838,8 @@ func_install_pkgltdl_files ()
 
         configure.ac)
           test subproject = "$ltdl_mode" || continue
-          $require_configure_ac_filter
-          my_copy_filter=$configure_ac_filter
+          $require_filter_configure_ac
+          my_copy_filter=$filter_configure_ac
           ;;
       esac
 
@@ -1245,13 +1245,13 @@ for base in '' ltdl_; do
 done
 
 
-# require_Makefile_am_filter
+# require_filter_Makefile_am
 # --------------------------
-# Set `Makefile_am_filter' ready for passing to func_copy when libltdl's
+# Set `filter_Makefile_am' ready for passing to func_copy when libltdl's
 # stock Makefile.am contents need to be filtered to work in recursive
 # mode.
-require_Makefile_am_filter=func_require_Makefile_am_filter
-func_require_Makefile_am_filter ()
+require_filter_Makefile_am=func_require_filter_Makefile_am
+func_require_filter_Makefile_am ()
 {
     $debug_cmd
 
@@ -1259,7 +1259,7 @@ func_require_Makefile_am_filter ()
 
     case $ltdl_mode in
       recursive)
-        Makefile_am_filter='
+        filter_Makefile_am='
             /^[^#]/{
               s|(LIBOBJS)|(ltdl_LIBOBJS)|g
               s|(LTLIBOBJS)|(ltdl_LTLIBOBJS)|g
@@ -1276,7 +1276,7 @@ func_require_Makefile_am_filter ()
           my_am_macro_dir_regex=`$ECHO "\
 $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
 
-          Makefile_am_filter="
+          filter_Makefile_am="
             /^ACLOCAL_AMFLAGS = /{
               s| -I $my_am_macro_dir_regex\$| -I $ltdl_relative_macro_dir|
             }
@@ -1287,7 +1287,7 @@ $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
           my_aux_dir_regex=`$ECHO "\
 $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
 
-          Makefile_am_filter="$Makefile_am_filter
+          filter_Makefile_am="$filter_Makefile_am
             s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
             s|/\./|/|g
           "
@@ -1295,17 +1295,17 @@ $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
         ;;
     esac
 
-    require_Makefile_am_filter=:
+    require_filter_Makefile_am=:
 }
 
 
-# require_ltdl_mk_filter
+# require_filter_ltdl_mk
 # ----------------------
-# Set `ltdl_mk_filter' ready for passing to func_copy in order for the
+# Set `filter_ltdl_mk' ready for passing to func_copy in order for the
 # contents of ltdl.mk to match the nonrecursive libltdl directory into
 # which it is copied.
-require_ltdl_mk_filter=func_require_ltdl_mk_filter
-func_require_ltdl_mk_filter ()
+require_filter_ltdl_mk=func_require_filter_ltdl_mk
+func_require_filter_ltdl_mk ()
 {
     $debug_cmd
 
@@ -1314,7 +1314,7 @@ func_require_ltdl_mk_filter ()
     # Note that we strip comments right here, rather than rely on
     # using a $SED that allows comments.
     my_uscore=`$ECHO "$ltdl_dir" | $SED 's|[/.+-]|_|g'`
-    ltdl_mk_filter=`$ECHO '
+    filter_ltdl_mk=`$ECHO '
       /^[^#]/{
 
         # Use only libltdl conditional objects.
@@ -1333,7 +1333,7 @@ func_require_ltdl_mk_filter ()
 
       }' | $SED '/^[	 ]*#/d;/^$/d'`
 
-    require_ltdl_mk_filter=:
+    require_filter_ltdl_mk=:
 }
 
 
@@ -1459,13 +1459,13 @@ func_require_ac_macro_dir ()
 }
 
 
-# require_aclocal_m4_filter
+# require_filter_aclocal_m4
 # -------------------------
-# Set `aclocal_m4_filter' ready for passing to func_copy when libltdl's
+# Set `filter_aclocal_m4' ready for passing to func_copy when libltdl's
 # stock aclocal.m4 contents need to be filtered to work in recursive
 # mode.
-require_aclocal_m4_filter=func_require_aclocal_m4_filter
-func_require_aclocal_m4_filter ()
+require_filter_aclocal_m4=func_require_filter_aclocal_m4
+func_require_filter_aclocal_m4 ()
 {
     $debug_cmd
 
@@ -1478,13 +1478,13 @@ $ltdl_am_macro_dir" |$SED "$sed_make_literal_regex"`
 
       # Tricky [m] quoting to stop m4sh processing from flagging an
       # undefined macro.
-      aclocal_m4_filter="
+      filter_aclocal_m4="
         /^[m]4_include(/{
           s|$my_am_macro_dir_regex|$ltdl_relative_macro_dir|g
         }"
     }
 
-    require_aclocal_m4_filter=:
+    require_filter_aclocal_m4=:
 }
 
 
@@ -1552,13 +1552,13 @@ func_require_configure_ac ()
 }
 
 
-# require_configure_ac_filter
+# require_filter_configure_ac
 # ---------------------------
-# Set `configure_ac_filter' ready for passing to func_copy when
+# Set `filter_configure_ac' ready for passing to func_copy when
 # libltdl's stock configure.ac contents need to be filtered to work in
 # subproject mode.
-require_configure_ac_filter=func_require_configure_ac_filter
-func_require_configure_ac_filter ()
+require_filter_configure_ac=func_require_filter_configure_ac
+func_require_filter_configure_ac ()
 {
     $debug_cmd
 
@@ -1569,12 +1569,12 @@ func_require_configure_ac_filter ()
       my_aux_dir_regex=`$ECHO "\
 $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
 
-      configure_ac_filter="
+      filter_configure_ac="
         s|$my_aux_dir_regex|$ltdl_relative_aux_dir|g
       "
     }
 
-    require_configure_ac_filter=:
+    require_filter_configure_ac=:
 }
 
 
