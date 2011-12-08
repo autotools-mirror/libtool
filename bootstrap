@@ -556,6 +556,7 @@ func_gnulib_tool_copy_file ()
 
     $require_gnulib_path
     $require_gnulib_tool
+    $require_patch
 
     gnulib_copy_cmd="$gnulib_tool --copy-file"
     $opt_copy || func_append gnulib_copy_cmd " --symlink"
@@ -1080,6 +1081,7 @@ func_require_buildtools_uptodate ()
     $require_automake_buildreq
     $require_libtoolize_buildreq
     $require_autopoint_buildreq
+    $require_patch_buildreq
 
     test -n "$buildreq" && {
       _G_error_hdr=
@@ -1610,6 +1612,59 @@ func_gnulib_tool has installed the \`git-version-gen' script."
     func_verbose "package_version='$package_version'"
 
     require_package_version=:
+}
+
+
+# require_patch
+# -------------
+# Find patch, according to the PATCH environment variable, or else
+# searching the user's PATH.
+require_patch=func_require_patch
+func_require_patch ()
+{
+    $debug_cmd
+
+    test -n "$PATCH" || {
+      # Find a patch program, preferring gpatch which is usually better
+      # than the vendor patch.
+      func_find_tool PATCH gpatch patch
+    }
+
+    func_verbose "export PATCH='$PATCH'"
+
+    # Make sure the search result is visible to subshells
+    export PATCH
+
+    require_patch=:
+}
+
+
+# require_patch_buildreq
+# ----------------------
+# Automatically add a patch build-requirement if there are diff files
+# in $local_gl_dir.
+require_patch_buildreq=func_require_patch_buildreq
+func_require_patch_buildreq ()
+{
+    $debug_cmd
+
+    # This ensures PATCH is set appropriately by the time
+    # func_check_versions enforces $buildreq.
+    $require_patch
+
+    # If patch is not already listed in $buildreq...
+    printf '%s\n' "$buildreq" |func_grep_q '^[	 ]*patch' || {
+      # The ugly find invocation is necessary to exit with non-zero
+      # status for old find binaries that don't support -exec fully.
+      if test ! -d "$local_gl_dir" \
+          || find "$local_gl_dir" -name *.diff -exec false {} +; then :
+      else
+          func_append buildreq 'patch - http://www.gnu.org/s/patch
+'
+      fi
+    }
+
+    require_patch_buildreq=:
 }
 
 
