@@ -788,7 +788,7 @@ func_install_pkgltdl_files ()
     fi
 
     $require_Makefile_am_filter
-    $require_Makefile_inc_filter
+    $require_ltdl_mk_filter
 
     # Copy ltdl sources appropriate to the requested ltdl_mode.
     for file in $pkgltdl_files; do
@@ -801,7 +801,7 @@ func_install_pkgltdl_files ()
 
         ltdl.mk)
           test nonrecursive = "$ltdl_mode" || continue
-          my_copy_filter=$Makefile_inc_filter
+          my_copy_filter=$ltdl_mk_filter
           ;;
 
         aclocal.m4)
@@ -1299,13 +1299,13 @@ $ltdl_ac_aux_dir" |$SED "$sed_make_literal_regex"`
 }
 
 
-# require_Makefile_inc_filter
-# ---------------------------
-# Set `Makefile_inc_filter' ready for passing to func_copy in order for
-# the contents of Makefile.inc to match the nonrecursive libltdl
-# directory into which it is copied.
-require_Makefile_inc_filter=func_require_Makefile_inc_filter
-func_require_Makefile_inc_filter ()
+# require_ltdl_mk_filter
+# ----------------------
+# Set `ltdl_mk_filter' ready for passing to func_copy in order for the
+# contents of ltdl.mk to match the nonrecursive libltdl directory into
+# which it is copied.
+require_ltdl_mk_filter=func_require_ltdl_mk_filter
+func_require_ltdl_mk_filter ()
 {
     $debug_cmd
 
@@ -1314,7 +1314,7 @@ func_require_Makefile_inc_filter ()
     # Note that we strip comments right here, rather than rely on
     # using a $SED that allows comments.
     my_uscore=`$ECHO "$ltdl_dir" | $SED 's|[/.+-]|_|g'`
-    Makefile_inc_filter=`$ECHO '
+    ltdl_mk_filter=`$ECHO '
       /^[^#]/{
 
         # Use only libltdl conditional objects.
@@ -1333,7 +1333,7 @@ func_require_Makefile_inc_filter ()
 
       }' | $SED '/^[	 ]*#/d;/^$/d'`
 
-    require_Makefile_inc_filter=:
+    require_ltdl_mk_filter=:
 }
 
 
