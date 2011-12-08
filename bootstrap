@@ -1018,7 +1018,7 @@ for tool in autoconf libtoolize autopoint; do
     # in order for `func_find_tool` to run.
     ${require_'$tool'-:}
 
-    printf '%s\n' "$buildreq" |func_grep_q '\''^[	 ]*'$tool\'' || {
+    printf '\''%s\n'\'' "$buildreq" |func_grep_q '\''^[	 ]*'$tool\'' || {
       func_extract_trace '$m'
       _G_version=$func_extract_trace_result
       test -n "$_G_version" && {
