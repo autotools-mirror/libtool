@@ -1716,6 +1716,8 @@ func_require_seen_ltdl ()
     fi
     test -n "$seen_ltdl" || seen_ltdl=false
 
+    $seen_ltdl && func_verbose "found LTDL_INIT invocation"
+
     require_seen_ltdl=:
 }
 
@@ -1736,6 +1738,8 @@ func_require_seen_libtool ()
       test -n "$func_extract_trace_result" && seen_libtool=:
     fi
     test -n "$seen_libtool" || seen_libtool=false
+
+    $seen_libtool && func_verbose "found LT_INIT invocation"
 
     require_seen_libtool=:
 }
