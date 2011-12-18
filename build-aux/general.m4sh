@@ -75,14 +75,16 @@ basename='s|^.*/||'
 
 
 # We should try to minimise forks, especially on Windows where they are
-# unreasonably slow, so skip the feature probes when bash is being used:
-if test set = "${BASH_VERSION+set}"; then
+# unreasonably slow, so skip the feature probes when bash or zsh are
+# being used:
+if test set = "${BASH_VERSION+set}${ZSH_VERSION}"; then
     : ${lt_HAVE_ARITH_OP="yes"}
     : ${lt_HAVE_XSI_OPS="yes"}
     # The += operator was introduced in bash 3.1
-    test -z "$lt_HAVE_PLUSEQ_OP" \
-      && test 3000 -lt "$((${BASH_VERSINFO[0]}*1000 + ${BASH_VERSINFO[1]}))" \
-      && lt_HAVE_PLUSEQ_OP=yes
+    case $BASH_VERSION in
+      [12].* | 3.0 | 3.0.*) ;;
+      *)                    lt_HAVE_PLUSEQ_OP=yes ;;
+    esac
 fi
 
 
