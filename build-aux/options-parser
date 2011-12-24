@@ -176,7 +176,7 @@ nl='
 # There are still modern systems that have problems with `echo' mis-
 # handling backslashes, among others, so make sure $bs_echo is set to a
 # command that correctly interprets backslashes.
-# (this code from Autoconf 2.62)
+# (this code from Autoconf 2.68)
 
 # Printing a long string crashes Solaris 7 /usr/bin/printf.
 bs_echo='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
