@@ -4153,9 +4153,9 @@ lt_update_exe_path (const char *name, const char *value)
       char *new_value = lt_extend_str (getenv (name), value, 0);
       /* some systems can't cope with a ':'-terminated path #' */
       int len = strlen (new_value);
-      while (((len = strlen (new_value)) > 0) && IS_PATH_SEPARATOR (new_value[len-1]))
+      while ((len > 0) && IS_PATH_SEPARATOR (new_value[len-1]))
         {
-          new_value[len-1] = '\0';
+          new_value[--len] = '\0';
         }
       lt_setenv (name, new_value);
       XFREE (new_value);
