@@ -7376,7 +7376,7 @@ EOF
 	cygwin* | mingw* | cegcc*)
 	  if test -n "$export_symbols" && test -z "$export_symbols_regex"; then
 	    # exporting using user supplied symfile
-	    if test EXPORTS = "`$SED 1q $export_symbols`"; then
+	    if test EXPORTS != "`$SED 1q $export_symbols`"; then
 	      # and it's NOT already a .def file. Must figure out
 	      # which of the given symbols are data symbols and tag
 	      # them as such. So, trigger use of export_symbols_cmds.
