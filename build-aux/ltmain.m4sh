@@ -4151,9 +4151,9 @@ lt_update_exe_path (const char *name, const char *value)
       char *new_value = lt_extend_str (getenv (name), value, 0);
       /* some systems can't cope with a ':'-terminated path #' */
       int len = strlen (new_value);
-      while (((len = strlen (new_value)) > 0) && IS_PATH_SEPARATOR (new_value[len-1]))
+      while ((len > 0) && IS_PATH_SEPARATOR (new_value[len-1]))
         {
-          new_value[len-1] = '\0';
+          new_value[--len] = '\0';
         }
       lt_setenv (name, new_value);
       XFREE (new_value);
@@ -7386,7 +7386,7 @@ EOF
 	cygwin* | mingw* | cegcc*)
 	  if test -n "$export_symbols" && test -z "$export_symbols_regex"; then
 	    # exporting using user supplied symfile
-	    if test EXPORTS = "`$SED 1q $export_symbols`"; then
+	    if test EXPORTS != "`$SED 1q $export_symbols`"; then
 	      # and it's NOT already a .def file. Must figure out
 	      # which of the given symbols are data symbols and tag
 	      # them as such. So, trigger use of export_symbols_cmds.
