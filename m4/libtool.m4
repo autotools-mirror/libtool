@@ -2201,7 +2201,7 @@ if test yes = "$GCC"; then
   done
   lt_search_path_spec=`$ECHO "$lt_tmp_lt_search_path_spec" | awk '
 BEGIN {RS = " "; FS = "/|\n";} {
-  lt_fooi  = "";
+  lt_foo = "";
   lt_count = 0;
   for (lt_i = NF; lt_i > 0; lt_i--) {
     if ($lt_i != "" && $lt_i != ".") {
