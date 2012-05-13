@@ -3594,9 +3594,9 @@ using the @option{-dlopen} or @option{-dlpreopen} flags when you link your
 program (@pxref{Link mode}).
 
 @deftp {Data Type} {lt_dlsymlist} typedef struct @
-  @{ @w{const char *@var{name};} @w{void *@var{address};} @} lt_dlsymlist
-The @var{name} attribute is a null-terminated character string of the
-symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
+  @{ @w{const char *@code{name};} @w{void *@code{address};} @} lt_dlsymlist
+The @code{name} attribute is a null-terminated character string of the
+symbol name, such as @code{"fprintf"}.  The @code{address} attribute is
 generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftp
 
@@ -3604,10 +3604,10 @@ generic pointer to the appropriate object, such as @code{&fprintf}.
 An array of @code{lt_dlsymlist} structures, representing all the preloaded
 symbols linked into the program proper.  For each module
 @option{-dlpreopen}ed by the Libtool linked program
-there is an element with the @var{name} of the module and an @var{address}
+there is an element with the @code{name} of the module and an @code{address}
 of @code{0}, followed by all symbols exported from this file.
 For the executable itself the special name @samp{@@PROGRAM@@} is used.
-The last element of all has a @var{name} and @var{address} of
+The last element of all has a @code{name} and @code{address} of
 @code{0}.
 
 To facilitate inclusion of symbol lists into libraries,
@@ -4360,16 +4360,16 @@ Some of the internal information about each loaded module that is
 maintained by libltdl is available to the user, in the form of this
 structure:
 
-@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @
-  @w{char *@var{name};} @w{int @var{ref_count};} @
-  @w{int @var{is_resident};} @w{int @var{is_symglobal};} @
-  @w{int @var{is_symlocal};}@}
+@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@code{filename};} @
+  @w{char *@code{name};} @w{int @code{ref_count};} @
+  @w{int @code{is_resident};} @w{int @code{is_symglobal};} @
+  @w{int @code{is_symlocal};}@}
 @code{lt_dlinfo} is used to store information about a module.
-The @var{filename} attribute is a null-terminated character string of
+The @code{filename} attribute is a null-terminated character string of
 the real module file name.  If the module is a libtool module then
-@var{name} is its module name (e.g.@: @code{"libfoo"} for
+@code{name} is its module name (e.g.@: @code{"libfoo"} for
 @code{"dir/libfoo.la"}), otherwise it is set to @code{NULL}.  The
-@var{ref_count} attribute is a reference counter that describes how
+@code{ref_count} attribute is a reference counter that describes how
 often the same module is currently loaded. The remaining fields can
 be compared to any hints that were passed to @code{lt_dlopenadvise}
 to determine whether the underlying loader was able to follow them.
@@ -4584,7 +4584,7 @@ level types.
 @code{lt_user_data} is used for specifying loader instance data.
 @end deftp
 
-@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open *@var{module_open};} @w{lt_module_close *@var{module_close};} @w{lt_find_sym *@var{find_sym};} @w{lt_dlloader_exit *@var{dlloader_exit};} @}
+@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@code{sym_prefix};} @w{lt_module_open *@code{module_open};} @w{lt_module_close *@code{module_close};} @w{lt_find_sym *@code{find_sym};} @w{lt_dlloader_exit *@code{dlloader_exit};} @}
 If you want to define a new way to open dynamic modules, and have the
 @code{lt_dlopen} API use it, you need to instantiate one of these
 structures and pass it to @code{lt_dlloader_add}.  You can pass whatever
