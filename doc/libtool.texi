@@ -4021,10 +4021,10 @@ portability you should try to ensure that you only pass
 @option{-module} flag.}.
 
 Unresolved symbols in the module are resolved using its dependency
-libraries and previously dlopened modules.  If the executable using
-this module was linked with the @option{-export-dynamic} flag, then the
-global symbols in the executable will also be used to resolve
-references in the module.
+libraries and, on some platforms, previously dlopened modules.  If
+the executable using this module was linked with the
+@option{-export-dynamic} flag, then the global symbols in the executable
+will also be used to resolve references in the module.
 
 If @var{filename} is @code{NULL} and the program was linked with
 @option{-export-dynamic} or @option{-dlopen self}, @code{lt_dlopen} will
