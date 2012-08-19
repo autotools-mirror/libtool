@@ -2449,7 +2449,7 @@ func_mode_install ()
     if test -n "$current_libdirs"; then
       # Maybe just do a dry run.
       $opt_dry_run && current_libdirs=" -n$current_libdirs"
-      exec_cmd='$SHELL $progpath $preserve_args --finish$current_libdirs'
+      exec_cmd='$SHELL "$progpath" $preserve_args --finish$current_libdirs'
     else
       exit $EXIT_SUCCESS
     fi
@@ -8511,7 +8511,7 @@ EOF
 	fi
       done
       # Quote the link command for shipping.
-      relink_command="(cd `pwd`; $SHELL $progpath $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
+      relink_command="(cd `pwd`; $SHELL \"$progpath\" $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
       relink_command=`$ECHO "$relink_command" | $SED "$sed_quote_subst"`
       if test yes = "$hardcode_automatic"; then
 	relink_command=
