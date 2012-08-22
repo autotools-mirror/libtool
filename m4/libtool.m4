@@ -2719,7 +2719,7 @@ openbsd*)
   version_type=sunos
   sys_lib_dlsearch_path_spec=/usr/lib
   need_lib_prefix=no
-  if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`"; the
+  if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`"; then
     need_version=no
   else
     need_version=yes
