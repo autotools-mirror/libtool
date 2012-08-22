@@ -2719,26 +2719,15 @@ openbsd*)
   version_type=sunos
   sys_lib_dlsearch_path_spec=/usr/lib
   need_lib_prefix=no
-  # Some older versions of OpenBSD (3.3 at least) *do* need versioned libs.
-  case $host_os in
-    openbsd3.3 | openbsd3.3.*)	need_version=yes ;;
-    *)				need_version=no  ;;
-  esac
+  if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`"; the
+    need_version=no
+  else
+    need_version=yes
+  fi
   library_names_spec='$libname$release$shared_ext$versuffix $libname$shared_ext$versuffix'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`" || test openbsd2.8-powerpc = "$host_os-$host_cpu"; then
-    case $host_os in
-      openbsd2.[[89]] | openbsd2.[[89]].*)
-	shlibpath_overrides_runpath=no
-	;;
-      *)
-	shlibpath_overrides_runpath=yes
-	;;
-      esac
-  else
-    shlibpath_overrides_runpath=yes
-  fi
+  shlibpath_overrides_runpath=yes
   ;;
 
 os2*)
@@ -3298,7 +3287,7 @@ newos6*)
   ;;
 
 openbsd*)
-  if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`" || test openbsd2.8-powerpc = "$host_os-$host_cpu"; then
+  if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`"; then
     lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so\.[[0-9]]+\.[[0-9]]+|\.so|_pic\.a)$'
   else
     lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so\.[[0-9]]+\.[[0-9]]+|_pic\.a)$'
@@ -5375,22 +5364,14 @@ _LT_EOF
 	_LT_TAGVAR(hardcode_direct, $1)=yes
 	_LT_TAGVAR(hardcode_shlibpath_var, $1)=no
 	_LT_TAGVAR(hardcode_direct_absolute, $1)=yes
-	if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`" || test openbsd2.8-powerpc = "$host_os-$host_cpu"; then
+	if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`"; then
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
 	  _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags $wl-retain-symbols-file,$export_symbols'
 	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath,$libdir'
 	  _LT_TAGVAR(export_dynamic_flag_spec, $1)='$wl-E'
 	else
-	  case $host_os in
-	   openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
-	     _LT_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
-	     _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
-	     ;;
-	   *)
-	     _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
-	     _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath,$libdir'
-	     ;;
-	  esac
+	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
+	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath,$libdir'
 	fi
       else
 	_LT_TAGVAR(ld_shlibs, $1)=no
@@ -6570,11 +6551,6 @@ if test yes != "$_lt_caught_CXX_error"; then
         _LT_TAGVAR(ld_shlibs, $1)=yes
 	;;
 
-      openbsd2*)
-        # C++ shared libraries are fairly broken
-	_LT_TAGVAR(ld_shlibs, $1)=no
-	;;
-
       openbsd*)
 	if test -f /usr/libexec/ld.so; then
 	  _LT_TAGVAR(hardcode_direct, $1)=yes
@@ -6582,7 +6558,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	  _LT_TAGVAR(hardcode_direct_absolute, $1)=yes
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $lib'
 	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath,$libdir'
-	  if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test openbsd2.8-powerpc = "$host_os-$host_cpu"; then
+	  if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`"; then
 	    _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags $wl-retain-symbols-file,$export_symbols -o $lib'
 	    _LT_TAGVAR(export_dynamic_flag_spec, $1)='$wl-E'
 	    _LT_TAGVAR(whole_archive_flag_spec, $1)=$wlarc'--whole-archive$convenience '$wlarc'--no-whole-archive'
