@@ -1,14 +1,5 @@
 --- gnulib/build-aux/announce-gen	2011-10-19 01:26:27.000000000 +0700
 +++ gl/build-aux/announce-gen	2011-10-19 16:54:12.000000000 +0700
-@@ -102,7 +102,7 @@
-   my %res;
-   foreach my $f (@file)
-     {
--      my $cmd = "du --human $f";
-+      my $cmd = "du -h $f";
-       my $t = `$cmd`;
-       # FIXME-someday: give a better diagnostic, a la $PROCESS_STATUS
-       $@
 @@ -449,7 +449,14 @@
  
  <\#secure method=pgpmime mode=sign>
