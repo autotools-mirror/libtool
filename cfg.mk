@@ -1,6 +1,6 @@
 # cfg.mk -- Configuration for maintainer-makefile
 #
-#   Copyright (c) 2011 Free Software Foundation, Inc.
+#   Copyright (c) 2011-2012 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2011
 #
 #   This file is part of GNU Libtool.
@@ -20,6 +20,8 @@
 # can be downlodad from http://www.gnu.org/licenses/gpl.html,
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Boston, # MA 02111-1301, USA.
+
+update-copyright-env := UPDATE_COPYRIGHT_FORCE=1 UPDATE_COPYRIGHT_USE_INTERVALS=1
 
 # Set format of NEWS
 old_NEWS_hash := d41d8cd98f00b204e9800998ecf8427e
