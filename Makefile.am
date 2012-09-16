@@ -66,7 +66,6 @@ ltmain_m4sh	= $(srcdir)/$(m4sh_dir)/ltmain.m4sh
 
 sh_files	= $(general_m4sh) $(getopt_m4sh)
 build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
-		  $(srcdir)/$(aux_dir)/cvsu \
 		  $(srcdir)/$(aux_dir)/do-release-commit-and-tag \
 		  $(srcdir)/$(aux_dir)/gendocs.sh \
 		  $(srcdir)/$(aux_dir)/git-version-gen \
