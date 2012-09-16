@@ -1,0 +1,38 @@
+--- gnulib/top/README-release	2012-09-16 10:57:02.000000000 +0700
++++ gl/top/README-release	2012-09-16 14:51:58.000000000 +0700
+@@ -1,5 +1,9 @@
+ Here are most of the steps we (maintainers) follow when making a release.
+ 
++* If you don't yet have gnu ftp upload rights, read this:
++
++    https://www.gnu.org/prep/maintain/html_node/Automated-Upload-Registration.html#Automated-Upload-Registration
++
+ * Start from a clean, up-to-date git directory on "master":
+ 
+     make -k maintainer-clean || { ./configure && make maintainer-clean; }
+@@ -27,10 +31,25 @@
+ 
+     ./bootstrap && ./configure
+ 
++* Double check that serial number updates in public m4 files weren't
++  forgotten since last release (they should be updated in git along with
++  commits that require it so that users can work with git snapshots).
++
++* Update the LTDL_VERSION_INFO in libltdl/Makefile.inc for changes since
++  the last release.
++
++* Run "./bootstrap && ./configure".
++
+ * Pre-release testing: ensure that the following command succeeds:
+ 
+     make check syntax-check distcheck
++    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
++    make distcheck DISTCHECK_CONFIGURE_FLAGS=--program-prefix=g
++    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-shared
++    make distcheck CC=g++
+ 
++  If there are any problems, fix them and start again.
++ 
+ * To (i) set the date, version number, and release type [stable/alpha/beta]
+   on line 3 of NEWS, (ii) commit that, and (iii) tag the release, run
+ 
