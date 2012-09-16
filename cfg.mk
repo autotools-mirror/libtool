@@ -48,6 +48,7 @@ local-checks-to-skip =				\
 	sc_GPL_version				\
 	sc_cast_of_x_alloc_return_value		\
 	sc_prohibit_always-defined_macros	\
+	sc_prohibit_always_true_header_tests	\
 	sc_trailing_blank			\
 	sc_unmarked_diagnostics
 
@@ -57,6 +58,9 @@ local-checks-to-skip =				\
 # prohibit_always-defined_macros:
 #	we have our own argz and dirent, which use the same macros but
 #	which are not always-defined in our case.
+# prohibit_always_true_header_tests:
+#	we have our own argz and dirent, which are not *always* true,
+#	so the guards cannot be removed in our case.
 # trailing_blank: flags valid rfc3676 separators
 # unmarked_diagnostics: libtool isn't internationalized
 
