@@ -1,6 +1,6 @@
 # exeext.at -- ensure that exeext handling works  -*- Autotest -*-
 #
-#   Copyright (C) 2010 Free Software Foundation, Inc.
+#   Copyright (C) 2010-2012 Free Software Foundation, Inc.
 #   Written by Peter Rosin
 #
 #   This file is part of GNU Libtool.

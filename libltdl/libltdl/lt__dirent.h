@@ -1,6 +1,7 @@
 /* lt__dirent.h -- internal directory entry scanning interface
 
-   Copyright (C) 2001, 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2004, 2006, 2011-2012 Free Software Foundation,
+   Inc.
    Written by Bob Friesenhahn, 2001
 
    NOTE: The canonical source of this file is maintained with the

@@ -1,6 +1,6 @@
 # Portability macros for glibc argz.                    -*- Autoconf -*-
 #
-#   Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2004-2007, 2011-2012 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan <gary@gnu.org>
 #
 # This file is free software; the Free Software Foundation gives

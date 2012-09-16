@@ -1,7 +1,7 @@
 #! /bin/sh
 # tagtrace.test - check the LT_SUPPORTED_TAGS interface
 #
-#   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2004-2005, 2011-2012 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
