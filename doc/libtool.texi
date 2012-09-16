@@ -3780,7 +3780,7 @@ libltdl supports currently the following dynamic linking mechanisms:
 @item
 GNU DLD (emulates dynamic linking for static libraries)
 @item
-libtool's dlpreopen (see @pxref{Dlpreopening})
+libtool's dlpreopen (@pxref{Dlpreopening})
 @end itemize
 
 @noindent
@@ -3869,8 +3869,8 @@ loader is used.
 @end deftp
 
 @deftp {Type} lt_dlsymlist
-@code{lt_dlsymlist} is a symbol list for dlpreopened modules.
-This structure is described in @pxref{Dlpreopening}.
+@code{lt_dlsymlist} is a symbol list for dlpreopened modules
+(@pxref{Dlpreopening}).
 @end deftp
 
 @page
@@ -6063,8 +6063,7 @@ Z:\var\tmp\BUILD\lib
 to the @env{PATH}.  libtool contains support for path conversions of this
 type, for a certain limited set of build and host platform combinations. In
 this case, libtool will invoke Wine's @command{winepath} utility to ensure that
-the correct @env{PATH} value is used.  For more information, see
-@pxref{File name conversion}.
+the correct @env{PATH} value is used.  @xref{File name conversion}.
 
 @node File name conversion
 @subsection File name conversion
@@ -6100,16 +6099,16 @@ libtool supports file name conversion in the following scenarios:
 @tab @pxref{Cygwin/Windows File Name Conversion}
 
 @item Unix + Wine @tab MinGW (Windows)
-@tab Requires Wine. @pxref{Unix/Windows File Name Conversion}
+@tab Requires Wine. @xref{Unix/Windows File Name Conversion}
 
 @item MinGW (MSYS) @tab Cygwin
-@tab Requires @env{LT_CYGPATH}. @pxref{LT_CYGPATH}. Provided for testing
+@tab Requires @env{LT_CYGPATH}. @xref{LT_CYGPATH}. Provided for testing
 purposes only.
 
 @item Unix + Wine @tab Cygwin
 @tab Requires both Wine and @env{LT_CYGPATH}, but does not yet work with
 Cygwin 1.7.7 and Wine-1.2.
-See @pxref{Unix/Windows File Name Conversion} and @pxref{LT_CYGPATH}.
+@xref{Unix/Windows File Name Conversion}, and @ref{LT_CYGPATH}.
 @end multitable
 
 @menu
@@ -6200,8 +6199,8 @@ platform is MinGW.
 When the host platform is Cygwin, but the build platform is MSYS or some Unix
 system, libtool also uses @command{cygpath} to convert from Windows to Cygwin
 format (after first converting from the build platform format to Windows format;
-see @pxref{Native MinGW File Name Conversion} and
-@pxref{Unix/Windows File Name Conversion}).  Because the build platform is not
+@xref{Native MinGW File Name Conversion}, and
+@ref{Unix/Windows File Name Conversion}.)  Because the build platform is not
 Cygwin, @command{cygpath} is not (and should not be) in the @env{PATH}.
 Therefore, in this configuration the environment variable @env{LT_CYGPATH} is
 required. @xref{LT_CYGPATH}.
