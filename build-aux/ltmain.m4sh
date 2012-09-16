@@ -6648,7 +6648,7 @@ func_mode_link ()
           # On Darwin other compilers
           case $CC in
               nagfor*)
-                  verstring="${wl}-compatibility_version ${wl}$minor_current ${wl}-current_version ${wl}$minor_current.$revision"
+                  verstring="$wl-compatibility_version $wl$minor_current $wl-current_version $wl$minor_current.$revision"
                   ;;
               *)
                   verstring="-compatibility_version $minor_current -current_version $minor_current.$revision"

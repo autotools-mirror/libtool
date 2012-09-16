@@ -78,7 +78,7 @@ basename='s|^.*/||'
 # We should try to minimise forks, especially on Windows where they are
 # unreasonably slow, so skip the feature probes when bash or zsh are
 # being used:
-if test set = "${BASH_VERSION+set}${ZSH_VERSION}"; then
+if test set = "${BASH_VERSION+set}$ZSH_VERSION"; then
     : ${lt_HAVE_ARITH_OP="yes"}
     : ${lt_HAVE_XSI_OPS="yes"}
     # The += operator was introduced in bash 3.1
