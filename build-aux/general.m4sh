@@ -1,7 +1,8 @@
 m4_divert_push([KILL])					-*- Autoconf -*-
 # general.m4sh -- general shell script boiler plate
 #
-#   Copyright (C) 2004, 2005, 2007, 2008, 2010 Free Software Foundation, Inc.
+#   Copyright (C) 2004-2005, 2007-2008, 2010-2012 Free Software
+#   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2004
 #
 #   This file is part of GNU Libtool.

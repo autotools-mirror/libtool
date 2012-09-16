@@ -1,6 +1,7 @@
 # fail.at -- test that libtool really fail when it should     -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2008, 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008-2009, 2011-2012 Free Software Foundation,
+#   Inc.
 #   Written by Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.

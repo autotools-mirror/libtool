@@ -1,6 +1,6 @@
 # getopts-m4sh.at -- test getopts.m4sh option parsers       -*- Autotest -*-
 #
-#   Copyright (C) 2010 Free Software Foundation, Inc.
+#   Copyright (C) 2010-2012 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2010
 #
 #   This file is part of GNU Libtool.

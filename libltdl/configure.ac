@@ -1,6 +1,7 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 #
-#    Copyright (C) 2004, 2005, 2007, 2008 Free Software Foundation, Inc.
+#    Copyright (C) 2004-2005, 2007-2008, 2011-2012 Free Software
+#    Foundation, Inc.
 #    Written by Gary V. Vaughan, 2004
 #
 #    NOTE: The canonical source of this file is maintained with the

@@ -1,8 +1,7 @@
 m4_include([general.m4sh])m4_divert_push([KILL])	-*- Autoconf -*-
 # getopt.m4sh -- getopt helper functions
 #
-#    Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
-#    Foundation, Inc.
+#    Copyright (C) 2004-2012 Free Software Foundation, Inc.
 #    Written by Gary V. Vaughan, 2004
 #
 #    This file is part of GNU Libtool.
