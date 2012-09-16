@@ -12,6 +12,7 @@
 /mdate-sh
 /missing
 /mkinstalldirs
+/test-driver
 /texinfo.tex
 /useless-if-before-free
 /vc-list-files
