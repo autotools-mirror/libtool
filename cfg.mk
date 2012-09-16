@@ -49,6 +49,7 @@ local-checks-to-skip =				\
 	sc_cast_of_x_alloc_return_value		\
 	sc_prohibit_always-defined_macros	\
 	sc_prohibit_always_true_header_tests	\
+	sc_prohibit_strncpy			\
 	sc_trailing_blank			\
 	sc_unmarked_diagnostics
 
@@ -61,6 +62,8 @@ local-checks-to-skip =				\
 # prohibit_always_true_header_tests:
 #	we have our own argz and dirent, which are not *always* true,
 #	so the guards cannot be removed in our case.
+# prohibit_strncpy:
+#	what's so bad about strncpy anyway?
 # trailing_blank: flags valid rfc3676 separators
 # unmarked_diagnostics: libtool isn't internationalized
 
