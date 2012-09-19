@@ -31,6 +31,7 @@ cwd=`pwd`
 instdir=$cwd/inst
 libdir=$instdir/lib
 bindir=$instdir/bin
+save_LDFLAGS=$LDFLAGS
 LDFLAGS="$LDFLAGS -no-undefined"
 
 mkdir inst inst/bin inst/lib
@@ -76,7 +77,9 @@ EOF
       cd new-libtool
       # configure might fail due to in-tree build of toplevel, or
       # missing configure flags and other reasons.
+      LDFLAGS=$save_LDFLAGS
       LT_AT_CONFIGURE([|| exit 77], ["$abs_top_srcdir"/configure])
+      LDFLAGS="$LDFLAGS -no-undefined"
       cd ..
       LIBTOOL=new-libtool/libtool
       export LIBTOOL
