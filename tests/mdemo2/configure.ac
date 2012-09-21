@@ -51,7 +51,7 @@ LT_INIT([dlopen])
 AC_SUBST(LIBTOOL_DEPS)
 
 STATIC=
-test yes = "$enable_static" && STATIC="-static"
+test "X$enable_static" = Xyes && STATIC="-static"
 AC_SUBST([STATIC])
 
 

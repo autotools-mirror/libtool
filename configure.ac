@@ -114,7 +114,7 @@ AC_SUBST([pkgdatadir], ["\$(datadir)/$PACKAGE"])
 
 AC_ARG_ENABLE(ltdl-install,
     [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
-if test set != "${enable_ltdl_install+set}"; then
+if test "x${enable_ltdl_install+set}" != xset; then
   enable_ltdl_install=yes
 fi
 

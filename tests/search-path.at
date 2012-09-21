@@ -78,7 +78,7 @@ HCURSOR get_cursor (void)
 ]])
 
 eval "`$LIBTOOL --config | grep '^build_libtool_libs='`"
-AT_CHECK([test yes = "$build_libtool_libs" || exit 77])
+AT_CHECK([test "$build_libtool_libs" = yes || exit 77])
 
 AT_CHECK([$LIBTOOL --mode=compile --tag=CC \
 	  $CC $CPPFLAGS $CFLAGS -o gc.lo -c gc.c || exit 77],

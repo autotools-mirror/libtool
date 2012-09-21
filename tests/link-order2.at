@@ -104,7 +104,7 @@ for type_of_depdepl in libtool non-libtool; do
     # Simulate a non-Libtool system library.
     rm $deflibdir/liba1.la
     addpath=$deflibdir
-    if test PATH = "$shlibpath_var"; then
+    if test "$shlibpath_var" = PATH; then
       addpath=$defbindir
     fi
     sep=
@@ -114,9 +114,9 @@ for type_of_depdepl in libtool non-libtool; do
   fi
   for static in '' -static-libtool-libs; do
     case `$LIBTOOL --features` in
-    *disable\ static\ libraries*) test -z "$static" || continue;;
+    *disable\ static\ libraries*) test "$static" = '' || continue;;
     esac
-    test non-libtool,-static-libtool-libs = "$type_of_depdepl,$static" &&
+    test "$type_of_depdepl,$static" = "non-libtool,-static-libtool-libs" &&
        static=-all-static
     $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o liba1.la a1.lo -rpath $libdir
     $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o libb.la b.lo liba1.la -rpath $libdir

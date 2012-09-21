@@ -127,7 +127,7 @@ done
 LT_AT_EXEC_CHECK([$bindir/m$EXEEXT])
 
 # TODO: make this more portable:
-if test false != "$OBJDUMP" && ($OBJDUMP -p $bindir/m$EXEEXT) >/dev/null 2>&1; then
+if test "$OBJDUMP" != false && ($OBJDUMP -p $bindir/m$EXEEXT) >/dev/null 2>&1; then
   AT_CHECK([$OBJDUMP -p $bindir/m$EXEEXT | $EGREP -i "R(UN)?PATH.*$DESTDIR"], [1])
   . $libdir/liba.la
   set x $library_names

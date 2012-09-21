@@ -67,7 +67,7 @@ LDFLAGS="$LDFLAGS --sysroot=$sysroot -no-undefined"
 configure_options="$configure_options --with-sysroot=$sysroot --prefix=$prefix"
 
 #???
-if test PATH = "$shlibpath_var"; then
+if test "$shlibpath_var" = PATH; then
   configure_options="$configure_options --libdir=/$prefix/bin"
 fi
 

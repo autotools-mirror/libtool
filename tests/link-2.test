@@ -38,7 +38,7 @@ res=$?
 
 rm -f hell.lo
 
-test 0 -eq "$res" || exit $EXIT_FAILURE
+test "$res" -eq 0 || exit $EXIT_FAILURE
 
 echo "$linkresult"
 case $linkresult in

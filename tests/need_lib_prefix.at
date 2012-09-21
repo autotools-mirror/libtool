@@ -158,7 +158,7 @@ LDFLAGS=$LDFLAGS
 eval "`$LIBTOOL --config | $EGREP '^(libname_spec)='`"
 name=
 eval libname=\"$libname_spec\"
-AT_CHECK([test lib = "$libname" || exit 77])
+AT_CHECK([test "$libname" = lib || exit 77])
 
 # Create our own libtool, forcing need_lib_prefix setting
 sed 's|^\(need_lib_prefix\)=.*$|\1=unknown|' $LIBTOOL > ./libtool

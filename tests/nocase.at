@@ -28,7 +28,7 @@ AT_KEYWORDS([libtool])
 
 eval `$LIBTOOL --config | $EGREP '^(want_nocaseglob|file_magic_glob)='`
 
-AT_CHECK([test yes != "$want_nocaseglob" && ]dnl
+AT_CHECK([test "$want_nocaseglob" != yes && ]dnl
          [test -z "$file_magic_glob" && exit 77],
 	  [1], [ignore], [ignore])
 

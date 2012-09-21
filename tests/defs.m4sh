@@ -329,7 +329,7 @@ func_exec ()
     if eval $my_program $my_exp_output; then :
     else
       shift
-      test -z "$1" || shift
+      test "x$1" = x || shift
       func_error "$0: cannot execute $my_program ${1+$@}"
 
       if test "$build" != "$host"; then

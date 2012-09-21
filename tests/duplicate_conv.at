@@ -77,7 +77,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT 
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 $LIBTOOL --mode=clean rm -f libcee.la
 
-AT_CHECK([test false = "$reload_cmds" && exit 77], [1])
+AT_CHECK([test "x$reload_cmds" = xfalse && exit 77], [1])
 
 # Test whether this works with reloadable objects as well.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o cee.$OBJEXT c.lo a/liba.la b/liba.la],
