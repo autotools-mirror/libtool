@@ -184,7 +184,7 @@ sc_prohibit_test_unary_operators:
 # when the other operand is a constant -- just swap them, and remove the
 # spurious leading `x'.
 sc_prohibit_test_const_follows_var:
-	@var='[	 ]+"[^$$"]*\$$[0-9A-Za-z_][^"]*"'			\
+	@var='[	 ]+"[^$$"]*\$${?[0-9A-Za-z_][^"]*"'			\
 	op='[	 ]+(!?=|-[lgn][et]|-eq)'				\
 	const='[	 ]+[^-$$][^$$;	 ]*'				\
 	prohibit='test'$$var$$op$$const'[	 ]*(&&|\|\||;|\\?$$)'	\
