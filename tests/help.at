@@ -121,7 +121,7 @@ AT_CHECK([case "$LIBTOOL $CC $CPPFLAGS $CFLAGS $LDFLAGS " in ]dnl
 
 check_trace ()
 {
-  if test "X$trace" = X--debug; then
+  if test X--debug = "X$trace"; then
     AT_CHECK([grep 'enabling shell trace mode' stdout stderr], [0], [ignore])
     AT_CHECK([grep ' --mode' stderr], [0], [ignore])
   else
@@ -164,7 +164,7 @@ for trace in '' --debug; do
   AT_CHECK([$orig_LIBTOOL --mode=install $lt_INSTALL liba.la libb.la $libdir],
 	   [], [stdout], [stderr])
   if grep ': relinking ' stdout stderr; then
-    if test "X$trace" = X--debug; then
+    if test X--debug = "X$trace"; then
       AT_CHECK([grep ' --mode=relink' stdout stderr | grep ' --debug '],
 	       [0], [ignore])
     else

@@ -29,7 +29,7 @@ case " $pic_flag " in
 [*" "[^" "-]* | *" "-[^D]*]) real_pic=: ;;
 esac
 AT_CHECK([$real_pic || exit 77])
-AT_CHECK([test "$at_srcdir" != . || exit 77])
+AT_CHECK([test . != "$at_srcdir" || exit 77])
 
 CONFIGURE=$abs_top_srcdir/tests/demo/configure
 : ${MAKE=make}

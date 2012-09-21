@@ -82,7 +82,7 @@ if ./depdemo$EXEEXT ||
    # but it's definitely not enough of a reason for the test to fail.
    ./depdemo$EXEEXT -alt; then
   :
-elif test "x,$hardcode_action,$hardcode_direct" = x,relink,yes; then
+elif test relink,yes = "$hardcode_action,$hardcode_direct"; then
   func_msg "Ok, uninstalled programs fail after uninstalled libraries are removed"
   func_msg "This works in other configurations, but not in this particular one"
 elif test "$build" != "$host"; then
@@ -109,12 +109,12 @@ else
   func_msg "Failed, as expected"
 fi
 
-if test "x$hardcode_action" = xrelink; then
+if test relink = "$hardcode_action"; then
   func_msg "Exiting: install-time relinking is required"
   exit $EXIT_SUCCESS
 fi
 
-if test "$shlibpath_overrides_runpath" != yes; then
+if test yes != "$shlibpath_overrides_runpath"; then
   rm -f $objdir/lt-depdemo || exit $EXIT_FAILURE
   cp $objdir/depdemo $objdir/lt-depdemo || exit $EXIT_FAILURE
   func_msg "running depdemo/depdemo with installed libl3.la"
