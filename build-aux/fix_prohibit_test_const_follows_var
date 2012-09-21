@@ -1,0 +1,126 @@
+#!/usr/bin/env gawk -f
+
+BEGIN	{
+	  tail = "(\\)|]|&&|\\|\\||;|\\\\?$)";
+
+	  #       (    \1     )         (        \2         )
+	  lhsx = "(\\<test\\s+)\"[.xX],?([^$\"]*\\${?\\w[^\"]*)\"\\s+";
+
+	  #                  (           \4          )(     \5     )
+	  rhsx = "\\s+[.xX],?([^-$][^)$;[:space:]\\]]*)(\\s*" tail ")";
+
+	  #       (    \1     )  (        \2         )
+	  lhs  = "(\\<test\\s+)\"([^$\"]*\\${?\\w[^\"]*)\"\\s+";
+
+	  #           (           \4          )(     \5     )
+	  rhs  = "\\s+([^-$][^)$;[:space:]\\]]*)(\\s*" tail ")";
+	}
+
+	{
+	  line = $0;
+
+
+	  ## CANONICALIZE ##
+
+	  # x"$foo" -> "x$foo"
+	  line = gensub ("\\<([.xX])\"([^$\"]*\\${?\\w[^\"]*)\"",
+			 "\"\\1\\2\"", "g", line)
+
+
+
+	  ## SIMPLIFY ##
+
+	  # test "$foo" = '' -> test -z "$foo"
+	  line = gensub ("\\<test\\s+\"(\\${?\\w[^\"]*)\"\\s+=\\s+''(\\s*" tail ")",
+			 "test -z \"\\1\"\\2", "g", line);
+
+	  # test '' = "$foo" -> test -z "$foo"
+	  line = gensub ("\\<test\\s+''\\s+=\\s+\"(\\${?\\w[^\"]*)\"\\",
+			 "test -z \"\\1\"", "g", line);
+
+	  # test "$foo" = "" -> test -z "$foo"
+	  line = gensub ("\\<test\\s+\"(\\${?\\w[^\"]*)\"\\s+=\\s+\"\"(\\s*" tail ")",
+			 "test -z \"\\1\"\\2", "g", line);
+
+	  # test "" = "$foo" -> test -z "$foo"
+	  line = gensub ("\\<test\\s+\"\"\\s+=\\s+\"(\\${?\\w[^\"]*)\"",
+			 "test -z \"\\1\"", "g", line);
+
+	  # test "x$foo" = "x" -> test -z "$foo"
+	  line = gensub ("\\<test\\s+\"[.xX](\\${?\\w[^\"]*)\"\\s+=\\s+\"[.xX]\"(\\s*" tail ")",
+			 "test -z \"\\1\"\\2", "g", line);
+
+	  # test "x$foo" = x -> test -z "$foo"
+	  line = gensub ("\\<test\\s+\"[.xX](\\${?\\w[^\"]*)\"\\s+=\\s+[.xX](\\s*" tail ")",
+			 "test -z \"\\1\"\\2", "g", line);
+
+	  # test "x" = "x$foo" -> test -z "$foo"
+	  line = gensub ("\\<test\\s+\"[.xX]\"\\s+=\\s+\"[.xX](\\${?\\w[^\"]*)\"",
+			 "test -z \"\\1\"", "g", line);
+
+	  # test x = "x$foo" -> test -z "$foo"
+	  line = gensub ("\\<test\\s+[.xX]\\s+=\\s+\"[.xX](\\${?\\w[^\"]*)\"",
+			 "test -z \"\\1\"", "g", line);
+
+	  # test "$foo" != '' -> test -n "$foo"
+	  line = gensub ("\\<test\\s+\"(\\${?\\w[^\"]*)\"\\s+!=\\s+''(\\s*" tail ")",
+			 "test -n \"\\1\"\\2", "g", line);
+
+	  # test '' != "$foo" -> test -n "$foo"
+	  line = gensub ("\\<test\\s+''\\s+!=\\s+\"(\\${?\\w[^\"]*)\"\\",
+			 "test -n \"\\1\"", "g", line);
+
+	  # test "$foo" != "" -> test -n "$foo"
+	  line = gensub ("\\<test\\s+\"(\\${?\\w[^\"]*)\"\\s+!=\\s+\"\"(\\s*" tail ")",
+			 "test -n \"\\1\"\\2", "g", line);
+
+	  # test "" != "$foo" -> test -n "$foo"
+	  line = gensub ("\\<test\\s+\"\"\\s+!=\\s+\"(\\${?\\w[^\"]*)\"",
+			 "test -n \"\\1\"", "g", line);
+
+	  # test "x$foo" != "x" -> test -n "$foo"
+	  line = gensub ("\\<test\\s+\"[.xX](\\${?\\w[^\"]*)\"\\s+!=\\s+\"[.xX]\"(\\s*" tail ")",
+			 "test -n \"\\1\"\\2", "g", line);
+
+	  # test "x$foo" != x -> test -n "$foo"
+	  line = gensub ("\\<test\\s+\"[.xX](\\${?\\w[^\"]*)\"\\s+!=\\s+[.xX](\\s*" tail ")",
+			 "test -n \"\\1\"\\2", "g", line);
+
+	  # test "x" != "x$foo" -> test -n "$foo"
+	  line = gensub ("\\<test\\s+\"[.xX]\"\\s+!=\\s+\"[.xX](\\${?\\w[^\"]*)\"",
+			 "test -n \"\\1\"", "g", line);
+
+	  # test x != "x$foo" -> test -n "$foo"
+	  line = gensub ("\\<test\\s+[.xX]\\s+!=\\s+\"[.xX](\\${?\\w[^\"]*)\"",
+			 "test -n \"\\1\"", "g", line);
+
+
+
+	  ## ELIMINATE SPURIOUS CHARACTERS ##
+
+	  # swap equivalencies with a lhs string
+	  line = gensub (lhsx "(!?=|-eq|-ne)" rhsx, "\\1\\4 \\3 \"\\2\"\\5", "g", line);
+	  line = gensub (lhs "(!?=|-eq|-ne)" rhs,   "\\1\\4 \\3 \"\\2\"\\5", "g", line);
+
+	  # reverse -lt and -lte operand order
+	  line = gensub (lhsx "-l(te?)" rhsx,   "\\1\\4 -g\\3 \"\\2\"\\5", "g", line);
+	  line = gensub (lhs "-l(te?)" rhs,     "\\1\\4 -g\\3 \"\\2\"\\5", "g", line);
+
+	  # reverse -gt and -gte operand order
+	  line = gensub (lhsx "-g(te?)" rhsx,   "\\1\\4 -l\\3 \"\\2\"\\5", "g", line);
+	  line = gensub (lhs "-g(te?)" rhs,     "\\1\\4 -l\\3 \"\\2\"\\5", "g", line);
+
+
+	  # eliminate remaining spurious quotes
+	  line = gensub ("\\<test \"([[:alnum:]._,+:-]+)\"", "test \\1", "g", line);
+
+
+
+	  ## EDGE CASES ##
+
+	  line = gensub ("\\<test [.xX]([^-$][[:alnum:]._,+:-]*)\\s+(!?=|-eq|-ne|-[lg]te?)\\s+\"[.xX]",
+			 "test \\1 \\2 \"", "g", line)
+
+
+	  print line;
+	}
