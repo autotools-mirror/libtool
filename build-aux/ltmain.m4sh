@@ -5333,7 +5333,7 @@ func_mode_link ()
     prog)
 	compile_deplibs=
 	finalize_deplibs=
-	alldeplibs=no
+	alldeplibs=false
 	newdlfiles=
 	newdlprefiles=
 	passes="conv scan dlopen dlpreopen link"
@@ -5622,7 +5622,7 @@ func_mode_link ()
 	  continue
 	  ;;
 	%DEPLIBS%)
-	  alldeplibs=yes
+	  alldeplibs=:
 	  continue
 	  ;;
 	esac # case $deplib
@@ -5913,7 +5913,7 @@ func_mode_link ()
 	    esac
 	  fi # $linkmode,$pass = prog,link...
 
-	  if test yes = "$alldeplibs" &&
+	  if $alldeplibs &&
 	     { test pass_all = "$deplibs_check_method" ||
 	       { test yes = "$build_libtool_libs" &&
 		 test -n "$library_names"; }; }; then
