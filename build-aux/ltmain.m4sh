@@ -5398,7 +5398,7 @@ func_mode_link ()
 
       for deplib in $libs; do
 	lib=
-	found=no
+	found=false
 	case $deplib in
 	-mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe \
         |-threads|-fopenmp|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
@@ -5434,25 +5434,16 @@ func_mode_link ()
 	      lib=$searchdir/lib$name$search_ext
 	      if test -f "$lib"; then
 		if test .la = "$search_ext"; then
-		  found=yes
+		  found=:
 		else
-		  found=no
+		  found=false
 		fi
 		break 2
 	      fi
 	    done
 	  done
-	  if test yes != "$found"; then
-	    # deplib doesn't seem to be a libtool library
-	    if test prog,link = "$linkmode,$pass"; then
-	      compile_deplibs="$deplib $compile_deplibs"
-	      finalize_deplibs="$deplib $finalize_deplibs"
-	    else
-	      deplibs="$deplib $deplibs"
-	      test lib = "$linkmode" && newdependency_libs="$deplib $newdependency_libs"
-	    fi
-	    continue
-	  else # deplib is a libtool library
+	  if $found; then
+	    # deplib is a libtool library
 	    # If $allow_libtool_libs_with_static_runtimes && $deplib is a stdlib,
 	    # We need to do some special things here, and not later.
 	    if test yes = "$allow_libtool_libs_with_static_runtimes"; then
@@ -5466,7 +5457,7 @@ func_mode_link ()
 		    ll=$l
 		  done
 		  if test "X$ll" = "X$old_library" ; then # only static version available
-		    found=no
+		    found=false
 		    func_dirname "$lib" "" "."
 		    ladir=$func_dirname_result
 		    lib=$ladir/$old_library
@@ -5484,6 +5475,16 @@ func_mode_link ()
 	      *) ;;
 	      esac
 	    fi
+	  else
+	    # deplib doesn't seem to be a libtool library
+	    if test prog,link = "$linkmode,$pass"; then
+	      compile_deplibs="$deplib $compile_deplibs"
+	      finalize_deplibs="$deplib $finalize_deplibs"
+	    else
+	      deplibs="$deplib $deplibs"
+	      test lib = "$linkmode" && newdependency_libs="$deplib $newdependency_libs"
+	    fi
+	    continue
 	  fi
 	  ;; # -l
 	*.ltframework)
@@ -5627,10 +5628,8 @@ func_mode_link ()
 	  ;;
 	esac # case $deplib
 
-	if test yes = "$found" || test -f "$lib"; then :
-	else
-	  func_fatal_error "cannot find the library \`$lib' or unhandled argument \`$deplib'"
-	fi
+	$found || test -f "$lib" \
+	  || func_fatal_error "cannot find the library \`$lib' or unhandled argument \`$deplib'"
 
 	# Check to see that this really is a libtool archive.
 	func_lalib_unsafe_p "$lib" \
