@@ -8206,27 +8206,28 @@ EOF
 	exit $EXIT_SUCCESS
       fi
 
-      if test relink = "$hardcode_action"; then
+      case $hardcode_action,$fast_install in
+        relink,*)
 	  # Fast installation is not supported
 	  link_command=$compile_var$compile_command$compile_rpath
 	  relink_command=$finalize_var$finalize_command$finalize_rpath
 
 	  func_warning "this platform does not like uninstalled shared libraries"
 	  func_warning "\`$output' will be relinked during installation"
-      else
-	if test no != "$fast_install"; then
+	  ;;
+        *,yes)
 	  link_command=$finalize_var$compile_command$finalize_rpath
-	  if test yes = "$fast_install"; then
-	    relink_command=`$ECHO "$compile_var$compile_command$compile_rpath" | $SED 's%@OUTPUT@%\$progdir/\$file%g'`
-	  else
-	    # fast_install is set to needless
-	    relink_command=
-	  fi
-	else
+	  relink_command=`$ECHO "$compile_var$compile_command$compile_rpath" | $SED 's%@OUTPUT@%\$progdir/\$file%g'`
+          ;;
+	*,no)
 	  link_command=$compile_var$compile_command$compile_rpath
 	  relink_command=$finalize_var$finalize_command$finalize_rpath
-	fi
-      fi
+          ;;
+	*,needless)
+	  link_command=$finalize_var$compile_command$finalize_rpath
+	  relink_command=
+          ;;
+      esac
 
       # Replace the output file specification.
       link_command=`$ECHO "$link_command" | $SED 's%@OUTPUT@%'"$output_objdir/$outputname"'%g'`
@@ -8328,21 +8329,24 @@ EOF
     # See if we need to build an old-fashioned archive.
     for oldlib in $oldlibs; do
 
-      if test convenience = "$build_libtool_libs"; then
+      case $build_libtool_libs in
+        convenience)
 	  oldobjs="$libobjs_save $symfileobj"
 	  addlibs=$convenience
 	  build_libtool_libs=no
-      else
-	if test module = "$build_libtool_libs"; then
+	  ;;
+	module)
 	  oldobjs=$libobjs_save
+	  addlibs=$old_convenience
 	  build_libtool_libs=no
-	else
+          ;;
+	*)
 	  oldobjs="$old_deplibs $non_pic_objects"
 	  $preload && test -f "$symfileobj" \
 	    && func_append oldobjs " $symfileobj"
-	fi
-	addlibs=$old_convenience
-      fi
+	  addlibs=$old_convenience
+	  ;;
+      esac
 
       if test -n "$addlibs"; then
 	gentop=$output_objdir/${outputname}x
