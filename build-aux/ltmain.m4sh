@@ -2027,7 +2027,7 @@ func_mode_install ()
     opts=
     prev=
     install_type=
-    isdir=no
+    isdir=false
     stripme=
     no_mode=:
     for arg
@@ -2040,7 +2040,7 @@ func_mode_install ()
       fi
 
       case $arg in
-      -d) isdir=yes ;;
+      -d) isdir=: ;;
       -f)
 	if $install_cp; then :; else
 	  prev=$arg
@@ -2105,8 +2105,8 @@ func_mode_install ()
     dest=$func_stripname_result
 
     # Check to see that the destination is a directory.
-    test -d "$dest" && isdir=yes
-    if test yes = "$isdir"; then
+    test -d "$dest" && isdir=:
+    if $isdir; then
       destdir=$dest
       destname=
     else
