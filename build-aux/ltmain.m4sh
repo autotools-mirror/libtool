@@ -5135,7 +5135,7 @@ func_mode_link ()
 	  func_dirname "$arg" "/" ""
 	  xdir=$func_dirname_result
 
-	  if test none != "$pic_object"; then
+	  test none = "$pic_object" || {
 	    # Prepend the subdirectory the object is found in.
 	    pic_object=$xdir$pic_object
 
@@ -5160,7 +5160,7 @@ func_mode_link ()
 	    # A PIC object.
 	    func_append libobjs " $pic_object"
 	    arg=$pic_object
-	  fi
+	  }
 
 	  # Non-PIC object.
 	  if test none != "$non_pic_object"; then
@@ -6351,7 +6351,7 @@ func_mode_link ()
 	done
       fi
       if test dlopen != "$pass"; then
-	if test conv != "$pass"; then
+	test conv = "$pass" || {
 	  # Make sure lib_search_path contains only unique directories.
 	  lib_search_path=
 	  for dir in $newlib_search_path; do
@@ -6361,7 +6361,7 @@ func_mode_link ()
 	    esac
 	  done
 	  newlib_search_path=
-	fi
+	}
 
 	if test prog,link != "$linkmode,$pass"; then
 	  vars=deplibs
@@ -7911,7 +7911,7 @@ EOF
 	exit $EXIT_SUCCESS
       fi
 
-      if test yes != "$build_libtool_libs"; then
+      test yes = "$build_libtool_libs" || {
 	if test -n "$gentop"; then
 	  func_show_eval '${RM}r "$gentop"'
 	fi
@@ -7921,7 +7921,7 @@ EOF
 	# $show "echo timestamp > $libobj"
 	# $opt_dry_run || eval "echo timestamp > $libobj" || exit $?
 	exit $EXIT_SUCCESS
-      fi
+      }
 
       if test -n "$pic_flag" || test default != "$pic_mode"; then
 	# Only do commands if we really have different PIC objects.
