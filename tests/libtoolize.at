@@ -723,7 +723,7 @@ func_serial ()
     # in the file that AC_DEFUNs MACRO_REGEX.
     my_serial=
     if test -z "$my_macro_regex" ||
-       test "$my_filename" = aclocal.m4 ||
+       test aclocal.m4 = "$my_filename" ||
        test "$my_macro_regex" = `echo "$my_filename" | $SED "$basename"` ||
        func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_filename"
     then

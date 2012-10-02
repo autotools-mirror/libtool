@@ -30,7 +30,7 @@ m4_divert_push([PREPARE_TESTS])dnl
 : ${AUTOCONF=autoconf}
 : ${AUTOMAKE=automake}
 : ${AUTORECONF=autoreconf}
-test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
+test set = "${ECHO+set}" || ECHO=${as_echo-'printf %s\n'}
 : ${ECHO=$as_echo}
 for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
   if eval \$$tool --version >/dev/null 2>&1; then :; else eval $tool=no; fi
@@ -113,7 +113,7 @@ AT_CHECK([LT_AT_LIBTOOLIZE([$1])],
 # --------------------------
 m4_define([LT_AT_ACLOCAL],
 [AT_CHECK([$ACLOCAL $1], [0], [ignore], [ignore])
-AT_XFAIL_IF([test "$ACLOCAL" = no])
+AT_XFAIL_IF([test no = "$ACLOCAL"])
 AT_KEYWORDS([automake])
 ])
 
@@ -122,7 +122,7 @@ AT_KEYWORDS([automake])
 # --------------------------
 m4_define([LT_AT_AUTOCONF],
 [AT_CHECK([$AUTOCONF $1], [0], [ignore], [ignore])
-AT_XFAIL_IF([test "$AUTOCONF" = no])
+AT_XFAIL_IF([test no = "$AUTOCONF"])
 AT_KEYWORDS([autoconf])
 ])
 
@@ -132,7 +132,7 @@ AT_KEYWORDS([autoconf])
 m4_define([LT_AT_AUTOMAKE],
 [AT_CHECK([$AUTOMAKE $1], [0], [ignore], [stderr],
   [AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
-AT_XFAIL_IF([test "$AUTOMAKE" = no])
+AT_XFAIL_IF([test no = "$AUTOMAKE"])
 AT_KEYWORDS([automake])
 ])
 
@@ -141,7 +141,7 @@ AT_KEYWORDS([automake])
 # ---------------------------
 m4_define([LT_AT_AUTOHEADER],
 [AT_CHECK([$AUTOHEADER $1], [0], [ignore], [ignore])
-AT_XFAIL_IF([test "$AUTOHEADER" = no])
+AT_XFAIL_IF([test no = "$AUTOHEADER"])
 AT_KEYWORDS([autoconf])
 ])
 
@@ -296,7 +296,7 @@ m4_define([LT_AT_TAG],
 AT_CHECK([{ test -n "[$]$1" && test "X[$]$1" != Xno; } || (exit 77)])
 m4_case([$1],
   [CXX],
-  [AT_CHECK([test "X$CXX" != Xg++ || (g++ -v >/dev/null 2>&1) || (exit 77)])],
+  [AT_CHECK([test g++ != "$CXX" || (g++ -v >/dev/null 2>&1) || (exit 77)])],
   [GCJ],
   [# There are just too many broken gcj installations out there, either missing
    # libgcj.spec or unable to find it.  Skip the test for them.

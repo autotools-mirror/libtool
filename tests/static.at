@@ -130,7 +130,7 @@ func_fix_path ()
   # against a broken library but the good one would come later in the PATH.
   # So we let the caller of this function set the order: the "other" two
   # come first.
-  if test "$shlibpath_var" = PATH; then
+  if test PATH = "$shlibpath_var"; then
     save_PATH=$PATH
     sep=
     test -z "$PATH" || sep=:
@@ -141,7 +141,7 @@ func_fix_path ()
 
 func_restore_path ()
 {
-  if test "$shlibpath_var" = PATH; then
+  if test PATH = "$shlibpath_var"; then
     PATH=$save_PATH
   fi
 }
@@ -244,11 +244,11 @@ for withdep in no yes; do
   done
 
   ### install the libraries.
-  test "$withdep" = yes && $LIBTOOL --mode=install cp a1/liba1dep.la $libdir1/liba1dep.la
+  test yes = "$withdep" && $LIBTOOL --mode=install cp a1/liba1dep.la $libdir1/liba1dep.la
   $LIBTOOL --mode=install cp a1/liba1.la $libdir1/liba1.la
   $LIBTOOL --mode=install cp a3/liba3.la $libdir3/liba3.la
   $LIBTOOL --mode=clean rm -f a1/liba1.la a3/liba3.la
-  test "$withdep" = yes && $LIBTOOL --mode=clean rm -f a1/liba1dep.la
+  test yes = "$withdep" && $LIBTOOL --mode=clean rm -f a1/liba1dep.la
   # simulate a non-libtool lib:
   rm -f $libdir3/liba3.la
 

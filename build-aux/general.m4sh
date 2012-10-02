@@ -44,7 +44,7 @@ progpath=$0
 
 M4SH_VERBATIM([[
 : ${CP="cp -f"}
-test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
+test set = "${ECHO+set}" || ECHO=${as_echo-'printf %s\n'}
 : ${EGREP="@EGREP@"}
 : ${FGREP="@FGREP@"}
 : ${GREP="@GREP@"}
@@ -189,7 +189,7 @@ func_normal_abspath ()
         -e "$removedotparts" -e "$collapseslashes" -e "$finalslash"`
   while :; do
     # Processed it all yet?
-    if test "$func_normal_abspath_tpath" = / ; then
+    if test / = "$func_normal_abspath_tpath"; then
       # If we ascended to the root using ".." the result may be empty now.
       if test -z "$func_normal_abspath_result" ; then
         func_normal_abspath_result=/
@@ -252,7 +252,7 @@ func_relative_path ()
       *)
         func_dirname $func_relative_path_tlibdir
         func_relative_path_tlibdir=$func_dirname_result
-        if test "x$func_relative_path_tlibdir" = x ; then
+        if test -z "$func_relative_path_tlibdir"; then
           # Have to descend all the way to the root!
           func_relative_path_result=../$func_relative_path_result
           func_relative_path_tcancelled=$func_relative_path_tbindir
@@ -267,12 +267,12 @@ func_relative_path ()
   func_stripname '' '/' "$func_relative_path_result"
   func_relative_path_result=$func_stripname_result
   func_stripname '/' '/' "$func_relative_path_tcancelled"
-  if test "x$func_stripname_result" != x ; then
+  if test -n "$func_stripname_result" ; then
     func_relative_path_result=$func_relative_path_result/$func_stripname_result
   fi
 
   # Normalisation. If bindir is libdir, return `.' else relative path.
-  if test ! -z "$func_relative_path_result"; then
+  if test -n "$func_relative_path_result"; then
     func_stripname './' '' "$func_relative_path_result"
     func_relative_path_result=$func_stripname_result
   fi
@@ -423,7 +423,7 @@ func_mkdir_p ()
     my_directory_path=$1
     my_dir_list=
 
-    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
+    if test -n "$my_directory_path" && test : != "$opt_dry_run"; then
 
       # Protect directory names starting with `-'
       case $my_directory_path in
@@ -469,7 +469,7 @@ func_mktempdir ()
 {
     my_template=${TMPDIR-/tmp}/${1-$progname}
 
-    if test "$opt_dry_run" = ":"; then
+    if test : = "$opt_dry_run"; then
       # Return a directory name, but don't create it in dry-run mode
       my_tmpdir=$my_template-$$
     else
@@ -570,7 +570,7 @@ func_show_eval ()
     if ${opt_dry_run-false}; then :; else
       eval "$my_cmd"
       my_status=$?
-      if test "$my_status" -eq 0; then :; else
+      if test 0 -eq "$my_status"; then :; else
 	eval "(exit $my_status); $my_fail_exp"
       fi
     fi
@@ -596,7 +596,7 @@ func_show_eval_locale ()
 	    $my_cmd"
       my_status=$?
       eval "$lt_safe_locale"
-      if test "$my_status" -eq 0; then :; else
+      if test 0 -eq "$my_status"; then :; else
 	eval "(exit $my_status); $my_fail_exp"
       fi
     fi

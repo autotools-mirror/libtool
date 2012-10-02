@@ -157,6 +157,18 @@ sc_prohibit_test_unary_operators:
 	halt="use \`if test -X' instead of \`if -X'"			\
 	  $(_sc_search_regexp)
 
+# Don't add noisy characters on the front of the left operand of a test
+# to prevent arguments being passed inadvertently (e.g. LHS is `-z'),
+# when the other operand is a constant -- just swap them, and remove the
+# spurious leading `x'.
+sc_prohibit_test_const_follows_var:
+	@var='[	 ]+"[^$$"]*\$$[0-9A-Za-z_][^"]*"'			\
+	op='[	 ]+(!?=|-[lgn][et]|-eq)'				\
+	const='[	 ]+[^-$$][^$$;	 ]*'				\
+	prohibit='test'$$var$$op$$const'[	 ]*(&&|\|\||;|\\?$$)'	\
+	halt='use `test a = "$$b"'\'' instead of `test "x$$b" = xa'\'	\
+	  $(_sc_search_regexp)
+
 # Check for opening brace on next line in shell function definition.
 exclude_file_name_regexp--sc_require_function_nl_brace = (^HACKING|\.[ch])$$
 sc_require_function_nl_brace:

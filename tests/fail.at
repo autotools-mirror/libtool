@@ -102,8 +102,8 @@ case $build_libtool_libs in yes)
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c c.c
   (
     . ./c.lo
-    test "$pic_object" != none && echo choke me >"$pic_object"
-    test "$non_pic_object" != none && echo choke me >"$non_pic_object"
+    test none != "$pic_object" && echo choke me >"$pic_object"
+    test none != "$non_pic_object" && echo choke me >"$non_pic_object"
   )
   FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo b.lo c.lo -rpath /foo])
   AT_CHECK([test -f liba.la], [1])

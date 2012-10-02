@@ -1023,7 +1023,7 @@ func_require_bootstrap_uptodate ()
 
     $require_gnulib_path
 
-    test x = x"$gnulib_path" \
+    test -z "$gnulib_path" \
         || func_cmp_s $progpath $gnulib_path/build-aux/bootstrap \
         || func_warning upgrade "\
 \`$progpath' differs from \`./$gnulib_path/build-aux/bootstrap',
@@ -1624,7 +1624,7 @@ func_require_source_base ()
 
     $require_gnulib_cache
 
-    test -f "$gnulib_cache" && test x = "x$source_base" && {
+    test -f "$gnulib_cache" && test -z "$source_base" && {
       $require_macro_dir
 
       func_extract_trace "gl_SOURCE_BASE" "$gnulib_cache"
@@ -1649,7 +1649,7 @@ func_require_vc_ignore_files ()
 
     test -n "$vc_ignore" || vc_ignore=auto
 
-    if test auto = "$vc_ignore" && test x = x"$vc_ignore_files"; then
+    if test auto = "$vc_ignore" && test -z "$vc_ignore_files"; then
       vc_ignore_files=
       test -d .git && vc_ignore_files=.gitignore
       test -d CVS && vc_ignore_files="$vc_ignore_files .cvsignore"
@@ -1760,7 +1760,7 @@ func_ifcontains ()
 	;;
     esac
 
-    test "$_G_status" -eq 0 || exit $_G_status
+    test 0 -eq "$_G_status" || exit $_G_status
 }
 
 
@@ -1996,7 +1996,7 @@ func_show_eval ()
     ${opt_dry_run-'false'} || {
       eval "$_G_cmd"
       _G_status=$?
-      test "$_G_status" -eq 0 || eval "(exit $_G_status); $_G_fail_exp"
+      test 0 -eq "$_G_status" || eval "(exit $_G_status); $_G_fail_exp"
     }
 }
 
@@ -2142,7 +2142,7 @@ func_get_version ()
     func_tool_version_output $_G_app >/dev/null
     _G_status=$?
 
-    test "$_G_status" -ne 0 \
+    test 0 -ne "$_G_status" \
       || $_G_app --version 2>&1 |$SED -n "$sed_get_version"
 
     (exit $_G_status)
@@ -2164,7 +2164,7 @@ func_check_versions ()
 
       # Honor $APP variables ($TAR, $AUTOCONF, etc.)
       _G_appvar=`echo $_G_app |tr '[a-z]' '[A-Z]'`
-      test "$_G_appvar" = TAR && _G_appvar=AMTAR
+      test TAR = "$_G_appvar" && _G_appvar=AMTAR
       eval "_G_app=\${$_G_appvar-$_G_app}"
       _G_instver=`func_get_version $_G_app`
 
@@ -2177,7 +2177,7 @@ func_check_versions ()
         func_check_versions_result=false
 
       # Fail if a new version than what we have is required.
-      elif test "$_G_reqver" != "-"; then
+      elif test x- != "x$_G_reqver"; then
         _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
         test "$_G_newer" != "$_G_instver" && {
           func_error "\
@@ -2244,7 +2244,7 @@ func_update_po_files ()
     func_find_tool SHA1SUM sha1sum gsha1sum shasum
 
     _G_langs=`cd $_G_ref_po_dir && echo *.po|$SED 's|\.po||g'`
-    test "$_G_langs" = '*' && _G_langs=x
+    test '*' = "$_G_langs" && _G_langs=x
     for _G_po in $_G_langs; do
       case $_G_po in x) continue;; esac
       _G_new_po=$_G_ref_po_dir/$_G_po.po
