@@ -2466,7 +2466,7 @@ func_generate_dlsyms ()
 
     my_outputname=$1
     my_originator=$2
-    my_pic_p=${3-no}
+    my_pic_p=${3-false}
     my_prefix=`$ECHO "$my_originator" | sed 's%[^a-zA-Z0-9]%_%g'`
     my_dlsyms=
 
@@ -2706,9 +2706,7 @@ static const void *lt_preloaded_setup() {
 	  *-*-hpux*)
 	    pic_flag_for_symtable=" $pic_flag"  ;;
 	  *)
-	    if test no != "$my_pic_p"; then
-	      pic_flag_for_symtable=" $pic_flag"
-	    fi
+	    $my_pic_p && pic_flag_for_symtable=" $pic_flag"
 	    ;;
 	  esac
 	  ;;
@@ -6789,7 +6787,7 @@ func_mode_link ()
 
       fi
 
-      func_generate_dlsyms "$libname" "$libname" "yes"
+      func_generate_dlsyms "$libname" "$libname" :
       func_append libobjs " $symfileobj"
       test " " = "$libobjs" && libobjs=
 
@@ -8120,7 +8118,7 @@ EOF
 	finalize_command=`$ECHO "$finalize_command" | $SP2NL | $SED "$lo2o" | $NL2SP`
       fi
 
-      func_generate_dlsyms "$outputname" "@PROGRAM@" "no"
+      func_generate_dlsyms "$outputname" "@PROGRAM@" false
 
       # template prelinking step
       if test -n "$prelink_cmds"; then
