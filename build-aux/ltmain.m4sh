@@ -6362,10 +6362,10 @@ func_mode_link ()
 	  newlib_search_path=
 	}
 
-	if test prog,link != "$linkmode,$pass"; then
-	  vars=deplibs
-	else
+	if test prog,link = "$linkmode,$pass"; then
 	  vars="compile_deplibs finalize_deplibs"
+	else
+	  vars=deplibs
 	fi
 	for var in $vars dependency_libs; do
 	  # Add libraries to $var in reverse order

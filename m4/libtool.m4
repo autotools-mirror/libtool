@@ -1902,10 +1902,10 @@ else
     ;;
   esac
 
-  if test no != "$lt_cv_dlopen"; then
-    enable_dlopen=yes
-  else
+  if test no = "$lt_cv_dlopen"; then
     enable_dlopen=no
+  else
+    enable_dlopen=yes
   fi
 
   case $lt_cv_dlopen in
