@@ -8690,7 +8690,7 @@ func_mode_uninstall ()
 
     RM=$nonopt
     files=
-    rmforce=
+    rmforce=false
     exit_status=0
 
     # This variable tells wrapper scripts just to set variables rather
@@ -8700,7 +8700,7 @@ func_mode_uninstall ()
     for arg
     do
       case $arg in
-      -f) func_append RM " $arg"; rmforce=yes ;;
+      -f) func_append RM " $arg"; rmforce=: ;;
       -*) func_append RM " $arg" ;;
       *) func_append files " $arg" ;;
       esac
@@ -8739,7 +8739,7 @@ func_mode_uninstall ()
       elif test -d "$file"; then
 	exit_status=1
 	continue
-      elif test yes = "$rmforce"; then
+      elif $rmforce; then
 	continue
       fi
 
@@ -8768,12 +8768,12 @@ func_mode_uninstall ()
 	  uninstall)
 	    if test -n "$library_names"; then
 	      # Do each command in the postuninstall commands.
-	      func_execute_cmds "$postuninstall_cmds" 'test yes = "$rmforce" || exit_status=1'
+	      func_execute_cmds "$postuninstall_cmds" '$rmforce || exit_status=1'
 	    fi
 
 	    if test -n "$old_library"; then
 	      # Do each command in the old_postuninstall commands.
-	      func_execute_cmds "$old_postuninstall_cmds" 'test yes = "$rmforce" || exit_status=1'
+	      func_execute_cmds "$old_postuninstall_cmds" '$rmforce || exit_status=1'
 	    fi
 	    # FIXME: should reinstall the best remaining shared library.
 	    ;;
