@@ -5563,21 +5563,26 @@ func_mode_link ()
 	    case " $dlpreconveniencelibs " in
 	    *" $deplib "*) ;;
 	    *)
-	      valid_a_lib=no
+	      valid_a_lib=false
 	      case $deplibs_check_method in
 		match_pattern*)
 		  set dummy $deplibs_check_method; shift
 		  match_pattern_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
 		  if eval "\$ECHO \"$deplib\"" 2>/dev/null | $SED 10q \
 		    | $EGREP "$match_pattern_regex" > /dev/null; then
-		    valid_a_lib=yes
+		    valid_a_lib=:
 		  fi
 		;;
 		pass_all)
-		  valid_a_lib=yes
+		  valid_a_lib=:
 		;;
 	      esac
-	      if test yes != "$valid_a_lib"; then
+	      if $valid_a_lib; then
+		echo
+		$ECHO "*** Warning: Linking the shared library $output against the"
+		$ECHO "*** static library $deplib is not portable!"
+		deplibs="$deplib $deplibs"
+	      else
 		echo
 		$ECHO "*** Warning: Trying to link with static lib archive $deplib."
 		echo "*** I have the capability to make that library automatically link in when"
@@ -5585,11 +5590,6 @@ func_mode_link ()
 		echo "*** shared version of the library, which you do not appear to have"
 		echo "*** because the file extensions .$libext of this argument makes me believe"
 		echo "*** that it is just a static archive that I should not use here."
-	      else
-		echo
-		$ECHO "*** Warning: Linking the shared library $output against the"
-		$ECHO "*** static library $deplib is not portable!"
-		deplibs="$deplib $deplibs"
 	      fi
 	      ;;
 	    esac
