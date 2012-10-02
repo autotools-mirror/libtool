@@ -8680,8 +8680,9 @@ relink_command=\"$relink_command\""
     exit $EXIT_SUCCESS
 }
 
-{ test link = "$opt_mode" || test relink = "$opt_mode"; } &&
-    func_mode_link ${1+"$@"}
+if test link = "$opt_mode" || test relink = "$opt_mode"; then
+  func_mode_link ${1+"$@"}
+fi
 
 
 # func_mode_uninstall arg...
@@ -8853,8 +8854,9 @@ func_mode_uninstall ()
     exit $exit_status
 }
 
-{ test uninstall = "$opt_mode" || test clean = "$opt_mode"; } &&
-    func_mode_uninstall ${1+"$@"}
+if test uninstall = "$opt_mode" || test clean = "$opt_mode"; then
+  func_mode_uninstall ${1+"$@"}
+fi
 
 test -z "$opt_mode" && {
   help=$generic_help
