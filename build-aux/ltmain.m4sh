@@ -7668,7 +7668,7 @@ EOF
 	      output=
 	    fi
 
-	    if ${skipped_export-false}; then
+	    ${skipped_export-false} && {
 	      func_verbose "generating symbol list for \`$libname.la'"
 	      export_symbols=$output_objdir/$libname.exp
 	      $opt_dry_run || $RM $export_symbols
@@ -7679,7 +7679,7 @@ EOF
 	      if test -n "$last_robj"; then
 		eval concat_cmds=\"\$concat_cmds~\$RM $last_robj\"
 	      fi
-	    fi
+	    }
 
 	    test -n "$save_libobjs" &&
 	      func_verbose "creating a temporary reloadable object file: $output"
@@ -7713,7 +7713,7 @@ EOF
 	    fi
 	  fi
 
-          if ${skipped_export-false}; then
+          ${skipped_export-false} && {
 	    if test -n "$export_symbols" && test -n "$include_expsyms"; then
 	      tmp_export_symbols=$export_symbols
 	      test -n "$orig_export_symbols" && tmp_export_symbols=$orig_export_symbols
@@ -7733,7 +7733,7 @@ EOF
 	      export_symbols=$output_objdir/$libname.def
 	      $opt_dry_run || $SED -f $output_objdir/$libname.filter < $orig_export_symbols > $export_symbols
 	    fi
-	  fi
+	  }
 
 	  libobjs=$output
 	  # Restore the value of output.
