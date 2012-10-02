@@ -2348,7 +2348,7 @@ func_mode_install ()
 	  test -z "$generated_by_libtool_version" && \
 	    func_fatal_error "invalid libtool wrapper script \`$wrapper'"
 
-	  finalize=yes
+	  finalize=:
 	  for lib in $notinst_deplibs; do
 	    # Check to see that each library is installed.
 	    libdir=
@@ -2358,7 +2358,7 @@ func_mode_install ()
 	    libfile=$libdir/`$ECHO "$lib" | $SED 's%^.*/%%g'`
 	    if test -n "$libdir" && test ! -f "$libfile"; then
 	      func_warning "\`$lib' has not been installed in \`$libdir'"
-	      finalize=no
+	      finalize=false
 	    fi
 	  done
 
@@ -2368,7 +2368,7 @@ func_mode_install ()
 	  outputname=
 	  if test no = "$fast_install" && test -n "$relink_command"; then
 	    $opt_dry_run || {
-	      if test yes = "$finalize"; then
+	      if $finalize; then
 	        tmpdir=`func_mktempdir`
 		func_basename "$file$stripped_ext"
 		file=$func_basename_result
