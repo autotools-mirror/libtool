@@ -8124,24 +8124,22 @@ EOF
 	func_execute_cmds "$prelink_cmds" 'exit $?'
       fi
 
-      wrappers_required=yes
+      wrappers_required=:
       case $host in
       *cegcc* | *mingw32ce*)
         # Disable wrappers for cegcc and mingw32ce hosts, we are cross compiling anyway.
-        wrappers_required=no
+        wrappers_required=false
         ;;
       *cygwin* | *mingw* )
-        if test yes != "$build_libtool_libs"; then
-          wrappers_required=no
-        fi
+        test yes = "$build_libtool_libs" || wrappers_required=false
         ;;
       *)
         if test no = "$need_relink" || test yes != "$build_libtool_libs"; then
-          wrappers_required=no
+          wrappers_required=false
         fi
         ;;
       esac
-      if test no = "$wrappers_required"; then
+      $wrappers_required || {
 	# Replace the output file specification.
 	compile_command=`$ECHO "$compile_command" | $SED 's%@OUTPUT@%'"$output"'%g'`
 	link_command=$compile_command$compile_rpath
@@ -8162,7 +8160,7 @@ EOF
 	fi
 
 	exit $exit_status
-      fi
+      }
 
       if test -n "$compile_shlibpath$finalize_shlibpath"; then
 	compile_command="$shlibpath_var=\"$compile_shlibpath$finalize_shlibpath\$$shlibpath_var\" $compile_command"
