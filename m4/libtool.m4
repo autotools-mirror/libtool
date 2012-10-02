@@ -5227,7 +5227,7 @@ _LT_EOF
       ;;
 
     hpux10*)
-      if test yes = "$GCC" && test no = "$with_gnu_ld"; then
+      if test yes,no = "$GCC,$with_gnu_ld"; then
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $wl+h $wl$soname $wl+b $wl$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
       else
 	_LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
@@ -5245,7 +5245,7 @@ _LT_EOF
       ;;
 
     hpux11*)
-      if test yes = "$GCC" && test no = "$with_gnu_ld"; then
+      if test yes,no = "$GCC,$with_gnu_ld"; then
 	case $host_cpu in
 	hppa*64*)
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared $wl+h $wl$soname -o $lib $libobjs $deplibs $compiler_flags'
@@ -5590,7 +5590,7 @@ x|xyes)
   # Assume -lc should be added
   _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
 
-  if test yes = "$enable_shared" && test yes = "$GCC"; then
+  if test yes,yes = "$GCC,$enable_shared"; then
     case $_LT_TAGVAR(archive_cmds, $1) in
     *'~'*)
       # FIXME: we may have to deal with multi-command sequences.
@@ -6625,7 +6625,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	    output_verbose_link_cmd='templist=`$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP "ld" | $GREP -v "ld:"`; templist=`func_echo_all "$templist" | $SED "s/\(^.*ld.*\)\( .*ld.*$\)/\1/"`; list= ; for z in $templist; do case $z in conftest.$objext) list="$list $z";; *.$objext);; *) list="$list $z";;esac; done; func_echo_all "$list"'
 	    ;;
 	  *)
-	    if test yes = "$GXX" && test no = "$with_gnu_ld"; then
+	    if test yes,no = "$GXX,$with_gnu_ld"; then
 	      _LT_TAGVAR(allow_undefined_flag, $1)=' $wl-expect_unresolved $wl\*'
 	      case $host in
 	        osf3*)
@@ -6716,7 +6716,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	    ;;
           *)
 	    # GNU C++ compiler with Solaris linker
-	    if test yes = "$GXX" && test no = "$with_gnu_ld"; then
+	    if test yes,no = "$GXX,$with_gnu_ld"; then
 	      _LT_TAGVAR(no_undefined_flag, $1)=' $wl-z ${wl}defs'
 	      if $CC --version | $GREP -v '^2\.7' > /dev/null; then
 	        _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -nostdlib $LDFLAGS $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags $wl-h $wl$soname -o $lib'

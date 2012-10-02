@@ -6766,7 +6766,7 @@ func_mode_link ()
 	fi
 
 	# Remove version info from name if versioning should be avoided
-	if test yes = "$avoid_version" && test no = "$need_version"; then
+	if test yes,no = "$avoid_version,$need_version"; then
 	  major=
 	  versuffix=
 	  verstring=
@@ -7949,9 +7949,7 @@ EOF
 	func_warning "\`-release' is ignored for programs"
 
       $preload \
-	&& test unknown = "$dlopen_support" \
-	&& test unknown = "$dlopen_self" \
-	&& test unknown = "$dlopen_self_static" \
+	&& test unknown,unknown,unknown = "$dlopen_support,$dlopen_self,$dlopen_self_static" \
 	&& func_warning "\`LT_INIT([dlopen])' not used. Assuming no dlopen support."
 
       case $host in
@@ -8664,7 +8662,7 @@ dlpreopen='$dlprefiles'
 
 # Directory that this library needs to be installed in:
 libdir='$install_libdir'"
-	  if test no = "$installed" && test yes = "$need_relink"; then
+	  if test no,yes = "$installed,$need_relink"; then
 	    $ECHO >> $output "\
 relink_command=\"$relink_command\""
 	  fi
