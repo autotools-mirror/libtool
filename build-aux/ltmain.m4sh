@@ -5843,10 +5843,10 @@ func_mode_link ()
 	  func_append newlib_search_path " $ladir"
 	  deplibs="$lib $deplibs"
 
-	  linkalldeplibs=no
+	  linkalldeplibs=false
 	  if test no != "$link_all_deplibs" || test -z "$library_names" ||
 	     test no = "$build_libtool_libs"; then
-	    linkalldeplibs=yes
+	    linkalldeplibs=:
 	  fi
 
 	  tmp_libs=
@@ -5858,7 +5858,7 @@ func_mode_link ()
 		 ;;
 	    esac
 	    # Need to link against all dependency_libs?
-	    if test yes = "$linkalldeplibs"; then
+	    if $linkalldeplibs; then
 	      deplibs="$deplib $deplibs"
 	    else
 	      # Need to hardcode shared library paths
