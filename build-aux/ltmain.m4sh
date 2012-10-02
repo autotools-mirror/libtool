@@ -5717,9 +5717,8 @@ func_mode_link ()
 
 	# This library was specified with -dlopen.
 	if test dlopen = "$pass"; then
-	  if test -z "$libdir"; then
-	    func_fatal_error "cannot -dlopen a convenience library: \`$lib'"
-	  fi
+	  test -z "$libdir" \
+	    && func_fatal_error "cannot -dlopen a convenience library: \`$lib'"
 	  if test -z "$dlname" ||
 	     test yes != "$dlopen_support" ||
 	     test no = "$build_libtool_libs"
