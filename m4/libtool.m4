@@ -1124,7 +1124,7 @@ m4_defun([_LT_DARWIN_LINKER_FEATURES],
 # Allow to override them for all tags through lt_cv_aix_libpath.
 m4_defun([_LT_SYS_MODULE_PATH_AIX],
 [m4_require([_LT_DECL_SED])dnl
-if test "${lt_cv_aix_libpath+set}" = set; then
+if test set = "${lt_cv_aix_libpath+set}"; then
   aix_libpath=$lt_cv_aix_libpath
 else
   AC_CACHE_VAL([_LT_TAGVAR([lt_cv_aix_libpath_], [$1])],
@@ -1704,7 +1704,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
       # If test is not a shell built-in, we'll probably end up computing a
       # maximum length that is only half of the actual maximum length, but
       # we can't tell.
-      while { test "X"`env echo "$teststring$teststring" 2>/dev/null` \
+      while { test X`env echo "$teststring$teststring" 2>/dev/null` \
 	         = "X$teststring$teststring"; } >/dev/null 2>&1 &&
 	      test 17 != "$i" # 1/2 MB should be enough
       do
@@ -2861,10 +2861,10 @@ if test yes = "$GCC"; then
   variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
 fi
 
-if test "${lt_cv_sys_lib_search_path_spec+set}" = set; then
+if test set = "${lt_cv_sys_lib_search_path_spec+set}"; then
   sys_lib_search_path_spec=$lt_cv_sys_lib_search_path_spec
 fi
-if test "${lt_cv_sys_lib_dlsearch_path_spec+set}" = set; then
+if test set = "${lt_cv_sys_lib_dlsearch_path_spec+set}"; then
   sys_lib_dlsearch_path_spec=$lt_cv_sys_lib_dlsearch_path_spec
 fi
 
@@ -7730,7 +7730,7 @@ for lt_ac_sed in $lt_ac_sed_list /usr/xpg4/bin/sed; do
     $lt_ac_sed -e 's/a$//' < conftest.nl >conftest.out || break
     cmp -s conftest.out conftest.nl || break
     # 10000 chars as input seems more than enough
-    test 10 -le "$lt_ac_count" && break
+    test 10 -lt "$lt_ac_count" && break
     lt_ac_count=`expr $lt_ac_count + 1`
     if test "$lt_ac_count" -gt "$lt_ac_max"; then
       lt_ac_max=$lt_ac_count

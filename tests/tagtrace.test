@@ -35,10 +35,10 @@ fi
 
 ( cd "$abs_srcdir" && $AUTOCONF --trace 'LT_SUPPORTED_TAG:$1' ) >/dev/null
 ret=$?
-if test 63 -eq $ret || test 1 -eq $ret; then
+if test 63 -eq "$ret" || test 1 -eq "$ret"; then
   func_error "This test requires the same Autoconf version"
   func_skip  "as the one that was used to bootstrap Libtool"
-elif test 0 -ne $ret; then
+elif test 0 -ne "$ret"; then
   func_fatal_error "\`$AUTOCONF --trace' exited $ret"
 fi
 

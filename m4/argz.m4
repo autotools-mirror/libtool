@@ -55,11 +55,11 @@ AS_IF([test -z "$ARGZ_H"],
 	     lt_os_major=${2-0}
 	     lt_os_minor=${3-0}
 	     lt_os_micro=${4-0}
-	     if test 1 -le "$lt_os_major" \
+	     if test 1 -lt "$lt_os_major" \
 		|| { test 1 -eq "$lt_os_major" \
-		  && { test 5 -le "$lt_os_minor" \
+		  && { test 5 -lt "$lt_os_minor" \
 		    || { test 5 -eq "$lt_os_minor" \
-		      && test 24 -le "$lt_os_micro"; }; }; }; then
+		      && test 24 -lt "$lt_os_micro"; }; }; }; then
 	       lt_cv_sys_argz_works=yes
 	     fi
 	   fi

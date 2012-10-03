@@ -86,7 +86,7 @@ func_autoconf_configure ()
     test -n "$_G_ac_init"
     _G_status=$?
 
-    test 0 -ne $_G_status \
+    test 0 -ne "$_G_status" \
       && func_verbose "\`$1' not using Autoconf"
 
     (exit $_G_status)
@@ -161,7 +161,7 @@ func_tool_version_output ()
     { $_G_cmd --version </dev/null || $_G_cmd --version; } 2>/dev/null
     _G_status=$?
 
-    test 0 -ne $_G_status && test -n "$_G_fatal_error_msg" \
+    test 0 -ne "$_G_status" && test -n "$_G_fatal_error_msg" \
         && func_fatal_error "$_G_fatal_error_msg"
 
     (exit $_G_status)

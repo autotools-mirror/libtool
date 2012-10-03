@@ -1350,7 +1350,7 @@ func_mode_compile ()
       pic_mode=default
       ;;
     esac
-    if test yes = "$pic_mode" && test pass_all != "$deplibs_check_method"; then
+    if test no = "$pic_mode" && test pass_all != "$deplibs_check_method"; then
       # non-PIC code in shared libraries is not supported
       pic_mode=default
     fi
@@ -5151,7 +5151,7 @@ func_mode_link ()
 	    fi
 
 	    # CHECK ME:  I think I busted this.  -Ossama
-	    if test dlfiles = "$prev"; then
+	    if test dlprefiles = "$prev"; then
 	      # Preload the old-style object.
 	      func_append dlprefiles " $pic_object"
 	      prev=
@@ -5717,8 +5717,8 @@ func_mode_link ()
 
 	# This library was specified with -dlopen.
 	if test dlopen = "$pass"; then
-	  test -n "$libdir" \
-	    || func_fatal_error "cannot -dlopen a convenience library: \`$lib'"
+	  test -z "$libdir" \
+	    && func_fatal_error "cannot -dlopen a convenience library: \`$lib'"
 	  if test -z "$dlname" ||
 	     test yes != "$dlopen_support" ||
 	     test no = "$build_libtool_libs"
@@ -6191,7 +6191,7 @@ func_mode_link ()
 	  fi
 	elif test yes = "$build_libtool_libs"; then
 	  # Not a shared library
-	  if test pass_all = "$deplibs_check_method"; then
+	  if test pass_all != "$deplibs_check_method"; then
 	    # We're trying link a shared library against a static one
 	    # but the system doesn't support it.
 
@@ -6487,8 +6487,8 @@ func_mode_link ()
 	eval libname=\"$libname_spec\"
 	;;
       *)
-	test yes = "$module" \
-	  || func_fatal_help "libtool library \`$output' must begin with \`lib'"
+	test no = "$module" \
+	  && func_fatal_help "libtool library \`$output' must begin with \`lib'"
 
 	if test no != "$need_lib_prefix"; then
 	  # Add the "lib" prefix for modules if required
@@ -6519,8 +6519,8 @@ func_mode_link ()
 
       set dummy $rpath
       shift
-      test "$#" -gt 1 && \
-	func_warning "ignoring multiple \`-rpath's for a libtool library"
+      test 1 -lt "$#" \
+	&& func_warning "ignoring multiple \`-rpath's for a libtool library"
 
       install_libdir=$1
 
@@ -7458,7 +7458,7 @@ EOF
 	      fi
 	    done
 	    IFS=$save_ifs
-	    if test -n "$export_symbols_regex" && : != "$skipped_export"; then
+	    if test -n "$export_symbols_regex" && test : != "$skipped_export"; then
 	      func_show_eval '$EGREP -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
 	      func_show_eval '$MV "${export_symbols}T" "$export_symbols"'
 	    fi

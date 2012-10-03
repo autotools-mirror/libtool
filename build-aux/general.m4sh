@@ -45,7 +45,7 @@ progpath=$0
 
 M4SH_VERBATIM([[
 : ${CP="cp -f"}
-test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
+test set = "${ECHO+set}" || ECHO=${as_echo-'printf %s\n'}
 : ${EGREP="@EGREP@"}
 : ${FGREP="@FGREP@"}
 : ${GREP="@GREP@"}
@@ -692,7 +692,7 @@ func_show_eval ()
     if ${opt_dry_run-false}; then :; else
       eval "$my_cmd"
       my_status=$?
-      if test 0 -eq $my_status; then :; else
+      if test 0 -eq "$my_status"; then :; else
 	eval "(exit $my_status); $my_fail_exp"
       fi
     fi

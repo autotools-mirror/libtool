@@ -29,7 +29,7 @@ m4_divert_push([PREPARE_TESTS])dnl
 : ${AUTOCONF=autoconf}
 : ${AUTOMAKE=automake}
 : ${AUTORECONF=autoreconf}
-test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
+test set = "${ECHO+set}" || ECHO=${as_echo-'printf %s\n'}
 : ${ECHO=$as_echo}
 for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
   if eval \$$tool --version >/dev/null 2>&1; then :; else eval $tool=no; fi

@@ -1085,7 +1085,7 @@ func_autoconf_configure ()
     test -n "$_G_ac_init"
     _G_status=$?
 
-    test 0 -ne $_G_status \
+    test 0 -ne "$_G_status" \
       && func_verbose "\`$1' not using Autoconf"
 
     (exit $_G_status)
