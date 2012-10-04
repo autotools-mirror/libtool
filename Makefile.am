@@ -75,11 +75,7 @@ build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 		  $(srcdir)/$(aux_dir)/vc-list-files
 
 EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
-		  $(sh_files) ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
-		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 \
-		  ChangeLog.2003 ChangeLog.2004 ChangeLog.2005 ChangeLog.2006 \
-		  ChangeLog.2007 ChangeLog.2008 ChangeLog.2009 ChangeLog.2010 \
-		  GNUmakefile
+		  $(sh_files) GNUmakefile
 CLEANFILES     += libtool libtoolize
 
 ## If a file is named several times below, and especially if it
@@ -550,15 +546,17 @@ dotversion		= $(srcdir)/.version
 tarball_version		= $(distdir)/.tarball-version
 readme			= $(distdir)/README
 changelog		= $(distdir)/ChangeLog
+changelog_old		= $(srcdir)/ChangeLog.old
 
-# Generate ChangeLog for this year until it rotates out, when this start
-# date is updated to the following year.
+# Generate ChangeLog using git log entries for as far back as
+# they are in good shape, appending manual records from earlier.
 changelog_start_date = 2011-01-01
 $(changelog): FORCE
 	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
 	  $(gitlog_to_changelog) --amend=$(git_log_fix) \
 	      --since=$(changelog_start_date) > '$@T'; \
 	  rm -f '$@'; mv '$@T' '$@'; \
+	  cat '$(changelog_old)' >> '$@'; \
 	fi
 
 ## Arrange so that .tarball-version appears only in the distribution
