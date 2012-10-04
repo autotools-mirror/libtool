@@ -800,7 +800,6 @@ TESTS = \
 	tests/link-2.test \
 	tests/nomode.test \
 	tests/objectlist.test \
-	tests/suffix.test \
 	tests/tagtrace.test
 
 defs		= tests/defs

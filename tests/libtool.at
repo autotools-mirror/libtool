@@ -101,3 +101,31 @@ for mode in compile link install; do
 done
 
 AT_CLEANUP
+
+
+## -------------------------- ##
+## Transform source suffices. ##
+## -------------------------- ##
+
+AT_SETUP([transform source suffices])
+
+# Extensions taken from the ones that Automake recognizes, plus Objective C,
+# and GNU Ada.  Also test that multiple dots are handled correctly.
+extensions="C F S ada adb ads asm c c++ cc cpp cxx f f90 F90 f95 F95 f03 F03 for go m s sx ada.ada"
+bad_names=foo.
+
+for ext in $extensions; do
+  # Try a sample compile command.
+  AT_CHECK([$LIBTOOL -n --mode=compile compiler -c foo.$ext],
+           [1], [ignore], [stderr])
+  AT_CHECK([grep 'cannot' stderr], [1], [ignore])
+done
+
+# Make sure that invalid suffixes are not recognized.
+for name in $bad_names; do
+  AT_CHECK([$LIBTOOL -n --mode=compile compiler -c $name],
+           [1], [ignore], [stderr])
+  AT_CHECK([grep 'cannot' stderr], [0], [ignore])
+done
+
+AT_CLEANUP
