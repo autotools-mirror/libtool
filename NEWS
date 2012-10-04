@@ -27,6 +27,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     using AC_CONFIG_AUX_DIR(ltdl/config) or similar, that still works as
     does any other directory choice).
 
+  - The legacy tests have all been migrated to the Autotest harness.
+
   - The Autotest testsuite can be run without the especially time consuming
     tests with:
 

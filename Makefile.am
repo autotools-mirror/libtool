@@ -58,7 +58,6 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 # Bootstrap. #
 # ---------- #
 
-defs_m4sh	= $(tests_dir)/defs.m4sh
 general_m4sh	= $(srcdir)/$(m4sh_dir)/general.m4sh
 getopt_m4sh	= $(srcdir)/$(m4sh_dir)/getopt.m4sh
 libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
@@ -784,38 +783,6 @@ clean-local:
 	-$(CD_TESTDIR); \
 	test -f "$$abs_srcdir/$(TESTSUITE)" && \
 	    '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" --clean
-
-
-## ------------- ##
-## Legacy tests. ##
-## ------------- ##
-
-# !WARNING! Don't add any new tests here, we are migrating to an
-#           Autotest driven framework, please add new test cases
-#           using the new framework above.  When the migration is
-#           complete this section should be removed.
-
-TESTS = 
-
-defs		= tests/defs
-defs_in		= $(tests_dir)/defs.in
-
-EXTRA_DIST     += $(defs_in) $(defs_m4sh) \
-		  $(TESTS)
-
-# The defs script shouldn't be recreated whenever the Makefile is
-# regenerated since the source tree can be read-only.
-check-recursive: $(defs)
-$(defs): $(defs_in)
-	$(AM_V_at)rm -f '$@'
-	$(AM_V_GEN)$(configure_edit) '$(defs_in)' > '$@'
-
-$(defs_in): $(defs_m4sh) $(general_m4sh) Makefile.am
-	$(AM_V_at)rm -f '$@'
-	$(AM_V_GEN)$(LT_M4SH) '$(defs_m4sh)' > '$@'
-
-$(TESTS): $(defs)
-DISTCLEANFILES += $(defs)
 
 ## An empty target to depend on when a rule needs to always run
 ## whenever it is visited.
