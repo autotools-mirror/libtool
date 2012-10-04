@@ -250,12 +250,10 @@ sc_useless_quotes_in_case:
 	  $(_sc_search_regexp)
 
 # List syntax-check exempted files.
-exclude_file_name_regexp--sc_bindtextdomain = ^tests/.*demo[0-9]*/.*\.c$$
 exclude_file_name_regexp--sc_error_message_uppercase = \
   ^$(_build-aux)/cvsu$$
-exclude_file_name_regexp--sc_program_name = ^tests/.*demo[0-9]*/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_strcmp = \
-  ^(doc/libtool.texi|tests/.*demo/.*\.c)$$
+  ^doc/libtool.texi$$
 exclude_file_name_regexp--sc_prohibit_test_minus_ao = \
   ^m4/libtool.m4$$
 exclude_file_name_regexp--sc_space_tab = \.diff$$
