@@ -795,8 +795,7 @@ clean-local:
 #           using the new framework above.  When the migration is
 #           complete this section should be removed.
 
-TESTS = \
-	tests/tagtrace.test
+TESTS = 
 
 defs		= tests/defs
 defs_in		= $(tests_dir)/defs.in
