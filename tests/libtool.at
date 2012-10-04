@@ -26,6 +26,33 @@
 AT_BANNER([Basic libtool operation.])
 
 
+## ------------------ ##
+## Check help output. ##
+## ------------------ ##
+
+AT_SETUP([check help output])
+
+AT_CHECK([$LIBTOOL --help], [0], [stdout], [stderr])
+AT_CHECK([grep '^Usage:' stdout stderr], [0], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=link --help], [0], [stdout], [stderr])
+AT_CHECK([grep '^Usage:' stdout stderr], [0], [ignore])
+
+AT_CLEANUP
+
+
+## ------------------- ##
+## No mode diagnostic. ##
+## ------------------- ##
+
+AT_SETUP([diagnose no mode specified])
+
+AT_CHECK([$LIBTOOL], [1], [ignore], [stderr])
+AT_CHECK([grep 'you must specify a MODE' stderr], [0], [ignore])
+
+AT_CLEANUP
+
+
 ## ----------------------------------- ##
 ## Shell meta-characters in filenames. ##
 ## ----------------------------------- ##

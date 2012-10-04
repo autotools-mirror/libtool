@@ -798,7 +798,6 @@ clean-local:
 TESTS = \
 	tests/link.test \
 	tests/link-2.test \
-	tests/nomode.test \
 	tests/objectlist.test \
 	tests/tagtrace.test
 
