@@ -1,5 +1,4 @@
-#! /bin/sh
-# quote.test - make sure that shell metacharacters do not blow up libtool
+# libtool.at -- basic libtool operation tests -*- Autotest -*-
 #
 #   Copyright (C) 2003-2005, 2008, 2011-2012 Free Software Foundation,
 #   Inc.
@@ -24,24 +23,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-. tests/defs || exit 1
+AT_BANNER([Basic libtool operation.])
+
+
+## ----------------------------------- ##
+## Shell meta-characters in filenames. ##
+## ----------------------------------- ##
+
+AT_SETUP([quote shell meta-characters in filenames])
+
+eval `$LIBTOOL --config | grep '^wl='`
 
 # Do the torture test.
-status=$EXIT_SUCCESS
-
-case $1 in
-  --no-reexec)
-    ;;
-  *)
-    func_get_config "SHELL" "$LIBTOOL --config"
-    exec $SHELL "$0" --no-reexec ${1+"$@"}
-    ;;
-esac
-
-func_get_config "ECHO wl" "$LIBTOOL --config"
-
 for mode in compile link install; do
-  echo "== $mode mode"
 
   # Unfortunately, without an array data type, it is nearly impossible
   # to protect libtool from metacharacters in filenames.  So, we just
@@ -75,62 +69,35 @@ for mode in compile link install; do
   esac
 
   # Trivial.
-  echo "= trying: no quoting"
-  result=`$LIBTOOL -n --mode=$mode $preargs $preflag"$flag:test" $postargs` || status=$EXIT_FAILURE
-  # We used to have the contents of $match in the case statement,
-  # without an intermediate variable, but it would fail on at least
-  # Solaris' and HP-UX's /bin/sh.  Ugh!
+  LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag:test" $postargs],
+	   [0], [stdout])
   # We must not attempt to match $preargs in the output, because libtool
   # may modify them.  For example, on Cygwin, ``libtool --mode=link gcc -o
   # foo foo.o''  becomes ``gcc -o foo.exe foo.o''.
-  match="$match_preflag$flag:test "
-  case $result in
-  *"$match"*)
-    $ECHO "= passed: $result"
-    ;;
-  *)
-    $ECHO "= failed: $result"
-    status=$EXIT_FAILURE
-    ;;
-  esac
+  LT_AT_CHECK([$EGREP "$mode:.*$match_preflag$flag:test " stdout], [0], [ignore])
 
   # Metacharacters that should be backslashified.
-  for mchar in \\ \" \` \$; do
-    $ECHO "= trying: \\$mchar quoting"
-    result=`$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs` || status=$EXIT_FAILURE
-    match="$match_preflag$flag\\$mchar:test\\$mchar "
-    alt_match="$match_preflag\"$flag\\$mchar:test\\$mchar\" "
-    case $result in
-    *"$match"*)
-      $ECHO "= passed: $result"
-      ;;
-    *"$alt_match"*)
-      $ECHO "= passed (harmless ksh bug): $result"
-      ;;
-    *)
-      $ECHO "= failed: $result"
-      status=$EXIT_FAILURE
-      ;;
-    esac
+  for mchar in \" \` \$ \\; do
+    LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
+	     [0], [stdout])
+    LT_AT_CHECK([$EGREP "$mode:.*$match_preflag\"?$flag\\\\\\$mchar:test\\\\\\$mchar\"? " stdout], [0], [ignore])
   done
 
-  # Metacharacters that should be double quoted.
-  for mchar in "[" "]" "~" "#" "^" "&" "*" "(" ")" "{" "}" "|" ";" "<" ">" "?" \
-      "'" " " "	"; do
+  # Metacharacters that should be double quoted, and need escaping for grep
+  for mchar in "@<:@" "@:>@" "^" "*"; do
 
-    $ECHO "= trying: \"$mchar\" quoting"
-    result=`$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs` || status=$EXIT_FAILURE
-    match="$match_preflag\"$flag$mchar:test$mchar\" "
-    case $result in
-    *"$match"*)
-      $ECHO "= passed: $result"
-      ;;
-    *)
-      $ECHO "= failed: $result"
-      status=$EXIT_FAILURE
-      ;;
-    esac
+    LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
+	     [0], [stdout])
+    LT_AT_CHECK([grep "$mode:.*$match_preflag\"$flag\\$mchar:test\\$mchar\" " stdout], [0], [ignore])
+  done
+
+  # Metacharacters that should be double quoted, that are not special to grep.
+  for mchar in "~" "#" "&" "(" ")" "{" "}" "|" ";" "<" ">" "?" "'" " " "	"; do
+
+    LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
+	     [0], [stdout])
+    LT_AT_CHECK([grep "$mode:.*$match_preflag\"$flag$mchar:test$mchar\" " stdout], [0], [ignore])
   done
 done
 
-exit $status
+AT_CLEANUP

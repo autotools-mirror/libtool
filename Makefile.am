@@ -618,6 +618,7 @@ TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
 		  tests/getopt-m4sh.at \
 		  tests/libtoolize.at \
+		  tests/libtool.at \
 		  tests/demo.at \
 		  tests/pic_flag.at \
 		  tests/with-pic.at \
@@ -799,7 +800,6 @@ TESTS = \
 	tests/link-2.test \
 	tests/nomode.test \
 	tests/objectlist.test \
-	tests/quote.test \
 	tests/suffix.test \
 	tests/tagtrace.test
 
