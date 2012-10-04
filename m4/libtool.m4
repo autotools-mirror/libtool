@@ -179,11 +179,11 @@ m4_require([_LT_WITH_SYSROOT])dnl
 _LT_CONFIG_LIBTOOL_INIT([
 # See if we are running on zsh, and set the options which allow our
 # commands through without removal of \ escapes INIT.
-if test -n "\${ZSH_VERSION+set}" ; then
+if test -n "\${ZSH_VERSION+set}"; then
    setopt NO_GLOB_SUBST
 fi
 ])
-if test -n "${ZSH_VERSION+set}" ; then
+if test -n "${ZSH_VERSION+set}"; then
    setopt NO_GLOB_SUBST
 fi
 
@@ -705,7 +705,7 @@ _LT_CONFIG_SAVE_COMMANDS([
   m4_if(_LT_TAG, [C], [
     # See if we are running on zsh, and set the options which allow our
     # commands through without removal of \ escapes.
-    if test -n "${ZSH_VERSION+set}" ; then
+    if test -n "${ZSH_VERSION+set}"; then
       setopt NO_GLOB_SUBST
     fi
 
@@ -1027,7 +1027,7 @@ _LT_EOF
       _lt_result=$?
       if test -s conftest.err && $GREP force_load conftest.err; then
 	cat conftest.err >&AS_MESSAGE_LOG_FD
-      elif test -f conftest && test 0 = "$_lt_result" && $GREP forced_load conftest >/dev/null 2>&1 ; then
+      elif test -f conftest && test 0 = "$_lt_result" && $GREP forced_load conftest >/dev/null 2>&1; then
 	lt_cv_ld_force_load=yes
       else
 	cat conftest.err >&AS_MESSAGE_LOG_FD
@@ -1697,7 +1697,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     else
       # Make teststring a little bigger before we do anything with it.
       # a 1K string should be a reasonable start.
-      for i in 1 2 3 4 5 6 7 8 ; do
+      for i in 1 2 3 4 5 6 7 8; do
         teststring=$teststring$teststring
       done
       SHELL=${SHELL-${CONFIG_SHELL-/bin/sh}}
@@ -1722,7 +1722,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     ;;
   esac
 ])
-if test -n "$lt_cv_sys_max_cmd_len" ; then
+if test -n "$lt_cv_sys_max_cmd_len"; then
   AC_MSG_RESULT($lt_cv_sys_max_cmd_len)
 else
   AC_MSG_RESULT(none)
@@ -2801,7 +2801,7 @@ sysv4 | sysv4.3*)
   ;;
 
 sysv4*MP*)
-  if test -d /usr/nec ;then
+  if test -d /usr/nec; then
     version_type=linux # correct to gnu/linux during the next big refactor
     library_names_spec='$libname$shared_ext.$versuffix $libname$shared_ext.$major $libname$shared_ext'
     soname_spec='$libname$shared_ext.$major'
@@ -3390,7 +3390,7 @@ else
       IFS=$lt_save_ifs
       test -z "$ac_dir" && ac_dir=.
       tmp_nm=$ac_dir/$lt_tmp_nm
-      if test -f "$tmp_nm" || test -f "$tmp_nm$ac_exeext" ; then
+      if test -f "$tmp_nm" || test -f "$tmp_nm$ac_exeext"; then
 	# Check to see if the nm accepts a BSD-compat flag.
 	# Adding the `sed 1q' prevents false positives on HP-UX, which says:
 	#   nm: unknown option "B" ignored
@@ -4453,7 +4453,7 @@ m4_if([$1], [CXX], [
       ;;
 
     sysv4*MP*)
-      if test -d /usr/nec ;then
+      if test -d /usr/nec; then
 	_LT_TAGVAR(lt_prog_compiler_pic, $1)='-Kconform_pic'
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
       fi

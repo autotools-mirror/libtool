@@ -65,7 +65,7 @@ lt_strlcat(char *dst, const char *src, const size_t dstsize)
     size - 1.
   */
   for ( p = dst + length, q = src;
-        (*q != 0) && (length < dstsize - 1) ;
+        (*q != 0) && (length < dstsize - 1);
         length++, p++, q++ )
     *p = *q;
 
@@ -109,8 +109,8 @@ lt_strlcpy(char *dst, const char *src, const size_t dstsize)
   /*
     Copy src to dst within bounds of size-1.
   */
-  for ( p=dst, q=src, length=0 ;
-        (*q != 0) && (length < dstsize-1) ;
+  for ( p=dst, q=src, length=0;
+        (*q != 0) && (length < dstsize-1);
         length++, p++, q++ )
     *p = *q;
 

@@ -81,7 +81,7 @@ esac
 func_save_and_prepend_path ()
 {
   save_PATH=$PATH
-  if $bindirneeded ; then
+  if $bindirneeded; then
     PATH=$1:$PATH
   fi
   export PATH
@@ -193,7 +193,7 @@ AT_CHECK([test yes = "$build_libtool_libs" || exit 77])
 func_save_and_prepend_path ()
 {
   save_PATH=$PATH
-  if $bindirneeded ; then
+  if $bindirneeded; then
     PATH=$1:$PATH
   fi
   export PATH
@@ -257,7 +257,7 @@ for libdir in \
 	$curdir/usr/lib/ \
 	$curdir/usr/lib \
 	$curdir/baz \
-	$curdir/baz/lib/ ;
+	$curdir/baz/lib/;
 do
 
   # Do a basic install with no -bindir option for reference.  We use the sbin/
@@ -295,7 +295,7 @@ do
 	$curdir/usr/lib/bin \
 	$curdir/usr/bin/ \
 	$curdir/usr/bin \
-	/tmp/foo/bar ;
+	/tmp/foo/bar;
   do
 
     # Clear any old stuff out before we install.  Because bindir
@@ -355,7 +355,7 @@ do
     # Clean up if we made a temp dir.  Subdirs under our testdir get rm'd
     # and recreated at the top of the loop.  Securely created subdirs under
     # /tmp get created precisely once and rm'd when we're done with them.
-    if test ! -z "$tmp" ; then
+    if test ! -z "$tmp"; then
       rm -rf "$tmp"
     fi
 

@@ -313,7 +313,7 @@ func_normal_abspath ()
     # Processed it all yet?
     if test / = "$func_normal_abspath_tpath"; then
       # If we ascended to the root using ".." the result may be empty now.
-      if test -z "$func_normal_abspath_result" ; then
+      if test -z "$func_normal_abspath_result"; then
         func_normal_abspath_result=/
       fi
       break

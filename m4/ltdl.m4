@@ -653,7 +653,7 @@ LIBADD_DLOPEN=
 AC_SEARCH_LIBS([dlopen], [dl],
 	[AC_DEFINE([HAVE_LIBDL], [1],
 		   [Define if you have the libdl library or equivalent.])
-	if test "$ac_cv_search_dlopen" != "none required" ; then
+	if test "$ac_cv_search_dlopen" != "none required"; then
 	  LIBADD_DLOPEN=-ldl
 	fi
 	libltdl_cv_lib_dl_dlopen=yes
@@ -791,7 +791,7 @@ AC_DEFUN([LT_FUNC_DLSYM_USCORE],
 [AC_REQUIRE([LT_SYS_SYMBOL_USCORE])dnl
 if test yes = "$lt_cv_sys_symbol_underscore"; then
   if test yes = "$libltdl_cv_func_dlopen" ||
-     test yes = "$libltdl_cv_lib_dl_dlopen" ; then
+     test yes = "$libltdl_cv_lib_dl_dlopen"; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
 	  [libltdl_cv_need_uscore],
 	  [libltdl_cv_need_uscore=unknown

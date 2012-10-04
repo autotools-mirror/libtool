@@ -726,7 +726,7 @@ func_convert_core_path_wine_to_w32 ()
     for func_convert_core_path_wine_to_w32_f in $1; do
       IFS=$oldIFS
       func_convert_core_file_wine_to_w32 "$func_convert_core_path_wine_to_w32_f"
-      if test -n "$func_convert_core_file_wine_to_w32_result" ; then
+      if test -n "$func_convert_core_file_wine_to_w32_result"; then
         if test -z "$func_convert_core_path_wine_to_w32_result"; then
           func_convert_core_path_wine_to_w32_result=$func_convert_core_file_wine_to_w32_result
         else
@@ -795,7 +795,7 @@ func_convert_file_check ()
 {
   $debug_cmd
 
-  if test -z "$2" && test -n "$1" ; then
+  if test -z "$2" && test -n "$1"; then
     func_error "Could not determine host file name corresponding to"
     func_error "  \`$1'"
     func_error "Continuing, but uninstalled executables may not work."
@@ -2586,7 +2586,7 @@ extern \"C\" {
 	        if test -n "$curr_lafile" && func_lalib_p "$curr_lafile"; then
 	          # Use subshell, to avoid clobbering current variable values
 	          dlprefile_dlname=`source "$curr_lafile" && echo "$dlname"`
-	          if test -n "$dlprefile_dlname" ; then
+	          if test -n "$dlprefile_dlname"; then
 	            func_basename "$dlprefile_dlname"
 	            dlprefile_dlbasename=$func_basename_result
 	          else
@@ -2596,7 +2596,7 @@ extern \"C\" {
 	          fi
 	        fi
 	        $opt_dry_run || {
-	          if test -n "$dlprefile_dlbasename" ; then
+	          if test -n "$dlprefile_dlbasename"; then
 	            eval '$ECHO ": $dlprefile_dlbasename" >> "$nlist"'
 	          else
 	            func_warning "Could not compute DLL name from $name"
@@ -2928,10 +2928,10 @@ func_cygming_dll_for_implib_fallback ()
 {
   $debug_cmd
 
-  if func_cygming_gnu_implib_p "$1" ; then
+  if func_cygming_gnu_implib_p "$1"; then
     # binutils import library
     sharedlib_from_linklib_result=`func_cygming_dll_for_implib_fallback_core '.idata$7' "$1"`
-  elif func_cygming_ms_implib_p "$1" ; then
+  elif func_cygming_ms_implib_p "$1"; then
     # ms-generated import library
     sharedlib_from_linklib_result=`func_cygming_dll_for_implib_fallback_core '.idata$6' "$1"`
   else
@@ -3019,7 +3019,7 @@ func_extract_archives ()
 	    darwin_arches=`$ECHO "$darwin_arches" | $SED -e 's/.*are://'`
 	    darwin_arch=
 	    func_verbose "$darwin_base_archive has multiple architectures $darwin_arches"
-	    for darwin_arch in  $darwin_arches ; do
+	    for darwin_arch in  $darwin_arches; do
 	      func_mkdir_p "unfat-$$/$darwin_base_archive-$darwin_arch"
 	      $LIPO -thin $darwin_arch -output "unfat-$$/$darwin_base_archive-$darwin_arch/$darwin_base_archive" "$darwin_archive"
 	      cd "unfat-$$/$darwin_base_archive-$darwin_arch"
@@ -4603,7 +4603,7 @@ func_mode_link ()
 
 		  # A standard non-PIC object
 		  func_append non_pic_objects " $non_pic_object"
-		  if test -z "$pic_object" || test none = "$pic_object" ; then
+		  if test -z "$pic_object" || test none = "$pic_object"; then
 		    arg=$non_pic_object
 		  fi
 		else
@@ -5285,7 +5285,7 @@ func_mode_link ()
     # Find all interdependent deplibs by searching for libraries
     # that are linked more than once (e.g. -la -lb -la)
     for deplib in $deplibs; do
-      if $opt_preserve_dup_deps ; then
+      if $opt_preserve_dup_deps; then
 	case "$libs " in
 	*" $deplib "*) func_append specialdeplibs " $deplib" ;;
 	esac
@@ -5456,7 +5456,7 @@ func_mode_link ()
 		  for l in $old_library $library_names; do
 		    ll=$l
 		  done
-		  if test "X$ll" = "X$old_library" ; then # only static version available
+		  if test "X$ll" = "X$old_library"; then # only static version available
 		    found=false
 		    func_dirname "$lib" "" "."
 		    ladir=$func_dirname_result
@@ -5689,7 +5689,7 @@ func_mode_link ()
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    deplibs="$deplib $deplibs"
-	    if $opt_preserve_dup_deps ; then
+	    if $opt_preserve_dup_deps; then
 	      case "$tmp_libs " in
 	      *" $deplib "*) func_append specialdeplibs " $deplib" ;;
 	      esac
@@ -5864,7 +5864,7 @@ func_mode_link ()
 	      # or/and link against static libraries
 	      newdependency_libs="$deplib $newdependency_libs"
 	    fi
-	    if $opt_preserve_dup_deps ; then
+	    if $opt_preserve_dup_deps; then
 	      case "$tmp_libs " in
 	      *" $deplib "*) func_append specialdeplibs " $deplib" ;;
 	      esac
@@ -5880,7 +5880,7 @@ func_mode_link ()
 	         test built,yes = "$prefer_static_libs,$installed"; } ||
 	       test -z "$old_library"; }; then
 	    # We need to hardcode the library path
-	    if test -n "$shlibpath_var" && test -z "$avoidtemprpath" ; then
+	    if test -n "$shlibpath_var" && test -z "$avoidtemprpath"; then
 	      # Make sure the rpath contains only unique directories.
 	      case $temp_rpath: in
 	      *"$absdir:"*) ;;
@@ -6051,10 +6051,10 @@ func_mode_link ()
 		    # if the lib is a (non-dlopened) module then we cannot
 		    # link against it, someone is ignoring the earlier warnings
 		    if /usr/bin/file -L $add 2> /dev/null |
-			 $GREP ": [^:]* bundle" >/dev/null ; then
+			 $GREP ": [^:]* bundle" >/dev/null; then
 		      if test "X$dlopenmodule" != "X$lib"; then
 			$ECHO "*** Warning: lib $linklib is a module, not a shared library"
-			if test -z "$old_library" ; then
+			if test -z "$old_library"; then
 			  echo
 			  echo "*** And there doesn't seem to be a static archive available"
 			  echo "*** The link will probably fail, sorry"
@@ -6150,7 +6150,7 @@ func_mode_link ()
 	      add=-l$name
 	    elif test yes = "$hardcode_automatic"; then
 	      if test -n "$inst_prefix_dir" &&
-		 test -f "$inst_prefix_dir$libdir/$linklib" ; then
+		 test -f "$inst_prefix_dir$libdir/$linklib"; then
 		add=$inst_prefix_dir$libdir/$linklib
 	      else
 		add=$libdir/$linklib
@@ -6259,7 +6259,7 @@ func_mode_link ()
                    func_resolve_sysroot "$func_stripname_result";;
               *) func_resolve_sysroot "$deplib" ;;
             esac
-	    if $opt_preserve_dup_deps ; then
+	    if $opt_preserve_dup_deps; then
 	      case "$tmp_libs " in
 	      *" $func_resolve_sysroot_result "*)
                 func_append specialdeplibs " $func_resolve_sysroot_result" ;;
@@ -6295,11 +6295,11 @@ func_mode_link ()
 		*-*-darwin*)
 		  depdepl=
 		  eval deplibrary_names=`$SED -n -e 's/^library_names=\(.*\)$/\1/p' $deplib`
-		  if test -n "$deplibrary_names" ; then
-		    for tmp in $deplibrary_names ; do
+		  if test -n "$deplibrary_names"; then
+		    for tmp in $deplibrary_names; do
 		      depdepl=$tmp
 		    done
-		    if test -f "$absdir/$objdir/$depdepl" ; then
+		    if test -f "$absdir/$objdir/$depdepl"; then
 		      depdepl=$absdir/$objdir/$depdepl
 		      darwin_install_name=`$OTOOL -L $depdepl | awk '{if (NR == 2) {print $1;exit}}'`
                       if test -z "$darwin_install_name"; then
@@ -6426,13 +6426,13 @@ func_mode_link ()
       # Last step: remove runtime libs from dependency_libs
       # (they stay in deplibs)
       tmp_libs=
-      for i in $dependency_libs ; do
+      for i in $dependency_libs; do
 	case " $predeps $postdeps $compiler_lib_search_path " in
 	*" $i "*)
 	  i=
 	  ;;
 	esac
-	if test -n "$i" ; then
+	if test -n "$i"; then
 	  func_append tmp_libs " $i"
 	fi
       done
@@ -6944,12 +6944,12 @@ EOF
 		    ;;
 		  esac
 		fi
-		if test -n "$i" ; then
+		if test -n "$i"; then
 		  libname=`eval "\\$ECHO \"$libname_spec\""`
 		  deplib_matches=`eval "\\$ECHO \"$library_names_spec\""`
 		  set dummy $deplib_matches; shift
 		  deplib_match=$1
-		  if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
+		  if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0; then
 		    func_append newdeplibs " $i"
 		  else
 		    droppeddeps=yes
@@ -6987,12 +6987,12 @@ EOF
 		      ;;
 		    esac
 		  fi
-		  if test -n "$i" ; then
+		  if test -n "$i"; then
 		    libname=`eval "\\$ECHO \"$libname_spec\""`
 		    deplib_matches=`eval "\\$ECHO \"$library_names_spec\""`
 		    set dummy $deplib_matches; shift
 		    deplib_match=$1
-		    if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
+		    if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0; then
 		      func_append newdeplibs " $i"
 		    else
 		      droppeddeps=yes
@@ -7037,7 +7037,7 @@ EOF
 		  ;;
 		esac
 	      fi
-	      if test -n "$a_deplib" ; then
+	      if test -n "$a_deplib"; then
 		libname=`eval "\\$ECHO \"$libname_spec\""`
 		if test -n "$file_magic_glob"; then
 		  libnameglob=`func_echo_all "$libname" | $SED -e $file_magic_glob`
@@ -7082,7 +7082,7 @@ EOF
 		  done
 		done
 	      fi
-	      if test -n "$a_deplib" ; then
+	      if test -n "$a_deplib"; then
 		droppeddeps=yes
 		echo
 		$ECHO "*** Warning: linker path does not have real file for library $a_deplib."
@@ -7090,7 +7090,7 @@ EOF
 		echo "*** you link to this library.  But I can only do this if you have a"
 		echo "*** shared version of the library, which you do not appear to have"
 		echo "*** because I did check the linker path looking for a file starting"
-		if test -z "$potlib" ; then
+		if test -z "$potlib"; then
 		  $ECHO "*** with $libname but no candidates were found. (...for file magic test)"
 		else
 		  $ECHO "*** with $libname and none of the candidates passed a file format test"
@@ -7121,7 +7121,7 @@ EOF
 		  ;;
 		esac
 	      fi
-	      if test -n "$a_deplib" ; then
+	      if test -n "$a_deplib"; then
 		libname=`eval "\\$ECHO \"$libname_spec\""`
 		for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
 		  potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
@@ -7136,7 +7136,7 @@ EOF
 		  done
 		done
 	      fi
-	      if test -n "$a_deplib" ; then
+	      if test -n "$a_deplib"; then
 		droppeddeps=yes
 		echo
 		$ECHO "*** Warning: linker path does not have real file for library $a_deplib."
@@ -7144,7 +7144,7 @@ EOF
 		echo "*** you link to this library.  But I can only do this if you have a"
 		echo "*** shared version of the library, which you do not appear to have"
 		echo "*** because I did check the linker path looking for a file starting"
-		if test -z "$potlib" ; then
+		if test -z "$potlib"; then
 		  $ECHO "*** with $libname but no candidates were found. (...for regex pattern test)"
 		else
 		  $ECHO "*** with $libname and none of the candidates passed a file format test"
@@ -7163,7 +7163,7 @@ EOF
 	  newdeplibs=
 	  tmp_deplibs=`$ECHO " $deplibs" | $SED 's/ -lc$//; s/ -[LR][^ ]*//g'`
 	  if test yes = "$allow_libtool_libs_with_static_runtimes"; then
-	    for i in $predeps $postdeps ; do
+	    for i in $predeps $postdeps; do
 	      # can't use Xsed below, because $i might contain '/'
 	      tmp_deplibs=`$ECHO " $tmp_deplibs" | $SED "s|$i||"`
 	    done
@@ -7529,7 +7529,7 @@ EOF
 	fi
 
 	# Do each of the archive commands.
-	if test yes = "$module" && test -n "$module_cmds" ; then
+	if test yes = "$module" && test -n "$module_cmds"; then
 	  if test -n "$export_symbols" && test -n "$module_expsym_cmds"; then
 	    eval test_cmds=\"$module_expsym_cmds\"
 	    cmds=$module_expsym_cmds
@@ -7747,7 +7747,7 @@ EOF
 	  # value of $libobjs for piecewise linking.
 
 	  # Do each of the archive commands.
-	  if test yes = "$module" && test -n "$module_cmds" ; then
+	  if test yes = "$module" && test -n "$module_cmds"; then
 	    if test -n "$export_symbols" && test -n "$module_expsym_cmds"; then
 	      cmds=$module_expsym_cmds
 	    else
@@ -8306,7 +8306,7 @@ EOF
 	    trap "$RM $func_ltwrapper_scriptname_result; exit $EXIT_FAILURE" 1 2 15
 	    $opt_dry_run || {
 	      # note: this script will not be executed, so do not chmod.
-	      if test "x$build" = "x$host" ; then
+	      if test "x$build" = "x$host"; then
 		$cwrapper --lt-dump-script > $func_ltwrapper_scriptname_result
 	      else
 		func_emit_wrapper no > $func_ltwrapper_scriptname_result
@@ -8462,7 +8462,7 @@ EOF
 	    else
 	      # the above command should be used before it gets too long
 	      oldobjs=$objlist
-	      if test "$obj" = "$last_oldobj" ; then
+	      if test "$obj" = "$last_oldobj"; then
 		RANLIB=$save_RANLIB
 	      fi
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
@@ -8834,7 +8834,7 @@ func_mode_uninstall ()
 	    if test yes = "$fast_install" && test -n "$relink_command"; then
 	      func_append rmfiles " $odir/lt-$name"
 	    fi
-	    if test "X$noexename" != "X$name" ; then
+	    if test "X$noexename" != "X$name"; then
 	      func_append rmfiles " $odir/lt-$noexename.c"
 	    fi
 	  fi

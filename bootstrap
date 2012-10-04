@@ -1263,9 +1263,9 @@ func_require_gnulib_merge_changelog ()
       $require_git
 
       func_grep_q '^\(/\|\)ChangeLog$' .gitignore || test true = "$GIT" || {
-        if $GIT config merge.merge-changelog.driver >/dev/null ; then
+        if $GIT config merge.merge-changelog.driver >/dev/null; then
           :
-        elif (git-merge-changelog --version) >/dev/null 2>&1 ; then
+        elif (git-merge-changelog --version) >/dev/null 2>&1; then
           func_echo "initializing git-merge-changelog driver"
           $GIT config merge.merge-changelog.name 'GNU-style ChangeLog merge driver'
           $GIT config merge.merge-changelog.driver 'git-merge-changelog %O %A %B'
@@ -2141,7 +2141,7 @@ func_sort_ver ()
 
     # Split on '.' and compare each component.
     i=1
-    while : ; do
+    while :; do
       p1=`echo "$ver1" |cut -d. -f$i`
       p2=`echo "$ver2" |cut -d. -f$i`
       if test ! "$p1"; then

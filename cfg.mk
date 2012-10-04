@@ -146,6 +146,12 @@ sc_prohibit_set_minus_minus:
 	halt="use \`set dummy ...' instead of \`set -- ...'"		\
 	  $(_sc_search_regexp)
 
+# Make sure there is no spurious whitespace before trailing semi-colons
+sc_prohibit_space_semicolon:
+	@prohibit='[^	 ][	 ]+;[	 ]*((do|done|elif|else|then)[	 ]*)?$$'	\
+	halt='found spurious whitespace before trailing semi-colon'	\
+	  $(_sc_search_regexp)
+
 # Check for using test X"... instead of test "X...
 exclude_file_name_regexp--sc_prohibit_test_X = ^cfg.mk$$
 sc_prohibit_test_X:
