@@ -178,3 +178,15 @@ AT_CHECK([$LIBTOOL --mode=link $CC -o something foo.o hell.lo], [1], [stdout], [
 AT_CHECK([$FGREP '.lo ' stdout], [1], [ignore])
 
 AT_CLEANUP
+
+
+## -------------------------------- ##
+## Check objectlist file operation. ##
+## -------------------------------- ##
+
+AT_SETUP([check objectlist file operation])
+
+AT_CHECK([$LIBTOOL -n --mode=link $CC -objectlist nonexistent], [1], [ignore], [stderr])
+AT_CHECK([grep 'nonexistent' stderr], [0], [ignore])
+
+AT_CLEANUP

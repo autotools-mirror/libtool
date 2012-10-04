@@ -796,7 +796,6 @@ clean-local:
 #           complete this section should be removed.
 
 TESTS = \
-	tests/objectlist.test \
 	tests/tagtrace.test
 
 defs		= tests/defs
