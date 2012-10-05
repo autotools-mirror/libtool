@@ -249,7 +249,7 @@ m4_define([_LT_CHECK_EXECUTE],
 # on whether it is redirected to a file or sent to stdout, so we
 # just check return status, and ignore output.
 # Advice on this weirdness from a Fortran user much appreciated!
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[ Welcome to GNU libtool Fortran demo!
  Real programmers write in FORTRAN.
  fsub called
@@ -262,7 +262,7 @@ AT_DATA([expout],
 ]])
 LT_AT_EXEC_CHECK([./fprogram], 0, [ignore])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU libtool mixed C/Fortran demo!
 The C subroutine returned, claiming that 2*2 = 4
 The C subroutine is ok!
@@ -294,7 +294,7 @@ _LT_SETUP
 LT_AT_CHECK_CONFIG([--disable-shared],
                    [^build_old_libs=yes], [^build_libtool_libs=no])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[ Welcome to GNU libtool Fortran demo!
  Real programmers write in FORTRAN.
  fsub called

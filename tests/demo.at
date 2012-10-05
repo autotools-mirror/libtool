@@ -339,7 +339,7 @@ int main ()
 }
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU Hell!
 cos (0.0) = 1
 ** This is not GNU Hello. There is no built-in mail reader. **
@@ -901,7 +901,7 @@ int foo2 (void) {
 }
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU Hell!
 cos (0.0) = 1
 foo2 cos (0.0) = 1

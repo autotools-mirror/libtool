@@ -240,7 +240,7 @@ for i in 1 2 3 4; do
 done
 
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[dependencies:
 l1 (0)
 l2 (0)

@@ -117,7 +117,7 @@ int main ()
 }
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU libtool cdemo!
 ** This is libfoo **
 hello returned: 57616

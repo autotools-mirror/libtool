@@ -592,7 +592,7 @@ main (int argc, char **argv)
 }
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU Hell!
 cos (0.0) = 1
 ** This is not GNU Hello. There is no built-in mail reader. **
@@ -831,7 +831,7 @@ int main (int argc, char **argv)
 }
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU libtool mdemo2!
 module name: foo1
 module reference count: 1

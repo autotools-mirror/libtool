@@ -315,7 +315,7 @@ AT_DATA([conv.cpp],
 int convenience (void) { return 1; }
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[Welcome to GNU libtool tagdemo C++!
 ** This is libfoo (tagdemo) **
 foobar::hello returned: 57616
