@@ -95,35 +95,53 @@ for mode in compile link install; do
     ;;
   esac
 
-  # Trivial.
-  LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag:test" $postargs],
+
+  # Trivial...
+
+  AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag:test" $postargs],
 	   [0], [stdout])
   # We must not attempt to match $preargs in the output, because libtool
   # may modify them.  For example, on Cygwin, ``libtool --mode=link gcc -o
   # foo foo.o''  becomes ``gcc -o foo.exe foo.o''.
-  LT_AT_CHECK([$EGREP "$mode:.*$match_preflag$flag:test " stdout], [0], [ignore])
+  AT_CHECK([grep "$mode:.*$match_preflag$flag:test " stdout], [0], [ignore])
 
-  # Metacharacters that should be backslashified.
-  for mchar in \" \` \$ \\; do
-    LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
+
+  # Non-trivial...
+
+  # Backslash needs to be double-escaped: one escape is stripped as the shell
+  # collects arguments for grep (\\\\\\\\ => \\\\), and then another escape
+  # is stripped by grep itself (\\\\ => \\) before the resulting expression is
+  # matched (grepping for \\ matches \):
+  AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag\\:test\\" $postargs],
+	   [0], [stdout])
+  # NOTE: we use "..."'"'"..." to insert a literal quote into the expression
+  #       because "...\"..." is not expanded consistently by all shells.
+  AT_CHECK([grep "$mode:.*$match_preflag"'"\?'"$flag\\\\\\\\:test\\\\\\\\"'"\? ' stdout],
+	      [0], [ignore])
+
+  # Shell metacharacters that should be backslashified by libtool.
+  for mchar in \" \` \$; do
+    AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
 	     [0], [stdout])
-    LT_AT_CHECK([$EGREP "$mode:.*$match_preflag\"?$flag\\\\\\$mchar:test\\\\\\$mchar\"? " stdout], [0], [ignore])
+    AT_CHECK([grep "$mode:.*$match_preflag"'"'"\?$flag\\\\$mchar:test\\\\$mchar"'"'"\? " stdout], [0], [ignore])
   done
 
-  # Metacharacters that should be double quoted, and need escaping for grep
+  # Shell metacharacters that should be double quoted by libtool, and need
+  # backslash escaping for input to grep.
   for mchar in "@<:@" "@:>@" "^" "*"; do
 
-    LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
+    AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
 	     [0], [stdout])
-    LT_AT_CHECK([grep "$mode:.*$match_preflag\"$flag\\$mchar:test\\$mchar\" " stdout], [0], [ignore])
+    AT_CHECK([grep "$mode:.*$match_preflag\"$flag\\$mchar:test\\$mchar\" " stdout], [0], [ignore])
   done
 
-  # Metacharacters that should be double quoted, that are not special to grep.
+  # Metacharacters that should be double quoted by libtool, but which are
+  # not special to grep (NOTE: Some of these ARE special to $EGREP!!).
   for mchar in "~" "#" "&" "(" ")" "{" "}" "|" ";" "<" ">" "?" "'" " " "	"; do
 
-    LT_AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
+    AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
 	     [0], [stdout])
-    LT_AT_CHECK([grep "$mode:.*$match_preflag\"$flag$mchar:test$mchar\" " stdout], [0], [ignore])
+    AT_CHECK([grep "$mode:.*$match_preflag\"$flag$mchar:test$mchar\" " stdout], [0], [ignore])
   done
 done
 
