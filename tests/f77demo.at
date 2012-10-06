@@ -245,10 +245,10 @@ LT_AT_AUTOHEADER
 m4_define([_LT_CHECK_EXECUTE],
 [LT_AT_MAKE
 
-# Oddly, the output of dynamically linked fprogram differs depending
-# on whether it is redirected to a file or sent to stdout, so we
-# just check return status, and ignore output.
-# Advice on this weirdness from a Fortran user much appreciated!
+# Due to differences in line-endings between C stdout and Fortran
+# stdout, as well as unpredictable output ordering between platforms
+# and runtimes, we can't reliably check the output here... although
+# it should be some variation of the following:
 LT_AT_HOST_DATA([expout],
 [[ Welcome to GNU libtool Fortran demo!
  Real programmers write in FORTRAN.
@@ -260,8 +260,13 @@ LT_AT_HOST_DATA([expout],
  fsub3 returned, saying that 4 *           2  =           8
  fsub3 is ok!
 ]])
-LT_AT_EXEC_CHECK([./fprogram], 0, [ignore])
+LT_AT_EXEC_CHECK([./fprogram], 0, [stdout])
 
+# A weaker output content check that is agnostic to the issues above.
+AT_CHECK([grep 'Welcome to GNU libtool Fortran demo!' stdout],
+         [0], [ignore])
+
+# Similarly, we can't reliably compare actual output with the following.
 LT_AT_HOST_DATA([expout],
 [[Welcome to GNU libtool mixed C/Fortran demo!
 The C subroutine returned, claiming that 2*2 = 4
@@ -276,7 +281,11 @@ The C wrapper to the fortran subroutine returned,
 claiming that 2*2 = 4
 The Fortran 77 subroutine is ok!
 ]])
-LT_AT_EXEC_CHECK([./cprogram], 0, [expout])
+LT_AT_EXEC_CHECK([./cprogram], 0, [stdout])
+
+# A weaker output content check that is agnostic to the issues above.
+AT_CHECK([grep 'Welcome to GNU libtool mixed C/Fortran demo!' stdout],
+         [0], [ignore])
 ])
 
 
@@ -293,18 +302,6 @@ _LT_SETUP
 
 LT_AT_CHECK_CONFIG([--disable-shared],
                    [^build_old_libs=yes], [^build_libtool_libs=no])
-
-LT_AT_HOST_DATA([expout],
-[[ Welcome to GNU libtool Fortran demo!
- Real programmers write in FORTRAN.
- fsub called
- fsubf called
- fsub returned, saying that 2 *           2  =           4
- fsub is ok!
- fsub3 called
- fsub3 returned, saying that 4 *           2  =           8
- fsub3 is ok!
-]])
 _LT_CHECK_EXECUTE
 
 AT_CLEANUP
