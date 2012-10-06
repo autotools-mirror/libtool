@@ -824,7 +824,8 @@ int main (int argc, char **argv)
 }
 ]])
 
-LT_AT_HOST_DATA([expout],
+# Not using LT_AT_HOST_DATA below, since $EGREP normalizes line endings.
+AT_DATA([expout],
 [[Welcome to GNU libtool mdemo2!
 module name: foo1
 module reference count: 1
