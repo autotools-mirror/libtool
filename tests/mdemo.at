@@ -44,7 +44,7 @@ LT_CONFIG_LTDL_DIR([libltdl])
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 LT_INIT([dlopen win32-dll])
-LTDL_INIT([nonrecursive])
+LTDL_INIT([nonrecursive convenience])
 AC_SUBST([LIBTOOL_DEPS])
 AC_SUBST([INCLTDL])
 AC_SUBST([LIBLTDL])
@@ -59,7 +59,7 @@ _EOT_]
 
 
 [cat >Makefile.am <<_EOT_
-AUTOMAKE_OPTIONS = no-dependencies foreign
+AUTOMAKE_OPTIONS = no-dependencies subdir-objects foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS = \$(INCLTDL)
 AM_LDFLAGS =
@@ -97,13 +97,6 @@ libmlib_la_LDFLAGS = -no-undefined -export-symbols-regex ".*"
 libmlib_la_DEPENDENCIES = \$(LIBLTDL) libsub.la foo1.la libfoo2.la
 
 noinst_HEADERS = foo.h
-
-\$(LIBLTDL): ${top_build_prefix}libtool \
-    ${top_build_prefix}config.h $top_srcdir/libltdl/ltdl.c \
-    $top_srcdir/libltdl/ltdl.h
-	cd $top_build_prefix; \$(MAKE) \`echo \$(LIBLTDL) | sed 's|.*\.\./\.\./libltdl/|libltdl/|g'\`
-# Do not error out if toplevel config.h does not exist:
-${top_build_prefix}config.h:
 
 bin_PROGRAMS = mdemo mdemo_static
 
@@ -641,7 +634,7 @@ AT_SETUP([dynamically ltdl preload static modules])
 
 _LT_SETUP
 
-LT_AT_CHECK_CONFIG([--disable-shared],
+LT_AT_CHECK_CONFIG([--with-included-ltdl --disable-shared],
                    [^build_old_libs=yes], [^build_libtool_libs=no])
 _LT_CHECK_EXECUTE
 _LT_CHECK_INSTALL
@@ -658,7 +651,7 @@ AT_SETUP([dynamically ltdl load a shared module])
 
 _LT_SETUP
 
-LT_AT_CHECK_CONFIG([--disable-static],
+LT_AT_CHECK_CONFIG([--with-included-ltdl --disable-static],
                    [^build_old_libs=no], [^build_libtool_libs=yes])
 _LT_CHECK_EXECUTE
 _LT_CHECK_INSTALL
@@ -675,7 +668,7 @@ AT_SETUP([ltdl load shared and static modules])
 
 _LT_SETUP
 
-LT_AT_CHECK_CONFIG([],
+LT_AT_CHECK_CONFIG([--with-included-ltdl],
                    [^build_old_libs=yes], [^build_libtool_libs=yes])
 _LT_CHECK_EXECUTE
 _LT_CHECK_INSTALL
@@ -692,7 +685,7 @@ AT_SETUP([ltdl dryrun])
 
 _LT_SETUP
 
-LT_AT_CHECK_CONFIG
+LT_AT_CHECK_CONFIG([--with-included-ltdl])
 LT_AT_MAKE([all-local libltdl/libltdlc.la])
 
 # create `before' and `after' in a directory deep within objdir,
@@ -851,7 +844,7 @@ sub() called
 foo2 is ok!
 ]])
 
-LT_AT_CHECK_CONFIG
+LT_AT_CHECK_CONFIG([--with-included-ltdl])
 
 LT_AT_MAKE
 
