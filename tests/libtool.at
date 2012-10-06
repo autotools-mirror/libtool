@@ -192,7 +192,7 @@ pic_object=none
 non_pic_object=hell.o
 ]])
 
-AT_CHECK([$LIBTOOL --mode=link $CC -o something foo.o hell.lo], [1], [stdout], [ignore])
+AT_CHECK([$LIBTOOL -n --mode=link $CC -o something foo.o hell.lo], [0], [stdout], [ignore])
 AT_CHECK([$FGREP '.lo ' stdout], [1], [ignore])
 
 AT_CLEANUP
