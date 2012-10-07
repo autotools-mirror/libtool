@@ -37,6 +37,7 @@ scriptversion=2012-10-07.10; # UTC
 # For the simplest scripts you might need only:
 #
 #   #!/bin/sh
+#   . relative/path/to/funclib.sh
 #   . relative/path/to/options-parser
 #   scriptversion=1.0
 #   func_options ${1+"$@"}
@@ -62,49 +63,6 @@ scriptversion=2012-10-07.10; # UTC
 # below, and following the instructions in the `Option parsing'
 # section further down.
 
-## -------------------- ##
-## Shell normalisation. ##
-## -------------------- ##
-
-# Some shells need a little help to be as Bourne compatible as possible.
-# Before doing anything else, make sure all that help has been provided!
-
-DUALCASE=1; export DUALCASE # for MKS sh
-if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then :
-  emulate sh
-  NULLCMD=:
-  # Pre-4.2 versions of Zsh do word splitting on ${1+"$@"}, which
-  # is contrary to our usage.  Disable this feature.
-  alias -g '${1+"$@"}'='"$@"'
-  setopt NO_GLOB_SUBST
-else
-  case `(set -o) 2>/dev/null` in *posix*) set -o posix ;; esac
-fi
-
-# NLS nuisances.
-LANGUAGE=C
-export LANGUAGE
-
-# Ensure file names are sorted consistently across platforms.
-LC_ALL=C
-export LC_ALL
-
-# CDPATH.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
-
-
-## ------------------------------- ##
-## User overridable command paths. ##
-## ------------------------------- ##
-
-# All uppercase variable names are used for environment variables.  These
-# variables can be overridden by the user before calling a script that
-# uses them if a suitable command of that name is not already available
-# in the command search PATH.
-
-: ${SED="sed"}
-
-
 ## -------------- ##
 ## Configuration. ##
 ## -------------- ##
@@ -124,104 +82,24 @@ usage='$progpath [OPTION]...'
 # override it after sourcing this library to reflect the full set of
 # options your script accepts.
 usage_message="\
-      --debug        enable verbose shell tracing
-  -v, --verbose      verbosely report processing
-      --version      print version information and exit
-  -h, --help         print short or long help message and exit
+       --debug        enable verbose shell tracing
+   -W, --warnings=CATEGORY
+                      report the warnings falling in CATEGORY [all]
+   -v, --verbose      verbosely report processing
+       --version      print version information and exit
+   -h, --help         print short or long help message and exit
 "
 
 # Additional text appended to `usage_message' in response to `--help'.
-long_help_message=
+long_help_message="
+Warning categories include:
+       \`all'          show all warnings
+       \`none'         turn off all the warnings
+       \`error'        warnings are treated as fatal errors"
 
 # Help message printed before fatal option parsing errors.
 fatal_help='Try \`$progname --help'\'' for more information.'
 
-
-
-## ----------------- ##
-## Global variables. ##
-## ----------------- ##
-
-# Except for the global variables explicitly listed below, the following
-# functions in the '^func_' namespace, and the '^require_' namespace
-# variables initialised in the `Resource management' section, sourcing
-# this file will not pollute your global namespace with anything
-# else. There's no portable way to scope variables in Bourne shell
-# though, so actually running these functions will sometimes place
-# results into a variable named after the function, and often use
-# temporary variables in the `^_G_' namespace. If you are careful to
-# avoid using those namespaces casually in your sourcing script, things
-# should continue to work as you expect. And, of course, you can freely
-# overwrite any of the functions or variables defined here before
-# calling anything to customize them.
-
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
-EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
-EXIT_SKIP=77      # $? = 77 is used to indicate a skipped test to automake.
-
-# Allow overriding, eg assuming that you follow the convention of
-# putting `$debug_cmd' at the start of all your functions, you can get
-# bash to show function call trace with:
-#    debug_cmd='eval echo "${FUNCNAME[0]} $*" >&2' bash bootstrap
-debug_cmd=${debug_cmd-":"}
-exit_cmd=:
-
-dirname='s|/[^/]*$||'
-basename='s|^.*/||'
-
-nl='
-'
-
-# There are still modern systems that have problems with `echo' mis-
-# handling backslashes, among others, so make sure $bs_echo is set to a
-# command that correctly interprets backslashes.
-# (this code from Autoconf 2.68)
-
-# Printing a long string crashes Solaris 7 /usr/bin/printf.
-bs_echo='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
-bs_echo=$bs_echo$bs_echo$bs_echo$bs_echo$bs_echo
-bs_echo=$bs_echo$bs_echo$bs_echo$bs_echo$bs_echo$bs_echo
-# Prefer a ksh shell builtin over an external printf program on Solaris,
-# but without wasting forks for bash or zsh.
-if test -z "$BASH_VERSION$ZSH_VERSION" \
-    && (test "X`print -r -- $bs_echo`" = "X$bs_echo") 2>/dev/null; then
-  bs_echo='print -r --'
-  bs_echo_n='print -rn --'
-elif (test "X`printf %s $bs_echo`" = "X$bs_echo") 2>/dev/null; then
-  bs_echo='printf %s\n'
-  bs_echo_n='printf %s'
-else
-  if test "X`(/usr/ucb/echo -n -n $bs_echo) 2>/dev/null`" = "X-n $bs_echo"; then
-    bs_echo_body='eval /usr/ucb/echo -n "$1$nl"'
-    bs_echo_n='/usr/ucb/echo -n'
-  else
-    bs_echo_body='eval expr "X$1" : "X\\(.*\\)"'
-    bs_echo_n_body='eval
-      arg=$1;
-      case $arg in #(
-      *"$nl"*)
-	expr "X$arg" : "X\\(.*\\)$nl";
-	arg=`expr "X$arg" : ".*$nl\\(.*\\)"`;;
-      esac;
-      expr "X$arg" : "X\\(.*\\)" | tr -d "$nl"
-    '
-    export bs_echo_n_body
-    bs_echo_n='sh -c $bs_echo_n_body bs_echo'
-  fi
-  export bs_echo_body
-  bs_echo='sh -c $bs_echo_body bs_echo'
-fi
-
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath=$0
-
-# The name of this program.
-progname=`$bs_echo "$progpath" |$SED "$basename"`
 
 
 ## ------------------------- ##
@@ -231,48 +109,6 @@ progname=`$bs_echo "$progpath" |$SED "$basename"`
 # This section contains functions for adding, removing, and running hooks
 # to the main code.  A hook is just a named list of of function, that can
 # be run in order later on.
-
-  # We should try to minimise forks, especially on Windows where they are
-  # unreasonably slow, so skip the feature probes when bash or zsh are
-  # being used:
-  if test set = "${BASH_VERSION+set}${ZSH_VERSION+set}"; then
-    : ${_G_HAVE_XSI_OPS="yes"}
-    # The += operator was introduced in bash 3.1
-    case $BASH_VERSION in
-      [12].* | 3.0 | 3.0.*) ;;
-      *)
-        : ${_G_HAVE_PLUSEQ_OP="yes"}
-        ;;
-    esac
-  fi
-
-
-# func_append VAR VALUE
-# ---------------------
-# Append VALUE onto the existing contents of VAR.
-test -z "$_G_HAVE_PLUSEQ_OP" \
-    && (eval 'x=a; x+=" b"; test "a b" = "$x"') 2>/dev/null \
-    && _G_HAVE_PLUSEQ_OP=yes
-
-if test yes = "$_G_HAVE_PLUSEQ_OP"
-then
-  # This is an XSI compatible shell, allowing a faster implementation...
-  eval 'func_append ()
-  {
-    $debug_cmd
-
-    eval "$1+=\$2"
-  }'
-else
-  # ...otherwise fall back to using expr, which is often a shell builtin.
-  func_append ()
-  {
-    $debug_cmd
-
-    eval "$1=\$$1\$2"
-  }
-fi
-
 
 # func_hookable FUNC_NAME
 # -----------------------
@@ -453,6 +289,7 @@ func_options_prep ()
 
     # Option defaults:
     opt_verbose=false
+    opt_warning_types=
 
     func_run_hooks func_options_prep ${1+"$@"}
 
@@ -491,6 +328,37 @@ func_parse_options ()
                       $debug_cmd
                       ;;
 
+        --no-warnings|--no-warning|--no-warn)
+                      set dummy --warnings none ${1+"$@"}
+                      shift
+		      ;;
+
+        --warnings|--warning|-W)
+                      test $# = 0 && func_missing_arg $_G_opt && break
+                      case " $warning_categories $1" in
+                        *" $1 "*)
+                          # trailing space prevents matching last $1 above
+                          func_append_uniq opt_warning_types " $1"
+                          ;;
+                        *all)
+                          opt_warning_types=$warning_categories
+                          ;;
+                        *none)
+                          opt_warning_types=none
+                          warning_func=:
+                          ;;
+                        *error)
+                          opt_warning_types=$warning_categories
+                          warning_func=func_fatal_error
+                          ;;
+                        *)
+                          func_fatal_error \
+                             "unsupported warning category: \`$1'"
+                          ;;
+                      esac
+                      shift
+                      ;;
+
         --verbose|-v) opt_verbose=: ;;
         --version)    func_version ;;
         -\?|-h)       func_usage ;;
@@ -503,6 +371,14 @@ func_parse_options ()
                       shift
                       ;;
 
+       # Separate optargs to short options:
+        -W*)
+                      func_split_short_opt "$_G_opt"
+                      set dummy "$func_split_short_opt_name" \
+                          "$func_split_short_opt_arg" ${1+"$@"}
+                      shift
+                      ;;
+
         # Separate non-argument short options:
         -\?*|-h*|-v*|-x*)
                       func_split_short_opt "$_G_opt"
@@ -511,7 +387,7 @@ func_parse_options ()
                       shift
                       ;;
 
-        --)           set dummy "$_G_opt" "*"; shift; break ;;
+        --)           break ;;
         -*)           func_fatal_help "unrecognised option: \`$_G_opt'" ;;
         *)            set dummy "$_G_opt" ${1+"$@"}; shift; break ;;
       esac
@@ -532,6 +408,9 @@ func_validate_options ()
 {
     $debug_cmd
 
+    # Display all warnings if -W was not given.
+    test -n "$opt_warning_types" || opt_warning_types=" $warning_categories"
+
     func_run_hooks func_validate_options ${1+"$@"}
 
     # Bail if the options were screwed!
@@ -543,120 +422,12 @@ func_validate_options ()
 
 
 
-## -------------------- ##
-## Resource management. ##
-## -------------------- ##
-
-# This section contains definitions for functions that each ensure a
-# particular resource (a file, or a non-empty configuration variable for
-# example) is available, and if appropriate to extract default values
-# from pertinent package files. Call them using their associated
-# `require_*' variable to ensure that they are executed, at most, once.
-#
-# It's entirely deliberate that calling these functions can set
-# variables that don't obey the namespace limitations obeyed by the rest
-# of this file, in order that that they be as useful as possible to
-# callers.
-
-
-# require_term_colors
-# -------------------
-# Allow display of bold text on terminals that support it.
-require_term_colors=func_require_term_colors
-func_require_term_colors ()
-{
-  $debug_cmd
-
-  test -t 1 && {
-    test -n "`tput sgr0 2>/dev/null`" && {
-      tc_reset=`tput sgr0`
-      test -n "`tput bold 2>/dev/null`" && tc_bold=`tput bold`
-      tc_standout=$tc_bold
-      test -n "`tput smso 2>/dev/null`" && tc_standout=`tput smso`
-      test -n "`tput setaf 1 2>/dev/null`" && tc_red=`tput setaf 1`
-      test -n "`tput setaf 2 2>/dev/null`" && tc_green=`tput setaf 2`
-      test -n "`tput setaf 4 2>/dev/null`" && tc_blue=`tput setaf 4`
-      test -n "`tput setaf 5 2>/dev/null`" && tc_cyan=`tput setaf 5`
-    }
-  }
-
-  require_term_colors=:
-}
-
-
 ## ------------------##
 ## Helper functions. ##
 ## ------------------##
 
 # This section contains the helper functions used by the rest of the
 # hookable option parser framework in ascii-betical order.
-
-# func_echo ARG...
-# ----------------
-# Echo program name prefixed message, taking newlines into account.
-func_echo ()
-{
-    _G_message=$*
-
-    save_IFS=$IFS
-    IFS=$nl
-    for _G_line in $_G_message; do
-      IFS=$save_IFS
-      $bs_echo "$progname: $_G_line"
-    done
-    IFS=$save_IFS
-}
-
-
-# func_echo_infix_1 INFIX ARG...
-# ------------------------------
-# Echo program name, followed by INFIX on the first line, with any
-# additional lines not showing INFIX.
-func_echo_infix_1 ()
-{
-    $require_term_colors
-
-    _G_infix=$1; shift
-    _G_prefix="$progname: $tc_standout$tc_red$_G_infix$tc_reset: "
-    _G_message=$*
-
-    save_IFS=$IFS
-    IFS=$nl
-    for _G_line in $_G_message; do
-      IFS=$save_IFS
-      $bs_echo "$_G_prefix$tc_bold$_G_line$tc_reset" 1>&2
-      _G_prefix="$progname: `echo $_G_infix | sed 's|.| |g'`  "
-    done
-    IFS=$save_IFS
-}
-
-
-# func_warn ARG...
-# ----------------
-# Echo program name (and 'warning') prefixed message to standard error.
-func_warn ()
-{
-    func_echo_infix_1 warning "$*"
-}
-
-
-# func_error ARG...
-# -----------------
-# Echo program name prefixed message to standard error.
-func_error ()
-{
-    func_echo_infix_1 error "$*"
-}
-
-
-# func_fatal_error ARG...
-# -----------------------
-# Echo program name prefixed message to standard error, and exit.
-func_fatal_error ()
-{
-    func_error ${1+"$@"}
-    exit $EXIT_FAILURE
-}
 
 
 # func_fatal_help ARG...
@@ -697,48 +468,6 @@ func_missing_arg ()
 
     func_error "Missing argument for \`$1'."
     exit_cmd=exit
-}
-
-
-# func_quote_for_eval ARG...
-# --------------------------
-# Aesthetically quote ARGs to be evaled later.
-# This function returns two values: FN_QUOTE_FOR_EVAL_RESULT
-# is double-quoted, suitable for a subsequent eval, whereas
-# FN_QUOTE_FOR_EVAL_UNQUOTED_RESULT has merely all characters
-# which are still active within double quotes backslashified.
-func_quote_for_eval ()
-{
-    $debug_cmd
-
-    _G_sed_quote_subst='s|\([`"$\\]\)|\\\1|g'
-
-    func_quote_for_eval_result=
-    while test $# -gt 0; do
-      case $1 in
-        *[\\\`\"\$]*)
-          _G_unquoted_arg=`printf '%s\n' "$1" |$SED "$_G_sed_quote_subst"` ;;
-        *)
-          _G_unquoted_arg=$1 ;;
-      esac
-
-      case $_G_unquoted_arg in
-        # Double-quote args containing shell metacharacters to delay
-        # word splitting, command substitution and variable expansion
-        # for a subsequent eval.
-        # Many Bourne shells cannot handle close brackets correctly
-        # in scan sets, so we specify it separately.
-        *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-          _G_quoted_arg=\"$_G_unquoted_arg\"
-          ;;
-        *)
-          _G_quoted_arg=$_G_unquoted_arg ;;
-      esac
-      test -n "$func_quote_for_eval_result" \
-          && func_append func_quote_for_eval_result " "
-      func_append func_quote_for_eval_result "$_G_quoted_arg"
-      shift
-    done
 }
 
 
@@ -828,15 +557,6 @@ func_usage_message ()
     $SED -n 's|^# ||;/^Written by/{x;p;x;};h' < "$progpath"
     echo
     eval \$bs_echo \""$usage_message"\"
-}
-
-
-# func_verbose ARG...
-# -------------------
-# Echo program name prefixed message in verbose mode only.
-func_verbose ()
-{
-    $opt_verbose && func_echo ${1+"$@"}
 }
 
 

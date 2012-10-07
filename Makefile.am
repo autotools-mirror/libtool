@@ -86,6 +86,7 @@ CLEANFILES     += libtool libtoolize
 configure_ac	= $(srcdir)/configure.ac
 config_status	= $(top_builddir)/config.status
 extract_trace	= $(srcdir)/$(aux_dir)/extract-trace
+funclib_sh	= $(srcdir)/$(aux_dir)/funclib.sh
 libtoolize_in	= $(srcdir)/libtoolize.in
 ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
@@ -93,7 +94,7 @@ ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
 
-EXTRA_DIST     += $(extract_trace) $(libtoolize_in) $(libtoolize_m4sh) \
+EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(libtoolize_in) $(libtoolize_m4sh) \
 		  $(ltmain_m4sh) $(ltmain_sh) $(ltversion_in) \
 		  $(ltversion_m4) $(options_parser)
 
@@ -491,6 +492,8 @@ pkgltdl_files	= COPYING.LIB \
 		  ltdl.mk \
 		  slist.c
 
+helper_scripts	= extract-trace funclib.sh options-parser
+
 install-data-local: $(lt_Makefile_in)
 	@$(NORMAL_INSTALL)
 ## Don't install over the top of an old pkgdatadir
@@ -503,7 +506,7 @@ install-data-local: $(lt_Makefile_in)
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$p" "$(DESTDIR)$(aclocaldir)/$$p"; \
 	done
 ## install the helper scripts
-	@list='extract-trace funclib.sh options-parser $(pkgaux_scripts)' && \
+	@list='$(helper_scripts) $(pkgaux_scripts)' && \
 	for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
@@ -597,7 +600,7 @@ uninstall-hook:
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done
-	@list='extract-trace options-parser $(pkgaux_scripts) $(pkgaux_data_files)'; \
+	@list='$(helper_scripts) $(pkgaux_scripts) $(pkgaux_data_files)'; \
 	for f in $$list; do \
 	  echo " rm -f '$(DESTDIR)$(pkgauxdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgauxdir)/$$f"; \

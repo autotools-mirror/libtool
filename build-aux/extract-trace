@@ -1,7 +1,8 @@
 #! /bin/sh
 
-# Make sure we've evaluated the option-parser library.
-test -n "$progpath" || . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
+# Make sure we've evaluated scripts we depend on.
+test -n "$progpath" || . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
+test -n "$usage" || . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
 
 # Set a version string.
 scriptversion=2012-10-07.10; # UTC
@@ -40,22 +41,6 @@ scriptversion=2012-10-07.10; # UTC
 # scripts in order to make use of the function and variable framework
 # they define, and also to avoid the overhead of forking to run this
 # script in its own process on every call.
-
-
-## -------------- ##
-## Configuration. ##
-## -------------- ##
-
-usage='$progname MACRO_NAME FILE [...]'
-
-long_help_message='
-The first argument to this program is the name of an autotools macro
-whose arguments you want to extract by examining the files listed in the
-remaining arguments using the same tool that Autoconf and Automake use,
-GNU M4.
-
-The arguments are returned separated by colons, with each traced call
-on a separate line.'
 
 
 
@@ -368,6 +353,18 @@ func_extract_trace ()
 func_main ()
 {
     $debug_cmd
+
+    # Configuration.
+    usage='$progname MACRO_NAME FILE [...]'
+
+    long_help_message='
+The first argument to this program is the name of an autotools macro
+whose arguments you want to extract by examining the files listed in the
+remaining arguments using the same tool that Autoconf and Automake use,
+GNU M4.
+
+The arguments are returned separated by colons, with each traced call
+on a separate line.'
 
     # Option processing.
     func_options "$@"

@@ -32,6 +32,7 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # we also need to be able to find them in $srcdir during testing, or if
 # executed directly from the build tree.
 
+. "@auxscriptsdir@/funclib.sh"
 . "@auxscriptsdir@/options-parser"
 . "@auxscriptsdir@/extract-trace"
 
