@@ -23,6 +23,19 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+## -------------------------- ##
+## Source external libraries. ##
+## -------------------------- ##
+
+# Much of our low-level functionality needs to be sourced from external
+# libraries, which are installed to $pkgauxdir under normal use, though
+# we also need to be able to find them in $srcdir during testing, or if
+# executed directly from the build tree.
+
+. "@auxscriptsdir@/options-parser"
+. "@auxscriptsdir@/extract-trace"
+
+
 # Usage: $progname [OPTION]...
 #
 # Prepare a package to use libtool.
@@ -294,23 +307,6 @@ func_copy ()
         "$my_copy_type \`$my_srcdir/$my_filename' to \`$my_destdir/' failed"
       return 1
     fi
-}
-
-
-# func_extract_trace macro_name [filename ...]
-# set `$func_extract_trace_result' to a colon delimited list of arguments
-# to MACRO_NAME in FILENAME. If no FILENAME is given, then
-# `configure.ac' is assumed.
-func_extract_trace ()
-{
-    $opt_debug
-
-    if test 1 -eq $#; then
-      test -n "$configure_ac" || return
-      set dummy "$@" "$configure_ac"; shift
-    fi
-
-    func_extract_trace_result=`$extract_trace ${1+"$@"}`
 }
 
 

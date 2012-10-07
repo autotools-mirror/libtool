@@ -266,6 +266,7 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## ---------------- ##
 
 ltdl_ac_aux_dir = `$(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
+abs_aux_dir = `$(lt__cd) $(srcdir)/$(aux_dir) && pwd`
 
 configure_edit = $(SED) \
 	-e 's|@aclocaldir\@|$(aclocaldir)|g' \
@@ -287,10 +288,11 @@ configure_edit = $(SED) \
 	-e 's|@pkgmacro_files\@|$(pkgmacro_files)|g' \
 	-e 's|@prefix\@|$(prefix)|g' \
 	-e 's|@SED\@|$(SED)|g' \
+	-e "/^\\. /s|@auxscriptsdir\@|$(abs_aux_dir)|g" \
 	-e 's|@srcdir\@|$(srcdir)|g'
 
 # The libtool distributor and the standalone libtool script.
-bin_SCRIPTS = libtoolize libtool
+bin_SCRIPTS = libtool
 
 libtoolize: $(libtoolize_in) $(config_status)
 	$(AM_V_at)rm -f '$@'
@@ -501,7 +503,7 @@ install-data-local: $(lt_Makefile_in)
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$p" "$(DESTDIR)$(aclocaldir)/$$p"; \
 	done
 ## install the helper scripts
-	@list='extract-trace options-parser $(pkgaux_scripts)' && \
+	@list='extract-trace funclib.sh options-parser $(pkgaux_scripts)' && \
 	for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
@@ -521,7 +523,10 @@ install-data-local: $(lt_Makefile_in)
 	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
-	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure'
+## Update direcory locations for installed libtoolize script
+	$(SED) -e "/^\\. /s|$(abs_aux_dir)|$(pkgauxdir)|g" libtoolize \
+	  > '$(DESTDIR)$(bindir)/libtoolize';
+	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
 
 
 ## ------------- ##
@@ -602,6 +607,8 @@ uninstall-hook:
 	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
+	@echo " rm -f '$(DESTDIR)$(bindir)/libtoolize'"; \
+	rm -f '$(DESTDIR)$(bindir)/libtoolize'
 
 
 ## ----------- ##
