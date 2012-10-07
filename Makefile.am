@@ -60,7 +60,6 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 
 general_m4sh	= $(srcdir)/$(m4sh_dir)/general.m4sh
 getopt_m4sh	= $(srcdir)/$(m4sh_dir)/getopt.m4sh
-libtoolize_m4sh	= $(srcdir)/libtoolize.m4sh
 ltmain_m4sh	= $(srcdir)/$(m4sh_dir)/ltmain.m4sh
 
 sh_files	= $(general_m4sh) $(getopt_m4sh)
@@ -94,14 +93,16 @@ ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
 
-EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(libtoolize_in) $(libtoolize_m4sh) \
+EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(libtoolize_in) \
 		  $(ltmain_m4sh) $(ltmain_sh) $(ltversion_in) \
 		  $(ltversion_m4) $(options_parser)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
 ## changed by configure running on the build machine.
+abs_aux_dir = `$(lt__cd) '$(srcdir)/$(aux_dir)' && pwd`
 bootstrap_edit  = $(SED) \
+		  -e '/^\. /s|@auxscriptsdir\@|'$(abs_aux_dir)'|g' \
 		  -e 's|@MACRO_VERSION\@|$(VERSION)|g' \
 		  -e "s|@MACRO_REVISION\@|$$revision|g" \
 		  -e "s|@MACRO_SERIAL\@|$$serial|g" \
@@ -177,9 +178,6 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
 	  $(LT_M4SH) '$(ltmain_m4sh)' | $(ltmain_sh_edit) > '$@'; \
 	  chmod a-w '$@'; \
 	fi
-
-$(libtoolize_in): $(libtoolize_m4sh) $(sh_files) Makefile.am
-	$(AM_V_GEN)$(LT_M4SH) '$(libtoolize_m4sh)' | $(bootstrap_edit) > '$@'
 
 lt_Makefile_am	= $(srcdir)/$(ltdl_dir)/Makefile.am
 lt_Makefile_in	= $(srcdir)/$(ltdl_dir)/Makefile.in
@@ -267,9 +265,8 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## ---------------- ##
 
 ltdl_ac_aux_dir = `$(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
-abs_aux_dir = `$(lt__cd) $(srcdir)/$(aux_dir) && pwd`
 
-configure_edit = $(SED) \
+configure_edit = $(bootstrap_edit) \
 	-e 's|@aclocaldir\@|$(aclocaldir)|g' \
 	-e 's|@aux_dir\@|$(aux_dir)|g' \
 	-e 's|@datadir\@|$(datadir)|g' \
@@ -289,7 +286,6 @@ configure_edit = $(SED) \
 	-e 's|@pkgmacro_files\@|$(pkgmacro_files)|g' \
 	-e 's|@prefix\@|$(prefix)|g' \
 	-e 's|@SED\@|$(SED)|g' \
-	-e "/^\\. /s|@auxscriptsdir\@|$(abs_aux_dir)|g" \
 	-e 's|@srcdir\@|$(srcdir)|g'
 
 # The libtool distributor and the standalone libtool script.

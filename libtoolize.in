@@ -1,6 +1,6 @@
-m4_pattern_allow([dnl])
-AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
-# libtoolize (GNU @PACKAGE@) @VERSION@
+#! /bin/sh
+
+# Prepare a package to use libtool.
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
 
 # Copyright (C) 2003-2012 Free Software Foundation, Inc.
@@ -18,10 +18,34 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with libtoolize; see the file COPYING.  If not, a copy
-# can be downloaded from http://www.gnu.org/licenses/gpl.html,
-# or obtained by writing to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+## ------ ##
+## Usage. ##
+## ------ ##
+
+# Run `./libtoolize --help` for help with using this script from the
+# command line.
+
+
+## ------------------------------- ##
+## User overridable command paths. ##
+## ------------------------------- ##
+
+# After configure completes, it has a better idea of some of the
+# shell tools we need than the defaults used by the functions shared
+# with bootstrap, so set those here where they can still be over-
+# ridden by the user, but otherwise take precedence.
+
+: ${AUTOCONF="autoconf"}
+: ${AUTOMAKE="automake"}
+: ${EGREP="@EGREP@"}
+: ${FGREP="@FGREP@"}
+: ${GREP="@GREP@"}
+: ${LN_S="@LN_S@"}
+: ${SED="@SED@"}
+
 
 ## -------------------------- ##
 ## Source external libraries. ##
@@ -36,150 +60,249 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])
 . "@auxscriptsdir@/options-parser"
 . "@auxscriptsdir@/extract-trace"
 
+# Set a version string.
+scriptversion='(GNU @PACKAGE@) @VERSION@'
 
-# Usage: $progname [OPTION]...
-#
-# Prepare a package to use libtool.
-#
-#   -c, --copy          copy files rather than symlinking them
-#       --debug         enable verbose shell tracing
-#   -n, --dry-run       print commands rather than running them
-#   -f, --force         replace existing files
-#   -i, --install       copy missing auxiliary files
-#       --ltdl[=DIR]    install libltdl sources [default: libltdl]
-#       --no-warn       don't display warning messages
-#       --nonrecursive  prepare ltdl for non-recursive make
-#   -q, --quiet         work silently
-#       --recursive     prepare ltdl for recursive make
-#       --subproject    prepare ltdl to configure and build independently
-#   -v, --verbose       verbosely report processing
-#       --version       print version information and exit
-#   -h, --help          print short or long help message
-#
-# The following space or comma delimited options can be passed to $progname
-# via the environment variable LIBTOOLIZE_OPTIONS, unknown environment
-# options are ignored:
-#
-#   --debug             enable verbose shell tracing
-#   --no-warn           don't display warning messages
-#   --quiet             work silently
-#   --verbose           verbosely report processing
-#
-# You must `cd' to the top directory of your package before you run
-# `$progname'.
-#
-# When reporting a bug, please describe a test case to reproduce it and
-# include the following information:
-#
-#       host-triplet:	@host_triplet@
-#       $progname:	(GNU @PACKAGE@) @VERSION@
-#       automake:		$automake_version
-#       autoconf:		$autoconf_version
-#
-# Report bugs to <@PACKAGE_BUGREPORT@>.
-# GNU @PACKAGE@ home page: <@PACKAGE_URL@>.
-# General help using GNU software: <http://www.gnu.org/gethelp/>.
 
-PROGRAM=libtoolize
+## ---------------- ##
+## Options parsing. ##
+## ---------------- ##
 
-m4_divert_pop
-m4_include([getopt.m4sh])
+# Hook in the functions to make sure our own options are parsed during
+# the option parsing loop.
 
-M4SH_VERBATIM([[
-# Parse environment options
+usage='$progpath [OPTION]...'
+
+# Short help message in response to `-h'.
+usage_message='Options:
+   -c, --copy          copy files rather than symlinking them
+       --debug         enable verbose shell tracing
+   -n, --dry-run       print commands rather than running them
+   -f, --force         replace existing files
+   -i, --install       copy missing auxiliary files
+       --ltdl[=DIR]    install libltdl sources [default: libltdl]
+       --no-warnings   equivalent to \`-Wnone'\''
+       --nonrecursive  prepare ltdl for non-recursive make
+   -q, --quiet         work silently
+       --recursive     prepare ltdl for recursive make
+       --subproject    prepare ltdl to configure and build independently
+   -v, --verbose       verbosely report processing
+       --version       print version information and exit
+   -W, --warnings=CATEGORY
+                       report the warnings falling in CATEGORY [all]
+   -h, --help          print short or long help message
+'
+
+# Additional text appended to `usage_message' in response to `--help'.
+long_help_message=$long_help_message"
+       \`environment'   show warnings about LIBTOOLIZE_OPTIONS content
+       \`file'          show warnings about file copying and linking
+
+The following space or comma delimited options can be passed to $progname
+via the environment variable LIBTOOLIZE_OPTIONS, unknown environment
+options are ignored:
+
+       --debug         enable verbose shell tracing
+       --no-warnings   don't display warning messages
+       --quiet         work silently
+       --verbose       verbosely report processing
+
+You must \`cd' to the top directory of your package before you run
+\`$progname'.
+
+When reporting a bug, please describe a test case to reproduce it and
+include the following information:
+
+       host-triplet:   @host_triplet@
+       version:        $progname (GNU @PACKAGE@) @VERSION@
+       automake:       `($AUTOMAKE --version) 2>/dev/null |$SED 1q`
+       autoconf:       `($AUTOCONF --version) 2>/dev/null |$SED 1q`
+
+Report bugs to <@PACKAGE_BUGREPORT@>.
+GNU @PACKAGE@ home page: <@PACKAGE_URL@>.
+General help using GNU software: <http://www.gnu.org/gethelp/>.
+"
+
+warning_categories='environment file'
+
+
+# libtoolize_environment_options [ARG]...
+# ---------------------------------------
+# Parse environment options.
+libtoolize_environment_options ()
 {
-  my_sed_env_opt='1s/^\([^,:; ]*\).*$/\1/;q'
-  my_sed_env_rest='1s/^[^,:; ]*[,:; ]*\(.*\)$/\1/;q'
+    $debug_mode
 
-  while test -n "$LIBTOOLIZE_OPTIONS"; do
-    opt=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_opt"`
-    LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_rest"`
+    my_sed_env_opt='1s/^\([^,:; ]*\).*$/\1/;q'
+    my_sed_env_rest='1s/^[^,:; ]*[,:; ]*\(.*\)$/\1/;q'
 
-    case $opt in
-      --debug|--no-warn|--quiet|--verbose)
+    while test -n "$LIBTOOLIZE_OPTIONS"; do
+      opt=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_opt"`
+      LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_rest"`
+
+      case $opt in
+        --debug|--no-warn|--no-warning|--no-warnings|--quiet|--verbose)
 		envopts="${envopts+$envopts }$opt"			  ;;
-      --*)	env_warning="${env_warning+$env_warning
+        --*)	env_warning="${env_warning+$env_warning
 }unrecognized environment option \`$opt'"				  ;;
-      *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
-    esac
-  done
+        *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
+      esac
+    done
 
-  test -n "$envopts" && {
-    func_quote_for_eval "$envopts"
-    eval set dummy "$func_quote_for_eval_result" ${1+"$@"}
-    shift
-  }
-}
-]])
-
-dnl SHORT	LONG			       DEFAULT		      INIT
-dnl ----------------------------------------------------------------------
-dnl   --automake, below, is for compatibility with automake 1.5
-M4SH_GETOPTS(
-  [c],		[--copy],			[],			[],
-  [f],		[--force],			[],			[],
-  [i],		[--install],			[],			[],
-  [n],		[--dry-run|--dryrun],		[],			[
-	CP="func_echo_all $CP"
-	test -n "$LN_S" && LN_S="func_echo_all $LN_S"
-	MKDIR="func_echo_all $MKDIR"
-	RM="func_echo_all $RM"],
-  [q],		[--quiet|--automake],		[],			[],
-  [v],		[--verbose],			[],			[],
-  [],		[--no-warning|--no-warn],	[],			[],
-  [],		[--nonrecursive|--non-recursive], [],			[],
-  [],		[--recursive],			[],			[],
-  [],		[--subproject],			[],			[],
-  [?],		[--ltdl],			[false],		[
-	# This is tricky, since we're overloading $opt_ltdl to be the
-	# optarg for --ltdl during option processing, but then stashing
-	# the (optional) optarg in $ltdl_dir and reusing $opt_ltdl to
-	# indicate that --ltdl was seen during option processing.  Also,
-	# be careful that --ltdl=foo --ltdl=bar results in ltdl_dir=bar:
-	case $opt_ltdl in
-          false|:) ;;  # a bare '--ltdl' followed by another option
-	  *)       ltdl_dir=`$ECHO "$optarg" |$SED 's|/*$||'` ;;
-	esac
-	opt_ltdl=:],
-[
-  # show any warnings saved by LIBTOOLIZE_OPTIONS parsing
-  test -n "$env_warning" &&
-    echo "$env_warning" |while read line; do func_warning "$line"; done
-
-  # validate $opt_nonrecursive, $opt_recursive and $opt_subproject
-  if $opt_nonrecursive; then
-    if $opt_recursive || $opt_subproject; then
-      func_error "you can have at most one of --non-recursive, --recursive and --subproject"
+    # Pass back the updated list of options.
+    if test -n "$envopts"; then
+      func_quote_for_eval "$envopts" ${1+"$@"}
+    else
+      func_quote_for_eval ${1+"$@"}
     fi
-    ltdl_mode=nonrecursive
-  elif $opt_recursive; then
-    $opt_subproject &&
-      func_error "you can have at most one of --non-recursive, --recursive and --subproject"
-    ltdl_mode=recursive
-  elif $opt_subproject; then
-    ltdl_mode=subproject
-  fi
-
-  # any remaining arguments are an error
-  test [$]# -gt 0 &&
-    func_fatal_help "unknown additional arguments: \`${1+$@}'"
-])
+    libtoolize_environment_options_result=$func_quote_for_eval_result
+}
+func_add_hook func_options_prep libtoolize_environment_options
 
 
-M4SH_VERBATIM([[
-# func_whisper arg...
-# Echo program name prefixed message unless $opt_quiet was given.
-func_whisper ()
+# libtoolize_options_prep [ARG]...
+# --------------------------------
+# Preparation for options parsed by libtoolize.
+libtoolize_options_prep ()
 {
     $debug_cmd
 
-    $opt_quiet || func_echo ${1+"$@"}
-}
+    # Option defaults:
+    opt_copy=false
+    opt_dry_run=false
+    opt_force=false
+    opt_install=false
+    opt_ltdl=false
+    opt_nonrecursive=false
+    opt_quiet=false
+    opt_recursive=false
+    opt_subproject=false
 
-# func_whisper_once msg_var
-# Call func_whisper with the value of MSG_VAR, and then set MSG_VAR='' so
+    ltdl_mode=
+
+    # Pass back the list of options.
+    func_quote_for_eval ${1+"$@"}
+    libtoolize_options_prep_result=$func_quote_for_eval_result
+}
+func_add_hook func_options_prep libtoolize_options_prep
+
+
+# libtoolize_parse_options [ARG]...
+# ---------------------------------
+# Provide handling for libtoolize specific options.
+libtoolize_parse_options ()
+{
+    $debug_cmd
+
+    # Perform our own loop to consume as many options as possible in
+    # each iteration.
+    while test $# -gt 0; do
+      _G_opt=$1
+      shift
+      case $_G_opt in
+        --copy|-c)	opt_copy=: ;;
+
+        --dry-run|--dryrun|-n)
+			$opt_dry_run || {
+			  opt_dry_run=:
+			  CP="func_echo_all $CP"
+			  test -n "$LN_S" && LN_S="func_echo_all $LN_S"
+			  MKDIR="func_echo_all $MKDIR"
+			  RM="func_echo_all $RM"
+			}
+			;;
+
+        --force|-f)	opt_force=: ;;
+
+        --install|-i)	opt_install=: ;;
+
+        --ltdl)		opt_ltdl=:
+			if test 0 -lt $#; then
+			  case $1 in
+			    -*) ;;
+			    *)  ltdl_dir=`$ECHO "$1" | $SED 's|/*$||'`
+			        shift
+			        ;;
+			  esac
+			fi
+			;;
+
+        --nonrecursive|--non-recursive)
+			opt_nonrecursive=:
+			;;
+
+        --quiet|--automake|-q) # --automake is for 1.5 compatibility
+			opt_quiet=: ;;
+
+        --recursive)	opt_recursive=: ;;
+
+        --subproject)	opt_subproject=: ;;
+
+        # Separate non-argument short options:
+        -c*|-f*|-i*|-n*|-q*)
+			func_split_short_opt "$_G_opt"
+			set dummy "$func_split_short_opt_name" \
+			    "-$func_split_short_opt_arg" ${1+"$@"}
+			shift
+			;;
+
+	# An option not handled by this hook function:
+        *)		set dummy "$_G_opt" ${1+"$@"}; shift; break ;;
+      esac
+    done
+
+    # save modified positional parameters for caller
+    func_quote_for_eval ${1+"$@"}
+    libtoolize_parse_options_result=$func_quote_for_eval_result
+}
+func_add_hook func_parse_options libtoolize_parse_options
+
+
+# libtoolize_validate_options [ARG]...
+# ------------------------------------
+# Perform any sanity checks on option settings and/or unconsumed
+# arguments.
+libtoolize_validate_options ()
+{
+    # show any warnings saved by LIBTOOLIZE_OPTIONS parsing
+    test -n "$env_warning" && func_warning environment "$env_warning"
+
+    # validate $opt_nonrecursive, $opt_recursive and $opt_subproject
+    if $opt_nonrecursive; then
+      if $opt_recursive || $opt_subproject; then
+        func_error "you can have at most one of --non-recursive, --recursive and --subproject"
+      fi
+      ltdl_mode=nonrecursive
+    elif $opt_recursive; then
+      $opt_subproject &&
+        func_error "you can have at most one of --non-recursive, --recursive and --subproject"
+      ltdl_mode=recursive
+    elif $opt_subproject; then
+      ltdl_mode=subproject
+    fi
+
+    # any remaining arguments are an error
+    test 0 -lt $# &&
+      func_fatal_help "unknown additional arguments: \`${1+$@}'"
+
+    # Pass back the empty argument list
+    func_quote_for_eval ${1+"$@"}
+    libtoolize_validate_options_result=$func_quote_for_eval_result
+}
+func_add_hook func_validate_options libtoolize_validate_options
+
+
+# Process options as early as possible so that --help and --version
+# can return quickly.
+func_options ${1+"$@"}
+eval set dummy "$func_options_result"; shift
+
+
+# func_notquiet_once MSG_VAR
+# --------------------------
+# Call func_notquiet with the value of MSG_VAR, and then set MSG_VAR='' so
 # that subsequent calls will have no effect.
-func_whisper_once ()
+func_notquiet_once ()
 {
     $debug_cmd
 
@@ -187,52 +310,55 @@ func_whisper_once ()
       eval my_msg=\$$1
 
       if test -n "$my_msg"; then
-        func_whisper "$my_msg"
+        func_notquiet "$my_msg"
         eval $1=
       fi
     fi
 }
 
 
-# func_whisper_hdr msg_var arg...
-# With at least 1 non-empty ARG, call func_whisper_once with MSG_VAR,
-# and then func_whisper with the remaining arguments.
-func_whisper_hdr ()
+# func_notquiet_hdr MSG_VAR ARG...
+# --------------------------------
+# With at least 1 non-empty ARG, call func_notquiet_once with MSG_VAR,
+# and then func_notquiet with the remaining arguments.
+func_notquiet_hdr ()
 {
     $debug_cmd
 
     my_msg_var=$1; shift
     test -n "$*" || return
 
-    func_whisper_once "$my_msg_var"
-    func_whisper "$*"
+    func_notquiet_once "$my_msg_var"
+    func_notquiet "$*"
 }
 
 
-# func_whisper_error_hdr msg_var arg...
-# Much the same as func_whisper_header, but for (non-fatal) error
+# func_notquiet_error_hdr MSG_VAR ARG...
+# --------------------------------------
+# Much the same as func_notquiet_header, but for (non-fatal) error
 # messages.
-func_whisper_error_hdr ()
+func_notquiet_error_hdr ()
 {
     $debug_cmd
 
     my_msg_var=$1; shift
     test -n "$*" || return
 
-    func_whisper_once "$my_msg_var"
+    func_notquiet_once "$my_msg_var"
     func_error "$*"
 
     exit_status=$EXIT_FAILURE
 }
 
 
-# func_copy filename srcdir destdir [msg_var [filter]]
+# func_copy FILENAME SRCDIR DESTDIR [MSG_VAR [FILTER]]
+# ----------------------------------------------------
 # If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE
 # fails, then try to copy SRCFILE to DESTFILE (making sure to update the
 # timestamp so that a series of files with dependencies can be copied
 # in the right order that their timestamps won't trigger rebuilds). If
 # FILTER is non-empty, it is a sed script to apply to SRCFILE as it is
-# copied.  MSG_VAR names a variable for use with func_whisper_hdr.
+# copied.  MSG_VAR names a variable for use with func_notquiet_hdr.
 func_copy ()
 {
     $debug_cmd
@@ -248,14 +374,14 @@ func_copy ()
 
     # Libtool is probably misinstalled if this happens:
     test -f "$my_srcfile" || {
-      func_whisper_error_hdr "$my_msg_var" "\`$my_srcfile' not found"
+      func_notquiet_error_hdr "$my_msg_var" "\`$my_srcfile' not found"
       return 1
     }
 
     # Require --force to remove existing $my_destfile.
     $opt_force && $RM "$my_destfile"
     test -f "$my_destfile" && {
-      func_whisper_error_hdr "$my_msg_var" \
+      func_notquiet_error_hdr "$my_msg_var" \
         "\`$my_destfile' exists: use \`--force' to overwrite"
       return 1
     }
@@ -272,14 +398,14 @@ func_copy ()
           ) >/dev/null 2>&1
         }
       then
-        func_whisper_once "$my_msg_var"
+        func_notquiet_once "$my_msg_var"
         if $opt_verbose; then
-          func_whisper "$SED -e '$my_filter' $my_srcfile > $my_destfile"
+          func_notquiet "$SED -e '$my_filter' $my_srcfile > $my_destfile"
          else
-          func_whisper "creating file \`$my_destfile'"
+          func_notquiet "creating file \`$my_destfile'"
          fi
       else
-        func_whisper_error_hdr "$my_msg_var" "creating \`$my_destfile' from \`$my_srcfile' failed"
+        func_notquiet_error_hdr "$my_msg_var" "creating \`$my_destfile' from \`$my_srcfile' failed"
         return 1
       fi
       return 0
@@ -302,16 +428,17 @@ func_copy ()
         ) >/dev/null 2>&1
       }
     then
-      func_whisper_hdr "$my_msg_var" "$my_copy_msg"
+      func_notquiet_hdr "$my_msg_var" "$my_copy_msg"
     else
-      func_whisper_error_hdr "$my_msg_var" \
+      func_notquiet_error_hdr "$my_msg_var" \
         "$my_copy_type \`$my_srcdir/$my_filename' to \`$my_destdir/' failed"
       return 1
     fi
 }
 
 
-# func_included_files searchfile
+# func_included_files SEARCHFILE
+# ------------------------------
 # Output INCLUDEFILE if SEARCHFILE m4_includes it, else output SEARCHFILE.
 func_included_files ()
 {
@@ -321,8 +448,8 @@ func_included_files ()
 
     my_include_regex=
     my_sed_include='
-        /^m4@&t@_include(\[.*\])$/ {
-	    s|^m4@&t@_include(\[\(.*\)\])$|\1|
+        /^m4_include(\[.*\])$/ {
+	    s|^m4_include(\[\(.*\)\])$|\1|
 	    p
 	}
         d'
@@ -339,7 +466,8 @@ func_included_files ()
 }
 
 
-# func_serial filename [macro_regex]
+# func_serial FILENAME [MACRO_REGEX]
+# ----------------------------------
 # Output the value of the serial number comment in FILENAME, where the
 # comment line must also match MACRO_REGEX, if given.
 func_serial ()
@@ -364,7 +492,7 @@ func_serial ()
       if test -z "$my_macro_regex" ||
          test aclocal.m4 = "$my_filename" ||
          test "X$my_macro_regex" = "X$my_filebase" ||
-         func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_file"
+         func_grep '^AC_DEFUN(\['"$my_macro_regex" "$my_file"
       then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
 	break
@@ -378,7 +506,8 @@ func_serial ()
 }
 
 
-# func_serial_max serial1 serial2
+# func_serial_max SERIAL1 SERIAL2
+# -------------------------------
 # Compare (possibly multi-part, '.' delimited) serial numbers, and
 # return the largest in $func_serial_max_result.  If they are the
 # same, func_serial_max_result will be empty.
@@ -426,7 +555,8 @@ func_serial_max ()
 }
 
 
-# func_serial_update_check srcfile src_serial destfile dest_serial
+# func_serial_update_check SRCFILE SRC_SERIAL DESTFILE DEST_SERIAL
+# ----------------------------------------------------------------
 # Unless SRC_SERIAL is newer than DEST_SERIAL set $func_serial_update_check
 # to 'false'.
 func_serial_update_check ()
@@ -444,7 +574,7 @@ func_serial_update_check ()
 
     if test -f "$my_destfile"; then
       test 0 = "$my_src_serial" && {
-        func_warning "no serial number on \`$my_srcfile', not copying."
+        func_warning file "no serial number on \`$my_srcfile', not copying."
 	return
       }
 
@@ -467,7 +597,8 @@ func_serial_update_check ()
 }
 
 
-# func_aclocal_update_check filename
+# func_aclocal_update_check FILENAME
+# ----------------------------------
 # Unless serial number of FILENAME is newer than the matching serial number
 # in aclocal.m4, set $func_aclocal_update_check to 'false'.
 func_aclocal_update_check ()
@@ -508,7 +639,8 @@ func_aclocal_update_check ()
 }
 
 
-# func_serial_update filename srcdir destdir [msg_var] [macro_re] [old_macro_re]
+# func_serial_update FILENAME SRCDIR DESTDIR [MSG_VAR] [MACRO_RE] [OLD_MACRO_RE]
+# ------------------------------------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer serial number, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.  If given, MACRO_REGEX or
@@ -553,7 +685,7 @@ func_serial_update ()
       func_copy "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
       my_return_status=$?
     elif $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
-      func_whisper_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
+      func_notquiet_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
     fi
 
     # Do this after the copy for hand maintained `aclocal.m4', incase
@@ -574,7 +706,7 @@ func_serial_update ()
           func_serial_max \
               "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
           if test "X$my_src_serial" = "X$func_serial_max_result"; then
-	      func_whisper_hdr "$my_msg_var" \
+	      func_notquiet_hdr "$my_msg_var" \
                 "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
           fi
         fi
@@ -584,7 +716,8 @@ func_serial_update ()
 }
 
 
-# func_keyword_update filename srcdir destdir sed_script [msg_var]
+# func_keyword_update FILENAME SRCDIR DESTDIR SED_SCRIPT [MSG_VAR]
+# ----------------------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer revision according to the serial number extracted by
 # SED_SCRIPT, or DESTFILE does not yet exist, or the user specified
@@ -609,7 +742,7 @@ func_keyword_update ()
     if test -f "$my_destfile"; then
       my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
       test -z "$my_src_serial" && {
-        func_warning "no serial number in \`$my_srcfile', not copying."
+        func_warning file "no serial number in \`$my_srcfile', not copying."
 	return
       }
 
@@ -625,12 +758,13 @@ func_keyword_update ()
       $RM "$my_destfile"
       func_copy "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
     elif $opt_verbose || $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
-      func_whisper_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
+      func_notquiet_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
     fi
 }
 
 
-# func_ltmain_update filename srcdir destdir [msg_var]
+# func_ltmain_update FILENAME SRCDIR DESTDIR [MSG_VAR]
+# ----------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer revision, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
@@ -651,7 +785,8 @@ func_ltmain_update ()
 }
 
 
-# func_config_update filename srcdir destdir [msg_var]
+# func_config_update FILENAME SRCDIR DESTDIR [MSG_VAR]
+# ----------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer timestamp, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
@@ -673,7 +808,8 @@ func_config_update ()
 }
 
 
-# func_install_update filename srcdir destdir [msg_var]
+# func_install_update FILENAME SRCDIR DESTDIR [MSG_VAR]
+# -----------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer timestamp, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
@@ -697,6 +833,7 @@ func_install_update ()
 
 
 # func_install_pkgmacro_files
+# ---------------------------
 # Install copies of the libtool and libltdl m4 macros into this package.
 func_install_pkgmacro_files ()
 {
@@ -755,6 +892,7 @@ func_install_pkgmacro_files ()
 
 
 # func_install_pkgltdl_files
+# --------------------------
 # Install copies of the libltdl files into this package.  Any auxiliary
 # or m4 macro files needed in the libltdl tree will also be copied by
 # func_install_pkgaux_files and func_install_pkgmacro_files resp.
@@ -848,12 +986,13 @@ func_install_pkgltdl_files ()
       test ltdl.mk = "$file" \
         && func_grep "^-\?include $ltdl_dir/Makefile.inc\$" Makefile.am \
         && mv "$ltdl_dir/$file" "$ltdl_dir/Makefile.inc" \
-        && func_whisper "renaming file \`$ltdl_dir/Makefile.inc'"
+        && func_notquiet "renaming file \`$ltdl_dir/Makefile.inc'"
     done
 }
 
 
 # func_install_pkgaux_files
+# -------------------------
 # Install copies of the auxiliary files into this package according to
 # the whether libltdl is included as a subproject, and whether the parent
 # shares the AC_CONFIG_AUX_DIR setting.
@@ -927,7 +1066,8 @@ func_install_pkgaux_files ()
 }
 
 
-# func_nonemptydir_p dirvar
+# func_nonemptydir_p DIRVAR
+# -------------------------
 # DIRVAR is the name of a variable to evaluate.  Unless DIRVAR names
 # a directory that exists and is non-empty abort with a diagnostic.
 func_nonemptydir_p ()
@@ -948,6 +1088,7 @@ func_nonemptydir_p ()
 
 
 # func_check_macros
+# -----------------
 # Sanity check macros from aclocal.m4 against installed versions.
 func_check_macros ()
 {
@@ -995,7 +1136,7 @@ func_check_macros ()
     ## DO NOT PUT ANYTHING BUT UPGRADE ADVICE MESSAGES BELOW HERE ##
     ## ---------------------------------------------------------- ##
 
-    $opt_warning || return
+    test " none" = "$opt_warning_types" && return
 
     $seen_libtool ||
       func_echo "Remember to add \`LT_INIT' to $configure_ac."
@@ -1064,7 +1205,7 @@ func_check_macros ()
 
 
 # func_autoconf_configure MAYBE-CONFIGURE-FILE
-# ------------------------------------------
+# --------------------------------------------
 # Ensure that MAYBE-CONFIGURE-FILE is the name of a file in the current
 # directory which contains an uncommented call to AC_INIT.
 func_autoconf_configure ()
@@ -1515,8 +1656,6 @@ func_require_filter_aclocal_m4 ()
 
     func_make_relative_ltdl_filter "$ltdl_am_macro_dir" "$macro_dir"
 
-    # Tricky [m] quoting to stop m4sh processing from flagging an
-    # undefined macro.
     test -z "$func_make_relative_ltdl_filter_result" || {
       func_append filter_aclocal_m4 "
           /^[m]4_include(/{
@@ -1804,4 +1943,3 @@ exit $exit_status
 # mode:shell-script
 # sh-indentation:2
 # End:
-]])

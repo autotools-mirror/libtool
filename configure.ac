@@ -49,7 +49,7 @@ m4_define([AC_CONFIG_MACRO_DIR],
      m4_defn([AC_CONFIG_MACRO_DIR])[AC_SUBST([macro_dir], [$1])])
 
 AC_CONFIG_HEADERS([config.h:config-h.in])
-AC_CONFIG_SRCDIR([libtoolize.m4sh])
+AC_CONFIG_SRCDIR([libtoolize.in])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
