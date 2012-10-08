@@ -32,11 +32,11 @@ LT_AT_BOOTSTRAP([], [-I m4], [], [--add-missing], [],
     [], [ignore])
 eval `$LIBTOOL --config | $EGREP '^(pic_flag|FGREP)='`
 
-real_pic=false
+no_dlls=:
 case " $pic_flag " in
-[*" "[^" "-]* | *" "-[^D]*]) real_pic=: ;;
+*" -DDLL_EXPORT "*) no_dlls=false ;;
 esac
-AT_CHECK([$real_pic || exit 77])
+AT_CHECK([$no_dlls || exit 77])
 AT_CHECK([test . != "$at_srcdir" || exit 77])
 
 : ${MAKE=make}
