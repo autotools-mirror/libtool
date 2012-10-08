@@ -824,7 +824,8 @@ int main (int argc, char **argv)
 }
 ]])
 
-# Not using LT_AT_HOST_DATA below, since $EGREP normalizes line endings.
+# Normalize line endings after $EGREP instead of using LT_AT_HOST_DATA
+# here, since $EGREP *may* normalize line endings for us.
 AT_DATA([expout],
 [[Welcome to GNU libtool mdemo2!
 module name: foo1
@@ -849,9 +850,14 @@ LT_AT_CHECK_CONFIG([--with-included-ltdl])
 
 LT_AT_MAKE
 
-LT_AT_EXEC_CHECK([./mdemo2_static], 0, [expout], [],
+LT_AT_EXEC_CHECK([./mdemo2_static], 0, [stdout], [],
     [./foo1.la ./libfoo2.la | $EGREP -v '^module filename: '])
-LT_AT_EXEC_CHECK([./mdemo2], 0, [expout], [],
+LT_AT_UNIFY_NL([stdout])
+LT_AT_CHECK([diff expout stdout])
+
+LT_AT_EXEC_CHECK([./mdemo2], 0, [stdout], [],
     [./foo1.la ./libfoo2.la | $EGREP -v '^module filename: '])
+LT_AT_UNIFY_NL([stdout])
+LT_AT_CHECK([diff expout stdout])
 
 AT_CLEANUP
