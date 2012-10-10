@@ -495,7 +495,7 @@ func_parse_options ()
 
         --)           set dummy "$_G_opt" "*"; shift; break ;;
         -*)           func_fatal_help "unrecognised option: \`$_G_opt'" ;;
-        *)            set dummy "$_G_opt" "$*"; shift; break ;;
+        *)            set dummy "$_G_opt" ${1+"$@"}; shift; break ;;
       esac
     done
 
