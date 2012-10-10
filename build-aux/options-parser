@@ -800,7 +800,7 @@ func_usage_message ()
 {
     $debug_cmd
 
-    eval \$bs_echo \""$usage"\"
+    eval \$bs_echo \""Usage: $usage"\"
     echo
     $SED -n 's|^# ||;/^Written by/{x;p;x;};h' < "$progpath"
     echo
