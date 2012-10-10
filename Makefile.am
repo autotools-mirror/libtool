@@ -60,7 +60,6 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 
 general_m4sh	= $(srcdir)/$(m4sh_dir)/general.m4sh
 getopt_m4sh	= $(srcdir)/$(m4sh_dir)/getopt.m4sh
-ltmain_m4sh	= $(srcdir)/$(m4sh_dir)/ltmain.m4sh
 
 sh_files	= $(general_m4sh) $(getopt_m4sh)
 build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
@@ -89,13 +88,14 @@ funclib_sh	= $(srcdir)/$(aux_dir)/funclib.sh
 inline_source	= $(srcdir)/$(aux_dir)/inline-source
 libtoolize_in	= $(srcdir)/libtoolize.in
 ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
+ltmain_in	= $(srcdir)/$(aux_dir)/ltmain.in
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
 ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
 
 EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
-		  $(libtoolize_in) $(ltmain_m4sh) $(ltmain_sh) \
+		  $(libtoolize_in) $(ltmain_in) $(ltmain_sh) \
 		  $(ltversion_in) $(ltversion_m4) $(options_parser)
 
 ## These are the replacements that need to be made at bootstrap time,
@@ -116,12 +116,6 @@ bootstrap_edit  = $(SED) \
 		  -e 's|@PACKAGE_TARNAME\@|$(PACKAGE)|g' \
 		  -e 's|@PACKAGE_VERSION\@|$(VERSION)|g' \
 		  -e 's|@VERSION\@|$(VERSION)|g'
-
-## ltmain.sh needs some additional editing to remove unsubstituted
-## variable defaulting lines, because ltmain.sh never gets passed
-## through $(configure_edit).
-ltmain_sh_edit	= $(bootstrap_edit) \
-		  -e '/^: \$${.*="@.*@"}$$/d'
 
 ## We build ltversion.m4 here, instead of from config.status,
 ## because config.status is rerun each time one of configure's
@@ -158,12 +152,12 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
-##           you must `touch $(m4sh_dir)/ltmain.m4sh' from the
+##           you must `touch $(aux_dir)/ltmain.in' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-$(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
+$(ltmain_sh): $(ltmain_in) $(sh_files) $(dotversion)
 	@$(rebuild); \
 	if test -f '$@'; then \
 	  eval `'$(SED)' -n '/^package_revision=/p' '$@'`; \
@@ -175,8 +169,8 @@ $(ltmain_sh): $(ltmain_m4sh) $(sh_files) $(dotversion)
 	if $$rebuild; then \
 	  rm -f '$@'; \
 	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
-	  else echo "$(LT_M4SH) '$(ltmain.m4sh)' |" $(ltmain_sh_edit) "> '$@'"; fi; \
-	  $(LT_M4SH) '$(ltmain_m4sh)' | $(ltmain_sh_edit) > '$@'; \
+	  else echo $(bootstrap_edit) "< '$(ltmain_in)' > '$@'"; fi; \
+	  $(bootstrap_edit) < '$(ltmain_in)' > '$@'; \
 	  chmod a-w '$@'; \
 	fi
 
@@ -511,8 +505,16 @@ install-data-local: $(lt_Makefile_in)
 	@list='$(pkgaux_data_files)' && for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
-	  $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
+	  case $$p in \
+	  ltmain.sh) \
+	    echo "$(inline_source) '$(srcdir)/$(aux_dir)/$$p' > '$(DESTDIR)$(pkgauxdir)/$$p'"; \
+	    $(inline_source) "$(srcdir)/$(aux_dir)/$$p" > "$(DESTDIR)$(pkgauxdir)/$$p"; \
+	    ;; \
+	  *) \
+	    echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
+	    $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
+	    ;; \
+	  esac; \
 	done
 ## install the libltdl files
 	@list='$(pkgltdl_files)' && for p in $$list; do \

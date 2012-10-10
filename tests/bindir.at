@@ -24,7 +24,7 @@
 
 ####
 #  In this testcase, and in the chunk of code that makes use
-# of $bindir in ltmain.m4sh, we would very much have liked to
+# of $bindir in ltmain.in, we would very much have liked to
 # automatically decide which systems require dynamically-loaded
 # libraries to be installed to a directory in $PATH according
 # to the libtool properties that tell us that "the system provides
@@ -55,7 +55,7 @@
 #
 # So alas we punt for now, and just hardcode the relevant OSs that require
 # this functionality.  That's Cygwin, MinGW and CeGCC for now; see the case
-# statement in libtool.m4sh around where the 'tdlname' variable is set.
+# statement in ltmain.in around where the 'tdlname' variable is set.
 
 ####
 # First a simple test that we can build and run an executable with a couple of

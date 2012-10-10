@@ -35,9 +35,9 @@ AT_CHECK([$LIBTOOL --help-all], [], [ignore])
 AT_CHECK([$LIBTOOL --version], [], [stdout])
 AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
 
-AT_CHECK([$LIBTOOL], [1], [ignore], [stderr])
+AT_CHECK([$LIBTOOL], [1], [stdout], [stderr])
 AT_CHECK([grep 'specify a MODE' stderr], [], [ignore])
-AT_CHECK([grep ' --help' stderr], [], [ignore])
+AT_CHECK([grep ' --help' stdout], [], [ignore])
 
 AT_CLEANUP
 

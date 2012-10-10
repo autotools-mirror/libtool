@@ -5067,7 +5067,7 @@ to the compiler command at @command{configure} run time:
 
 If you think @command{libtool} should let some flag through by default,
 here's how you can test such an inclusion: grab the Libtool development
-tree, edit the @file{ltmain.m4sh} file in the @file{libltdl/config}
+tree, edit the @file{ltmain.in} file in the @file{libltdl/config}
 subdirectory to pass through the flag (search for @samp{Flags to be
 passed through}), re-bootstrap and build with the flags in question
 added to @code{LDFLAGS}, @code{CFLAGS}, @code{CXXFLAGS}, etc. on the
