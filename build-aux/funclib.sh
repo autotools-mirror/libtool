@@ -917,6 +917,7 @@ func_quote_for_eval ()
 {
     $debug_cmd
 
+    func_quote_for_eval_unquoted_result=
     func_quote_for_eval_result=
     while test 0 -lt $#; do
       case $1 in
@@ -925,8 +926,13 @@ func_quote_for_eval ()
         *)
           _G_unquoted_arg=$1 ;;
       esac
+      if test -n "$func_quote_for_eval_unquoted_result"; then
+	func_append func_quote_for_eval_unquoted_result " $_G_unquoted_arg"
+      else
+        func_append func_quote_for_eval_unquoted_result "$_G_unquoted_arg"
+      fi
 
-      case $func_quote_for_eval_unquoted_result in
+      case $_G_unquoted_arg in
         # Double-quote args containing shell metacharacters to delay
         # word splitting, command substitution and variable expansion
         # for a subsequent eval.
@@ -940,9 +946,11 @@ func_quote_for_eval ()
 	  ;;
       esac
 
-      test -n "$func_quote_for_eval_result" \
-	  && func_append func_quote_for_eval_result " "
-      func_append func_quote_for_eval_result "$_G_unquoted_arg"
+      if test -n "$func_quote_for_eval_result"; then
+	func_append func_quote_for_eval_result " $_G_quoted_arg"
+      else
+        func_append func_quote_for_eval_result "$_G_quoted_arg"
+      fi
       shift
     done
 }

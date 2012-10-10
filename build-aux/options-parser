@@ -173,7 +173,8 @@ func_run_hooks ()
 
       # store returned options list back into positional
       # parameters for next `cmd' execution.
-      eval set dummy \$${_G_hook}_result; shift
+      eval _G_hook_result=\$${_G_hook}_result
+      eval set dummy "$_G_hook_result"; shift
     done
 
     func_quote_for_eval ${1+"$@"}
@@ -315,7 +316,7 @@ func_parse_options ()
       func_run_hooks func_parse_options ${1+"$@"}
 
       # Adjust func_parse_options positional parameters to match
-      eval set dummy $func_run_hooks_result; shift
+      eval set dummy "$func_run_hooks_result"; shift
 
       # Break out of the loop if we already parsed every option.
       test $# -gt 0 || break
