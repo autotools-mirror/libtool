@@ -86,6 +86,7 @@ configure_ac	= $(srcdir)/configure.ac
 config_status	= $(top_builddir)/config.status
 extract_trace	= $(srcdir)/$(aux_dir)/extract-trace
 funclib_sh	= $(srcdir)/$(aux_dir)/funclib.sh
+inline_source	= $(srcdir)/$(aux_dir)/inline-source
 libtoolize_in	= $(srcdir)/libtoolize.in
 ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
@@ -93,9 +94,9 @@ ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
 
-EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(libtoolize_in) \
-		  $(ltmain_m4sh) $(ltmain_sh) $(ltversion_in) \
-		  $(ltversion_m4) $(options_parser)
+EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
+		  $(libtoolize_in) $(ltmain_m4sh) $(ltmain_sh) \
+		  $(ltversion_in) $(ltversion_m4) $(options_parser)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -488,8 +489,6 @@ pkgltdl_files	= COPYING.LIB \
 		  ltdl.mk \
 		  slist.c
 
-helper_scripts	= extract-trace funclib.sh options-parser
-
 install-data-local: $(lt_Makefile_in)
 	@$(NORMAL_INSTALL)
 ## Don't install over the top of an old pkgdatadir
@@ -502,7 +501,7 @@ install-data-local: $(lt_Makefile_in)
 	  $(INSTALL_DATA) "$(srcdir)/$(macro_dir)/$$p" "$(DESTDIR)$(aclocaldir)/$$p"; \
 	done
 ## install the helper scripts
-	@list='$(helper_scripts) $(pkgaux_scripts)' && \
+	@list='$(pkgaux_scripts)' && \
 	for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
@@ -522,9 +521,8 @@ install-data-local: $(lt_Makefile_in)
 	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
-## Update direcory locations for installed libtoolize script
-	$(SED) -e "/^\\. /s|$(abs_aux_dir)|$(pkgauxdir)|g" libtoolize \
-	  > '$(DESTDIR)$(bindir)/libtoolize';
+## Inline helper-scripts for installed libtoolize script
+	'$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
 	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
 
 
@@ -596,7 +594,7 @@ uninstall-hook:
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done
-	@list='$(helper_scripts) $(pkgaux_scripts) $(pkgaux_data_files)'; \
+	@list='$(pkgaux_scripts) $(pkgaux_data_files)'; \
 	for f in $$list; do \
 	  echo " rm -f '$(DESTDIR)$(pkgauxdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgauxdir)/$$f"; \
