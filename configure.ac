@@ -24,7 +24,7 @@
 ####
 
 
-AC_PREREQ(2.62)dnl Some m4sh scripts use $as_echo
+AC_PREREQ(2.62)
 dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 
 
@@ -97,9 +97,6 @@ AM_SILENT_RULES([yes])
 AB_VERSION='AC_PACKAGE_VERSION'
 AB_INIT([$autobuild_mode])
 
-
-dnl We use m4sh to generate libtool's portable shell scripts
-AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 
 dnl Make sure config.status is regenerated when the version timestamp changes
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(srcdir)/.version'])

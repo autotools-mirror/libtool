@@ -153,50 +153,7 @@ and is not part of a release distribution.
   and will be fixed in the `libtoolize --ltdl --(non)recursive' stage.
 
 
-7. Editing `.m4sh' Files
-========================
-
-* Use shell functions, but be careful not to assume local scope for
-  variable names.  Don't use `return', instead echo the result of a
-  function and call it from within backquotes.
-
-* Function names should be prefixed `func_', the function header should
-  look like this:
-
-  # func_foo [ OPTIONS ]
-  # Description of what func_foo does and returns.
-  func_foo ()
-  {
-      $opt_debug
-      # contents of func_foo ...
-  }
-
-  The `$opt_debug' is used to enable shell tracing (Korn shells reset
-  this on function entry).
-
-* For functions that are called frequently, if you need to return a
-  value, don't cause unneccessary forking of the shell using echo as
-  described above; instead set the return value in a variable named
-  after the called function with a suffix of `_result'.  For example
-  the function `func_quote_for_eval' stores its return value in the
-  variable `$func_quote_for_eval_result'.
-
-* Although sh-indentation is set to 2 (by the `Local Variables:' block
-  at the end of .m4sh files), the left margin of the body of shell
-  functions should begin indented by 4 spaces.
-
-* Where there are large blocks of shell code with no m4 or m4sh
-  expansions, put the entire block in an M4SH_VERBATIM call.  This
-  saves both on copy-and-paste errors, and needing to remember to
-  internally double the m4 quoting characters:
-
-  M4SH_VERBATIM([[
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  ...
-  ]])
-
-
-8. Editing `.m4' Files
+7. Editing `.m4' Files
 ======================
 
 * Be careful with both `echo' and `$ECHO'.  As the latter may be one of
@@ -222,7 +179,7 @@ and is not part of a release distribution.
   be updated in all newer versions.
 
 
-9. Abstraction layers in libltdl
+8. Abstraction layers in libltdl
 =================================
 
 * The libltdl API uses a layered approach to differentiate internal and
@@ -323,18 +280,18 @@ and is not part of a release distribution.
   loading: preopen.c, dlopen.c etc.
 
 
-10. Licensing Rules
-===================
+9. Licensing Rules
+==================
 
 GNU Libtool uses 3 different licenses for various of the files distributed
 herein, with several variations on license text.  It is important that
 you use the correct license text in each new file added.  Here are the
 texts along with some notes on when each is appropriate.  Appropriate
-commenting (shell, C etc) and decoration (m4sh etc) assumed throughout.
+commenting (shell, C etc) and decoration (m4 etc) assumed throughout.
 
 
 
-10.1. Notice preservation
+9.1. Notice preservation
 
 Autoconf macros and files used to generate them need this license, along
 with files such as HACKING, NEWS, README, README.alpha, TODO and
@@ -350,7 +307,7 @@ without warranty of any kind.
 
 
 
-10.2. GPL
+9.2. GPL
 
 Everything else in the distribution has the following license text
 unless there is good reason to use one of the other license texts
@@ -379,9 +336,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.3. GPL with self extracting version
+9.3. GPL with self extracting version
 
-Some of the sources built atop the getopt.m4sh framework use
+Some of the sources built atop the options-parser framework use
 func_version() to extract their --version output from the copyright
 block.  Those files also need the --version copyright text paragraph as
 follows:
@@ -413,9 +370,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.4. GPL with self extracting version and Libtool exception clause
+9.4. GPL with self extracting version and Libtool exception clause
 
-Although the libtool script is generated from `ltmain.m4sh' according
+Although the libtool script is generated from `ltmain.in' according
 to the rules in the preceding subsection, it also needs the Libtool
 exception clause so that it can be redistributed by other projects
 that use libtool:
@@ -452,7 +409,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.5. LGPL with Libtool exception clause
+9.5. LGPL with Libtool exception clause
 
 Finally, not only is Libltdl is LGPLed, but it is routinely
 redistributed inside projects that use it, so its sources need to use

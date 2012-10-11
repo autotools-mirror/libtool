@@ -43,10 +43,6 @@ noinst_LTLIBRARIES	=
 lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
 
-m4sh_dir		= $(aux_dir)
-
-LT_M4SH			= $(M4SH) -B '$(srcdir)/$(m4sh_dir)'
-
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
@@ -58,10 +54,6 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 # Bootstrap. #
 # ---------- #
 
-general_m4sh	= $(srcdir)/$(m4sh_dir)/general.m4sh
-getopt_m4sh	= $(srcdir)/$(m4sh_dir)/getopt.m4sh
-
-sh_files	= $(general_m4sh) $(getopt_m4sh)
 build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 		  $(srcdir)/$(aux_dir)/do-release-commit-and-tag \
 		  $(srcdir)/$(aux_dir)/gendocs.sh \
@@ -72,7 +64,7 @@ build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 		  $(srcdir)/$(aux_dir)/vc-list-files
 
 EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
-		  $(sh_files) GNUmakefile
+		  GNUmakefile
 CLEANFILES     += libtool libtoolize
 
 ## If a file is named several times below, and especially if it
@@ -157,7 +149,7 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-$(ltmain_sh): $(ltmain_in) $(sh_files) $(dotversion)
+$(ltmain_sh): $(ltmain_in) $(dotversion)
 	@$(rebuild); \
 	if test -f '$@'; then \
 	  eval `'$(SED)' -n '/^package_revision=/p' '$@'`; \
@@ -219,9 +211,6 @@ bootstrap-deps-prep:
 	@exit_cmd=:; \
 	test -z '$(srcdir)' \
 	    && echo "ERROR: don't call $(MAKE) with srcdir unset." \
-	    && exit_cmd=exit; \
-	test -z '$(M4SH)' \
-	    && echo "ERROR: don't call $(MAKE) with M4SH unset." \
 	    && exit_cmd=exit; \
 	test -z '$(PACKAGE)' \
 	    && echo "ERROR: don't call $(MAKE) with PACKAGE unset." \
@@ -621,7 +610,6 @@ testsuite	= $(tests_dir)/testsuite
 # The testsuite files are evaluated in the order given here.
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
-		  tests/getopt-m4sh.at \
 		  tests/libtoolize.at \
 		  tests/libtool.at \
 		  tests/demo.at \
@@ -702,7 +690,7 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	AR="$(AR)" \
-	M4SH="$(M4SH)" SED="$(SED)" STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
+	SED="$(SED)" STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
 	MANIFEST_TOOL="$(MANIFEST_TOOL)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" \
 	SHELL="$(SHELL)" CONFIG_SHELL="$(SHELL)" \
