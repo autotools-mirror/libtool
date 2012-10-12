@@ -1388,10 +1388,13 @@ func_require_gnulib_submodule ()
 
         shallow=
         $GIT clone -h 2>&1 |func_grep_q -- --depth \
-            && shallow='--depth 2'
+            && shallow='--depth 365'
 
         func_show_eval "$GIT clone $shallow '$gnulib_url' '$gnulib_path'" \
           func_cleanup_gnulib
+
+        func_show_eval "$GIT submodule update" \
+            'func_fatal_error "Unable to update gnulib submodule."'
 
 	# FIXME: Solaris /bin/sh will try to execute '-' if any of
 	#        these signals are caught after this.
