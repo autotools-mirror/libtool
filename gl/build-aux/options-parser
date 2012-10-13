@@ -1,9 +1,9 @@
 #! /bin/sh
 
 # Set a version string for this script.
-scriptversion=2012-10-07.10; # UTC
+scriptversion=2012-10-21.11; # UTC
 
-# A pluggable option parser for Bourne shell.
+# A portable, pluggable option parser for Bourne shell.
 # Written by Gary V. Vaughan, 2010
 
 # Copyright (C) 2010-2012 Free Software Foundation, Inc.
@@ -23,7 +23,7 @@ scriptversion=2012-10-07.10; # UTC
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Please report bugs or propose patches to bug-gnulib@gnu.org.
+# Please report bugs or propose patches to gary@gnu.org.
 
 
 ## ------ ##
@@ -569,7 +569,8 @@ func_version ()
     $debug_cmd
 
     printf '%s\n' "$progname $scriptversion"
-    $SED -n '/(C)/!b go
+    $SED -n '/^##/q
+        /(C)/!b go
         :more
         /\./!{
           N
@@ -586,7 +587,8 @@ func_version ()
         /^# Written by / {
           s|^# ||
           p
-        }' < "$progpath"
+        }
+        /^warranty; /q' < "$progpath"
 
     exit $?
 }

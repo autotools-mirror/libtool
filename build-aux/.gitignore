@@ -7,7 +7,6 @@
 /gnu-web-doc-update
 /gnupload
 /install-sh
-/ltmain.in
 /ltmain.sh
 /mdate-sh
 /missing
@@ -18,3 +17,8 @@
 /vc-list-files
 /gitlog-to-changelog
 /update-copyright
+/extract-trace
+/options-parser
+/funclib.sh
+/inline-source
+/bootstrap.in

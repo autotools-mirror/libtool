@@ -1,5 +1,12 @@
 #! /bin/sh
 
+# Output the contents of a shell script with sourced files inlined.
+# Written by Gary V. Vaughan, 2012
+
+# Copyright (C) 2012 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 # Source required external libraries:
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"funclib.sh"
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"options-parser"
@@ -7,13 +14,7 @@
 # Set a version string for *this* script.
 scriptversion=2012-10-11.10; # UTC
 
-# Output the contents of a file with sourced files inlined.
-# Written by Gary V. Vaughan, 2012
 
-# Copyright (C) 2012 Free Software Foundation, Inc.
-# This is free software; see the source for copying conditions.  There is NO
-# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -37,8 +38,12 @@ scriptversion=2012-10-11.10; # UTC
 ## Usage. ##
 ## ------ ##
 
-# Run `build-aux/inline-source --help' for help with using this stript
+# Run `build-aux/inline-source --help' for help with using this script
 # from the command line.
+
+# Recursively scan through a FILE passed on the command line, replacing
+# `. "relative/file"' or `. `echo "$0" |edit`"relative/file"` with the
+# contents of the referenced files.
 
 
 ## ---------------- ##

@@ -1,7 +1,7 @@
 # Set a version string for this script.
-scriptversion=2012-10-07.09; # UTC
+scriptversion=2012-10-21.11; # UTC
 
-# General shell script boiler plate.
+# General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
 
 # Copyright (C) 2004-2012 Free Software Foundation, Inc.
@@ -10,7 +10,7 @@ scriptversion=2012-10-07.09; # UTC
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # As a special exception to the GNU General Public License, if you distribute
@@ -26,7 +26,7 @@ scriptversion=2012-10-07.09; # UTC
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Please report bugs to bug-libtool@gnu.org.
+# Please report bugs or propose patches to gary@gnu.org.
 
 
 ## ------ ##
