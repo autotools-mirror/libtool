@@ -3730,7 +3730,7 @@ _LT_EOF
 	  cat <<_LT_EOF > conftest.$ac_ext
 /* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
 #if defined _WIN32 || defined __CYGWIN__ || defined _WIN32_WCE
-/* DATA imports from DLLs on WIN32 con't be const, because runtime
+/* DATA imports from DLLs on WIN32 can't be const, because runtime
    relocations are performed -- see ld's documentation on pseudo-relocs.  */
 # define LT@&t@_DLSYM_CONST
 #elif defined __osf__
