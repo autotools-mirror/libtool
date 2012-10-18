@@ -572,7 +572,7 @@ func_echo_infix_1 ()
         _G_indent=`$bs_echo "$_G_indent" | sed "s|$_G_esc_tc||g"`
       }
     done
-    _G_indent="$progname: "`echo "$_G_indent" | sed 's|.| |g'`"  "
+    _G_indent="$progname: "`echo "$_G_indent" | sed 's|.| |g'`"  " ## exclude from sc_prohibit_nested_quotes
 
     func_echo_infix_1_IFS=$IFS
     IFS=$nl
