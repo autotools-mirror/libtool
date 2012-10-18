@@ -1473,7 +1473,7 @@ func_mode_compile ()
 
     func_quote_for_eval "$libobj"
     test "X$libobj" != "X$func_quote_for_eval_result" \
-      && $ECHO "X$libobj" | $GREP '[@:>@~#^*{};<>?"'"'"'	 &()|`$@<:@]' \
+      && $ECHO "X$libobj" | $GREP '[]~#^*{};<>?"'"'"'	 &()|`$[]' \
       && func_warning "libobj name \`$libobj' may not contain shell special characters."
     func_dirname_and_basename "$obj" "/" ""
     objname=$func_basename_result
