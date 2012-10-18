@@ -64,6 +64,11 @@ case $lt_INSTALL in
     ;;
 esac
 
+# func_extract_trace support
+. "$abs_top_srcdir/build-aux/funclib.sh"
+. "$abs_top_srcdir/build-aux/extract-trace"
+
+
 # Unset some MAKE... variables that may cause $MAKE to act like a
 # recursively invoked sub-make.  Any $MAKE invocation in a test is
 # conceptually an independent invocation.
@@ -111,8 +116,19 @@ AT_CHECK([LT_AT_LIBTOOLIZE([$1])],
 
 # LT_AT_ACLOCAL([OPTIONS])
 # --------------------------
+m4_pattern_allow([^(m4_define|m4_defn|m4_ifndef)$])
 m4_define([LT_AT_ACLOCAL],
-[AT_CHECK([$ACLOCAL $1], [0], [ignore], [ignore])
+[macro_dir=
+func_extract_trace AC_CONFIG_MACRO_DIRS
+test -n "$func_extract_trace_result" \
+    || func_extract_trace AC_CONFIG_MACRO_DIR
+test -n "$func_extract_trace_result" \
+    && macro_dir=" -I $func_extract_trace_result"
+AT_DATA([acinclude.m4],
+[[m4_ifndef([AC_CONFIG_MACRO_DIRS],
+	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
+]])
+LT_AT_CHECK([$ACLOCAL $1${macro_dir}], [0], [ignore], [ignore])
 AT_XFAIL_IF([test no = "$ACLOCAL"])
 AT_KEYWORDS([automake])
 ])
@@ -149,7 +165,11 @@ AT_KEYWORDS([autoconf])
 # LT_AT_AUTORECONF([OPTIONS])
 # --------------------------
 m4_define([LT_AT_AUTORECONF],
-[AT_CHECK([$AUTORECONF $1], [0], [ignore], [stderr],
+[AT_DATA([acinclude.m4],
+[[m4_ifndef([AC_CONFIG_MACRO_DIRS],
+	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
+]])
+AT_CHECK([$AUTORECONF $1], [0], [ignore], [stderr],
   [AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
 AT_XFAIL_IF(
   [case ,$AUTORECONF,$AUTOCONF,$AUTOHEADER,$ACLOCAL,$AUTOMAKE, in *,no,*) :;; *) false;; esac])

@@ -98,7 +98,7 @@ dnl with autoreconf, use:
 dnl AT_DATA(configure.ac,
 dnl [[AC_INIT([template_1], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
 dnl AC_CONFIG_HEADERS([config.h:config-h.in])
-dnl AC_CONFIG_MACRO_DIR([m4])
+dnl AC_CONFIG_MACRO_DIRS([m4])
 dnl AC_CONFIG_AUX_DIR([config])
 dnl AM_INIT_AUTOMAKE([foreign])
 dnl AC_LANG([C++])
@@ -294,7 +294,7 @@ dnl
 dnl AT_DATA(src/configure.ac,
 dnl [[AC_INIT([template_2], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
 dnl AC_CONFIG_HEADERS([config.h:config-h.in])
-dnl AC_CONFIG_MACRO_DIR([m4])
+dnl AC_CONFIG_MACRO_DIRS([m4])
 dnl AC_CONFIG_AUX_DIR([config])
 dnl AM_INIT_AUTOMAKE([foreign subdir-objects])
 dnl AC_LANG([C++])

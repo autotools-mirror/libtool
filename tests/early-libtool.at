@@ -33,7 +33,7 @@ AT_SETUP([config.status])
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtool-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
@@ -127,7 +127,7 @@ AT_SETUP([config.lt])
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtool-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 LT_OUTPUT
 

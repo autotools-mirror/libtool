@@ -36,7 +36,7 @@ AT_SETUP([Makefile.inc])
 
 AT_DATA([configure.in],
 [[AC_INIT([old-ltdl-iface-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_LIBOBJ_DIR([ltdl])
 LT_CONFIG_LTDL_DIR([ltdl])
 AC_CONFIG_HEADERS([config.h])
@@ -81,7 +81,7 @@ libtoolize: linking file `./config.guess'
 libtoolize: linking file `./config.sub'
 libtoolize: linking file `./install-sh'
 libtoolize: linking file `./ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: linking file `m4/argz.m4'
 libtoolize: linking file `m4/libtool.m4'
 libtoolize: linking file `m4/ltdl.m4'

@@ -1484,6 +1484,10 @@ func_require_macro_dir ()
 
     # Sometimes this is stored in `configure.ac'.
     test -n "$macro_dir" || {
+      func_extract_trace_first AC_CONFIG_MACRO_DIRS
+      macro_dir=$func_extract_trace_first_result
+    }
+    test -n "$macro_dir" || {
       func_extract_trace_first AC_CONFIG_MACRO_DIR
       macro_dir=$func_extract_trace_first_result
     }
@@ -1506,7 +1510,7 @@ func_require_macro_dir ()
     func_verbose "macro_dir='$macro_dir'"
 
     func_check_configuration macro_dir \
-        "AC_CONFIG_MACRO_DIR([name of a directory for configure m4 files])"
+        "AC_CONFIG_MACRO_DIRS([name of a directory for configure m4 files])"
 
     $require_vc_ignore_files
 

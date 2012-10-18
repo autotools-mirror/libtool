@@ -79,6 +79,17 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     releases took the first ACLOCAL_AMFLAGS argument, but the last
     invocation of AC_CONFIG_MACRO_DIRS.
 
+  - The libtoolize program now advises use of the new Autoconf
+    AC_CONFIG_MACRO_DIRS declaration.  If you follow that advice, all
+    your developers will need at least autoconf-2.70 and automake-1.13
+    to rebootstrap your probject.  If you still need to support
+    bootstrap with older Autotools, then you should add the following
+    to your configure.ac file:
+
+        m4_ifndef([AC_CONFIG_MACRO_DIRS],
+            [m4_define([AC_CONFIG_MACRO_DIRS],
+                m4_defn([AC_CONFIG_MACRO_DIR]))])
+
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 
 * New features:

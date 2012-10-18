@@ -2440,9 +2440,9 @@ Because of these changes, and the runtime version compatibility checks
 Libtool now executes, we now advise @strong{against} including a copy of
 @file{libtool.m4} (and brethren) in @file{acinclude.m4}.  Instead,
 you should set your project macro directory with
-@code{AC_CONFIG_MACRO_DIR}.  When you @command{libtoolize} your
+@code{AC_CONFIG_MACRO_DIRS}.  When you @command{libtoolize} your
 project, a copy of the relevant macro definitions will be placed in
-your @code{AC_CONFIG_MACRO_DIR}, where @command{aclocal} can reference
+your @code{AC_CONFIG_MACRO_DIRS}, where @command{aclocal} can reference
 them directly from @file{aclocal.m4}.
 
 
@@ -2649,20 +2649,20 @@ messages).
 trick$ @kbd{LIBTOOLIZE_OPTIONS=--no-warn,--quiet autoreconf --install}
 @end example
 
-@findex AC_CONFIG_MACRO_DIR
+@findex AC_CONFIG_MACRO_DIRS
 If @command{libtoolize} detects an explicit call to
-@code{AC_CONFIG_MACRO_DIR} (@pxref{Input, , The Autoconf Manual,
+@code{AC_CONFIG_MACRO_DIRS} (@pxref{Input, , The Autoconf Manual,
 autoconf, The Autoconf Manual}) in your @file{configure.ac}, it will
 put the Libtool macros in the specified directory.
 
 In the future other Autotools will automatically check the contents of
-@code{AC_CONFIG_MACRO_DIR}, but at the moment it is more portable to
+@code{AC_CONFIG_MACRO_DIRS}, but at the moment it is more portable to
 add the macro directory to @code{ACLOCAL_AMFLAGS} in
 @file{Makefile.am}, which is where the tools currently look.  If
-@command{libtoolize} doesn't see @code{AC_CONFIG_MACRO_DIR}, it too
+@command{libtoolize} doesn't see @code{AC_CONFIG_MACRO_DIRS}, it too
 will honour the first @samp{-I} argument in @code{ACLOCAL_AMFLAGS}
 when choosing a directory to store libtool configuration macros in.
-It is perfectly sensible to use both @code{AC_CONFIG_MACRO_DIR} and
+It is perfectly sensible to use both @code{AC_CONFIG_MACRO_DIRS} and
 @code{ACLOCAL_AMFLAGS}, as long as they are kept in synchronisation.
 
 @example

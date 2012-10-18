@@ -209,7 +209,7 @@ AT_SETUP([darwin ld warnings changing configure results])
 
 AT_DATA([configure.ac],
 [[AC_INIT([ld-stderr], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 AM_INIT_AUTOMAKE([foreign])
 AC_PROG_CC
 LT_INIT

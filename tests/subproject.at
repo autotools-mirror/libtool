@@ -31,7 +31,7 @@ m4_pushdef([_LT_AT_LTDL_SETUP],
 [[AC_INIT([subproject-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([sub/ltdl])
 AC_CONFIG_AUX_DIR([sub/ltdl/config])
-AC_CONFIG_MACRO_DIR([sub/ltdl/m4])
+AC_CONFIG_MACRO_DIRS([sub/ltdl/m4])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT
 LT_WITH_LTDL

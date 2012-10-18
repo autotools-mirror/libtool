@@ -32,7 +32,7 @@ m4_define([_LT_CONFIGURE_AC],
 [AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 AC_OUTPUT
 ]])
@@ -88,7 +88,7 @@ _LT_CONFIGURE_AC
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -115,7 +115,7 @@ AT_DATA([Makefile.am],
 ]])
 
 AT_DATA(experr,
-[[libtoolize: error: AC_CONFIG_MACRO_DIR([m4]) conflicts with ACLOCAL_AMFLAGS=-I me2.
+[[libtoolize: error: AC_CONFIG_MACRO_DIRS([m4]) conflicts with ACLOCAL_AMFLAGS=-I me2.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 1, [ignore], experr)
@@ -123,17 +123,17 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 1, [ignore], experr)
 AT_CLEANUP
 
 
-## ---------------------------------------- ##
-## AC_CONFIG_MACRO_DIR macrodir extraction. ##
-## ---------------------------------------- ##
+## ----------------------------------------- ##
+## AC_CONFIG_MACRO_DIRS macrodir extraction. ##
+## ----------------------------------------- ##
 
-AT_SETUP([multiple AC_CONFIG_MACRO_DIR invocation])
+AT_SETUP([multiple AC_CONFIG_MACRO_DIRS invocation])
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([first])
-AC_CONFIG_MACRO_DIR([second])
+AC_CONFIG_MACRO_DIRS([first])
+AC_CONFIG_MACRO_DIRS([second])
 LT_INIT
 AC_OUTPUT
 ]])
@@ -141,7 +141,7 @@ AC_OUTPUT
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `first'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `first'.
 libtoolize: copying file `first/libtool.m4'
 libtoolize: copying file `first/ltoptions.m4'
 libtoolize: copying file `first/ltsugar.m4'
@@ -181,7 +181,7 @@ libtoolize: copying file `first/ltoptions.m4'
 libtoolize: copying file `first/ltsugar.m4'
 libtoolize: copying file `first/ltversion.m4'
 libtoolize: copying file `first/lt~obsolete.m4'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([first])' to configure.ac,
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIRS([first])' to configure.ac,
 libtoolize: and rerunning libtoolize and aclocal.
 ]])
 
@@ -205,7 +205,7 @@ _LT_LIBTOOLIZE_SETUP
 ## -------------------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
@@ -241,7 +241,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -282,7 +282,7 @@ AT_DATA(expout,
 libtoolize: copying file `build-aux/config.guess'
 libtoolize: copying file `build-aux/config.sub'
 libtoolize: copying file `build-aux/install-sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
@@ -321,7 +321,7 @@ libtoolize: copying file `build-aux/config.guess'
 libtoolize: copying file `build-aux/config.sub'
 libtoolize: copying file `build-aux/install-sh'
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -355,7 +355,7 @@ libtoolize: copying file `build-aux/config.guess'
 libtoolize: copying file `build-aux/config.sub'
 libtoolize: copying file `build-aux/install-sh'
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltdl.m4'
@@ -400,7 +400,7 @@ libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 LTDL_INIT([nonrecursive])
 AC_OUTPUT
@@ -428,7 +428,7 @@ libtoolize: linking file `build-aux/depcomp'
 libtoolize: linking file `build-aux/install-sh'
 libtoolize: linking file `build-aux/missing'
 libtoolize: linking file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: linking file `m4/argz.m4'
 libtoolize: linking file `m4/libtool.m4'
 libtoolize: linking file `m4/ltdl.m4'
@@ -477,7 +477,7 @@ AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 LTDL_INIT
 AC_OUTPUT
@@ -527,7 +527,7 @@ libtoolize: copying file `build-aux/depcomp'
 libtoolize: copying file `build-aux/install-sh'
 libtoolize: copying file `build-aux/missing'
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltdl.m4'
@@ -578,7 +578,7 @@ AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 AC_OUTPUT
 ]])
@@ -611,7 +611,7 @@ libtoolize:   `/usr/local/share/aclocal/ltoptions.m4'
 libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
 libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
 libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
@@ -626,7 +626,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 AC_OUTPUT
 ]])
@@ -649,7 +649,7 @@ AC_DEFUN([LT_INIT],
 ]])
 
 AT_DATA([expout],
-[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -683,7 +683,7 @@ AT_DATA([m4/ltoptions.m4], [[
 ]])
 
 AT_DATA([expout],
-[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 ]])
 
@@ -700,7 +700,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -713,11 +713,11 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
 AT_CLEANUP
 
 
-## ------------------------------------------------------------------ ##
-## Ensure libtoolize works when AC_CONFIG_MACRO_DIR is not specified. ##
-## ------------------------------------------------------------------ ##
+## ------------------------------------------------------------------- ##
+## Ensure libtoolize works when AC_CONFIG_MACRO_DIRS is not specified. ##
+## ------------------------------------------------------------------- ##
 
-AT_SETUP([verbatim aclocal.m4 w/o AC_CONFIG_MACRO_DIR])
+AT_SETUP([verbatim aclocal.m4 w/o AC_CONFIG_MACRO_DIRS])
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
@@ -746,7 +746,7 @@ libtoolize:   `/usr/local/share/aclocal/libtool.m4'
 libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
 libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
 libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
@@ -754,9 +754,9 @@ libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 
 
-## ----------------------------------------------------------------------- ##
-## Upgrading an aclocal maintained aclocal.m4 without AC_CONFIG_MACRO_DIR. ##
-## ----------------------------------------------------------------------- ##
+## ------------------------------------------------------------------------ ##
+## Upgrading an aclocal maintained aclocal.m4 without AC_CONFIG_MACRO_DIRS. ##
+## ------------------------------------------------------------------------ ##
 
 LT_AT_ACLOCAL([-I $abs_top_srcdir/m4])
 
@@ -820,7 +820,7 @@ $SED -e 's|^#.*serial.*ltoptions.m4$|# serial 99999 ltoptions.m4|' \
 mv -f aclocal.m4t aclocal.m4
 
 AT_DATA([expout],
-[[libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+[[libtoolize: Consider adding `AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
 libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
@@ -835,7 +835,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in `.'.
 libtoolize: copying file `./ltmain.sh'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
 libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
@@ -845,11 +845,11 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
 AT_CLEANUP
 
 
-## ------------------------------------------------------------- ##
-## Check nonrecursive ltdl puts m4 files in AC_CONFIG_MACRO_DIR. ##
-## ------------------------------------------------------------- ##
+## -------------------------------------------------------------- ##
+## Check nonrecursive ltdl puts m4 files in AC_CONFIG_MACRO_DIRS. ##
+## -------------------------------------------------------------- ##
 
-AT_SETUP([nonrecursive ltdl with AC_CONFIG_MACRO_DIR])
+AT_SETUP([nonrecursive ltdl with AC_CONFIG_MACRO_DIRS])
 
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
@@ -857,7 +857,7 @@ libtoolize: copying file `build-aux/config.guess'
 libtoolize: copying file `build-aux/config.sub'
 libtoolize: copying file `build-aux/install-sh'
 libtoolize: copying file `build-aux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
 libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltdl.m4'
@@ -901,7 +901,7 @@ AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 LT_INIT
 LTDL_INIT([nonrecursive])
 AC_OUTPUT
@@ -931,7 +931,7 @@ libtoolize: copying file `acaux/depcomp'
 libtoolize: copying file `acaux/install-sh'
 libtoolize: copying file `acaux/missing'
 libtoolize: copying file `acaux/ltmain.sh'
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `acm4'.
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `acm4'.
 libtoolize: copying file `acm4/argz.m4'
 libtoolize: copying file `acm4/libtool.m4'
 libtoolize: copying file `acm4/ltdl.m4'
@@ -981,7 +981,7 @@ AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
 AC_CONFIG_AUX_DIR([acaux])
-AC_CONFIG_MACRO_DIR([acm4])
+AC_CONFIG_MACRO_DIRS([acm4])
 LT_INIT
 LTDL_INIT([subproject])
 AC_OUTPUT

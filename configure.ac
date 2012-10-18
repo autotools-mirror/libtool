@@ -37,6 +37,11 @@ AC_INIT([GNU Libtool],
 m4_ifndef([AC_PACKAGE_URL],
 	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/s/libtool/])])
 
+# Remove this when a released Autoconf is capable of bootstrapping
+# Libtool without it (probably after autoconf-2.70).
+m4_ifndef([AC_CONFIG_MACRO_DIRS],
+	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
+
 # Since we already declare these directories in this file, save those
 # choices, and push the results into Makefile.am to avoid declaring
 # them in two places making renames error prone, and where copies
@@ -45,14 +50,14 @@ m4_define([AC_CONFIG_AUX_DIR],
      m4_defn([AC_CONFIG_AUX_DIR])[AC_SUBST([aux_dir], [$1])])
 m4_define([LT_CONFIG_LTDL_DIR],
      m4_defn([LT_CONFIG_LTDL_DIR])[AC_SUBST([ltdl_dir], [$1])])
-m4_define([AC_CONFIG_MACRO_DIR],
-     m4_defn([AC_CONFIG_MACRO_DIR])[AC_SUBST([macro_dir], [$1])])
+m4_define([AC_CONFIG_MACRO_DIRS],
+     m4_defn([AC_CONFIG_MACRO_DIRS])[AC_SUBST([macro_dir], [$1])])
 
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.in])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_LIBOBJ_DIR([libltdl])
 
 package_revision=`$SHELL $ac_aux_dir/git-version-gen .tarball-version`

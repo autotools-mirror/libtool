@@ -107,7 +107,7 @@ _LT_AT_LTDL_SETUP
 AT_DATA([configure.ac],
 [[AC_INIT([installable-ltdl-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 AC_CONFIG_AUX_DIR([libltdl/config])
-AC_CONFIG_MACRO_DIR([libltdl/m4])
+AC_CONFIG_MACRO_DIRS([libltdl/m4])
 AC_CONFIG_HEADERS([config.h:config.hin])
 LT_CONFIG_LTDL_DIR([libltdl])
 AM_INIT_AUTOMAKE([foreign])
@@ -182,7 +182,7 @@ _LT_AT_LTDL_SETUP
 
 AT_DATA([configure.ac],
 [[AC_INIT([configure-iface-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-AC_CONFIG_MACRO_DIR([_inst/aclocal])
+AC_CONFIG_MACRO_DIRS([_inst/aclocal])
 AC_CONFIG_HEADERS([config.h:config.hin])
 AM_INIT_AUTOMAKE([foreign])
 AC_PROG_CC
@@ -248,7 +248,7 @@ _LT_AT_LTDL_SETUP
 AT_DATA([configure.ac],
 [[AC_INIT([configure-iface-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 AC_CONFIG_AUX_DIR([libltdl/config])
-AC_CONFIG_MACRO_DIR([libltdl/m4])
+AC_CONFIG_MACRO_DIRS([libltdl/m4])
 AC_CONFIG_HEADERS([config.h:config.hin])
 LT_CONFIG_LTDL_DIR([libltdl])
 AM_INIT_AUTOMAKE([foreign])

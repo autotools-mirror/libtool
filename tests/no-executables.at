@@ -28,7 +28,7 @@ mkdir m4
 
 AT_DATA([configure.ac],
 [[AC_INIT([no-exec], [1])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 
 # We punt a bit here, to get the results of AC_PROG_CC
 # (and allow it to do link tests) but still error out on
