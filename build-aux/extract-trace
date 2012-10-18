@@ -1,8 +1,8 @@
 #! /bin/sh
 
 # Make sure we've evaluated scripts we depend on.
-test -n "$progpath" || . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
-test -n "$usage" || . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
+test -z "$progpath" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
+test extract-trace = "$progname" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
 
 # Set a version string.
 scriptversion=2012-10-07.10; # UTC
