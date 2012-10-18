@@ -59,12 +59,10 @@ package_revision=@package_revision@
 ## -------------------------- ##
 
 # Much of our low-level functionality needs to be sourced from external
-# libraries, which are installed to $pkgauxdir under normal use, though
-# we also need to be able to find them in $srcdir during testing, or if
-# executed directly from the build tree.
+# libraries, which are installed to $pkgauxdir.
 
-. "@auxscriptsdir@/funclib.sh"
-. "@auxscriptsdir@/options-parser"
+. "build-aux/funclib.sh"
+. "build-aux/options-parser"
 
 # Set a version string.
 scriptversion='(GNU @PACKAGE@) @VERSION@'

@@ -93,9 +93,7 @@ EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
 ## changed by configure running on the build machine.
-abs_aux_dir = `$(lt__cd) '$(srcdir)/$(aux_dir)' && pwd`
 bootstrap_edit  = $(SED) \
-		  -e '/^\. /s|@auxscriptsdir\@|'$(abs_aux_dir)'|g' \
 		  -e 's|@MACRO_VERSION\@|$(VERSION)|g' \
 		  -e "s|@MACRO_REVISION\@|$$revision|g" \
 		  -e "s|@MACRO_SERIAL\@|$$serial|g" \
@@ -161,8 +159,8 @@ $(ltmain_sh): $(ltmain_in) $(dotversion)
 	if $$rebuild; then \
 	  rm -f '$@'; \
 	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
-	  else echo $(bootstrap_edit) "< '$(ltmain_in)' > '$@'"; fi; \
-	  $(bootstrap_edit) < '$(ltmain_in)' > '$@'; \
+	  else echo "$(inline_source) '$(ltmain_in)' |" $(bootstrap_edit) "> '$@'"; fi; \
+	  $(inline_source) '$(ltmain_in)' | $(bootstrap_edit) > '$@'; \
 	  chmod a-w '$@'; \
 	fi
 
@@ -248,9 +246,11 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## Libtool scripts. ##
 ## ---------------- ##
 
+abs_aux_dir = `$(lt__cd) '$(srcdir)/$(aux_dir)' && pwd`
 ltdl_ac_aux_dir = `$(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
 
 configure_edit = $(bootstrap_edit) \
+	-e '/^\. /s|@auxscriptsdir\@|'$(abs_aux_dir)'|g' \
 	-e 's|@aclocaldir\@|$(aclocaldir)|g' \
 	-e 's|@aux_dir\@|$(aux_dir)|g' \
 	-e 's|@datadir\@|$(datadir)|g' \
@@ -494,16 +494,8 @@ install-data-local: $(lt_Makefile_in)
 	@list='$(pkgaux_data_files)' && for p in $$list; do \
 	  d=`echo "$(DESTDIR)$(pkgauxdir)/$$p" |$(SED) 's|[^/]*$$||'`; \
 	  test -d "$$d" || $(mkinstalldirs) "$$d"; \
-	  case $$p in \
-	  ltmain.sh) \
-	    echo "$(inline_source) '$(srcdir)/$(aux_dir)/$$p' > '$(DESTDIR)$(pkgauxdir)/$$p'"; \
-	    $(inline_source) "$(srcdir)/$(aux_dir)/$$p" > "$(DESTDIR)$(pkgauxdir)/$$p"; \
-	    ;; \
-	  *) \
-	    echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
-	    $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
-	    ;; \
-	  esac; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(aux_dir)/$$p' '$(DESTDIR)$(pkgauxdir)/$$p'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(aux_dir)/$$p" "$(DESTDIR)$(pkgauxdir)/$$p"; \
 	done
 ## install the libltdl files
 	@list='$(pkgltdl_files)' && for p in $$list; do \
