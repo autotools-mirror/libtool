@@ -951,8 +951,8 @@ func_require_build_aux ()
     $debug_cmd
 
     test -n "$build_aux" || {
-      func_extract_trace AC_CONFIG_AUX_DIR
-      build_aux=$func_extract_trace_result
+      func_extract_trace_first AC_CONFIG_AUX_DIR
+      build_aux=$func_extract_trace_first_result
       func_check_configuration build_aux \
           "AC_CONFIG_AUX_DIR([name of a directory for build scripts])"
 
@@ -1294,8 +1294,8 @@ func_require_gnulib_mk ()
       $require_gnulib_cache
       $require_macro_dir
 
-      func_extract_trace "gl_MAKEFILE_NAME" "$gnulib_cache"
-      gnulib_mk=$func_extract_trace_result
+      func_extract_trace_first "gl_MAKEFILE_NAME" "$gnulib_cache"
+      gnulib_mk=$func_extract_trace_first_result
 
       test -n "$gnulib_mk" && func_verbose "gnulib_mk='$gnulib_mk'"
     }
@@ -1484,8 +1484,8 @@ func_require_macro_dir ()
 
     # Sometimes this is stored in `configure.ac'.
     test -n "$macro_dir" || {
-      func_extract_trace AC_CONFIG_MACRO_DIR
-      macro_dir=$func_extract_trace_result
+      func_extract_trace_first AC_CONFIG_MACRO_DIR
+      macro_dir=$func_extract_trace_first_result
     }
 
     # Otherwise we might find it in `Makefile.am'.
@@ -1696,9 +1696,9 @@ func_require_source_base ()
     test -f "$gnulib_cache" && test -z "$source_base" && {
       $require_macro_dir
 
-      func_extract_trace "gl_SOURCE_BASE" "$gnulib_cache"
+      func_extract_trace_first "gl_SOURCE_BASE" "$gnulib_cache"
 
-      source_base=$func_extract_trace_result
+      source_base=$func_extract_trace_first_result
 
       func_verbose "source_base='$source_base'"
     }
