@@ -122,6 +122,42 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 1, [ignore], experr)
 
 AT_CLEANUP
 
+
+## ------------------------------------ ##
+## ACLOCAL_AMFLAGS macrodir extraction. ##
+## ------------------------------------ ##
+
+AT_SETUP([libtoolize ACLOCAL_AMFLAGS extraction])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+AC_CONFIG_AUX_DIR([build-aux])
+LT_INIT
+AC_OUTPUT
+]])
+
+AT_DATA([Makefile.am],
+[[ACLOCAL_AMFLAGS = -I first -I second
+]])
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: putting macros in `first'.
+libtoolize: copying file `first/libtool.m4'
+libtoolize: copying file `first/ltoptions.m4'
+libtoolize: copying file `first/ltsugar.m4'
+libtoolize: copying file `first/ltversion.m4'
+libtoolize: copying file `first/lt~obsolete.m4'
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([first])' to configure.ac,
+libtoolize: and rerunning libtoolize and aclocal.
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
+
+AT_CLEANUP
+
+
 ## -------------- ##
 ## Serial update. ##
 ## -------------- ##
@@ -543,8 +579,8 @@ libtoolize:   `/usr/local/share/aclocal/ltoptions.m4'
 libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
 libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac and
-libtoolize: rerunning libtoolize, to keep the correct libtool macros in-tree.
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
 
@@ -678,8 +714,8 @@ libtoolize:   `/usr/local/share/aclocal/libtool.m4'
 libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
 libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
 libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac and
-libtoolize: rerunning libtoolize, to keep the correct libtool macros in-tree.
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
 
@@ -752,8 +788,8 @@ $SED -e 's|^#.*serial.*ltoptions.m4$|# serial 99999 ltoptions.m4|' \
 mv -f aclocal.m4t aclocal.m4
 
 AT_DATA([expout],
-[[libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac and
-libtoolize: rerunning libtoolize, to keep the correct libtool macros in-tree.
+[[libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
 
@@ -767,8 +803,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 AT_DATA(expout,
 [[libtoolize: putting auxiliary files in `.'.
 libtoolize: copying file `./ltmain.sh'
-libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac and
-libtoolize: rerunning libtoolize, to keep the correct libtool macros in-tree.
+libtoolize: Consider adding `AC_CONFIG_MACRO_DIR([m4])' to configure.ac,
+libtoolize: and rerunning libtoolize and aclocal.
 libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ]])
 
