@@ -56,8 +56,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     will now correctly fallback to using only vanilla shell features
     instead of failing with a parse at startup.
   - Correctly recognize import libraries when Microsoft dumpbin is used
-    as the name lister. Also fix a bug in the dumpbin wrapper which could
-    lead to broken symbol listings in some corner cases.
+    as the name lister and extend the dumpbin wrapper to find symbols
+    in import libraries using the -headers option of dumpbin. Also fix a
+    bug in the dumpbin wrapper which could lead to broken symbol listings
+    in some corner cases.
 
 ** Important incompatible changes:
 

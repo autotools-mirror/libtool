@@ -3426,9 +3426,9 @@ else
     # Let the user override the test.
   else
     AC_CHECK_TOOLS(DUMPBIN, [dumpbin "link -dump"], :)
-    case `$DUMPBIN -symbols /dev/null 2>&1 | sed '1q'` in
+    case `$DUMPBIN -symbols -headers /dev/null 2>&1 | sed '1q'` in
     *COFF*)
-      DUMPBIN="$DUMPBIN -symbols"
+      DUMPBIN="$DUMPBIN -symbols -headers"
       ;;
     *)
       DUMPBIN=:
@@ -3682,6 +3682,9 @@ for ac_symprfx in "" "_"; do
 "     {last_section=section; section=\$ 3};"\
 "     /^COFF SYMBOL TABLE/{for(i in hide) delete hide[i]};"\
 "     /Section length .*#relocs.*(pick any)/{hide[last_section]=1};"\
+"     /^ *Symbol name *: /{split(\$ 0,sn,\":\"); si=substr(sn[2],2)};"\
+"     /^ *Type *: code/{print \"T\",si,substr(si,length(prfx))};"\
+"     /^ *Type *: data/{print \"D\",si,substr(si,length(prfx))};"\
 "     \$ 0!~/External *\|/{next};"\
 "     / 0+ UNDEF /{next}; / UNDEF \([^|]\)*()/{next};"\
 "     {if(hide[section]) next};"\
