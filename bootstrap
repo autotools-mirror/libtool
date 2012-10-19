@@ -1492,10 +1492,15 @@ func_require_macro_dir ()
     test -n "$macro_dir" || {
       $require_aclocal_amflags
 
-      _G_sed_scan='s|^.*-I[	 ]*\([^	 ]*\) .*|\1|'
-
-      # Trailing space in echo is required by the sed script.
-      macro_dir=`echo "$aclocal_amflags " |$SED "$_G_sed_scan"`
+      # Take the argument following the first '-I', if any.
+      _G_minus_I_seen=false
+      for _G_arg in $aclocal_amflags; do
+        case $_G_minus_I_seen,$_G_arg in
+          :,*)   macro_dir=$_G_arg; break ;;
+          *,-I)  _G_minus_I_seen=: ;;
+          *,-I*) macro_dir=`expr x$_G_arg : 'x-I\(.*\)$'`; break ;;
+        esac
+      done
     }
 
     func_verbose "macro_dir='$macro_dir'"
