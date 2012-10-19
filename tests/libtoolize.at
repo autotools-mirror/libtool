@@ -155,6 +155,34 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 AT_CLEANUP
 
 
+AT_SETUP([multiple AC_CONFIG_MACRO_DIRS directories])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtooize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIRS([first second third])
+LT_INIT
+AC_OUTPUT
+]])
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `first'.
+libtoolize: copying file `first/libtool.m4'
+libtoolize: copying file `first/ltoptions.m4'
+libtoolize: copying file `first/ltsugar.m4'
+libtoolize: copying file `first/ltversion.m4'
+libtoolize: copying file `first/lt~obsolete.m4'
+libtoolize: Consider adding `-I first' to ACLOCAL_AMFLAGS in Makefile.am.
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
+
+AT_CLEANUP
+
+
+
 ## ------------------------------------ ##
 ## ACLOCAL_AMFLAGS macrodir extraction. ##
 ## ------------------------------------ ##

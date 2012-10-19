@@ -1525,7 +1525,7 @@ func_require_ac_macro_dir ()
 
     if test -n "$configure_ac"; then
       func_extract_trace_first AC_CONFIG_MACRO_DIRS
-      ac_macro_dir=$func_extract_trace_first_result
+      ac_macro_dir=`expr "x$func_extract_trace_first_result" : 'x\([^	 ]*\)'`
 
       test -n "$ac_macro_dir" || {
         func_extract_trace_first AC_CONFIG_MACRO_DIR

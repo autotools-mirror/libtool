@@ -1484,8 +1484,10 @@ func_require_macro_dir ()
 
     # Sometimes this is stored in `configure.ac'.
     test -n "$macro_dir" || {
+      # AC_CONFIG_MACRO_DIRS takes a space delimited list of directories,
+      # but we only care about the first one in bootstrap.
       func_extract_trace_first AC_CONFIG_MACRO_DIRS
-      macro_dir=$func_extract_trace_first_result
+      macro_dir=`expr "x$func_extract_trace_first_result" : 'x\([^	 ]*\)'`
     }
     test -n "$macro_dir" || {
       func_extract_trace_first AC_CONFIG_MACRO_DIR
