@@ -55,8 +55,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     (e.g. the ability to parse `var+=append') as $CONFIG_SHELL, libtool
     will now correctly fallback to using only vanilla shell features
     instead of failing with a parse at startup.
-  - Fix a bug in the wrapper for using Microsoft dumpbin as name lister
-    which could lead to broken symbol listings in some corner cases.
+  - Correctly recognize import libraries when Microsoft dumpbin is used
+    as the name lister. Also fix a bug in the dumpbin wrapper which could
+    lead to broken symbol listings in some corner cases.
 
 ** Important incompatible changes:
 

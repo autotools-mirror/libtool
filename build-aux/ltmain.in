@@ -2904,6 +2904,32 @@ static const void *lt_preloaded_setup() {
     fi
 }
 
+# func_cygming_gnu_implib_p ARG
+# This predicate returns with zero status (TRUE) if
+# ARG is a GNU/binutils-style import library. Returns
+# with nonzero status (FALSE) otherwise.
+func_cygming_gnu_implib_p ()
+{
+  $debug_cmd
+
+  func_to_tool_file "$1" func_convert_file_msys_to_w32
+  func_cygming_gnu_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $EGREP ' (_head_[A-Za-z0-9_]+_[ad]l*|[A-Za-z0-9_]+_[ad]l*_iname)$'`
+  test -n "$func_cygming_gnu_implib_tmp"
+}
+
+# func_cygming_ms_implib_p ARG
+# This predicate returns with zero status (TRUE) if
+# ARG is an MS-style import library. Returns
+# with nonzero status (FALSE) otherwise.
+func_cygming_ms_implib_p ()
+{
+  $debug_cmd
+
+  func_to_tool_file "$1" func_convert_file_msys_to_w32
+  func_cygming_ms_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $GREP '_NULL_IMPORT_DESCRIPTOR'`
+  test -n "$func_cygming_ms_implib_tmp"
+}
+
 # func_win32_libid arg
 # return the library type of file 'arg'
 #
@@ -2925,9 +2951,20 @@ func_win32_libid ()
     # Keep the egrep pattern in sync with the one in _LT_CHECK_MAGIC_METHOD.
     if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null |
        $EGREP 'file format (pei*-i386(.*architecture: i386)?|pe-arm-wince|pe-x86-64)' >/dev/null; then
-      func_to_tool_file "$1" func_convert_file_msys_to_w32
-      win32_nmres=`eval $NM -f posix -A \"$func_to_tool_file_result\" |
-	$SED -n -e '
+      case $nm_interface in
+      "MS dumpbin")
+	if func_cygming_ms_implib_p "$1" ||
+	   func_cygming_gnu_implib_p "$1"
+	then
+	  win32_nmres=import
+	else
+	  win32_nmres=
+	fi
+	;;
+      *)
+	func_to_tool_file "$1" func_convert_file_msys_to_w32
+	win32_nmres=`eval $NM -f posix -A \"$func_to_tool_file_result\" |
+	  $SED -n -e '
 	    1,100{
 		/ I /{
 		    s|.*|import|
@@ -2935,6 +2972,8 @@ func_win32_libid ()
 		    q
 		}
 	    }'`
+	;;
+      esac
       case $win32_nmres in
       import*)  win32_libid_type="x86 archive import";;
       *)        win32_libid_type="x86 archive static";;
@@ -3031,32 +3070,6 @@ func_cygming_dll_for_implib_fallback_core ()
     #
     # Of those that remain, print the first one.
     $SED -e '/^\./d;/^.\./d;q'
-}
-
-# func_cygming_gnu_implib_p ARG
-# This predicate returns with zero status (TRUE) if
-# ARG is a GNU/binutils-style import library. Returns
-# with nonzero status (FALSE) otherwise.
-func_cygming_gnu_implib_p ()
-{
-  $debug_cmd
-
-  func_to_tool_file "$1" func_convert_file_msys_to_w32
-  func_cygming_gnu_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $EGREP ' (_head_[A-Za-z0-9_]+_[ad]l*|[A-Za-z0-9_]+_[ad]l*_iname)$'`
-  test -n "$func_cygming_gnu_implib_tmp"
-}
-
-# func_cygming_ms_implib_p ARG
-# This predicate returns with zero status (TRUE) if
-# ARG is an MS-style import library. Returns
-# with nonzero status (FALSE) otherwise.
-func_cygming_ms_implib_p ()
-{
-  $debug_cmd
-
-  func_to_tool_file "$1" func_convert_file_msys_to_w32
-  func_cygming_ms_implib_tmp=`$NM "$func_to_tool_file_result" | eval "$global_symbol_pipe" | $GREP '_NULL_IMPORT_DESCRIPTOR'`
-  test -n "$func_cygming_ms_implib_tmp"
 }
 
 # func_cygming_dll_for_implib_fallback ARG
