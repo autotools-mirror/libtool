@@ -164,3 +164,34 @@ LT_AT_BOOTSTRAP([--ltdl --install], [-I libltdl/m4], [ignore], [ignore],
 LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 
 AT_CLEANUP
+
+
+## ---------------------------- ##
+## AC_CONFIG_MACRO_DIR support. ##
+## ---------------------------- ##
+
+AT_SETUP([AC_CONFIG_MACRO_DIR])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+LT_INIT
+AC_OUTPUT
+]])
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, `m4'.
+libtoolize: copying file `m4/libtool.m4'
+libtoolize: copying file `m4/ltoptions.m4'
+libtoolize: copying file `m4/ltsugar.m4'
+libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
+libtoolize: Consider adding `-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
+
+AT_CLEANUP
