@@ -1397,7 +1397,7 @@ for base in '' ltdl_; do
       case $_G_minus_I_seen,$_G_arg in
         :,*)   '$r'=$_G_arg; break ;;
         *,-I)  _G_minus_I_seen=: ;;
-        *,-I*) '$r'=`expr x$_G_opt : '\''x-I\(.*\)$'\''`; break ;;
+        *,-I*) '$r'=`expr x$_G_arg : '\''x-I\(.*\)$'\''`; break ;;
       esac
     done
 
