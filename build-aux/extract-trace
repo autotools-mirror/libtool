@@ -348,6 +348,21 @@ func_extract_trace ()
 }
 
 
+# func_extract_trace_first MACRO_NAMES [FILENAME]...
+# --------------------------------------------------
+# Exactly like func_extract_trace, except that only the first argument
+# to the first invocation of one of the comma separated MACRO_NAMES is
+# returned in `$func_extract_trace_first_result`.
+func_extract_trace_first ()
+{
+    $debug_cmd
+
+    func_extract_trace ${1+"$@"}
+    func_extract_trace_first_result=`$bs_echo "$func_extract_trace_result" \
+      |$SED 's|:.*$||g;1q'`
+}
+
+
 # func_main [ARG]...
 # ------------------
 func_main ()

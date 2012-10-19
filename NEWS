@@ -70,6 +70,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     upgrade to the more standard naming of `ltdl.mk' in keeping with other
     GNU projects.
 
+  - libtoolize now behaves consistenty in respect of multiple directory
+    arguments to ACLOCAL_AMFLAGS and multiple invocations of AC_CONFIG-
+    _MACRO_DIRS, where the first directory is always selected.  Previous
+    releases took the first ACLOCAL_AMFLAGS argument, but the last
+    invocation of AC_CONFIG_MACRO_DIRS.
+
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 
 * New features:
