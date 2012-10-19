@@ -6099,7 +6099,7 @@ libtool supports file name conversion in the following scenarios:
 @tab @pxref{Cygwin/Windows File Name Conversion}
 
 @item Unix + Wine @tab MinGW (Windows)
-@tab Requires Wine. @xref{Unix/Windows File Name Conversion}
+@tab Requires Wine. @xref{Unix/Windows File Name Conversion}.
 
 @item MinGW (MSYS) @tab Cygwin
 @tab Requires @env{LT_CYGPATH}. @xref{LT_CYGPATH}. Provided for testing
