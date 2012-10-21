@@ -128,7 +128,7 @@ AT_DATA([acinclude.m4],
 [[m4_ifndef([AC_CONFIG_MACRO_DIRS],
 	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
 ]])
-LT_AT_CHECK([$ACLOCAL $1${macro_dir}], [0], [ignore], [ignore])
+LT_AT_CHECK([$ACLOCAL $1$macro_dir], [0], [ignore], [ignore])
 AT_XFAIL_IF([test no = "$ACLOCAL"])
 AT_KEYWORDS([automake])
 ])
