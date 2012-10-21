@@ -24,14 +24,14 @@ m4_defun([_LT_CONFIG_LTDL_DIR],
 [dnl remove trailing slashes
 m4_pushdef([_ARG_DIR], m4_bpatsubst([$1], [/*$]))
 m4_case(_LTDL_DIR,
-	[], [dnl only set lt_ltdl_dir if _ARG_DIR is not simply `.'
+	[], [dnl only set lt_ltdl_dir if _ARG_DIR is not simply '.'
 	     m4_if(_ARG_DIR, [.],
 	             [],
 		 [m4_define([_LTDL_DIR], _ARG_DIR)
 	          _LT_SHELL_INIT([lt_ltdl_dir=']_ARG_DIR['])])],
     [m4_if(_ARG_DIR, _LTDL_DIR,
 	    [],
-	[m4_fatal([multiple libltdl directories: `]_LTDL_DIR[', `]_ARG_DIR['])])])
+	[m4_fatal([multiple libltdl directories: ']_LTDL_DIR[', ']_ARG_DIR['])])])
 m4_popdef([_ARG_DIR])
 ])# _LT_CONFIG_LTDL_DIR
 
@@ -41,8 +41,8 @@ m4_define([_LTDL_DIR], [])
 
 # _LT_BUILD_PREFIX
 # ----------------
-# If Autoconf is new enough, expand to `$(top_build_prefix)', otherwise
-# to `$(top_builddir)/'.
+# If Autoconf is new enough, expand to '$(top_build_prefix)', otherwise
+# to '$(top_builddir)/'.
 m4_define([_LT_BUILD_PREFIX],
 [m4_ifdef([AC_AUTOCONF_VERSION],
    [m4_if(m4_version_compare(m4_defn([AC_AUTOCONF_VERSION]), [2.62]),
@@ -154,7 +154,7 @@ m4_defun([_LTDL_INSTALLABLE],
   if test yes = "${lt_lib_ltdl-no}"; then
     if test yes != "$enable_ltdl_install"; then
       # Don't overwrite $prefix/lib/libltdl.la without --enable-ltdl-install
-      AC_MSG_WARN([not overwriting libltdl at $prefix, force with `--enable-ltdl-install'])
+      AC_MSG_WARN([not overwriting libltdl at $prefix, force with '--enable-ltdl-install'])
       enable_ltdl_install=no
     fi
   elif test no = "$enable_ltdl_install"; then
@@ -191,10 +191,10 @@ AC_SUBST([INCLTDL])
 # _LTDL_MODE_DISPATCH
 # -------------------
 m4_define([_LTDL_MODE_DISPATCH],
-[dnl If _LTDL_DIR is `.', then we are configuring libltdl itself:
+[dnl If _LTDL_DIR is '.', then we are configuring libltdl itself:
 m4_if(_LTDL_DIR, [],
 	[],
-    dnl if _LTDL_MODE was not set already, the default value is `subproject':
+    dnl if _LTDL_MODE was not set already, the default value is 'subproject':
     [m4_case(m4_default(_LTDL_MODE, [subproject]),
 	  [subproject], [AC_CONFIG_SUBDIRS(_LTDL_DIR)
 			  _LT_SHELL_INIT([lt_dlopen_dir=$lt_ltdl_dir])],
@@ -271,7 +271,7 @@ AC_ARG_WITH([ltdl_include],
 if test -n "$with_ltdl_include"; then
   if test -f "$with_ltdl_include/ltdl.h"; then :
   else
-    AC_MSG_ERROR([invalid ltdl include directory: `$with_ltdl_include'])
+    AC_MSG_ERROR([invalid ltdl include directory: '$with_ltdl_include'])
   fi
 else
   with_ltdl_include=no
@@ -284,7 +284,7 @@ AC_ARG_WITH([ltdl_lib],
 if test -n "$with_ltdl_lib"; then
   if test -f "$with_ltdl_lib/libltdl.la"; then :
   else
-    AC_MSG_ERROR([invalid ltdl library directory: `$with_ltdl_lib'])
+    AC_MSG_ERROR([invalid ltdl library directory: '$with_ltdl_lib'])
   fi
 else
   with_ltdl_lib=no
@@ -307,7 +307,7 @@ case ,$with_included_ltdl,$with_ltdl_include,$with_ltdl_lib, in
 	LTDLINCL=
 	;;
   ,no*,no,*)
-	AC_MSG_ERROR([`--with-ltdl-include' and `--with-ltdl-lib' options must be used together])
+	AC_MSG_ERROR(['--with-ltdl-include' and '--with-ltdl-lib' options must be used together])
 	;;
   *)	with_included_ltdl=no
 	LIBLTDL="-L$with_ltdl_lib -lltdl"
@@ -452,7 +452,7 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   case $host_os in
   aix3*|aix4.1.*|aix4.2.*)
     # Unknown whether this is true for these versions of AIX, but
-    # we want this `case' here to explicitly catch those versions.
+    # we want this 'case' here to explicitly catch those versions.
     lt_cv_sys_dlopen_deplibs=unknown
     ;;
   aix[[4-9]]*)
@@ -502,7 +502,7 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   osf[[1234]]*)
     # dlopen did load deplibs (at least at 4.x), but until the 5.x series,
     # it did *not* use an RPATH in a shared library to find objects the
-    # library depends on, so we explicitly say `no'.
+    # library depends on, so we explicitly say 'no'.
     lt_cv_sys_dlopen_deplibs=no
     ;;
   osf5.0|osf5.0a|osf5.1)
@@ -511,14 +511,14 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
     # that the library depends on, but there's no easy way to know if that
     # patch is installed.  Since this is the case, all we can really
     # say is unknown -- it depends on the patch being installed.  If
-    # it is, this changes to `yes'.  Without it, it would be `no'.
+    # it is, this changes to 'yes'.  Without it, it would be 'no'.
     lt_cv_sys_dlopen_deplibs=unknown
     ;;
   osf*)
     # the two cases above should catch all versions of osf <= 5.1.  Read
     # the comments above for what we know about them.
     # At > 5.1, deplibs are loaded *and* any RPATH in a shared library
-    # is used to find them so we can finally say `yes'.
+    # is used to find them so we can finally say 'yes'.
     lt_cv_sys_dlopen_deplibs=yes
     ;;
   qnx*)

@@ -28,8 +28,8 @@
 # path valid at execution time.
 #
 # Also test installing these libraries and programs; however,
-# use consistent relative paths between `libtool --mode=link' and
-# `libtool --mode=install' in this test.
+# use consistent relative paths between 'libtool --mode=link' and
+# 'libtool --mode=install' in this test.
 
 AT_SETUP([deplib in subdir])
 AT_KEYWORDS([libtool])

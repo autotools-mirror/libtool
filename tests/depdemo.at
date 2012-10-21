@@ -366,7 +366,7 @@ AT_CHECK([test -n "$library_names" || (exit 77)])
 
 func_save_files
 
-# AIX 5.3 `/bin/sh' will invoke the trap for 0 at the end of a
+# AIX 5.3 '/bin/sh' will invoke the trap for 0 at the end of a
 # function, so we set the trap outside of a function to be portable.
 trap func_restore_files 0 1 2 13 15
 
@@ -403,8 +403,8 @@ AT_CHECK([test -f l3/libl3.la])
 
 # Try running uninstalled ./depdemo with only broken libl3.la in build tree.
 # If the following has normal exit status, shlibpath_overrides_runpath is
-# wrong, and should be set to `no' on this host.
-# The unusual `|| (exit 1)' is to normalize all non-zero exit statuses.
+# wrong, and should be set to 'no' on this host.
+# The unusual '|| (exit 1)' is to normalize all non-zero exit statuses.
 AT_CHECK([./depdemo$EXEEXT || (exit 1)], 1, [ignore], [ignore])
 
 test relink = "$hardcode_action" ||
@@ -415,7 +415,7 @@ test yes = "$shlibpath_overrides_runpath" ||
 
     # Running depdemo with installed libl3.la.
     # If the following check fails, then shlibpath_overrides_runpath is
-    # wrong, and should be set to `yes' on this host.
+    # wrong, and should be set to 'yes' on this host.
     LT_AT_CHECK([./depdemo], 0, [expout])
 }
 

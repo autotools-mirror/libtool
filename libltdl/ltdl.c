@@ -1519,7 +1519,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 }
 
 
-/* If the last error message stored was `FILE_NOT_FOUND', then return
+/* If the last error message stored was 'FILE_NOT_FOUND', then return
    non-zero.  */
 static int
 file_not_found (void)

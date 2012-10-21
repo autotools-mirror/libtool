@@ -35,7 +35,7 @@ chmod +x libtool
 LIBTOOL=`pwd`/libtool
 export LIBTOOL
 # run the suite in a subdirectory, otherwise the two suites will compete
-# for the output file `testsuite.log'.
+# for the output file 'testsuite.log'.
 mkdir tests
 cd tests
 INNER_TESTSUITEFLAGS="$INNER_TESTSUITEFLAGS abs_top_srcdir=$abs_top_srcdir \

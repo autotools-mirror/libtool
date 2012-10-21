@@ -19,7 +19,7 @@ GNU Libtool
 * Work out what to do when the dynamic linker loads needed dependencies.
 
 * We could have an option to hardcode paths into libraries, as well as
-  binaries: `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  This is not
+  binaries: '... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  This is not
   possible on all platforms, and is in part obviated by the ability of
   linking libtool libraries specified with -lname, but it might still
   be desirable.
@@ -48,7 +48,7 @@ GNU Libtool
   most packages that use pkg-config also use libtool, I think this
   would be a good way to reduce maintainer and developer dependencies.
 
-* Have libtoolize install `install-sh' if a newer version is available,
+* Have libtoolize install 'install-sh' if a newer version is available,
   and/or Automake is not used.
 
 * Allow to specify linking some dependent libraries statically and some
@@ -62,8 +62,8 @@ GNU Libtool
 
 * Fix -dlopen "self" on AIX.  Reported by Gary Kumfert <kumfert@llnl.gov>.
 
-* Fix denial of service if using installed `libtool' on a different mount point
-  together with a compiler which does not understand `-c -o'.
+* Fix denial of service if using installed 'libtool' on a different mount point
+  together with a compiler which does not understand '-c -o'.
   Reported by Marcin Siennicki.
 
 * Look at better -no-undefined support, maybe along the idea of
@@ -80,7 +80,7 @@ GNU Libtool
 * Fix the following bugs in libltdl:
  - error reporting of tryall_dlopen():
    if the file actually doesn't exist (stat() fails or it wasn't dlpreopened)
-   -> report `file not found'
+   -> report 'file not found'
    if it cannot be loaded (e.g. due to missing dependencies)
    -> report dlerror
     open question: which error should be reported if all dlloaders fail
@@ -113,10 +113,10 @@ GNU Libtool
 ------------------
 
 * Need to finalize the documentation, and give a specification of
-  `.la' files so that people can depend on their format.  This would be
+  '.la' files so that people can depend on their format.  This would be
   a good thing to put before the maintainance notes.
 
-* Document the installed `libtool' and its limitations clearly (maybe implement
+* Document the installed 'libtool' and its limitations clearly (maybe implement
   --disable-script-install as well).  Or, even better, remove its limitations.
 
 * Platform notes redo.
@@ -162,11 +162,11 @@ GNU Libtool
   static libraries, we should probably create a .al out of .lo objects
   and also a .a out of .o objects.  The .al would only be used to create
   shared libraries, whereas the .a would be used for creating static
-  libraries and programs.  We could also explicitly support `empty'
+  libraries and programs.  We could also explicitly support 'empty'
   convenience libraries, that behave as macros that expand to a set of
   -Rs, -Ls and -ls switches.
 
-* Audit use of object names so we can allow `$' not only within
+* Audit use of object names so we can allow '$' not only within
   source file names.  Necessary especially for java.
 
 * We could introduce a mechanism to allow for soname rewriting, to
@@ -188,7 +188,7 @@ GNU Libtool
 
 * Audit the GCJ tag section in libtool.m4.
 
-* Add caching mechanism.  Look at `libtool-cache' from Robert Ögren.
+* Add caching mechanism.  Look at 'libtool-cache' from Robert Ögren.
 
 
 2.4. libtool autoconf macros
@@ -243,7 +243,7 @@ GNU Libtool
 
 * Arrange that EXEEXT suffixes are stripped from wrapper script names
   only when needed, and that a timestamp file or a wrapper program is
-  created with the EXEEXT suffix, so that `make' doesn't build it every
+  created with the EXEEXT suffix, so that 'make' doesn't build it every
   time.
 
 * Figure out how to use data items in dlls with win32.

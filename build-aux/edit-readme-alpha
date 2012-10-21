@@ -24,10 +24,10 @@
 ####
 
 # We used to maintain separate (but extremely similiar!) README and
-# README.alpha files, and had `make dist' include the right one in a
-# distribution based on the contests of `$(VERSION)'.
+# README.alpha files, and had 'make dist' include the right one in a
+# distribution based on the contests of '$(VERSION)'.
 #
-# Now, we have `make dist' call this script to tweak the first paragraph
+# Now, we have 'make dist' call this script to tweak the first paragraph
 # of README in situ, to be more suitable for an alpha quality release.
 
 EXIT_SUCCESS=0
@@ -56,9 +56,9 @@ func_fatal_error ()
 
 for file in "$@"; do
   # Assume that read-only README indicates that we are running inside
-  # the latter part of a `make distcheck'.
+  # the latter part of a 'make distcheck'.
   test -w "$file" || {
-    echo "$progname: not editing non-writeable \`$file' (distcheck?)" >&2
+    echo "$progname: not editing non-writeable '$file' (distcheck?)" >&2
     continue
   }
 
@@ -73,7 +73,7 @@ for file in "$@"; do
                   |wc -l |sed 's|^ *||'`
 
   test 3 = "$matched" \
-      || func_fatal_error "$file format has changed, please fix \`$0'"
+      || func_fatal_error "$file format has changed, please fix '$0'"
 
   # Don't leave file droppings.
   trap 'x=$?; rm $file.T; exit $x' 1 2 13 15

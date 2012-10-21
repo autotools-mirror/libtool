@@ -47,7 +47,7 @@ scriptversion=2012-10-21.12; # UTC
 # files under version control, but running all of the right tools
 # with the right arguments, in the correct order to regenerate
 # all of those files in readiness for configuration and building
-# can be surprisingly involved!  Many projects have a `bootstrap'
+# can be surprisingly involved!  Many projects have a 'bootstrap'
 # script under version control to invoke Autotools and perform
 # other assorted book-keeping with version numbers and the like.
 #
@@ -80,13 +80,13 @@ scriptversion=2012-10-21.12; # UTC
 
 # All uppercase denotes values stored in the environment.  These
 # variables should generally be overridden by the user - however, we do
-# set them to `true' in some parts of this script to prevent them being
-# called at the wrong time by other tools that we call (`autoreconf',
+# set them to 'true' in some parts of this script to prevent them being
+# called at the wrong time by other tools that we call ('autoreconf',
 # for example).
 #
-# We also allow `LIBTOOLIZE', `M4', `SHA1SUM' and some others to be
+# We also allow 'LIBTOOLIZE', 'M4', 'SHA1SUM' and some others to be
 # overridden, and export the result for child processes, but they are
-# handled by the function `func_find_tool' and not defaulted in this
+# handled by the function 'func_find_tool' and not defaulted in this
 # section.
 
 : ${ACLOCAL="aclocal"}
@@ -124,17 +124,17 @@ export CONFIG_SHELL
 ## -------------- ##
 
 # A newline delimited list of triples of programs (that respond to
-# --version), the minimum version numbers required (or just `-' in the
+# --version), the minimum version numbers required (or just '-' in the
 # version field if any version will be sufficient) and homepage URLs
 # to help locate missing packages.
 buildreq=
 
 # Name of a file containing instructions on installing missing packages
-# required in `buildreq'.
+# required in 'buildreq'.
 buildreq_readme=README-hacking
 
 # These are extracted from AC_INIT in configure.ac, though you can
-# override those values in `bootstrap.conf' if you prefer.
+# override those values in 'bootstrap.conf' if you prefer.
 build_aux=
 macro_dir=
 package=
@@ -142,9 +142,9 @@ package_name=
 package_version=
 package_bugreport=
 
-# These are extracted from `gnulib-cache.m4', or else fall-back
+# These are extracted from 'gnulib-cache.m4', or else fall-back
 # automatically on the gnulib defaults; unless you set the values
-# manually in `bootstrap.conf'.
+# manually in 'bootstrap.conf'.
 doc_base=
 gnulib_mk=
 gnulib_name=
@@ -152,8 +152,8 @@ local_gl_dir=
 source_base=
 tests_base=
 
-# The list of gnulib modules required at `gnulib-tool' time.  If you
-# check `gnulib-cache.m4' into your repository, then this list will be
+# The list of gnulib modules required at 'gnulib-tool' time.  If you
+# check 'gnulib-cache.m4' into your repository, then this list will be
 # extracted automatically.
 gnulib_modules=
 
@@ -206,7 +206,7 @@ extra_locale_categories=
 # Additional xgettext options to use.  Gnulib might provide you with an
 # extensive list of additional options to append to this, but gettext
 # 0.16.1 and newer appends them automaticaly, so you can safely ignore
-# the complaints from `gnulib-tool' if your $configure_ac states:
+# the complaints from 'gnulib-tool' if your $configure_ac states:
 #
 #    AM_GNU_GETTEXT_VERSION([0.16.1])
 xgettext_options="
@@ -225,8 +225,8 @@ checkout_only_file=
 # the --copy option has no effect).
 copy=false
 
-# Set this to ".cvsignore .gitignore" in `bootstrap.conf' if you want
-# those files to be generated in directories like `lib/', `m4/', and `po/',
+# Set this to ".cvsignore .gitignore" in 'bootstrap.conf' if you want
+# those files to be generated in directories like 'lib/', 'm4/', and 'po/',
 # or set it to "auto" to make this script select which to use based
 # on which version control system (if any) is used in the source directory.
 # Or set it to "none" to ignore VCS ignore files entirely.  Default is
@@ -238,15 +238,15 @@ vc_ignore=
 ## Hookable functions. ##
 ## ------------------- ##
 
-# After `bootstrap.conf' has been sourced, execution proceeds by calling
-# `func_bootstrap'.  Wherever a function is decorated with
-# `func_hookable func_name', you will find a matching `func_run_hooks
-# func_name' which executes all functions added with `func_add_hook
+# After 'bootstrap.conf' has been sourced, execution proceeds by calling
+# 'func_bootstrap'.  Wherever a function is decorated with
+# 'func_hookable func_name', you will find a matching 'func_run_hooks
+# func_name' which executes all functions added with 'func_add_hook
 # func_name my_func'.
 #
 # You might notice that many of these functions begin with a series of
-# `$require_foo' lines.  See the docu-comments at the start of the
-# `Resource management' section for a description of what these are.
+# '$require_foo' lines.  See the docu-comments at the start of the
+# 'Resource management' section for a description of what these are.
 
 
 # func_bootstrap [ARG]...
@@ -258,7 +258,7 @@ func_bootstrap ()
     $debug_cmd
 
     # Save the current positional parameters to prevent them being
-    # corrupted by calls to `set' in `func_init'.
+    # corrupted by calls to 'set' in 'func_init'.
     func_quote_for_eval ${1+"$@"}
     _G_saved_positional_parameters=$func_quote_for_eval_result
 
@@ -289,9 +289,9 @@ func_bootstrap ()
 # func_init
 # ---------
 # Any early initialisations can be hooked to this function.  Consider
-# whether you can hook onto `func_prep' instead, because if you hook
+# whether you can hook onto 'func_prep' instead, because if you hook
 # any slow to execute code in here, it will also add to the time before
-# `./bootstrap --version' can respond.
+# './bootstrap --version' can respond.
 func_hookable func_init
 func_init ()
 {
@@ -304,8 +304,8 @@ func_init ()
 # func_prep
 # ---------
 # Function to perform preparation for remaining bootstrap process. If
-# your hooked code relies on the outcome of `func_options' hook it here
-# rather than to `func_init'.
+# your hooked code relies on the outcome of 'func_options' hook it here
+# rather than to 'func_init'.
 #
 # All the functions called inside func_prep are hookable. See the
 # individual implementations for details.
@@ -355,18 +355,18 @@ func_reconfigure ()
 {
     $debug_cmd
 
-    # Released `autopoint' has the tendency to install macros that have
-    # been obsoleted in current `gnulib., so run this before `gnulib-tool'.
+    # Released 'autopoint' has the tendency to install macros that have
+    # been obsoleted in current 'gnulib., so run this before 'gnulib-tool'.
     func_autopoint
 
-    # Autoreconf runs `aclocal' before `libtoolize', which causes spurious
-    # warnings if the initial `aclocal' is confused by the libtoolized
+    # Autoreconf runs 'aclocal' before 'libtoolize', which causes spurious
+    # warnings if the initial 'aclocal' is confused by the libtoolized
     # (or worse: out-of-date) macro directory.
     func_libtoolize
 
-    # If you need to do anything after `gnulib-tool' is done, but before
-    # `autoreconf' runs, you don't need to override this whole function,
-    # because `func_gnulib_tool' is hookable.
+    # If you need to do anything after 'gnulib-tool' is done, but before
+    # 'autoreconf' runs, you don't need to override this whole function,
+    # because 'func_gnulib_tool' is hookable.
     func_gnulib_tool
 
     func_autoreconf
@@ -377,11 +377,11 @@ func_reconfigure ()
 
 # func_gnulib_tool
 # ----------------
-# Run `gnulib-tool' to fetch gnulib modules into the current package.
+# Run 'gnulib-tool' to fetch gnulib modules into the current package.
 #
-# It's assumed that since you are using gnulib's `bootstrap' script,
+# It's assumed that since you are using gnulib's 'bootstrap' script,
 # you're also using gnulib elsewhere in your package.  If not, then
-# you can replace this function in `bootstrap.conf' with:
+# you can replace this function in 'bootstrap.conf' with:
 #
 #   func_gnulib_tool () { :; }
 #
@@ -401,13 +401,13 @@ func_gnulib_tool ()
         $require_build_aux
         $require_macro_dir
 
-        # Try not to pick up any stale values from `gnulib-cache.m4'.
+        # Try not to pick up any stale values from 'gnulib-cache.m4'.
         rm -f "$gnulib_cache"
 
         gnulib_mode=--import
 
-        # `gnulib_modules' and others are maintained in `bootstrap.conf`:
-        # Use `gnulib --import` to fetch gnulib modules.
+        # 'gnulib_modules' and others are maintained in 'bootstrap.conf':
+        # Use 'gnulib --import' to fetch gnulib modules.
         test -n "$build_aux" \
             && func_append_uniq gnulib_tool_options " --aux-dir=$build_aux"
         test -n "$macro_dir" \
@@ -428,8 +428,8 @@ func_gnulib_tool ()
         }
       else
 
-        # `gnulib_modules' and others are cached in `gnulib-cache.m4':
-        # Use `gnulib --update' to fetch gnulib modules.
+        # 'gnulib_modules' and others are cached in 'gnulib-cache.m4':
+        # Use 'gnulib --update' to fetch gnulib modules.
         gnulib_mode=--update
       fi
 
@@ -455,7 +455,7 @@ func_gnulib_tool ()
 
       func_show_eval "$gnulib_cmd" 'exit $?'
 
-      # Use `gnulib-tool --copy-file' to install non-module files.
+      # Use 'gnulib-tool --copy-file' to install non-module files.
       func_install_gnulib_non_module_files
     }
 
@@ -535,14 +535,14 @@ func_gettext_configuration ()
 ## Core functions. ##
 ## --------------- ##
 
-# This section contains the main functions called from the `Hookable
+# This section contains the main functions called from the 'Hookable
 # functions' (shown above), and are the ones you're  most likely
-# to want to replace with your own implementations in `bootstrap.conf'.
+# to want to replace with your own implementations in 'bootstrap.conf'.
 
 
 # func_autopoint
 # --------------
-# If this package uses gettext, then run `autopoint'.
+# If this package uses gettext, then run 'autopoint'.
 func_autopoint ()
 {
     $debug_cmd
@@ -556,7 +556,7 @@ func_autopoint ()
 
 # func_libtoolize
 # ---------------
-# If this package uses libtool, then run `libtoolize'.
+# If this package uses libtool, then run 'libtoolize'.
 func_libtoolize ()
 {
     $debug_cmd
@@ -594,16 +594,16 @@ func_gnulib_tool_copy_file ()
       # distribution tarball), make sure that at least we have some
       # version of the required file already in place.
       test -f "$2" || func_fatal_error "\
-Can't find, copy or download \`$2', a required
+Can't find, copy or download '$2', a required
 gnulib supplied file, please provide the location of a
-complete \`gnulib' tree by setting \`gnulib_path' in your
-\`bootstrap.conf' or with the \`--gnulib-srcdir' option -
-or else specify the location of your \`git' binary by
-setting \`GIT' in the environment so that a fresh
-\`gnulib' submodule can be cloned."
+complete 'gnulib' tree by setting 'gnulib_path' in your
+'bootstrap.conf' or with the '--gnulib-srcdir' option -
+or else specify the location of your 'git' binary by
+setting 'GIT' in the environment so that a fresh
+'gnulib' submodule can be cloned."
     else
       test -f "$gnulib_path/$1" || {
-        func_error "\`$gnulib_path/$1' does not exist"
+        func_error "'$gnulib_path/$1' does not exist"
         return 1
       }
 
@@ -632,7 +632,7 @@ func_install_gnulib_non_module_files ()
 	  build-aux/missing) dest=
             func_warning settings "\
 Please remove build-aux/missing from gnulib_module_files in
-\`bootstrap.conf', as it may clash with Automake's version."
+'bootstrap.conf', as it may clash with Automake's version."
             ;;
           build-aux/*) dest=$build_aux/`expr "$file" : 'build-aux/\(.*\)'`;;
           *) dest=$file;;
@@ -667,7 +667,7 @@ func_ensure_changelog ()
 ChangeLog is generated by gitlog-to-changelog.
 EOT
 
-    _G_message="creating dummy \`ChangeLog'"
+    _G_message="creating dummy 'ChangeLog'"
     test -f ChangeLog~ \
       && func_append _G_message ' (backup in ChangeLog~)'
     func_verbose "$_G_message"
@@ -678,9 +678,9 @@ EOT
 
 # func_autoreconf
 # ---------------
-# Being careful not to re-run `autopoint' or `libtoolize', and not to
-# try to run `autopoint', `libtoolize' or `autoheader' on packages that
-# don't use them, defer to `autoreconf' for execution of the remaining
+# Being careful not to re-run 'autopoint' or 'libtoolize', and not to
+# try to run 'autopoint', 'libtoolize' or 'autoheader' on packages that
+# don't use them, defer to 'autoreconf' for execution of the remaining
 # autotools to bootstrap this package.
 func_autoreconf ()
 {
@@ -690,7 +690,7 @@ func_autoreconf ()
     $require_build_aux  # automake and others put files in here
     $require_macro_dir  # aclocal and others put files in here
 
-    # We ran these manually already, and autoreconf won't exec `:'
+    # We ran these manually already, and autoreconf won't exec ':'
     save_AUTOPOINT=$AUTOPOINT; AUTOPOINT=true
     save_LIBTOOLIZE=$LIBTOOLIZE; LIBTOOLIZE=true
 
@@ -716,10 +716,10 @@ func_check_configuration ()
     $require_configure_ac
 
     eval 'test -n "$'$1'"' || {
-      _G_error_msg="please set \`$1' in \`bootstrap.conf'"
+      _G_error_msg="please set '$1' in 'bootstrap.conf'"
       if test -n "$configure_ac" && test -n "$2"; then
         func_append _G_error_msg "
-or add the following (or similar) to your \`$configure_ac':
+or add the following (or similar) to your '$configure_ac':
 $2"
       fi
 
@@ -757,10 +757,10 @@ func_clean_dangling_symlinks ()
 # ------------------------
 # Autopoint can result in over-zealously adding macros into $macro_dir
 # even though they are not actually used, for example tests to help
-# build the `intl' directory even though you have specified
-# `AM_GNU_GETTEXT([external])' in your configure.ac.  This function
+# build the 'intl' directory even though you have specified
+# 'AM_GNU_GETTEXT([external])' in your configure.ac.  This function
 # looks removes any macro files that can be found in gnulib,  but
-# are not `m4_include'd by `aclocal.m4'.
+# are not 'm4_include'd by 'aclocal.m4'.
 func_clean_unused_macros ()
 {
     $debug_cmd
@@ -771,7 +771,7 @@ func_clean_unused_macros ()
     test -n "$gnulib_path" && test -f aclocal.m4 && {
       aclocal_m4s=`find . -name aclocal.m4 -print`
 
-      # We use `ls|grep' instead of `ls *.m4' to avoid exceeding
+      # We use 'ls|grep' instead of 'ls *.m4' to avoid exceeding
       # command line length limits in some shells.
       for file in `cd "$macro_dir" && ls -1 |grep '\.m4$'`; do
 
@@ -782,13 +782,13 @@ func_clean_unused_macros ()
               # ...and there is an identical file in gnulib...
               if func_cmp_s "$gnulib_path/m4/$file" "$macro_dir/$file"; then
 
-                # ...and it's not in the precious list (`echo' is needed
+                # ...and it's not in the precious list ('echo' is needed
                 # here to squash whitespace for the match expression).
                 case " "`echo $gnulib_precious`" " in
                   *" $file "*) ;;
                   *) rm -f "$macro_dir/$file"
                      func_verbose \
-                       "removing unused gnulib file \`$macro_dir/$file'"
+                       "removing unused gnulib file '$macro_dir/$file'"
                 esac
               fi
         }
@@ -799,8 +799,8 @@ func_clean_unused_macros ()
 
 # func_skip_po_recommendation
 # ---------------------------
-# If there is a po directory, and `--skip-po' wasn't passed, let the
-# user know that they can use `--skip-po' on subsequent invocations.
+# If there is a po directory, and '--skip-po' wasn't passed, let the
+# user know that they can use '--skip-po' on subsequent invocations.
 func_skip_po_recommendation ()
 {
     $debug_cmd
@@ -809,7 +809,7 @@ func_skip_po_recommendation ()
         || $opt_skip_po \
         || func_warning recommend "\
 If your pofiles are up-to-date, you can rerun bootstrap
-as \`$progname --skip-po' to avoid redownloading."
+as '$progname --skip-po' to avoid redownloading."
 }
 
 
@@ -843,9 +843,9 @@ func_update_dotversion ()
 # particular resource (a file, or a non-empty configuration variable for
 # example) is available, and if appropriate to extract default values
 # from pertinent package files.  Where a variable already has a non-
-# empty value (as set by the package's `bootstrap.conf'), that value is
+# empty value (as set by the package's 'bootstrap.conf'), that value is
 # used in preference to deriving the default. Call them using their
-# associated `require_*' variable to ensure that they are executed, at
+# associated 'require_*' variable to ensure that they are executed, at
 # most, once.
 
 
@@ -862,7 +862,7 @@ func_require_checkout_only_file ()
       test -n "$checkout_only_file" && test ! -f "$checkout_only_file" \
           && func_fatal_error "\
 Bootstrapping from a non-checked-out distribution is risky.
-If you wish to bootstrap anyway, use the \`--force' option."
+If you wish to bootstrap anyway, use the '--force' option."
     }
 
     require_checkout_only_file=:
@@ -871,8 +871,8 @@ If you wish to bootstrap anyway, use the \`--force' option."
 
 # require_aclocal_amflags
 # -----------------------
-# Ensure `$aclocal_amflags' has a sensible default, extracted from
-# `Makefile.am' if necessary.
+# Ensure '$aclocal_amflags' has a sensible default, extracted from
+# 'Makefile.am' if necessary.
 require_aclocal_amflags=func_require_aclocal_amflags
 func_require_aclocal_amflags ()
 {
@@ -972,10 +972,10 @@ func_require_bootstrap_uptodate ()
     done
 
     if $_G_missing_bootstrap_sources; then
-      func_warning upgrade '
+      func_warning upgrade "\
 Please add bootstrap to your gnulib_modules list in
-`bootstrap.conf'\'', so that I can tell you when there are
-updates available.'
+'bootstrap.conf', so that I can tell you when there are
+updates available."
     else
       $build_aux/inline-source $build_aux/bootstrap.in > bootstrap.new
 
@@ -983,16 +983,16 @@ updates available.'
         rm -f bootstrap.new
 	func_verbose "bootstrap script up to date"
       else
-        func_warning upgrade '
+        func_warning upgrade "\
 An updated bootstrap script has been generated for you in
-`bootstrap.new'\''.  After you'\''ve verified that you want
+'bootstrap.new'.  After you've verified that you want
 the changes, you can update with:
-    cat bootstrap.new > '$progname'
-    ./'$progname'
+    cat bootstrap.new > $progname
+    ./$progname
 
 Or you can disable this check permanently by adding the
-following to `bootstrap.conf'\'':
-    require_bootstrap_uptodate=:'
+following to 'bootstrap.conf':
+    require_bootstrap_uptodate=:"
       fi
     fi
 
@@ -1002,7 +1002,7 @@ following to `bootstrap.conf'\'':
 
 # require_build_aux
 # -----------------
-# Ensure that `$build_aux' is set, and if it doesn't already point to an
+# Ensure that '$build_aux' is set, and if it doesn't already point to an
 # existing directory, create one.
 require_build_aux=func_require_build_aux
 func_require_build_aux ()
@@ -1050,7 +1050,7 @@ func_require_buildreq_autobuild ()
       test -n "$func_extract_trace_result" && {
         func_append buildreq 'autobuild - http://josefsson.org/autobuild/
 '
-        func_verbose "auto-adding \`autobuild' to build requirements"
+        func_verbose "auto-adding 'autobuild' to build requirements"
       }
     }
 
@@ -1063,7 +1063,7 @@ func_require_buildreq_autobuild ()
 # require_buildreq_libtoolize
 # ---------------------------
 # Try to find the minimum compatible version of autoconf/libtool
-# required to bootstrap successfully, and add it to `$buildreq'.
+# required to bootstrap successfully, and add it to '$buildreq'.
 for tool in autoconf libtoolize autopoint; do
   b=$tool
   v=require_buildreq_${tool}
@@ -1091,7 +1091,7 @@ for tool in autoconf libtoolize autopoint; do
             '$tool' $_G_version http://www.gnu.org/s/'$b'
 "
         func_verbose \
-            "auto-adding \`'$tool'-$_G_version'\'' to build requirements"
+            "auto-adding '\'$tool'-'$_G_version\'' to build requirements"
       }
     }
 
@@ -1104,7 +1104,7 @@ done
 # require_buildreq_automake
 # -------------------------
 # Try to find the minimum compatible version of automake required to
-# bootstrap successfully, and add it to `$buildreq'.
+# bootstrap successfully, and add it to '$buildreq'.
 require_buildreq_automake=func_require_buildreq_automake
 func_require_buildreq_automake ()
 {
@@ -1124,7 +1124,7 @@ func_require_buildreq_automake ()
             automake $automake_version http://www.gnu.org/s/automake
 "
         func_verbose \
-            "auto-adding \`automake-$automake_version' to build requirements"
+            "auto-adding 'automake-$automake_version' to build requirements"
       }
     }
 
@@ -1199,7 +1199,7 @@ $buildreq_readme explains how to obtain these prerequisite programs:
 
 # require_copyright_holder
 # ------------------------
-# Ensure there is a sensible non-empty default value in `$copyright_holder'.
+# Ensure there is a sensible non-empty default value in '$copyright_holder'.
 require_copyright_holder=func_require_copyright_holder
 func_require_copyright_holder ()
 {
@@ -1208,8 +1208,8 @@ func_require_copyright_holder ()
     test -n "$copyright_holder" || {
       copyright_holder='Free Software Foundation, Inc.'
       func_warning settings "\
-Please set copyright_holder explicitly in \`bootstrap.conf';
-defaulting to \`$copyright_holder'."
+Please set copyright_holder explicitly in 'bootstrap.conf';
+defaulting to '$copyright_holder'."
     }
 
     require_copyright_holder=:
@@ -1218,7 +1218,7 @@ defaulting to \`$copyright_holder'."
 
 # require_dotgitmodules
 # ---------------------
-# Ensure we have a `.gitmodules' file, with appropriate `gnulib' settings.
+# Ensure we have a '.gitmodules' file, with appropriate 'gnulib' settings.
 require_dotgitmodules=func_require_dotgitmodules
 func_require_dotgitmodules ()
 {
@@ -1233,7 +1233,7 @@ func_require_dotgitmodules ()
       test -n "$_G_path" || {
         $require_vc_ignore_files
 
-        func_verbose "creating \`.gitmodules'"
+        func_verbose "creating '.gitmodules'"
 
         # If the .gitmodules file doesn't exist, create it now, and mark
         # it as ignored for the VCS.
@@ -1257,14 +1257,14 @@ func_require_dotgitmodules ()
 
 # require_extra_locale_categories
 # -------------------------------
-# Ensure there is a default value in `$extra_locale_categories'
+# Ensure there is a default value in '$extra_locale_categories'
 require_extra_locale_categories=func_require_extra_locale_categories
 func_require_extra_locale_categories ()
 {
     $debug_cmd
 
     # Defaults to empty, so run with whatever value may have been set in
-    # `bootstrap.conf'.
+    # 'bootstrap.conf'.
     require_extra_locale_categories=:
 }
 
@@ -1293,7 +1293,7 @@ func_require_git ()
 
 # require_gnulib_cache
 # --------------------
-# Ensure there is a non-empty default for `$gnulib_cache', and that it
+# Ensure there is a non-empty default for '$gnulib_cache', and that it
 # names an existing file.
 require_gnulib_cache=func_require_gnulib_cache
 func_require_gnulib_cache ()
@@ -1305,7 +1305,7 @@ func_require_gnulib_cache ()
     test -n "$gnulib_cache" \
       || gnulib_cache=$macro_dir/gnulib-cache.m4
 
-    func_verbose "found \`$gnulib_cache'"
+    func_verbose "found '$gnulib_cache'"
 
     require_gnulib_cache=:
 }
@@ -1342,8 +1342,8 @@ func_require_gnulib_merge_changelog ()
 
 # require_gnulib_mk
 # -----------------
-# Ensure gnulib_mk has a sensible value, extracted from `gnulib-cache.m4'
-# if possible, otherwise letting `gnulib-tool' pick a default.
+# Ensure gnulib_mk has a sensible value, extracted from 'gnulib-cache.m4'
+# if possible, otherwise letting 'gnulib-tool' pick a default.
 require_gnulib_mk=func_require_gnulib_mk
 func_require_gnulib_mk ()
 {
@@ -1366,7 +1366,7 @@ func_require_gnulib_mk ()
 # require_gnulib_path
 # require_gnulib_url
 # -------------------
-# Ensure `gnulib_path' and `gnulib_url' are set.
+# Ensure 'gnulib_path' and 'gnulib_url' are set.
 require_gnulib_path=func_require_dotgitmodules_parameters
 require_gnulib_url=func_require_dotgitmodules_parameters
 func_require_dotgitmodules_parameters ()
@@ -1376,9 +1376,9 @@ func_require_dotgitmodules_parameters ()
     $require_git
 
     test true = "$GIT" && {
-      # If we can't find git (or if the user specified `--skip-git'),
+      # If we can't find git (or if the user specified '--skip-git'),
       # then use an existing gnulib directory specified with
-      # `--gnulib-srcdir' if possible.
+      # '--gnulib-srcdir' if possible.
       test -n "$gnulib_path" \
           || test ! -x "$opt_gnulib_srcdir/gnulib-tool" \
           || gnulib_path=$opt_gnulib_srcdir
@@ -1413,7 +1413,7 @@ func_require_dotgitmodules_parameters ()
 
 # require_gnulib_submodule
 # ------------------------
-# Ensure that there is a current gnulib submodule at `$gnulib_path'.
+# Ensure that there is a current gnulib submodule at '$gnulib_path'.
 require_gnulib_submodule=func_require_gnulib_submodule
 func_require_gnulib_submodule ()
 {
@@ -1423,7 +1423,7 @@ func_require_gnulib_submodule ()
 
     if test true = "$GIT"; then
       func_warning recommend \
-          "No \`git' found; imported gnulib modules may be outdated."
+          "No 'git' found; imported gnulib modules may be outdated."
     else
       $require_gnulib_path
       $require_gnulib_url
@@ -1468,8 +1468,8 @@ func_require_gnulib_submodule ()
 
 # require_gnulib_tool
 # -------------------
-# Ensure that `$gnulib_tool' is set, and points to an executable file,
-# or else fall back to using the binary `true' if the main gnulib
+# Ensure that '$gnulib_tool' is set, and points to an executable file,
+# or else fall back to using the binary 'true' if the main gnulib
 # files appear to have been imported already.
 require_gnulib_tool=func_require_gnulib_tool
 func_require_gnulib_tool ()
@@ -1487,11 +1487,11 @@ func_require_gnulib_tool ()
       test -x "$gnulib_tool" || {
         gnulib_tool=true
         func_warning recommend \
-            "No \`gnulib-tool' found; gnulib modules may be missing."
+            "No 'gnulib-tool' found; gnulib modules may be missing."
       }
 
       test true = "$gnulib_tool" \
-          || func_verbose "found \`$gnulib_tool'"
+          || func_verbose "found '$gnulib_tool'"
     }
 
     require_gnulib_tool=:
@@ -1507,8 +1507,8 @@ func_require_libtoolize ()
     $debug_cmd
 
     # Unless we're not searching for libtool use by this package, set
-    # LIBTOOLIZE to true if none of `LT_INIT', `AC_PROG_LIBTOOL' and
-    # `AM_PROG_LIBTOOL' are used in configure.
+    # LIBTOOLIZE to true if none of 'LT_INIT', 'AC_PROG_LIBTOOL' and
+    # 'AM_PROG_LIBTOOL' are used in configure.
     test true = "$LIBTOOLIZE" || {
       func_extract_trace LT_INIT
       test -n "$func_extract_trace_result" || func_extract_trace AC_PROG_LIBTOOL
@@ -1534,14 +1534,14 @@ func_require_libtoolize ()
 
 # require_macro_dir
 # -----------------
-# Ensure that `$macro_dir' is set, and if it doesn't already point to an
+# Ensure that '$macro_dir' is set, and if it doesn't already point to an
 # existing directory, create one.
 require_macro_dir=func_require_macro_dir
 func_require_macro_dir ()
 {
     $debug_cmd
 
-    # Sometimes this is stored in `configure.ac'.
+    # Sometimes this is stored in 'configure.ac'.
     test -n "$macro_dir" || {
       # AC_CONFIG_MACRO_DIRS takes a space delimited list of directories,
       # but we only care about the first one in bootstrap.
@@ -1553,7 +1553,7 @@ func_require_macro_dir ()
       macro_dir=$func_extract_trace_first_result
     }
 
-    # Otherwise we might find it in `Makefile.am'.
+    # Otherwise we might find it in 'Makefile.am'.
     test -n "$macro_dir" || {
       $require_aclocal_amflags
 
@@ -1590,7 +1590,7 @@ func_require_macro_dir ()
 
 # require_makefile_am
 # -------------------
-# Ensure there is a `Makefile.am' in the current directory.
+# Ensure there is a 'Makefile.am' in the current directory.
 # names an existing file.
 require_makefile_am=func_require_makefile_am
 func_require_makefile_am ()
@@ -1602,7 +1602,7 @@ func_require_makefile_am ()
 
     <"$makefile_am"
 
-    func_verbose "found \`$makefile_am'"
+    func_verbose "found '$makefile_am'"
 
     require_makefile_am=:
 }
@@ -1610,7 +1610,7 @@ func_require_makefile_am ()
 
 # require_package
 # ---------------
-# Ensure that `$package' contains a sensible default value.
+# Ensure that '$package' contains a sensible default value.
 require_package=func_require_package
 func_require_package ()
 {
@@ -1631,7 +1631,7 @@ func_require_package ()
 
 # require_package_bugreport
 # -------------------------
-# Ensure that this has a sensible value, extracted from `configure.ac'
+# Ensure that this has a sensible value, extracted from 'configure.ac'
 # if appropriate (and possible!).
 require_package_bugreport=func_require_package_bugreport
 func_require_package_bugreport ()
@@ -1657,7 +1657,7 @@ func_require_package_bugreport ()
 
 # require_package_name
 # --------------------
-# Ensure that this has a sensible value, extracted from `configure.ac'
+# Ensure that this has a sensible value, extracted from 'configure.ac'
 # if appropriate (and possible!).
 require_package_name=func_require_package_name
 func_require_package_name ()
@@ -1683,11 +1683,11 @@ func_require_package_name ()
 
 # require_package_version
 # -----------------------
-# Ensure that this has a sensible value, extracted from `configure.ac'
+# Ensure that this has a sensible value, extracted from 'configure.ac'
 # if appropriate (and possible!).  While we might have set all the
-# parameters extracted from AC_INIT at once, `package_version' in
+# parameters extracted from AC_INIT at once, 'package_version' in
 # particular is not necessarily available as early as the others, since
-# `git-version-gen' is often involved, and until then we can't rely on
+# 'git-version-gen' is often involved, and until then we can't rely on
 # getting a correct version number from an AC_INIT extraction.
 require_package_version=func_require_package_version
 func_require_package_version ()
@@ -1709,7 +1709,7 @@ func_require_package_version ()
 	*" git-version-gen "*)
 	  func_fatal_error "\
 cannot \$require_package_version in bootstrap.conf before
-func_gnulib_tool has installed the \`git-version-gen' script."
+func_gnulib_tool has installed the 'git-version-gen' script."
 	  ;;
 	*)
           func_check_configuration package_version \
@@ -1750,7 +1750,7 @@ func_require_patch ()
 # require_source_base
 # -------------------
 # Ensure that source_base has a sensible value, extracted from
-# `gnulib-cache.m4' if possible.
+# 'gnulib-cache.m4' if possible.
 require_source_base=func_require_source_base
 func_require_source_base ()
 {
@@ -1774,8 +1774,8 @@ func_require_source_base ()
 
 # require_vc_ignore_files
 # -----------------------
-# Ensure that `$vc_ignore' has been processed to list VCS ignore files
-# in `$vc_ignore_files'
+# Ensure that '$vc_ignore' has been processed to list VCS ignore files
+# in '$vc_ignore_files'
 require_vc_ignore_files=func_require_vc_ignore_files
 func_require_vc_ignore_files ()
 {
@@ -1801,7 +1801,7 @@ func_require_vc_ignore_files ()
 ## Helper functions. ##
 ## ------------------##
 
-# This section contains the helper functions used by the rest of `bootstrap'.
+# This section contains the helper functions used by the rest of 'bootstrap'.
 
 # func_len STRING
 # ---------------
@@ -1829,10 +1829,10 @@ fi
 # func_unset VAR
 # --------------
 # Portably unset VAR.
-# In some shells, an `unset VAR' statement leaves a non-zero return
+# In some shells, an 'unset VAR' statement leaves a non-zero return
 # status if VAR is already unset, which might be problematic if the
 # statement is used at the end of a function (thus poisoning its return
-# value) or when `set -e' is active (causing even a spurious abort of
+# value) or when 'set -e' is active (causing even a spurious abort of
 # the script in this case).
 func_unset ()
 {
@@ -1850,7 +1850,7 @@ func_cmp_s ()
     $debug_cmd
 
     # This function relies on non-zero exit status, which will cause the
-    # program to exit when running in `set -e' mode.
+    # program to exit when running in 'set -e' mode.
     $CMP "$@" >/dev/null 2>&1
 }
 
@@ -1864,7 +1864,7 @@ func_grep_q ()
     $debug_cmd
 
     # This function relies on non-zero exit status, which will cause the
-    # program to exit when running in `set -e' mode.
+    # program to exit when running in 'set -e' mode.
     $GREP "$@" >/dev/null 2>&1
 }
 
@@ -1963,9 +1963,9 @@ func_strrow ()
 # valued WIDTH arguments following INDENT.  The next set (i.e. a number
 # of arguments equal to the number of WIDTH arguments) of fields are
 # treated as the table's column HEADERs, and are separated from the
-# remainder of the table by an indented row of `-' characters. Remaining
+# remainder of the table by an indented row of '-' characters. Remaining
 # arguments are each aligned below the next available header, wrapping
-# to a new row as necessary.  Finally another row of `-' characters is
+# to a new row as necessary.  Finally another row of '-' characters is
 # added to mark the end of the table.
 #
 # For example an unindented 3 column table with 2 rows of data would be
@@ -2006,7 +2006,7 @@ func_strtable ()
     done
     func_strrow $_G_header
 
-    # Strip off the indent, and make a divider with `-' chars, then
+    # Strip off the indent, and make a divider with '-' chars, then
     # reindent.
     _G_divider=`$bs_echo "$func_strrow_result" \
         |$SED 's|[^ ]|-|g
@@ -2046,7 +2046,7 @@ func_internal_error ()
 {
     func_fatal_error "\
 INTERNAL: " ${1+"$@"} "
-          Please report this bug to \`bug-gnulib@gnu.org'
+          Please report this bug to 'bug-gnulib@gnu.org'
           in as much detail as possible."
 }
 
@@ -2059,7 +2059,7 @@ func_permissions_error ()
 {
     $debug_cmd
 
-    func_fatal_error "Failed to create \`$1', check permissions."
+    func_fatal_error "Failed to create '$1', check permissions."
 }
 
 
@@ -2142,7 +2142,7 @@ func_insert_sorted_if_absent ()
       test -f "$file" || touch "$file"
 
       func_grep_q "$str" "$file" \
-          && func_verbose "inserting \`$str' into \`$file'"
+          && func_verbose "inserting '$str' into '$file'"
 
       $bs_echo "$str" |sort -u - "$file" |func_cmp_s - "$file" \
         || $bs_echo "$str" |sort -u - "$file" -o "$file" \
@@ -2153,7 +2153,7 @@ func_insert_sorted_if_absent ()
 
 # func_sort_ver VER1 VER2
 # -----------------------
-# `sort -V' is not generally available.
+# 'sort -V' is not generally available.
 # Note this deviates from the version comparison in automake
 # in that it treats 1.5 < 1.5.0, and treats 1.4.4a < 1.4-p3a
 # but this should suffice as we won't be specifying old
@@ -2257,11 +2257,11 @@ func_check_versions ()
       _G_instver=`func_get_version $_G_app`
 
       test -z "$_G_instver" \
-          || func_verbose "found \`$_G_app' version $_G_instver"
+          || func_verbose "found '$_G_app' version $_G_instver"
 
       # Fail if --version didn't work.
       if test -z "$_G_instver"; then
-        func_error "\`$_G_app' not found"
+        func_error "'$_G_app' not found"
         func_check_versions_result=false
 
       # Fail if a new version than what we have is required.
@@ -2269,8 +2269,8 @@ func_check_versions ()
         _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
         test "$_G_newer" != "$_G_instver" && {
           func_error "\
-\`$_G_app' version == $_G_instver is too old
-\`$_G_app' version >= $_G_reqver is required"
+'$_G_app' version == $_G_instver is too old
+'$_G_app' version >= $_G_reqver is required"
           func_check_versions_result=false
         }
       fi
@@ -2359,9 +2359,9 @@ func_update_po_files ()
 
 usage='$progpath [OPTION]...'
 
-# Short help message in response to `-h'.  Add to this in `bootstrap.conf'
+# Short help message in response to '-h'.  Add to this in 'bootstrap.conf'
 # if you accept any additional options.
-usage_message='Common Bootstrap Options:
+usage_message="Common Bootstrap Options:
    -c, --copy         copy files instead of creating symbolic links.
        --debug        enable verbose shell tracing
    -n, --dry-run      print commands rather than running them
@@ -2370,10 +2370,10 @@ usage_message='Common Bootstrap Options:
        --gnulib-srcdir=DIRNAME
                       specify a local directory where gnulib sources
                       reside. Use this if you already have the gnulib
-                      sources on your machine, and don'\''t want to waste
+                      sources on your machine, and don't want to waste
                       your bandwidth downloading them again.  Defaults to
                       \$GNULIB_SRCDIR.
-       --no-warnings  equivalent to \`-Wnone'\''
+       --no-warnings  equivalent to '-Wnone'
        --skip-git     do not fetch files from remote repositories
        --skip-po      do not download po files.
    -v, --verbose      verbosely report processing
@@ -2381,15 +2381,15 @@ usage_message='Common Bootstrap Options:
    -W, --warnings=CATEGORY
                       report the warnings falling in CATEGORY [all]
    -h, --help         print short or long help message and exit
-'
+"
 
-# Additional text appended to `usage_message' in response to `--help'.
+# Additional text appended to 'usage_message' in response to '--help'.
 long_help_message=$long_help_message"
-       \`recommend'    show warnings about missing recommended packages
-       \`settings'     show warnings about missing \`$progname.conf' settings
-       \`upgrade'      show warnings about out-dated files
+       'recommend'    show warnings about missing recommended packages
+       'settings'     show warnings about missing '$progname.conf' settings
+       'upgrade'      show warnings about out-dated files
 
-If the file \`$progname.conf' exists in the same directory as this
+If the file '$progname.conf' exists in the same directory as this
 script, its contents are read as shell variables to configure the
 bootstrap.
 
@@ -2399,8 +2399,8 @@ For build prerequisites, environment variables like \$AUTOCONF and
 Running without arguments will suffice in most cases.
 "
 
-# Warning categories used by `bootstrap', append others if you use them
-# in your `bootstrap.conf'.
+# Warning categories used by 'bootstrap', append others if you use them
+# in your 'bootstrap.conf'.
 warning_categories='recommend settings upgrade'
 
 
@@ -2492,7 +2492,7 @@ func_add_hook func_validate_options bootstrap_validate_options
 
 
 ## -------------------------------------------------- ##
-## Source package customisations in `bootstrap.conf'. ##
+## Source package customisations in 'bootstrap.conf'. ##
 ## -------------------------------------------------- ##
 
 # Override the default configuration, if necessary.

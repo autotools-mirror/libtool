@@ -104,7 +104,7 @@ mv -f $1.t $1
 ])dnl
 
 
-# LT_AT_CHECK_LIBTOOLIZE(ARGS, [EXIT-STATUS = 0], [STDOUT = `'], [STDERR = `'])
+# LT_AT_CHECK_LIBTOOLIZE(ARGS, [EXIT-STATUS = 0], [STDOUT = ''], [STDERR = ''])
 # -----------------------------------------------------------------------------
 m4_define([LT_AT_CHECK_LIBTOOLIZE],
 [m4_if([$3], [expout], [_LIBTOOLIZE_TRANSFORM([$3])])dnl
@@ -317,7 +317,7 @@ LT_AT_UNIFY_NL([$1.t], [m4_default([$2], [$1])])[]dnl
 # Run EXECUTABLE ARGS-OR-STATUS-ADJUST.  STATUS, STDOUT, and STDERR are
 # handled as in AT_CHECK.
 # However, if we are cross-compiling, then SKIP instead of FAIL.
-# ARGS-OR-STATUS-ADJUST can also contain code like `|| (exit 1)'
+# ARGS-OR-STATUS-ADJUST can also contain code like '|| (exit 1)'
 # to unify different possible exit status values.
 m4_define([LT_AT_EXEC_CHECK],
 [lt_exe=$1; if test -f "$1$EXEEXT"; then lt_exe=$lt_exe$EXEEXT; fi
@@ -332,11 +332,11 @@ AT_CHECK([if "$lt_exe" $5; then :; else lt_status=$?; ]dnl
 #			  [STATUS = 0], [STDOUT], [STDERR],
 #			  [ARGS-OR-STATUS-ADJUST])
 # ---------------------------------------------------------
-# Run EXECUTABLE ARGS-OR-STATUS-ADJUST using `libtool --mode=execute'
-# with `-dlopen' arguments in NOINST_MODULES.  STATUS, STDOUT, and
+# Run EXECUTABLE ARGS-OR-STATUS-ADJUST using 'libtool --mode=execute'
+# with '-dlopen' arguments in NOINST_MODULES.  STATUS, STDOUT, and
 # STDERR are handled as in AT_CHECK.
 # However, if we are cross-compiling, then SKIP instead of FAIL.
-# ARGS-OR-STATUS-ADJUST can also contain code like `|| (exit 1)'
+# ARGS-OR-STATUS-ADJUST can also contain code like '|| (exit 1)'
 # to unify different possible exit status values.
 m4_define([LT_AT_NOINST_EXEC_CHECK],
 [lt_exe=$1; if test -f "$1$EXEEXT"; then lt_exe=$lt_exe$EXEEXT; fi
@@ -387,7 +387,7 @@ m4_case([$1],
 # LT_AT_MVDIR(SRC, DEST)
 # ----------------------
 # Move contents of a directory recursively.
-# Avoid `mv DIR ...' due to issues with non-deletable shared libraries
+# Avoid 'mv DIR ...' due to issues with non-deletable shared libraries
 # on AIX on NFS mounts.  We cannot use slibclean as non-superuser.
 m4_define([LT_AT_MVDIR],
 [$mkdir_p $2
@@ -509,7 +509,7 @@ m4_popdef([_ARG_DIR])
 ])# _LTDL_PROJECT_FILES
 
 
-# We use `dnl' in zillions of places...
+# We use 'dnl' in zillions of places...
 m4_pattern_allow([^dnl$])
 
 # We exercise these tools.

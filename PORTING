@@ -1,5 +1,5 @@
 In order to port libtool to a new platform, start by reading the node
-`New ports' in the info document (i.e., the libtool manual).
+'New ports' in the info document (i.e., the libtool manual).
 
 If you find that any porting documentation is missing, please
 complain! :-) Complaints with patches and improvements to the

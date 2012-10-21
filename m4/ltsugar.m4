@@ -45,7 +45,7 @@ m4_define([lt_unquote], $1)
 
 # lt_append(MACRO-NAME, STRING, [SEPARATOR])
 # ------------------------------------------
-# Redefine MACRO-NAME to hold its former content plus `SEPARATOR'`STRING'.
+# Redefine MACRO-NAME to hold its former content plus 'SEPARATOR''STRING'.
 # Note that neither SEPARATOR nor STRING are expanded; they are appended
 # to MACRO-NAME as is (leaving the expansion for when MACRO-NAME is invoked).
 # No SEPARATOR is output if MACRO-NAME was previously undefined (different

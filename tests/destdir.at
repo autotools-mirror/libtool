@@ -119,7 +119,7 @@ for lib in a1dep a2dep a; do
   echo "int this_should_not_be_linked_against () { return 0; }" > $lib.c
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $lib.c
   # Note the rpath argument includes $DESTDIR: the installed false libs
-  # should be functional (i.e., not need `libtool --mode=finish').
+  # should be functional (i.e., not need 'libtool --mode=finish').
   $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o lib$lib.la $lib.lo -rpath $DESTDIR$ldir
   $LIBTOOL --mode=install cp lib$lib.la $DESTDIR$ldir/lib$lib.la
 done

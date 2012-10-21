@@ -43,7 +43,7 @@ noinst_LTLIBRARIES	=
 lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
 
-# Using `cd' in backquotes may print the directory name, use this instead:
+# Using 'cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
 git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '.tarball-version'
@@ -70,9 +70,9 @@ CLEANFILES     += libtool libtoolize
 ## If a file is named several times below, and especially if it
 ## is a distributed file created during Libtool bootstrap, we
 ## put it in a variable in accordance with the DRY principle.
-## Use `$(srcdir)' for the benefit of non-GNU makes: referring
+## Use '$(srcdir)' for the benefit of non-GNU makes: referring
 ## to them by their variable makes sure they appear as targets
-## and dependencies with `$(srcdir)' consistently.
+## and dependencies with '$(srcdir)' consistently.
 configure_ac	= $(srcdir)/configure.ac
 config_status	= $(top_builddir)/config.status
 extract_trace	= $(srcdir)/$(aux_dir)/extract-trace
@@ -142,7 +142,7 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 ## would rerun configure on every invocation, so now we manually
 ## check the version numbers from the build rule when necessary.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
-##           you must `touch $(aux_dir)/ltmain.in' from the
+##           you must 'touch $(aux_dir)/ltmain.in' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
@@ -194,9 +194,9 @@ $(lt_Makefile_am): $(ltdl_mk)
 	$(AM_V_at)chmod a-w '$@'
 
 ## Document the make macros that are needed to build bootstrap-deps
-## dependencies when called from `bootstrap' (developer's machine),
+## dependencies when called from 'bootstrap' (developer's machine),
 ## where the Makefile.am is fed to make in its raw format before
-## `configure' has found the correct values (on the build machine).
+## 'configure' has found the correct values (on the build machine).
 bootstrap_files = \
     $(lt_Makefile_am) \
     $(ltmain_sh) \
@@ -205,7 +205,7 @@ bootstrap_files = \
 .PHONY: bootstrap-deps bootstrap-deps-prep
 bootstrap-deps: bootstrap-deps-prep $(bootstrap_files)
 bootstrap-deps-prep:
-## The following variables are substituted by `bootstrap-dep-preps'
+## The following variables are substituted by 'bootstrap-dep-preps'
 	@exit_cmd=:; \
 	test -z '$(srcdir)' \
 	    && echo "ERROR: don't call $(MAKE) with srcdir unset." \

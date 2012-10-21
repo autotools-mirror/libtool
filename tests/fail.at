@@ -71,7 +71,7 @@ case $pic_mode in default | no)
 esac
 
 # program creation failure.
-# We can't rely on `main' not being present: the QNX linker
+# We can't rely on 'main' not being present: the QNX linker
 # won't error out in that case, although the resulting binary won't work.
 # So we provoke a link failure due to an unresolved symbol, and require
 # libtool to fail only if the link without libtool would have failed, too.

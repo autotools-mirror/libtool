@@ -61,11 +61,11 @@ xdlsymtest (lt_dlhandle handle, const char *func, const char *var)
   pfun_T pf = (pfun_T) lt_dlsym (handle, func);
   pvar_T pv = (pvar_T) lt_dlsym (handle, var);
   if (pf == NULL) {
-    fprintf (stderr, "function `%s' not found\n", func);
+    fprintf (stderr, "function '%s' not found\n", func);
     return 1;
   }
   if (pv == NULL) {
-    fprintf (stderr, "variable `%s' not found\n", var);
+    fprintf (stderr, "variable '%s' not found\n", var);
     return 1;
   }
   return (*pf) (*pv);

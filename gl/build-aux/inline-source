@@ -38,12 +38,14 @@ scriptversion=2012-10-11.10; # UTC
 ## Usage. ##
 ## ------ ##
 
-# Run `build-aux/inline-source --help' for help with using this script
+# Run 'build-aux/inline-source --help' for help with using this script
 # from the command line.
 
 # Recursively scan through a FILE passed on the command line, replacing
-# `. "relative/file"' or `. `echo "$0" |edit`"relative/file"` with the
-# contents of the referenced files.
+# either of the following:
+#   . "relative/file"
+#   . `echo "$0" |edit`"relative/file"
+# with the contents of the referenced files.
 
 
 ## ---------------- ##
@@ -52,7 +54,7 @@ scriptversion=2012-10-11.10; # UTC
 
 usage='$progpath [OPTION]... FILE'
 
-# Short help message in response to `-h'.
+# Short help message in response to '-h'.
 usage_message='Options:
        --debug        enable verbose shell tracing
        --version      print version information and exit

@@ -273,7 +273,7 @@ int test_dl (char *filename) {
     }
   else
     {
-      fprintf (stderr, "did not find the `hello' function\n");
+      fprintf (stderr, "did not find the 'hello' function\n");
       fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
@@ -284,7 +284,7 @@ int test_dl (char *filename) {
     *pnothing = 1;
   else
     {
-      fprintf (stderr, "did not find the `nothing' variable\n");
+      fprintf (stderr, "did not find the 'nothing' variable\n");
       fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
@@ -308,7 +308,7 @@ int test_dl (char *filename) {
       }
     else
       {
-        fprintf (stderr, "did not find any of the `foo' functions\n");
+        fprintf (stderr, "did not find any of the 'foo' functions\n");
         fprintf (stderr, "error was: %s\n", lt_dlerror());
         ret = 1;
       }
@@ -408,7 +408,7 @@ test_dl (char *filename, int test_ext)
     }
   else
     {
-      fprintf (stderr, "did not find the `hello' function\n");
+      fprintf (stderr, "did not find the 'hello' function\n");
       fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
@@ -419,7 +419,7 @@ test_dl (char *filename, int test_ext)
     *pnothing = 1;
   else
     {
-      fprintf (stderr, "did not find the `nothing' variable\n");
+      fprintf (stderr, "did not find the 'nothing' variable\n");
       fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
@@ -443,7 +443,7 @@ test_dl (char *filename, int test_ext)
       }
     else
       {
-        fprintf (stderr, "did not find any of the `foo' functions\n");
+        fprintf (stderr, "did not find any of the 'foo' functions\n");
         fprintf (stderr, "error was: %s\n", lt_dlerror());
         ret = 1;
       }
@@ -486,7 +486,7 @@ test_dlself ()
     }
   else
     {
-      fprintf (stderr, "did not find the `myfunc' function\n");
+      fprintf (stderr, "did not find the 'myfunc' function\n");
       fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
@@ -497,7 +497,7 @@ test_dlself ()
     *pmyvar = 1;
   else
     {
-      fprintf (stderr, "did not find the `myvar' variable\n");
+      fprintf (stderr, "did not find the 'myvar' variable\n");
       fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
@@ -688,9 +688,9 @@ _LT_SETUP
 LT_AT_CHECK_CONFIG([--with-included-ltdl])
 LT_AT_MAKE([all-local libltdl/libltdlc.la])
 
-# create `before' and `after' in a directory deep within objdir,
+# create 'before' and 'after' in a directory deep within objdir,
 # so that their creation and removal does not modify even a timestamp
-# in the output of `ls -l . $objdir'
+# in the output of 'ls -l . $objdir'
 $lt_INSTALL -d "$objdir/temp/temp"
 before=$objdir/temp/temp/before
 after=$objdir/temp/temp/after

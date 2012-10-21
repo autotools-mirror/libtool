@@ -84,7 +84,7 @@ nl='
 '
 IFS="	$sp$nl"
 
-# There are still modern systems that have problems with `echo' mis-
+# There are still modern systems that have problems with 'echo' mis-
 # handling backslashes, among others, so make sure $bs_echo is set to a
 # command that correctly interprets backslashes.
 # (this code from Autoconf 2.68)
@@ -171,11 +171,11 @@ sed_make_literal_regex='s|[].[^$\\*\/]|\\&|g'
 # (escaped) backslashes.  A very naive implementation.
 sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
 
-# Re-`\' parameter expansions in output of sed_double_quote_subst that
-# were `\'-ed in input to the same.  If an odd number of `\' preceded a
+# Re-'\' parameter expansions in output of sed_double_quote_subst that
+# were '\'-ed in input to the same.  If an odd number of '\' preceded a
 # '$' in input to sed_double_quote_subst, that '$' was protected from
-# expansion.  Since each input `\' is now two `\'s, look for any number
-# of runs of four `\'s followed by two `\'s and then a '$'.  `\' that '$'.
+# expansion.  Since each input '\' is now two '\'s, look for any number
+# of runs of four '\'s followed by two '\'s and then a '$'.  '\' that '$'.
 _G_bs='\\'
 _G_bs2='\\\\'
 _G_bs4='\\\\\\\\'
@@ -194,12 +194,12 @@ sed_double_backslash="\
 
 # Except for the global variables explicitly listed below, the following
 # functions in the '^func_' namespace, and the '^require_' namespace
-# variables initialised in the `Resource management' section, sourcing
+# variables initialised in the 'Resource management' section, sourcing
 # this file will not pollute your global namespace with anything
 # else. There's no portable way to scope variables in Bourne shell
 # though, so actually running these functions will sometimes place
 # results into a variable named after the function, and often use
-# temporary variables in the `^_G_' namespace. If you are careful to
+# temporary variables in the '^_G_' namespace. If you are careful to
 # avoid using those namespaces casually in your sourcing script, things
 # should continue to work as you expect. And, of course, you can freely
 # overwrite any of the functions or variables defined here before
@@ -211,7 +211,7 @@ EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
 EXIT_SKIP=77	  # $? = 77 is used to indicate a skipped test to automake.
 
 # Allow overriding, eg assuming that you follow the convention of
-# putting `$debug_cmd' at the start of all your functions, you can get
+# putting '$debug_cmd' at the start of all your functions, you can get
 # bash to show function call trace with:
 #
 #    debug_cmd='eval echo "${FUNCNAME[0]} $*" >&2' bash your-script-name
@@ -271,19 +271,19 @@ opt_dry_run=false
 opt_quiet=false
 opt_verbose=false
 
-# Categories `all' and `none' are always available.  Append any others
+# Categories 'all' and 'none' are always available.  Append any others
 # you will pass as the first argument to func_warning from your own
 # code.
 warning_categories=
 
-# By default, display warnings according to `opt_warning_types'.  Set
-# `warning_func'  to `:' to elide all warnings, or func_fatal_error to
+# By default, display warnings according to 'opt_warning_types'.  Set
+# 'warning_func'  to ':' to elide all warnings, or func_fatal_error to
 # treat the next displayed warning as a fatal error.
 warning_func=func_warn_and_continue
 
-# Set to `all' to display all warnings, `none' to suppress all
+# Set to 'all' to display all warnings, 'none' to suppress all
 # warnings, or a space delimited list of some subset of
-# `warning_categories' to display only the listed warnings.
+# 'warning_categories' to display only the listed warnings.
 opt_warning_types=all
 
 
@@ -295,7 +295,7 @@ opt_warning_types=all
 # particular resource (a file, or a non-empty configuration variable for
 # example) is available, and if appropriate to extract default values
 # from pertinent package files. Call them using their associated
-# `require_*' variable to ensure that they are executed, at most, once.
+# 'require_*' variable to ensure that they are executed, at most, once.
 #
 # It's entirely deliberate that calling these functions can set
 # variables that don't obey the namespace limitations obeyed by the rest
@@ -659,7 +659,7 @@ func_mkdir_p ()
 
     if test -n "$_G_directory_path" && test : != "$opt_dry_run"; then
 
-      # Protect directory names starting with `-'
+      # Protect directory names starting with '-'
       case $_G_directory_path in
         -*) _G_directory_path=./$_G_directory_path ;;
       esac
@@ -681,7 +681,7 @@ func_mkdir_p ()
       func_mkdir_p_IFS=$IFS; IFS=:
       for _G_dir in $_G_dir_list; do
 	IFS=$func_mkdir_p_IFS
-        # mkdir can fail with a `File exist' error if two processes
+        # mkdir can fail with a 'File exist' error if two processes
         # try to create one of the directories concurrently.  Don't
         # stop in that case!
         $MKDIR "$_G_dir" 2>/dev/null || :
@@ -690,7 +690,7 @@ func_mkdir_p ()
 
       # Bail out if we (or some other process) failed to create a directory.
       test -d "$_G_directory_path" || \
-        func_fatal_error "Failed to create \`$1'"
+        func_fatal_error "Failed to create '$1'"
     fi
 }
 
@@ -726,7 +726,7 @@ func_mktempdir ()
 
       # If we're not in dry-run mode, bomb out on failure
       test -d "$_G_tmpdir" || \
-        func_fatal_error "cannot create temporary directory \`$_G_tmpdir'"
+        func_fatal_error "cannot create temporary directory '$_G_tmpdir'"
     fi
 
     $ECHO "$_G_tmpdir"
@@ -892,7 +892,7 @@ func_relative_path ()
       func_append func_relative_path_result "/$func_stripname_result"
     fi
 
-    # Normalisation. If bindir is libdir, return `.' else relative path.
+    # Normalisation. If bindir is libdir, return '.' else relative path.
     if test -n "$func_relative_path_result"; then
       func_stripname './' '' "$func_relative_path_result"
       func_relative_path_result=$func_stripname_result
@@ -1122,7 +1122,7 @@ func_warn_and_continue ()
 # Echo program name prefixed warning message to standard error. Warning
 # messages can be filtered according to CATEGORY, where this function
 # elides messages where CATEGORY is not listed in the global variable
-# `opt_warning_types'.
+# 'opt_warning_types'.
 func_warning ()
 {
     $debug_cmd
@@ -1130,7 +1130,7 @@ func_warning ()
     # CATEGORY must be in the warning_categories list!
     case " $warning_categories " in
       *" $1 "*) ;;
-      *) func_internal_error "invalid warning category \`$1'" ;;
+      *) func_internal_error "invalid warning category '$1'" ;;
     esac
 
     _G_category=$1

@@ -73,8 +73,15 @@ sc_libtool_m4_cc_basename:
 	@sed -n '/case \$$cc_basename in/,/esac/ {			\
 	  /^[	 ]*[a-zA-Z][a-zA-Z0-9+]*[^*][	 ]*)/p;			\
 	}' '$(srcdir)/$(macro_dir)/libtool.m4' | grep . && {		\
-	  msg="\$$cc_basename matches should include a trailing \`*'."	\
+	  msg="\$$cc_basename matches should include a trailing '*'."	\
 	  $(_sc_say_and_exit) } || :
+
+# Check for old-style `quoting'.
+exclude_file_name_regexp--sc_old_style_quoting = (^bootstrap|^cfg.mk|\.texi)$$
+sc_old_style_quoting:
+	@prohibit="^[^\`]*[^=]\`[^'\`]*[a-zA-Z0-9][^'\`]*'[^\`]*[^\\\`]$$" \
+	halt="quote 'like this' not \`like this' in comments and output" \
+	  $(_sc_search_regexp)
 
 # Check for uses of Xsed without corresponding echo "X
 exclude_file_name_regexp--sc_prohibit_Xsed_without_X = ^cfg.mk$$
@@ -82,7 +89,7 @@ sc_prohibit_Xsed_without_X:
 	@files=$$($(VC_LIST_EXCEPT));					\
 	if test -n "$$files"; then					\
 	  grep -nE '\$$Xsed' $$files | grep -vE '(func_echo_all|\$$ECHO) \\*"X' && {	\
-	    msg='occurrences of `$$Xsed'\'' without `$$ECHO "X'\'' on the same line' \
+	    msg="occurrences of '\$$Xsed' without '\$$ECHO "\""X' on the same line" \
 	    $(_sc_say_and_exit) } || :;					\
 	else :;								\
 	fi || :
@@ -90,19 +97,19 @@ sc_prohibit_Xsed_without_X:
 # Use a consistent dirname and basename idiom.
 sc_prohibit_bare_basename:
 	@prohibit='\|[	 ]*\$$(base|dir)name' \
-	halt='use `|$$SED "$$basename"'\'' instead of `|$$basename'\'	\
+	halt='use '\''|$$SED "$$basename"'\'' instead of '\''|$$basename'\'	\
 	  $(_sc_search_regexp)
 
 sc_prohibit_basename_with_dollar_sed:
 	@prohibit='(base|dir)name="?(\$$SED|sed)[ "]' \
-	halt='use `basename='\''s|^.*/||'\'' instead of `basename="$$SED...'	\
+	halt='use '\''basename='\''s|^.*/||'\'' instead of '\''basename="$$SED...'	\
 	  $(_sc_search_regexp)
 
-# Check for using `[' instead of `test'.
+# Check for using '[' instead of 'test'.
 exclude_file_name_regexp--sc_prohibit_bracket_as_test = ^cfg.mk$$
 sc_prohibit_bracket_as_test:
 	@prohibit='if[	 ]+\['						\
-	halt="use \`if test' instead of \`if ['"			\
+	halt="use 'if test' instead of 'if ['"			\
 	  $(_sc_search_regexp)
 
 # Check for quotes within backquotes within quotes "`"bar"`"
@@ -134,7 +141,7 @@ sc_prohibit_set_dummy_without_shift:
 	      /\n.*shift/D;						\
 	      p;							\
             }' | grep -n . && {						\
-	    msg="use \`shift' after \`set dummy'"			\
+	    msg="use 'shift' after 'set dummy'"				\
 	    $(_sc_say_and_exit) } || :;					\
 	else :;								\
 	fi || :
@@ -143,7 +150,7 @@ sc_prohibit_set_dummy_without_shift:
 exclude_file_name_regexp--sc_prohibit_set_minus_minus = ^cfg.mk$$
 sc_prohibit_set_minus_minus:
 	@prohibit='set[	 ]+--[	 ]+'					\
-	halt="use \`set dummy ...' instead of \`set -- ...'"		\
+	halt="use 'set dummy ...' instead of 'set -- ...'"		\
 	  $(_sc_search_regexp)
 
 # Make sure there is no spurious whitespace before trailing semi-colons
@@ -156,45 +163,45 @@ sc_prohibit_space_semicolon:
 exclude_file_name_regexp--sc_prohibit_test_X = ^cfg.mk$$
 sc_prohibit_test_X:
 	@prohibit='test[	 ]+(![	 ])?(-.[	 ]+)?[Xx]["'\'']'	\
-	halt='use `test "X..."'\'' instead of `test X"'\'		\
+	halt='use '\''test "X..."'\'' instead of '\''test X"'\'		\
 	  $(_sc_search_regexp)
 
 # Check for bad binary operators.
 sc_prohibit_test_binary_operators:
 	@prohibit='if[	 ]+["'\'']?\$$[^	 ]+[	 ]+(=|-[lg][te]|-eq|-ne)' \
-	halt="Use \`if test \$$something =' instead of \`if \$$something ='" \
+	halt="Use 'if test \$$something =' instead of 'if \$$something ='" \
 	  $(_sc_search_regexp)
 
 # Check for using test $... instead of test "$...
 exclude_file_name_regexp--sc_prohibit_test_dollar = ^cfg.mk$$
 sc_prohibit_test_dollar:
 	@prohibit='test[	 ]+(![	 ])?(-.[	 ]+)?X?\$$[^?#]' \
-	halt='use `test "$$..."'\'' instead of `test $$'\'		\
+	halt='use '\''test "$$..."'\'' instead of '\''test $$'\'		\
 	  $(_sc_search_regexp)
 
 # Never use test -e.
 exclude_file_name_regexp--sc_prohibit_test_minus_e = ^cfg.mk$$
 sc_prohibit_test_minus_e:
 	@prohibit='test[	 ]+(![	 ])?-e'				\
-	halt="use \`test -f' instead of \`test -e'"			\
+	halt="use 'test -f' instead of 'test -e'"			\
 	  $(_sc_search_regexp)
 
 # Check for bad unary operators.
 sc_prohibit_test_unary_operators:
 	@prohibit='if[	 ]+-[a-z]'					\
-	halt="use \`if test -X' instead of \`if -X'"			\
+	halt="use 'if test -X' instead of 'if -X'"			\
 	  $(_sc_search_regexp)
 
 # Don't add noisy characters on the front of the left operand of a test
-# to prevent arguments being passed inadvertently (e.g. LHS is `-z'),
+# to prevent arguments being passed inadvertently (e.g. LHS is '-z'),
 # when the other operand is a constant -- just swap them, and remove the
-# spurious leading `x'.
+# spurious leading 'x'.
 sc_prohibit_test_const_follows_var:
 	@var='[	 ]+"[^$$"]*\$$[0-9A-Za-z_][^"]*"'			\
 	op='[	 ]+(!?=|-[lgn][et]|-eq)'				\
 	const='[	 ]+[^-$$][^$$;	 ]*'				\
 	prohibit='test'$$var$$op$$const'[	 ]*(&&|\|\||;|\\?$$)'	\
-	halt='use `test a = "$$b"'\'' instead of `test "x$$b" = xa'\'	\
+	halt='use '\''test a = "$$b"'\'' instead of '\''test "x$$b" = xa'\'	\
 	  $(_sc_search_regexp)
 
 # Check for opening brace on next line in shell function definition.

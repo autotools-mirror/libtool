@@ -42,7 +42,7 @@ and is not part of a release distribution.
 	    + missing
 	    + texinfo.tex
   The ones that are important for a release can be updated by ensuring
-  gnulib is up-to-date, and running `bootstrap` to recheck the links are
+  gnulib is up-to-date, and running 'bootstrap' to recheck the links are
   correct.
 
 * Changes other than bug fixes must be mentioned in NEWS
@@ -52,8 +52,8 @@ and is not part of a release distribution.
 =============
 
 * When writing tests, make sure the link invocation (first argument to
-  AT_CHECK) is on a single line so that `testsuite -x' displays the
-  whole thing.  You can use m4_do or `[... ]dnl' to wrap long lines.
+  AT_CHECK) is on a single line so that 'testsuite -x' displays the
+  whole thing.  You can use m4_do or '[... ]dnl' to wrap long lines.
 
 * Use
     make -k check
@@ -65,11 +65,11 @@ and is not part of a release distribution.
 * The new Autotest testsuite uses keywords to denote test features:
     autoconf		needs Autoconf
     automake		needs Automake
-    libltdl		exercises the `libltdl' library
-    libtool		exercises the `libtool' script
-    libtoolize		exercises the `libtoolize' script
+    libltdl		exercises the 'libltdl' library
+    libtool		exercises the 'libtool' script
+    libtoolize		exercises the 'libtoolize' script
     recursive		runs the suite recursively, with a modified
-			`libtool' script and with `-k libtool'
+			'libtool' script and with '-k libtool'
     CXX F77 FC GCJ	exercises a language other than C
 
 
@@ -77,16 +77,16 @@ and is not part of a release distribution.
 =========
 
 * We've adopted the convention that exported Autoconf macros should be
-  named with a leading `LT_' and be documented in the libtool manual.
-  Internal macros begin with `_LT_' if they are visible to aclocal, or
-  potentially part of an AC_DEFUN/AC_REQUIRE path, or else `_lt_' if
+  named with a leading 'LT_' and be documented in the libtool manual.
+  Internal macros begin with '_LT_' if they are visible to aclocal, or
+  potentially part of an AC_DEFUN/AC_REQUIRE path, or else '_lt_' if
   they are very low level.  This convention was only introduced just
   before libtool-2.0, so there may still be exceptions in the existing
   code.  But all new code should use it.
 
 * All shell variables used internally by libtool's Autoconf macros
-  should be named with the a leading `lt_' (not that they cannot clash
-  with the `_lt_' macro namespace).
+  should be named with the a leading 'lt_' (not that they cannot clash
+  with the '_lt_' macro namespace).
 
 
 5. Using git
@@ -127,18 +127,18 @@ and is not part of a release distribution.
   a linear history.
 
 
-6. Editing `.am' Files
+6. Editing '.am' Files
 ======================
 
 * Always use $(...) and not ${...}
 
-* Use `:', not `true'.  Use `exit 1', not `false'.
+* Use ':', not 'true'.  Use 'exit 1', not 'false'.
 
-* Use `##' comments liberally.  Comment anything even remotely unusual.
+* Use '##' comments liberally.  Comment anything even remotely unusual.
 
 * Never use basename or dirname.  Instead use sed.
 
-* Do not use `cd' within back-quotes, use `$(lt__cd)' instead.
+* Do not use 'cd' within back-quotes, use '$(lt__cd)' instead.
   Otherwise the directory name may be printed, depending on CDPATH.
 
 * In general, if a loop is required, it should be silent.  Then the body
@@ -150,18 +150,18 @@ and is not part of a release distribution.
   libltdl modes to function correctly, the thing we need to ensure
   *before the client runs libtoolize*, is that the subpackage case is
   correct (because all files may be symlinked there).  All others can
-  and will be fixed in the `libtoolize --ltdl --(non)recursive' stage.
+  and will be fixed in the 'libtoolize --ltdl --(non)recursive' stage.
 
 
-7. Editing `.m4' Files
+7. Editing '.m4' Files
 ======================
 
-* Be careful with both `echo' and `$ECHO'.  As the latter may be one of
+* Be careful with both 'echo' and '$ECHO'.  As the latter may be one of
    print -r --
    printf %s\n
    func_fallback_echo
   it may not have more than one argument and its value may not be
-  eval'ed.  However, the argument may start with a `-' and contain
+  eval'ed.  However, the argument may start with a '-' and contain
   backslashes.  As a rule of thumb, use
    echo ..		for literal (constant) strings without leading
 			hyphen and no backslashes within,
@@ -189,7 +189,7 @@ and is not part of a release distribution.
   top to bottom...
 
 * But first, outside of the stack, there is a convenience header that
-  defines the internal interfaces (as evidenced by the `lt__' prefix to
+  defines the internal interfaces (as evidenced by the 'lt__' prefix to
   the filename!) shared between implementation files in the stack, that
   are however not exported to libltdl clients:
 
@@ -210,7 +210,7 @@ and is not part of a release distribution.
 	`------'
 
 * The next layer is comprised of the subsystems of the exported libltdl
-  API, which are implemented by files that are named with a leading `lt_'
+  API, which are implemented by files that are named with a leading 'lt_'
   (single underscore!):
 
 	,------------v---------------.
@@ -251,7 +251,7 @@ and is not part of a release distribution.
     #include <libltdl/lt_system.h>
 
   This layer's interface is defined by files that are usually named with
-  a leading `lt__':
+  a leading 'lt__':
 
 	,--------------v-------------v------------v--------v---------.
 	| lt__dirent.h | lt__alloc.h | lt__strl.h | argz.h | slist.h |
@@ -372,7 +372,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 9.4. GPL with self extracting version and Libtool exception clause
 
-Although the libtool script is generated from `ltmain.in' according
+Although the libtool script is generated from 'ltmain.in' according
 to the rules in the preceding subsection, it also needs the Libtool
 exception clause so that it can be redistributed by other projects
 that use libtool:

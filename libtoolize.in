@@ -25,7 +25,7 @@
 ## Usage. ##
 ## ------ ##
 
-# Run `./libtoolize --help` for help with using this script from the
+# Run './libtoolize --help' for help with using this script from the
 # command line.
 
 
@@ -73,15 +73,15 @@ scriptversion='(GNU @PACKAGE@) @VERSION@'
 
 usage='$progpath [OPTION]...'
 
-# Short help message in response to `-h'.
-usage_message='Options:
+# Short help message in response to '-h'.
+usage_message="Options:
    -c, --copy          copy files rather than symlinking them
        --debug         enable verbose shell tracing
    -n, --dry-run       print commands rather than running them
    -f, --force         replace existing files
    -i, --install       copy missing auxiliary files
        --ltdl[=DIR]    install libltdl sources [default: libltdl]
-       --no-warnings   equivalent to \`-Wnone'\''
+       --no-warnings   equivalent to '-Wnone'
        --nonrecursive  prepare ltdl for non-recursive make
    -q, --quiet         work silently
        --recursive     prepare ltdl for recursive make
@@ -91,12 +91,12 @@ usage_message='Options:
    -W, --warnings=CATEGORY
                        report the warnings falling in CATEGORY [all]
    -h, --help          print short or long help message
-'
+"
 
-# Additional text appended to `usage_message' in response to `--help'.
+# Additional text appended to 'usage_message' in response to '--help'.
 long_help_message=$long_help_message"
-       \`environment'   show warnings about LIBTOOLIZE_OPTIONS content
-       \`file'          show warnings about file copying and linking
+       'environment'   show warnings about LIBTOOLIZE_OPTIONS content
+       'file'          show warnings about file copying and linking
 
 The following space or comma delimited options can be passed to $progname
 via the environment variable LIBTOOLIZE_OPTIONS, unknown environment
@@ -107,8 +107,8 @@ options are ignored:
        --quiet         work silently
        --verbose       verbosely report processing
 
-You must \`cd' to the top directory of your package before you run
-\`$progname'.
+You must 'cd' to the top directory of your package before you run
+'$progname'.
 
 When reporting a bug, please describe a test case to reproduce it and
 include the following information:
@@ -144,8 +144,8 @@ libtoolize_environment_options ()
         --debug|--no-warn|--no-warning|--no-warnings|--quiet|--verbose)
 		envopts="${envopts+$envopts }$opt"			  ;;
         --*)	env_warning="${env_warning+$env_warning
-}unrecognized environment option \`$opt'"				  ;;
-        *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
+}unrecognized environment option '$opt'"				  ;;
+        *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near '$opt'"  ;;
       esac
     done
 
@@ -283,7 +283,7 @@ libtoolize_validate_options ()
 
     # any remaining arguments are an error
     test 0 -lt $# &&
-      func_fatal_help "unknown additional arguments: \`${1+$@}'"
+      func_fatal_help "unknown additional arguments: '${1+$@}'"
 
     # Pass back the empty argument list
     func_quote_for_eval ${1+"$@"}
@@ -353,7 +353,7 @@ func_notquiet_error_hdr ()
 
 # func_copy FILENAME SRCDIR DESTDIR [MSG_VAR [FILTER]]
 # ----------------------------------------------------
-# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE
+# If option '--copy' was specified, or soft-linking SRCFILE to DESTFILE
 # fails, then try to copy SRCFILE to DESTFILE (making sure to update the
 # timestamp so that a series of files with dependencies can be copied
 # in the right order that their timestamps won't trigger rebuilds). If
@@ -374,7 +374,7 @@ func_copy ()
 
     # Libtool is probably misinstalled if this happens:
     test -f "$my_srcfile" || {
-      func_notquiet_error_hdr "$my_msg_var" "\`$my_srcfile' not found"
+      func_notquiet_error_hdr "$my_msg_var" "'$my_srcfile' not found"
       return 1
     }
 
@@ -382,11 +382,11 @@ func_copy ()
     $opt_force && $RM "$my_destfile"
     test -f "$my_destfile" && {
       func_notquiet_error_hdr "$my_msg_var" \
-        "\`$my_destfile' exists: use \`--force' to overwrite"
+        "'$my_destfile' exists: use '--force' to overwrite"
       return 1
     }
 
-    # Be careful to support `func_copy dir/target srcbase destbase'.
+    # Be careful to support 'func_copy dir/target srcbase destbase'.
     func_dirname "$my_destfile"
     func_mkdir_p "$func_dirname_result"
 
@@ -402,16 +402,16 @@ func_copy ()
         if $opt_verbose; then
           func_notquiet "$SED -e '$my_filter' $my_srcfile > $my_destfile"
          else
-          func_notquiet "creating file \`$my_destfile'"
+          func_notquiet "creating file '$my_destfile'"
          fi
       else
-        func_notquiet_error_hdr "$my_msg_var" "creating \`$my_destfile' from \`$my_srcfile' failed"
+        func_notquiet_error_hdr "$my_msg_var" "creating '$my_destfile' from '$my_srcfile' failed"
         return 1
       fi
       return 0
     fi
 
-    # Otherwise copy or link according to `--copy' option.
+    # Otherwise copy or link according to '--copy' option.
     if $opt_copy; then
       my_copycmd=$CP
       my_copy_type=copying
@@ -419,7 +419,7 @@ func_copy ()
       my_copycmd=$LN_S
       my_copy_type=linking
     fi
-    my_copy_msg="$my_copy_type file \`$my_destfile'"
+    my_copy_msg="$my_copy_type file '$my_destfile'"
     $opt_verbose && my_copy_msg="$my_copycmd $my_srcfile $my_destdir"
 
     if $opt_dry_run || {
@@ -431,7 +431,7 @@ func_copy ()
       func_notquiet_hdr "$my_msg_var" "$my_copy_msg"
     else
       func_notquiet_error_hdr "$my_msg_var" \
-        "$my_copy_type \`$my_srcdir/$my_filename' to \`$my_destdir/' failed"
+        "$my_copy_type '$my_srcdir/$my_filename' to '$my_destdir/' failed"
       return 1
     fi
 }
@@ -526,7 +526,7 @@ func_serial_max ()
     func_serial_max_result=
 
     test "X$1$2" = X`$ECHO "$1$2" | $SED "$my_sed_digits"` || {
-      func_error "serial numbers \`$1' or \`$2' contain non-digit chars"
+      func_error "serial numbers '$1' or '$2' contain non-digit chars"
       return
     }
 
@@ -574,7 +574,7 @@ func_serial_update_check ()
 
     if test -f "$my_destfile"; then
       test 0 = "$my_src_serial" && {
-        func_warning file "no serial number on \`$my_srcfile', not copying."
+        func_warning file "no serial number on '$my_srcfile', not copying."
 	return
       }
 
@@ -583,12 +583,12 @@ func_serial_update_check ()
       test "X$my_src_serial" = "X$func_serial_max_result" || my_update_p=false
 
       test "X$my_src_serial" = "X$func_serial_max_result" \
-        && func_verbose "\`$my_srcfile' is serial $my_src_serial, greater than $my_dest_serial in \`$my_destfile'"
+        && func_verbose "'$my_srcfile' is serial $my_src_serial, greater than $my_dest_serial in '$my_destfile'"
 
       if test "X$my_dest_serial" = "X$func_serial_max_result"; then
-        func_verbose "\`$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in \`$my_destfile'"
+        func_verbose "'$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in '$my_destfile'"
 	$opt_force || if test -n "$ac_macro_dir$ac_ltdl_dir"; then
-           func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
+           func_error "'$my_destfile' is newer: use '--force' to overwrite"
         fi
       fi
     fi
@@ -643,7 +643,7 @@ func_aclocal_update_check ()
 # ------------------------------------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer serial number, or DESTFILE does not yet exist, or the user
-# specified `--force' at the command line.  If given, MACRO_REGEX or
+# specified '--force' at the command line.  If given, MACRO_REGEX or
 # OLD_MACRO_REGEX must match any text after "# serial N" in both files.
 func_serial_update ()
 {
@@ -661,7 +661,7 @@ func_serial_update ()
     my_srcfile=$my_srcdir/$my_filename
     my_destfile=$my_destdir/$my_filename
 
-    test -f "$my_srcfile" || func_fatal_error "\`$my_srcfile' does not exist."
+    test -f "$my_srcfile" || func_fatal_error "'$my_srcfile' does not exist."
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
@@ -685,12 +685,12 @@ func_serial_update ()
       func_copy "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
       my_return_status=$?
     elif $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
-      func_notquiet_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
+      func_notquiet_hdr "$my_msg_var" "'$my_destfile' is already up to date."
     fi
 
-    # Do this after the copy for hand maintained `aclocal.m4', incase
-    # it has `m4_include([DESTFILE])', so the copy effectively already
-    # updated `aclocal.m4'.
+    # Do this after the copy for hand maintained 'aclocal.m4', incase
+    # it has 'm4_include([DESTFILE])', so the copy effectively already
+    # updated 'aclocal.m4'.
     my_included_files=`func_included_files aclocal.m4`
     case `echo " "$my_included_files" "` in
 
@@ -707,7 +707,7 @@ func_serial_update ()
               "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
           if test "X$my_src_serial" = "X$func_serial_max_result"; then
 	      func_notquiet_hdr "$my_msg_var" \
-                "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
+                "You should add the contents of '$my_destfile' to 'aclocal.m4'."
           fi
         fi
         ;;
@@ -721,7 +721,7 @@ func_serial_update ()
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer revision according to the serial number extracted by
 # SED_SCRIPT, or DESTFILE does not yet exist, or the user specified
-# `--force' at the command line.
+# '--force' at the command line.
 func_keyword_update ()
 {
     $debug_cmd
@@ -737,12 +737,12 @@ func_keyword_update ()
 
     my_keyword_update_p=:
 
-    test -f "$my_srcfile" || func_fatal_error "\`$my_srcfile' does not exist."
+    test -f "$my_srcfile" || func_fatal_error "'$my_srcfile' does not exist."
 
     if test -f "$my_destfile"; then
       my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
       test -z "$my_src_serial" && {
-        func_warning file "no serial number in \`$my_srcfile', not copying."
+        func_warning file "no serial number in '$my_srcfile', not copying."
 	return
       }
 
@@ -758,7 +758,7 @@ func_keyword_update ()
       $RM "$my_destfile"
       func_copy "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
     elif $opt_verbose || $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
-      func_notquiet_hdr "$my_msg_var" "\`$my_destfile' is already up to date."
+      func_notquiet_hdr "$my_msg_var" "'$my_destfile' is already up to date."
     fi
 }
 
@@ -767,7 +767,7 @@ func_keyword_update ()
 # ----------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer revision, or DESTFILE does not yet exist, or the user
-# specified `--force' at the command line.
+# specified '--force' at the command line.
 func_ltmain_update ()
 {
     $debug_cmd
@@ -789,7 +789,7 @@ func_ltmain_update ()
 # ----------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer timestamp, or DESTFILE does not yet exist, or the user
-# specified `--force' at the command line.
+# specified '--force' at the command line.
 func_config_update ()
 {
     $debug_cmd
@@ -812,7 +812,7 @@ func_config_update ()
 # -----------------------------------------------------
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer timestamp, or DESTFILE does not yet exist, or the user
-# specified `--force' at the command line.
+# specified '--force' at the command line.
 func_install_update ()
 {
     $debug_cmd
@@ -855,9 +855,9 @@ func_install_pkgmacro_files ()
 
     # Install the libltdl autoconf macros to this project's source tree.
     $opt_quiet || if test -n "$ac_macro_dir"; then
-      my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIRS, \`$ac_macro_dir'."
+      my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIRS, '$ac_macro_dir'."
     else
-      my_pkgmacro_header="putting macros in \`$macro_dir'."
+      my_pkgmacro_header="putting macros in '$macro_dir'."
     fi
 
     for file in $pkgmacro_files; do
@@ -871,7 +871,7 @@ func_install_pkgmacro_files ()
             func_serial_update "$file" "$aclocaldir" "$macro_dir" \
               my_pkgmacro_header 'LTDL_INIT'
           else
-            func_verbose "Not copying \`$macro_dir/$file', libltdl not used."
+            func_verbose "Not copying '$macro_dir/$file', libltdl not used."
           fi
           ;;
         ltoptions.m4|ltsugar.m4|ltversion.m4|lt~obsolete.m4)
@@ -883,7 +883,7 @@ func_install_pkgmacro_files ()
             func_serial_update "$file" "$aclocaldir" "$macro_dir" \
               my_pkgmacro_header "$file"
           else
-            func_verbose "Not copying \`$macro_dir/$file', libltdl not used."
+            func_verbose "Not copying '$macro_dir/$file', libltdl not used."
           fi
           ;;
       esac
@@ -914,11 +914,11 @@ func_install_pkgltdl_files ()
     done
 
     # Copy all the files from installed libltdl to this project, if the
-    # user specified `--ltdl'.
+    # user specified '--ltdl'.
     $opt_quiet || if test -n "$ac_ltdl_dir"; then
-      pkgltdl_header="putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdl_dir'."
+      pkgltdl_header="putting libltdl files in LT_CONFIG_LTDL_DIR, '$ac_ltdl_dir'."
     else
-      pkgltdl_header="putting libltdl files in \`$ltdl_dir'."
+      pkgltdl_header="putting libltdl files in '$ltdl_dir'."
     fi
 
     $require_filter_Makefile_am
@@ -986,7 +986,7 @@ func_install_pkgltdl_files ()
       test ltdl.mk = "$file" \
         && func_grep "^-\?include $ltdl_dir/Makefile.inc\$" Makefile.am \
         && mv "$ltdl_dir/$file" "$ltdl_dir/Makefile.inc" \
-        && func_notquiet "renaming file \`$ltdl_dir/Makefile.inc'"
+        && func_notquiet "renaming file '$ltdl_dir/Makefile.inc'"
     done
 }
 
@@ -1013,9 +1013,9 @@ func_install_pkgaux_files ()
     done
 
     if test -n "$ac_aux_dir"; then
-      pkgaux_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_aux_dir'."
+      pkgaux_header="putting auxiliary files in AC_CONFIG_AUX_DIR, '$ac_aux_dir'."
     else
-      pkgaux_header="putting auxiliary files in \`$aux_dir'."
+      pkgaux_header="putting auxiliary files in '$aux_dir'."
     fi
 
     for file in $pkgaux_files; do
@@ -1043,7 +1043,7 @@ func_install_pkgaux_files ()
     # will still need to build libtool for its own purposes, and might
     # need another copy of ltmain.sh if the parent didn't declare an
     # AC_CONFIG_AUX_DIR.
-    pkgaux_hdr="putting another copy of auxiliary files in \`.'"
+    pkgaux_hdr="putting another copy of auxiliary files in '.'"
     test -f "$configure_ac" \
       && test -z "$ac_aux_dir" \
       && test subproject = "$ltdl_mode" \
@@ -1051,12 +1051,12 @@ func_install_pkgaux_files ()
       && func_ltmain_update "$file" "$pkgauxdir" . pkgaux_hdr
 
     # FIXME: Remove in 2013.
-    # Very old parent projects using `libtoolize --install --ltdl', and
+    # Very old parent projects using 'libtoolize --install --ltdl', and
     # a top-level $configure_ac to build the ltdl subproject, but not
     # using Automake themselves, might still be relying on the old
-    # behaviour of libtoolize to put a second copy of some `Auxiliary
+    # behaviour of libtoolize to put a second copy of some 'Auxiliary
     # Programs' needed by the top-level configure (instead of using
-    # the recommended method: `automake --add-missing').
+    # the recommended method: 'automake --add-missing').
     test -f "$configure_ac" \
       && test subproject = "$ltdl_mode" \
       && test "$aux_dir" = "$ltdl_dir" \
@@ -1079,11 +1079,11 @@ func_nonemptydir_p ()
 
     # Is it a directory at all?
     test -d "$my_dir" \
-      || func_fatal_error "\$$my_dirvar is not a directory: \`$my_dir'"
+      || func_fatal_error "\$$my_dirvar is not a directory: '$my_dir'"
 
     # check that the directories contents can be ls'ed
     test -n "`{ cd $my_dir && ls; } 2>/dev/null`" \
-        || func_fatal_error "cannot list files: \`$my_dir'"
+        || func_fatal_error "cannot list files: '$my_dir'"
 }
 
 
@@ -1124,9 +1124,9 @@ func_check_macros ()
       done
 
       if test -n "$my_missing"; then
-        func_echo "You should add the contents of the following files to \`aclocal.m4':"
+        func_echo "You should add the contents of the following files to 'aclocal.m4':"
         for need in $my_missing; do
-	  func_echo "  \`$aclocaldir/$need'"
+	  func_echo "  '$aclocaldir/$need'"
         done
       fi
     fi
@@ -1139,7 +1139,7 @@ func_check_macros ()
     test " none" = "$opt_warning_types" && return
 
     $seen_libtool ||
-      func_echo "Remember to add \`LT_INIT' to $configure_ac."
+      func_echo "Remember to add 'LT_INIT' to $configure_ac."
 
     # Suggest using LTDL_INIT if appropriate:
     $opt_ltdl && if test : != "$seen_ltdl"; then
@@ -1147,13 +1147,13 @@ func_check_macros ()
 	subproject) ltdl_init_args=                 ;;
 	*)          ltdl_init_args="([$ltdl_mode])" ;;
       esac
-      func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
+      func_echo "Remember to add 'LTDL_INIT$ltdl_init_args' to $configure_ac."
     fi
 
     if $opt_ltdl; then
       # Remind the user to call LT_CONFIG_LTDL_DIR:
       test -n "$ac_ltdl_dir" ||
-        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdl_dir])' to \`$configure_ac'."
+        func_echo "Remember to add 'LT_CONFIG_LTDL_DIR([$ltdl_dir])' to '$configure_ac'."
 
       # For nonrecursive mode, warn about continued use of Makefile.inc:
       # FIXME: Remove in 2013
@@ -1161,35 +1161,35 @@ func_check_macros ()
       if test nonrecursive = "$ltdl_mode"; then
 	if func_grep "^-\?include $ltdl_dir/Makefile.inc\$" Makefile.am;
 	then
-	  func_error "Use of \`include $ltdl_dir/Makefile.inc' is deprecated!"
-	  func_echo "Consider updating to use of \`include $ltdl_dir/ltdl.mk' in Makefile.am."
+	  func_error "Use of 'include $ltdl_dir/Makefile.inc' is deprecated!"
+	  func_echo "Consider updating to use of 'include $ltdl_dir/ltdl.mk' in Makefile.am."
 	fi
       fi
     fi
 
     # Suggest modern idioms for storing autoconf macros:
     $ac_config_macro_dir_advised || if test -z "$macro_dir" || test . = "$macro_dir"; then
-      func_echo "Consider adding \`AC_CONFIG_MACRO_DIRS([m4])' to $configure_ac and"
+      func_echo "Consider adding 'AC_CONFIG_MACRO_DIRS([m4])' to $configure_ac and"
       func_echo "rerunning $progname, to keep the correct libtool macros in-tree."
       ac_config_macro_dir_advised=:
 
     elif test -z "$ac_macro_dir"; then
-      func_echo "Consider adding \`AC_CONFIG_MACRO_DIRS([$macro_dir])' to $configure_ac,"
+      func_echo "Consider adding 'AC_CONFIG_MACRO_DIRS([$macro_dir])' to $configure_ac,"
       func_echo "and rerunning $progname and aclocal."
       ac_config_macro_dir_advised=:
     fi
 
     if test -z "$am_macro_dir$ac_macro_dir"; then
-      func_echo "Consider adding \`-I m4' to ACLOCAL_AMFLAGS in Makefile.am."
+      func_echo "Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am."
 
     elif test -z "$am_macro_dir"; then
-      func_echo "Consider adding \`-I $macro_dir' to ACLOCAL_AMFLAGS in Makefile.am."
+      func_echo "Consider adding '-I $macro_dir' to ACLOCAL_AMFLAGS in Makefile.am."
     fi
 
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
     $SED 's|dnl .*$||; s|# .*$||' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
-      func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
+      func_echo "'AC_PROG_RANLIB' is rendered obsolete by 'LT_INIT'"
 
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
 }
@@ -1224,7 +1224,7 @@ func_autoconf_configure ()
     _G_status=$?
 
     test 0 -ne "$_G_status" \
-      && func_verbose "\`$1' not using Autoconf"
+      && func_verbose "'$1' not using Autoconf"
 
     (exit $_G_status)
 }
@@ -1264,7 +1264,7 @@ func_make_relative_dir_filter ()
     else
       my_match_currdir=`$ECHO "$my_currdir" |$SED "$sed_make_literal_regex"`
 
-      # Avoid substituting with `dir/./file' when current dir is `.'.
+      # Avoid substituting with 'dir/./file' when current dir is '.'.
       if test . = "$my_currdir"; then
         func_make_relative_dir_filter_result="
           s|$4$my_match_currdir/$5|$4$5|g"
@@ -1277,8 +1277,8 @@ func_make_relative_dir_filter ()
 
 # func_make_relative_ltdl_filter CURRDIR DESTDIR [PREFIX [SUFFIX]]
 # ----------------------------------------------------------------
-# As `func_make_relative_dir_filter' optimised for the common case where
-# SRCDIR is `$ltdl_dir'.
+# As 'func_make_relative_dir_filter' optimised for the common case where
+# SRCDIR is '$ltdl_dir'.
 func_make_relative_ltdl_filter ()
 {
     $debug_cmd
@@ -1298,9 +1298,9 @@ func_make_relative_ltdl_filter ()
 # particular resource (a file, or a non-empty configuration variable for
 # example) is available, and if appropriate to extract default values
 # from pertinent package files.  Where a variable already has a non-
-# empty value (as set by the package's `bootstrap.conf'), that value is
+# empty value (as set by the package's 'bootstrap.conf'), that value is
 # used in preference to deriving the default. Call them using their
-# associated `require_*' variable to ensure that they are executed, at
+# associated 'require_*' variable to ensure that they are executed, at
 # most, once.
 #
 # Some of the require functions are very similar, so we generate those
@@ -1318,9 +1318,9 @@ for base in '' ltdl_; do
   # require_Makefile_am
   # require_ltdl_Makefile_am
   # ------------------------
-  # If not already set, set Makefile_am to `Makefile.am' if that file is
+  # If not already set, set Makefile_am to 'Makefile.am' if that file is
   # present in the current directory, and similarly for
-  # `$pkgltdldir/Makefile.am'.
+  # '$pkgltdldir/Makefile.am'.
   r=${base}Makefile_am
   v=require_$r
   f=func_$v
@@ -1332,7 +1332,7 @@ for base in '' ltdl_; do
     test -n "$'$r'" || '$r'='$p'Makefile.am
 
     if test -f "$'$r'"; then
-      func_verbose "found \`$'$r\''"
+      func_verbose "found '\'\$$r\''"
     else
       '$r'=
     fi
@@ -1345,8 +1345,8 @@ for base in '' ltdl_; do
   # require_aclocal_amflags
   # require_ltdl_aclocal_amflags
   # ----------------------------
-  # Extract `$aclocal_amflags' from `Makefile.am' if present, and
-  # similarly for `libltdl/Makefile.am'.
+  # Extract '$aclocal_amflags' from 'Makefile.am' if present, and
+  # similarly for 'libltdl/Makefile.am'.
   r=${base}aclocal_amflags
   v=require_$r
   f=func_$v
@@ -1380,7 +1380,7 @@ for base in '' ltdl_; do
   # require_ltdl_am_macro_dir
   # -------------------------
   # Set am_macro_dir to the first directory specified in
-  # ACLOCAL_AMFLAGS from `Makefile.am', and similarly for
+  # ACLOCAL_AMFLAGS from 'Makefile.am', and similarly for
   # 'libltdl/Makefile.am'.
   r=${base}am_macro_dir
   v=require_$r
@@ -1583,8 +1583,8 @@ func_require_aux_dir ()
 
 # require_configure_ac
 # --------------------
-# Ensure that there is a `configure.ac' or `configure.in' file in this
-# directory, and that `$configure_ac' contains its name.
+# Ensure that there is a 'configure.ac' or 'configure.in' file in this
+# directory, and that '$configure_ac' contains its name.
 require_configure_ac=func_require_configure_ac
 func_require_configure_ac ()
 {
@@ -1595,7 +1595,7 @@ func_require_configure_ac ()
     test -z "$configure_ac" \
       && func_autoconf_configure configure.in && configure_ac=configure.in
     test -z "$configure_ac" \
-      || func_verbose "found \`$configure_ac'"
+      || func_verbose "found '$configure_ac'"
 
     require_configure_ac=:
 }
@@ -1603,7 +1603,7 @@ func_require_configure_ac ()
 
 # require_filter_Makefile_am
 # --------------------------
-# Set `filter_Makefile_am' ready for passing to func_copy when libltdl's
+# Set 'filter_Makefile_am' ready for passing to func_copy when libltdl's
 # stock Makefile.am contents need to be filtered to work in recursive
 # mode.
 require_filter_Makefile_am=func_require_filter_Makefile_am
@@ -1649,7 +1649,7 @@ func_require_filter_Makefile_am ()
 
 # require_filter_aclocal_m4
 # -------------------------
-# Set `filter_aclocal_m4' ready for passing to func_copy when libltdl's
+# Set 'filter_aclocal_m4' ready for passing to func_copy when libltdl's
 # stock aclocal.m4 contents need to be filtered to work in recursive
 # mode.
 require_filter_aclocal_m4=func_require_filter_aclocal_m4
@@ -1674,7 +1674,7 @@ func_require_filter_aclocal_m4 ()
 
 # require_filter_configure_ac
 # ---------------------------
-# Set `filter_configure_ac' ready for passing to func_copy when
+# Set 'filter_configure_ac' ready for passing to func_copy when
 # libltdl's stock configure.ac contents need to be filtered to work in
 # subproject mode.
 require_filter_configure_ac=func_require_filter_configure_ac
@@ -1693,7 +1693,7 @@ func_require_filter_configure_ac ()
 
 # require_filter_ltdl_mk
 # ----------------------
-# Set `filter_ltdl_mk' ready for passing to func_copy in order for the
+# Set 'filter_ltdl_mk' ready for passing to func_copy in order for the
 # contents of ltdl.mk to match the nonrecursive libltdl directory into
 # which it is copied.
 require_filter_ltdl_mk=func_require_filter_ltdl_mk

@@ -71,13 +71,13 @@ moduletest (lt_dlhandle handle, const char *fname, const char *vname)
 
   if (!f)
     {
-      fprintf (stderr, "function `%s' not found\n", fname);
+      fprintf (stderr, "function '%s' not found\n", fname);
       ++errors;
       return -1;
     }
   if (!v)
     {
-      fprintf (stderr, "variable `%s' not found\n", vname);
+      fprintf (stderr, "variable '%s' not found\n", vname);
       ++errors;
       return -1;
     }

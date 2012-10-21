@@ -345,7 +345,7 @@ slist_sort (SList *slist, SListCompare *compare, void *userdata)
    used for the boxes.  It us usually a very bad idea to mix boxed and
    non-boxed items in a single list.  */
 
-/* Return a `boxed' freshly mallocated 1 element list containing
+/* Return a 'boxed' freshly mallocated 1 element list containing
    USERDATA.  */
 SList *
 slist_box (const void *userdata)
@@ -361,7 +361,7 @@ slist_box (const void *userdata)
   return item;
 }
 
-/* Return the contents of a `boxed' ITEM, recycling the box itself.  */
+/* Return the contents of a 'boxed' ITEM, recycling the box itself.  */
 void *
 slist_unbox (SList *item)
 {

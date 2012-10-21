@@ -72,7 +72,7 @@ fn_check_msg ()
     grep "$CAB_re" "$log_file" 2>/dev/null \
         |while read CAB; do
             test 0 -eq `expr "$CAB" : ".*$email_re"` && {
-                echo "Malformed or missing email in \`$CAB'"
+                echo "Malformed or missing email in '$CAB'"
 	        return_status=1
             }
          done
@@ -89,14 +89,14 @@ fn_check_msg ()
     # Make sure Copyright-paperwork-exempt line is valid.
     if grep "$CPR_re[Nn]" "$log_file" >/dev/null 2>&1; then
       $ECHO "\
-\`Copyright-paperwork-exempt: No' is redundant, please remove."
+'Copyright-paperwork-exempt: No' is redundant, please remove."
       return_status=1
     else
       not_yes=`grep "$CPR_re" "$log_file" 2>/dev/null \
         |grep -v "${CPR_re}Yes\$"`
 
       test -n "$not_yes" && {
-        $ECHO "\`Copyright-paperwork-exempt' setting must be \`Yes'."
+        $ECHO "'Copyright-paperwork-exempt' setting must be 'Yes'."
         return_status=1
       }
     fi

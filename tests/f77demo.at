@@ -41,7 +41,7 @@ AM_INIT_AUTOMAKE
 AC_PROG_CC
 
 AC_PROG_F77
-dnl When configuring for `make dist' purposes, skip checks that may yield fatal
+dnl When configuring for 'make dist' purposes, skip checks that may yield fatal
 dnl errors when there is no working F77 compiler.
 if test -z "$with_dist"; then
   dnl Check the flags needed to link f77 programs with ld (i.e. cc)

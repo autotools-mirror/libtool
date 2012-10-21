@@ -1056,14 +1056,14 @@ Libraries have been installed in:
    /usr/local/lib
 
 To link against installed libraries in a given directory, LIBDIR,
-you must use the `-LLIBDIR' flag during linking.
+you must use the '-LLIBDIR' flag during linking.
 
  You will also need to do one of the following:
-   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+   - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
      during execution
-   - add LIBDIR to the `LD_RUN_PATH' environment variable
+   - add LIBDIR to the 'LD_RUN_PATH' environment variable
      during linking
-   - use the `-RLIBDIR' linker flag
+   - use the '-RLIBDIR' linker flag
 
 See any operating system documentation about shared libraries for
 more information, such as the ld and ld.so manual pages.

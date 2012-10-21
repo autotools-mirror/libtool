@@ -122,7 +122,7 @@ done
 # Hypothesis: -version-info can be passed kinds of values, esp. zero ones
 # and large ones.
 # TODO: check something like 1001:2419:189 after fixing issues
-# for `version_type's of `irix', `nonstopux', or `osf'.
+# for 'version_type's of 'irix', 'nonstopux', or 'osf'.
 for version_info in 1 1:2 0:0:0 1:1:1 13:241:7; do
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba1.lo ]dnl
 	   [-version-info $version_info -rpath $libdir], [], [ignore], [ignore])

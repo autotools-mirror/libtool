@@ -128,7 +128,7 @@ cc_basename=`$ECHO "$cc_temp" | $SED "s%.*/%%; s%^$host_alias-%%"`
 # _LT_FILEUTILS_DEFAULTS
 # ----------------------
 # It is okay to use these file commands and assume they have been set
-# sensibly after `m4_require([_LT_FILEUTILS_DEFAULTS])'.
+# sensibly after 'm4_require([_LT_FILEUTILS_DEFAULTS])'.
 m4_defun([_LT_FILEUTILS_DEFAULTS],
 [: ${CP="cp -f"}
 : ${MV="mv -f"}
@@ -207,7 +207,7 @@ esac
 ofile=libtool
 can_build_shared=yes
 
-# All known linkers require a `.a' archive for static linking (except MSVC,
+# All known linkers require a '.a' archive for static linking (except MSVC,
 # which needs '.lib').
 libext=a
 
@@ -267,9 +267,9 @@ no_glob_subst='s/\*/\\\*/g'
 
 # _LT_PROG_LTMAIN
 # ---------------
-# Note that this code is called both from `configure', and `config.status'
+# Note that this code is called both from 'configure', and 'config.status'
 # now that we use AC_CONFIG_COMMANDS to generate libtool.  Notably,
-# `config.status' has no value for ac_aux_dir unless we are using Automake,
+# 'config.status' has no value for ac_aux_dir unless we are using Automake,
 # so we pass a copy along to make sure it has a sensible value anyway.
 m4_defun([_LT_PROG_LTMAIN],
 [m4_ifdef([AC_REQUIRE_AUX_FILE], [AC_REQUIRE_AUX_FILE([ltmain.sh])])dnl
@@ -284,7 +284,7 @@ ltmain=$ac_aux_dir/ltmain.sh
 
 # So that we can recreate a full libtool script including additional
 # tags, we accumulate the chunks of code to send to AC_CONFIG_COMMANDS
-# in macros and then make a single call at the end using the `libtool'
+# in macros and then make a single call at the end using the 'libtool'
 # label.
 
 
@@ -419,8 +419,8 @@ m4_define([_lt_decl_all_varnames],
 
 # _LT_CONFIG_STATUS_DECLARE([VARNAME])
 # ------------------------------------
-# Quote a variable value, and forward it to `config.status' so that its
-# declaration there will have the same value as in `configure'.  VARNAME
+# Quote a variable value, and forward it to 'config.status' so that its
+# declaration there will have the same value as in 'configure'.  VARNAME
 # must have a single quote delimited value for this to work.
 m4_define([_LT_CONFIG_STATUS_DECLARE],
 [$1='`$ECHO "$][$1" | $SED "$delay_single_quote_subst"`'])
@@ -472,7 +472,7 @@ m4_ifval([$2], [_$2])[]m4_popdef([_libtool_name])[]dnl
 # _LT_LIBTOOL_CONFIG_VARS
 # -----------------------
 # Produce commented declarations of non-tagged libtool config variables
-# suitable for insertion in the LIBTOOL CONFIG section of the `libtool'
+# suitable for insertion in the LIBTOOL CONFIG section of the 'libtool'
 # script.  Tagged libtool config variables (even for the LIBTOOL CONFIG
 # section) are produced by _LT_LIBTOOL_TAG_VARS.
 m4_defun([_LT_LIBTOOL_CONFIG_VARS],
@@ -498,8 +498,8 @@ m4_define([_LT_TAGVAR], [m4_ifval([$2], [$1_$2], [$1])])
 # Send accumulated output to $CONFIG_STATUS.  Thanks to the lists of
 # variables for single and double quote escaping we saved from calls
 # to _LT_DECL, we can put quote escaped variables declarations
-# into `config.status', and then the shell code to quote escape them in
-# for loops in `config.status'.  Finally, any additional code accumulated
+# into 'config.status', and then the shell code to quote escape them in
+# for loops in 'config.status'.  Finally, any additional code accumulated
 # from calls to _LT_CONFIG_LIBTOOL_INIT is expanded.
 m4_defun([_LT_CONFIG_COMMANDS],
 [AC_PROVIDE_IFELSE([LT_OUTPUT],
@@ -574,7 +574,7 @@ _LT_OUTPUT_LIBTOOL_INIT
 # Generate a child script FILE with all initialization necessary to
 # reuse the environment learned by the parent script, and make the
 # file executable.  If COMMENT is supplied, it is inserted after the
-# `#!' sequence but before initialization text begins.  After this
+# '#!' sequence but before initialization text begins.  After this
 # macro, additional text can be appended to FILE to form the body of
 # the child script.  The macro ends with non-zero status if the
 # file could not be fully written (such as if the disk is full).
@@ -619,7 +619,7 @@ exec AS_MESSAGE_LOG_FD>>config.log
 } >&AS_MESSAGE_LOG_FD
 
 lt_cl_help="\
-\`$as_me' creates a local libtool stub from the current configuration,
+'$as_me' creates a local libtool stub from the current configuration,
 for use in further configure time tests before the real libtool is
 generated.
 
@@ -654,10 +654,10 @@ do
       lt_cl_silent=: ;;
 
     -*) AC_MSG_ERROR([unrecognized option: $[1]
-Try \`$[0] --help' for more information.]) ;;
+Try '$[0] --help' for more information.]) ;;
 
     *) AC_MSG_ERROR([unrecognized argument: $[1]
-Try \`$[0] --help' for more information.]) ;;
+Try '$[0] --help' for more information.]) ;;
   esac
   shift
 done
@@ -2042,7 +2042,7 @@ if test no = "$_LT_TAGVAR(lt_cv_prog_compiler_c_o, $1)" && test no != "$need_loc
   ln conftest.a conftest.b 2>/dev/null && hard_links=no
   AC_MSG_RESULT([$hard_links])
   if test no = "$hard_links"; then
-    AC_MSG_WARN([`$CC' does not support `-c -o', so `make -j' may be unsafe])
+    AC_MSG_WARN(['$CC' does not support '-c -o', so 'make -j' may be unsafe])
     need_locks=warn
   fi
 else
@@ -2270,8 +2270,8 @@ aix[[4-9]]*)
   else
     # With GCC up to 2.95.x, collect2 would create an import file
     # for dependence libraries.  The import file would start with
-    # the line `#! .'.  This would cause the generated library to
-    # depend on `.', always an invalid library.  This was fixed in
+    # the line '#! .'.  This would cause the generated library to
+    # depend on '.', always an invalid library.  This was fixed in
     # development snapshots of GCC prior to 3.0.
     case $host_os in
       aix4 | aix4.[[01]] | aix4.[[01]].*)
@@ -3154,13 +3154,13 @@ lt_cv_deplibs_check_method='unknown'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
 # 'none' -- dependencies not supported.
-# `unknown' -- same as none, but documents that we really don't know.
+# 'unknown' -- same as none, but documents that we really don't know.
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
 # 'file_magic [[regex]]' -- check by looking for files in library path
 # which responds to the $file_magic_cmd with a given extended regex.
-# If you have `file' or equivalent on your system and you're not sure
-# whether `pass_all' will *always* work, you probably want this one.
+# If you have 'file' or equivalent on your system and you're not sure
+# whether 'pass_all' will *always* work, you probably want this one.
 
 case $host_os in
 aix[[4-9]]*)
@@ -3391,7 +3391,7 @@ else
       tmp_nm=$ac_dir/$lt_tmp_nm
       if test -f "$tmp_nm" || test -f "$tmp_nm$ac_exeext"; then
 	# Check to see if the nm accepts a BSD-compat flag.
-	# Adding the `sed 1q' prevents false positives on HP-UX, which says:
+	# Adding the 'sed 1q' prevents false positives on HP-UX, which says:
 	#   nm: unknown option "B" ignored
 	# Tru64's nm complains that /dev/null is an invalid object file
 	case `"$tmp_nm" -B /dev/null 2>&1 | sed '1q'` in
@@ -3876,8 +3876,8 @@ m4_if([$1], [CXX], [
         ;;
       m68k)
             # FIXME: we need at least 68020 code to build shared libraries, but
-            # adding the `-m68020' flag to GCC prevents building anything better,
-            # like `-m68040'.
+            # adding the '-m68020' flag to GCC prevents building anything better,
+            # like '-m68040'.
             _LT_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
         ;;
       esac
@@ -4194,8 +4194,8 @@ m4_if([$1], [CXX], [
         ;;
       m68k)
             # FIXME: we need at least 68020 code to build shared libraries, but
-            # adding the `-m68020' flag to GCC prevents building anything better,
-            # like `-m68040'.
+            # adding the '-m68020' flag to GCC prevents building anything better,
+            # like '-m68040'.
             _LT_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
         ;;
       esac
@@ -4608,9 +4608,9 @@ m4_if([$1], [CXX], [
   # included in the symbol list
   _LT_TAGVAR(include_expsyms, $1)=
   # exclude_expsyms can be an extended regexp of symbols to exclude
-  # it will be wrapped by ` (' and `)$', so one must not match beginning or
-  # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
-  # as well as any symbol that contains `d'.
+  # it will be wrapped by ' (' and ')$', so one must not match beginning or
+  # end of line.  Example: 'a|bc|.*d.*' will exclude the symbols 'a' and 'bc',
+  # as well as any symbol that contains 'd'.
   _LT_TAGVAR(exclude_expsyms, $1)=['_GLOBAL_OFFSET_TABLE_|_GLOBAL__F[ID]_.*']
   # Although _GLOBAL_OFFSET_TABLE_ is a valid symbol C name, most a.out
   # platforms (ab)use it in PIC code, but their linkers get confused if
@@ -5450,7 +5450,7 @@ _LT_EOF
       solaris2.[[0-5]] | solaris2.[[0-5]].*) ;;
       *)
 	# The compiler driver will combine and reorder linker options,
-	# but understands `-z linker_flag'.  GCC discards it without `$wl',
+	# but understands '-z linker_flag'.  GCC discards it without '$wl',
 	# but is careful enough not to reorder.
 	# Supported since Solaris 2.6 (maybe 2.5.1?)
 	if test yes = "$GCC"; then
@@ -5720,7 +5720,7 @@ dnl    [Compiler flag to generate thread safe objects])
 # ------------------------
 # Ensure that the configuration variables for a C compiler are suitably
 # defined.  These variables are subsequently used by _LT_CONFIG to write
-# the compiler configuration to `libtool'.
+# the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_C_CONFIG],
 [m4_require([_LT_DECL_EGREP])dnl
 lt_save_CC=$CC
@@ -5805,7 +5805,7 @@ CC=$lt_save_CC
 # --------------------------
 # Ensure that the configuration variables for a C++ compiler are suitably
 # defined.  These variables are subsequently used by _LT_CONFIG to write
-# the compiler configuration to `libtool'.
+# the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_CXX_CONFIG],
 [m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_EGREP])dnl
@@ -6696,7 +6696,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	      solaris2.[[0-5]] | solaris2.[[0-5]].*) ;;
 	      *)
 		# The compiler driver will combine and reorder linker options,
-		# but understands `-z linker_flag'.
+		# but understands '-z linker_flag'.
 	        # Supported since Solaris 2.6 (maybe 2.5.1?)
 		_LT_TAGVAR(whole_archive_flag_spec, $1)='-z allextract$convenience -z defaultextract'
 	        ;;
@@ -6732,7 +6732,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	        # linking a shared library.
 	        output_verbose_link_cmd='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP -v "^Configured with:" | $GREP "\-L"'
 	      else
-	        # g++ 2.7 appears to require `-G' NOT `-shared' on this
+	        # g++ 2.7 appears to require '-G' NOT '-shared' on this
 	        # platform.
 	        _LT_TAGVAR(archive_cmds, $1)='$CC -G -nostdlib $LDFLAGS $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags $wl-h $wl$soname -o $lib'
 	        _LT_TAGVAR(archive_expsym_cmds, $1)='echo "{ global:" > $lib.exp~cat $export_symbols | $SED -e "s/\(.*\)/\1;/" >> $lib.exp~echo "local: *; };" >> $lib.exp~
@@ -7143,7 +7143,7 @@ _LT_TAGDECL([], [compiler_lib_search_path], [1],
 # --------------------------
 # Ensure that the configuration variables for a Fortran 77 compiler are
 # suitably defined.  These variables are subsequently used by _LT_CONFIG
-# to write the compiler configuration to `libtool'.
+# to write the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_F77_CONFIG],
 [AC_LANG_PUSH(Fortran 77)
 if test -z "$F77" || test no = "$F77"; then
@@ -7274,7 +7274,7 @@ AC_LANG_POP
 # -------------------------
 # Ensure that the configuration variables for a Fortran compiler are
 # suitably defined.  These variables are subsequently used by _LT_CONFIG
-# to write the compiler configuration to `libtool'.
+# to write the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_FC_CONFIG],
 [AC_LANG_PUSH(Fortran)
 
@@ -7409,7 +7409,7 @@ AC_LANG_POP
 # --------------------------
 # Ensure that the configuration variables for the GNU Java Compiler compiler
 # are suitably defined.  These variables are subsequently used by _LT_CONFIG
-# to write the compiler configuration to `libtool'.
+# to write the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_GCJ_CONFIG],
 [AC_REQUIRE([LT_PROG_GCJ])dnl
 AC_LANG_SAVE
@@ -7480,7 +7480,7 @@ CFLAGS=$lt_save_CFLAGS
 # --------------------------
 # Ensure that the configuration variables for the GNU Go compiler
 # are suitably defined.  These variables are subsequently used by _LT_CONFIG
-# to write the compiler configuration to `libtool'.
+# to write the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_GO_CONFIG],
 [AC_REQUIRE([LT_PROG_GO])dnl
 AC_LANG_SAVE
@@ -7551,7 +7551,7 @@ CFLAGS=$lt_save_CFLAGS
 # -------------------------
 # Ensure that the configuration variables for the Windows resource compiler
 # are suitably defined.  These variables are subsequently used by _LT_CONFIG
-# to write the compiler configuration to `libtool'.
+# to write the compiler configuration to 'libtool'.
 m4_defun([_LT_LANG_RC_CONFIG],
 [AC_REQUIRE([LT_PROG_RC])dnl
 AC_LANG_SAVE

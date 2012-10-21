@@ -29,7 +29,7 @@ m4_define([_LT_SET_OPTION],
 [m4_define(_LT_MANGLE_OPTION([$1], [$2]))dnl
 m4_ifdef(_LT_MANGLE_DEFUN([$1], [$2]),
         _LT_MANGLE_DEFUN([$1], [$2]),
-    [m4_warning([Unknown $1 option `$2'])])[]dnl
+    [m4_warning([Unknown $1 option '$2'])])[]dnl
 ])
 
 
@@ -75,7 +75,7 @@ m4_if([$1],[LT_INIT],[
   dnl
   dnl If no reference was made to various pairs of opposing options, then
   dnl we run the default mode handler for the pair.  For example, if neither
-  dnl `shared' nor `disable-shared' was passed, we enable building of shared
+  dnl 'shared' nor 'disable-shared' was passed, we enable building of shared
   dnl archives by default:
   _LT_UNLESS_OPTIONS([LT_INIT], [shared disable-shared], [_LT_ENABLE_SHARED])
   _LT_UNLESS_OPTIONS([LT_INIT], [static disable-static], [_LT_ENABLE_STATIC])
@@ -112,7 +112,7 @@ AU_DEFUN([AC_LIBTOOL_DLOPEN],
 [_LT_SET_OPTION([LT_INIT], [dlopen])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
-put the `dlopen' option into LT_INIT's first parameter.])
+put the 'dlopen' option into LT_INIT's first parameter.])
 ])
 
 dnl aclocal-1.4 backwards compatibility:
@@ -148,7 +148,7 @@ AU_DEFUN([AC_LIBTOOL_WIN32_DLL],
 _LT_SET_OPTION([LT_INIT], [win32-dll])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
-put the `win32-dll' option into LT_INIT's first parameter.])
+put the 'win32-dll' option into LT_INIT's first parameter.])
 ])
 
 dnl aclocal-1.4 backwards compatibility:
@@ -157,9 +157,9 @@ dnl AC_DEFUN([AC_LIBTOOL_WIN32_DLL], [])
 
 # _LT_ENABLE_SHARED([DEFAULT])
 # ----------------------------
-# implement the --enable-shared flag, and supports the `shared' and
-# `disable-shared' LT_INIT options.
-# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
+# implement the --enable-shared flag, and supports the 'shared' and
+# 'disable-shared' LT_INIT options.
+# DEFAULT is either 'yes' or 'no'.  If omitted, it defaults to 'yes'.
 m4_define([_LT_ENABLE_SHARED],
 [m4_define([_LT_ENABLE_SHARED_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([shared],
@@ -211,9 +211,9 @@ dnl AC_DEFUN([AM_DISABLE_SHARED], [])
 
 # _LT_ENABLE_STATIC([DEFAULT])
 # ----------------------------
-# implement the --enable-static flag, and support the `static' and
-# `disable-static' LT_INIT options.
-# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
+# implement the --enable-static flag, and support the 'static' and
+# 'disable-static' LT_INIT options.
+# DEFAULT is either 'yes' or 'no'.  If omitted, it defaults to 'yes'.
 m4_define([_LT_ENABLE_STATIC],
 [m4_define([_LT_ENABLE_STATIC_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([static],
@@ -265,9 +265,9 @@ dnl AC_DEFUN([AM_DISABLE_STATIC], [])
 
 # _LT_ENABLE_FAST_INSTALL([DEFAULT])
 # ----------------------------------
-# implement the --enable-fast-install flag, and support the `fast-install'
-# and `disable-fast-install' LT_INIT options.
-# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
+# implement the --enable-fast-install flag, and support the 'fast-install'
+# and 'disable-fast-install' LT_INIT options.
+# DEFAULT is either 'yes' or 'no'.  If omitted, it defaults to 'yes'.
 m4_define([_LT_ENABLE_FAST_INSTALL],
 [m4_define([_LT_ENABLE_FAST_INSTALL_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([fast-install],
@@ -304,14 +304,14 @@ AU_DEFUN([AC_ENABLE_FAST_INSTALL],
 [_LT_SET_OPTION([LT_INIT], m4_if([$1], [no], [disable-])[fast-install])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you put
-the `fast-install' option into LT_INIT's first parameter.])
+the 'fast-install' option into LT_INIT's first parameter.])
 ])
 
 AU_DEFUN([AC_DISABLE_FAST_INSTALL],
 [_LT_SET_OPTION([LT_INIT], [disable-fast-install])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you put
-the `disable-fast-install' option into LT_INIT's first parameter.])
+the 'disable-fast-install' option into LT_INIT's first parameter.])
 ])
 
 dnl aclocal-1.4 backwards compatibility:
@@ -321,9 +321,9 @@ dnl AC_DEFUN([AM_DISABLE_FAST_INSTALL], [])
 
 # _LT_WITH_PIC([MODE])
 # --------------------
-# implement the --with-pic flag, and support the `pic-only' and `no-pic'
+# implement the --with-pic flag, and support the 'pic-only' and 'no-pic'
 # LT_INIT options.
-# MODE is either `yes' or `no'.  If omitted, it defaults to `both'.
+# MODE is either 'yes' or 'no'.  If omitted, it defaults to 'both'.
 m4_define([_LT_WITH_PIC],
 [AC_ARG_WITH([pic],
     [AS_HELP_STRING([--with-pic@<:@=PKGS@:>@],
@@ -359,7 +359,7 @@ AU_DEFUN([AC_LIBTOOL_PICMODE],
 [_LT_SET_OPTION([LT_INIT], [pic-only])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
-put the `pic-only' option into LT_INIT's first parameter.])
+put the 'pic-only' option into LT_INIT's first parameter.])
 ])
 
 dnl aclocal-1.4 backwards compatibility:

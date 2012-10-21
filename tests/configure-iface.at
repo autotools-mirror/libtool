@@ -64,7 +64,7 @@ main (void)
       }
     else
       {
-        fprintf (stderr, "function `f' not found: %s\n", lt_dlerror ());
+        fprintf (stderr, "function 'f' not found: %s\n", lt_dlerror ());
         ++errors;
       }
   }
@@ -144,7 +144,7 @@ prefix=`pwd`/_inst
 LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [], [--add-missing], [],
         [--with-included-ltdl --prefix=$prefix], [all install])
 
-# TODO: Check that the installed program `main' is linked against our libltdl
+# TODO: Check that the installed program 'main' is linked against our libltdl
 AT_CHECK([test -f "$prefix/lib/libltdl.la"])
 AT_CHECK([test -f "$prefix/include/ltdl.h"])
 
@@ -229,7 +229,7 @@ LT_AT_BOOTSTRAP([], [-I _inst/aclocal], [], [--add-missing], [],
 	[all])
 
 ## TODO: portable ldd check for correct libltdl
-## Currently, this test doesn't fail if `main' ends up linking against a
+## Currently, this test doesn't fail if 'main' ends up linking against a
 ## previously installed system libltdl.
 LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen libmodule.la], [], [expout], [])
 
@@ -286,7 +286,7 @@ LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [], [--add-missing], [],
 AT_CHECK([test -f libltdl/libltdlc.la])
 
 ## TODO: portable ldd check for correct libltdl
-## Currently, this test doesn't fail if `main' ends up linking against a
+## Currently, this test doesn't fail if 'main' ends up linking against a
 ## previously installed system libltdl.
 LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen libmodule.la], [], [expout], [])
 

@@ -159,19 +159,19 @@ AT_CHECK([$LIBTOOL --mode=execute ./lt-wrapper foo </dev/null || exit 1],
 mv -f lt-backup lt-real
 
 # Now use arguments that require decent quoting.
-AT_CHECK([$LIBTOOL --mode=execute ./foo "arg  with special chars: \$!&*\`'()"],
-	 [], [arg  with special chars: $!&*`'()
+AT_CHECK([$LIBTOOL --mode=execute ./foo "arg  with special chars: \$!&*'\`()"],
+	 [], [arg  with special chars: $!&*'`()
 ])
-AT_CHECK([$LIBTOOL --mode=execute ./lt-wrapper "arg  with special chars: \$!&*\`'()" </dev/null],
-	 [], [arg  with special chars: $!&*`'()
+AT_CHECK([$LIBTOOL --mode=execute ./lt-wrapper "arg  with special chars: \$!&*'\`()" </dev/null],
+	 [], [arg  with special chars: $!&*'`()
 ])
-AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper "arg  with special chars: \$!&*\`'()"],
+AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper "arg  with special chars: \$!&*'\`()"],
 	 [], [./lt-real
-arg  with special chars: $!&*`'()
+arg  with special chars: $!&*'`()
 ])
 LT_AT_NOINST_EXEC_CHECK([./main], [], [], [stdout], [ignore],
-			["arg  with special chars: \$!&*\`'()"])
-AT_CHECK([$FGREP 'arg  with special chars: $!&*`'\''()' stdout], [], [ignore])
+			["arg  with special chars: \$!&*'\`()"])
+AT_CHECK([$FGREP 'arg  with special chars: $!&*'\''`()' stdout], [], [ignore])
 
 # We always pair two args.  The first one is never the empty string.
 arg1=
@@ -213,7 +213,7 @@ done
 
 # Check that .la files are not transformed by the wrapper searching loop.
 AT_CHECK([$LIBTOOL --mode=execute echo ./main$EXEEXT liba.lo libfakelib.la], [], [stdout])
-# This could be .libs/lt-main or similar (or just plain `main').
+# This could be .libs/lt-main or similar (or just plain 'main').
 AT_CHECK([grep main stdout], [], [ignore])
 AT_CHECK([grep liba.lo stdout], [], [ignore])
 AT_CHECK([grep libfakelib.la stdout], [], [ignore])

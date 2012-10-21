@@ -101,8 +101,8 @@ for mode in compile link install; do
   AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag:test" $postargs],
 	   [0], [stdout])
   # We must not attempt to match $preargs in the output, because libtool
-  # may modify them.  For example, on Cygwin, ``libtool --mode=link gcc -o
-  # foo foo.o''  becomes ``gcc -o foo.exe foo.o''.
+  # may modify them.  For example, on Cygwin, 'libtool --mode=link gcc -o
+  # foo foo.o'  becomes 'gcc -o foo.exe foo.o'.
   AT_CHECK([grep "$mode:.*$match_preflag$flag:test " stdout], [0], [ignore])
 
 

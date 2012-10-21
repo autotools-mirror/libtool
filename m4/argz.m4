@@ -17,7 +17,7 @@ AC_CHECK_HEADERS([argz.h], [], [], [AC_INCLUDES_DEFAULT])
 AC_CHECK_TYPES([error_t],
   [],
   [AC_DEFINE([error_t], [int],
-   [Define to a type to use for `error_t' if it is not otherwise available.])
+   [Define to a type to use for 'error_t' if it is not otherwise available.])
    AC_DEFINE([__error_t_defined], [1], [Define so that glibc/gnulib argp.h
     does not typedef error_t.])],
   [#if defined(HAVE_ARGZ_H)

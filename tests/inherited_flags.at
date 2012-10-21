@@ -78,7 +78,7 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo
 # We used to grep for
 # 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'
 # here.  This fails on win32/MSVC because the generated command lines have a
-# different syntax.  So drop the first `l'.
+# different syntax.  So drop the first 'l'.
 AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)], [1], [ignore])
 AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])

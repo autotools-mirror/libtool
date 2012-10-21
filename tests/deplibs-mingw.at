@@ -21,7 +21,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-# Check that deplibs are detected correctly even if there is no `file'
+# Check that deplibs are detected correctly even if there is no 'file'
 # command installed.
 
 AT_SETUP([deplibs without file command])
@@ -54,7 +54,7 @@ AT_CHECK([$LIBTOOL --mode=install cp liba.la $libdir], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=clean rm -f liba.la], [], [ignore], [ignore])
 rm -f $libdir/liba.la
 
-# check once with `file' (if present) and once without, if on MinGW.
+# check once with 'file' (if present) and once without, if on MinGW.
 for try in with-file without-file; do
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libb.la b.lo -rpath $libdir ]dnl
 	   [-L$libdir -la],

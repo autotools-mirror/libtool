@@ -31,7 +31,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 /* A generalised list.  This is deliberately transparent so that you
    can make the NEXT field of all your chained data structures first,
-   and then cast them to `(SList *)' so that they can be manipulated
+   and then cast them to '(SList *)' so that they can be manipulated
    by this API.
 
    Alternatively, you can generate raw SList elements using slist_new(),
@@ -57,7 +57,7 @@ extern "C" {
 
 typedef struct slist {
   struct slist *next;		/* chain forward pointer*/
-  const void *userdata;		/* for boxed `SList' item */
+  const void *userdata;		/* for boxed 'SList' item */
 } SList;
 
 typedef void *	SListCallback	(SList *item, void *userdata);

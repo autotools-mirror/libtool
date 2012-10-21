@@ -33,10 +33,10 @@
 #   - simply remove the libraries before execution.  If the program still works,
 #     then the library was linked statically.
 #     -Does this work on all systems?
-#     -No, it will fail on AIX with non-rtl-created libraries: plain `-static'
-#     will only cause the linker not to consider `*.so' libraries, but only
-#     `*.a'.  The latter, however, may still be shared images.  :-/
-#     `-all-static' still works, however.
+#     -No, it will fail on AIX with non-rtl-created libraries: plain '-static'
+#     will only cause the linker not to consider '*.so' libraries, but only
+#     '*.a'.  The latter, however, may still be shared images.  :-/
+#     '-all-static' still works, however.
 #
 #     It will not work with dlpreloading until we fix its related bug.
 #
@@ -55,9 +55,9 @@
 
 # - should -Bstatic/-Bdynamic be mixable with -static or -static-libtool-libs?
 #   Semantics could be as follows:
-#   - `-static'/`-static-libtool-libs' set the default which is the initial
-#     value, then `-Bstatic'/`-Bdynamic' override that
-#   - `-Bdefault' resets to the default value given by the other switches.
+#   - '-static'/'-static-libtool-libs' set the default which is the initial
+#     value, then '-Bstatic'/'-Bdynamic' override that
+#   - '-Bdefault' resets to the default value given by the other switches.
 
 # - TODO: test exposure for dlopened and dlpreopened modules,
 #   without and with diverse static flag combinations.
@@ -187,7 +187,7 @@ func_test_exec ()
 func_test_exec_fail ()
 {
   # No point in testing if we're linking statically anyway.
-  # TODO: Maybe in the `else' case we could test for success?
+  # TODO: Maybe in the 'else' case we could test for success?
   if $have_shared; then
     echo "## The following should fail:"
     for st
@@ -325,7 +325,7 @@ for withdep in no yes; do
   # - remove the library images to catch failure to link statically/dynamically,
   # - add false other deplibs in the paths to catch (some) wrongly added run paths.
 
-  # if `-all-static' does not work, do not exercise it any more.
+  # if '-all-static' does not work, do not exercise it any more.
   all_static=-all-static
   test -z "$link_static_flag" && all_static=
 

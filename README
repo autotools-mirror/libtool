@@ -26,11 +26,11 @@ for a list of platforms that Libtool already supports.
 
 Please try it on all the platforms you have access to:
 
- * If it builds and passes the test suite (`gmake check'), please send
+ * If it builds and passes the test suite ('gmake check'), please send
    a short note to the libtool mailing list <libtool@gnu.org> with a
-   subject line including the string `[PLATFORM]', and containing the
-   details from the end of `./libtool --help' in the body.
- * Otherwise, see `Reporting Bugs' below for how to help us fix any
+   subject line including the string '[PLATFORM]', and containing the
+   details from the end of './libtool --help' in the body.
+ * Otherwise, see 'Reporting Bugs' below for how to help us fix any
    problems you discover.
 
 To use Libtool, add the new generic library building commands to your
@@ -45,19 +45,19 @@ If this distribution doesn't work for you, before you report the
 problem, at least try upgrading to the latest released version first,
 and see whether the issue persists.  If you feel able, you can also
 check whether the issue has been fixed in the development sources for
-the next release (see `Obtaining the Latest Sources' below).
+the next release (see 'Obtaining the Latest Sources' below).
 
 Once you've determined that your bug is still not fixed in the latest
 version, please send a full report to <bug-libtool@gnu.org>, including:
 
   1. the information from the end of the help message given by
-     `./libtool --help', and the verbose output of any failed tests
-     (see `The Test Suites' immediately below);
+     './libtool --help', and the verbose output of any failed tests
+     (see 'The Test Suites' immediately below);
   2. complete instructions for how to reproduce your bug, along with
      the results you were expecting, and how they differ from what you
      actually see;
   3. a workaround or full fix for the bug, if you have it;
-  4. a copy of `tests/testsuite.log' if you are experiencing failures
+  4. a copy of 'tests/testsuite.log' if you are experiencing failures
      in the Autotest testsuite.
   5. new test cases for the testsuite that demonstrate the bug are
      especially welcome, and will help to ensure that future releases
@@ -70,7 +70,7 @@ new platform, please send email to the mailing list <libtool@gnu.org>.
 
 Please note that if you send us an non-trivial code for inclusion in a
 future release, we may ask you for a copyright assignment (for brief
-details see the `Copyright Assignment' section on our `Contributing'
+details see the 'Copyright Assignment' section on our 'Contributing'
 webpage <http://www.gnu.org/software/libtool/contribute.html>).
 
 
@@ -78,7 +78,7 @@ webpage <http://www.gnu.org/software/libtool/contribute.html>).
 ==================
 
 Libtool comes with two integrated sets of tests to check that your build
-is sane.  You can run both test suites like this, assuming that `gmake'
+is sane.  You can run both test suites like this, assuming that 'gmake'
 refers to GNU make:
 
     gmake -k check
@@ -111,9 +111,9 @@ can explore the state of the directory to help with debugging.
 
 If you wish to report a test group failure to the libtool list, you need
 to send the verbose output of the FAILing group, along with the
-information from the end of `$(top_builddir)/libtool --help' to the bug
+information from the end of '$(top_builddir)/libtool --help' to the bug
 report mailing list, <bug-libtool@gnu.org> with a subject line that
-includes the string `[TEST FAILURE]'.  The file test-suite.log contains
+includes the string '[TEST FAILURE]'.  The file test-suite.log contains
 the verbose output from all failed tests.
 
 In order to enable debug shell tracing, you can set VERBOSE=debug when
@@ -128,9 +128,9 @@ but simple help may also be obtained through:
 
     gmake check-local TESTSUITEFLAGS='--help'
 
-For verbose output, add the flag `-v', for running only a subset of the
+For verbose output, add the flag '-v', for running only a subset of the
 independent tests, merely specify them by number or by keyword, both of
-which are displayed with the `--list' flag.  For example, the `libtool'
+which are displayed with the '--list' flag.  For example, the 'libtool'
 keyword is used for the tests that exercise only this script.  So it is
 possible to test an installed script, possibly from a different Libtool
 release, with:
@@ -141,7 +141,7 @@ release, with:
 Some tests, like the one exercising max_cmd_len limits, make use of this
 to invoke the testsuite recursively on a subset of tests.  For these
 tests, the variable INNER_TESTSUITEFLAGS may be used.  It will be
-expanded right after the `-k libtool', without separating whitespace, so
+expanded right after the '-k libtool', without separating whitespace, so
 that further limiting of the recursive set of tests is possible.  For
 example, to run only the template tests within the max_cmd_len, use:
 
@@ -149,7 +149,7 @@ example, to run only the template tests within the max_cmd_len, use:
 		      INNER_TESTSUITEFLAGS=',template -v -x'"
 
 If you wish to report test failures to the libtool list, you need to
-send the file `tests/testsuite.log' to the bug report mailing list,
+send the file 'tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
 
 
@@ -158,7 +158,7 @@ send the file `tests/testsuite.log' to the bug report mailing list,
 
 * With the exception of ancient releases, all official GNU Libtool
   releases have a detached GPG signature file.  With this you can verify
-  that the corresponding file (i.e. without the `.sig' suffix) is the
+  that the corresponding file (i.e. without the '.sig' suffix) is the
   same file that was released by the owner of it's GPG key ID.  First,
   be sure to download both the .sig file and the corresponding release,
   then run a command like this:
@@ -170,7 +170,7 @@ send the file `tests/testsuite.log' to the bug report mailing list,
 
     gpg --keyserver keys.gnupg.net --recv-keys 2983D606
 
-  and then rerun the `gpg --verify' command.
+  and then rerun the 'gpg --verify' command.
 
 * Official stable releases of GNU Libtool, along with these detached
   signature files are available from:
@@ -243,9 +243,9 @@ send the file `tests/testsuite.log' to the bug report mailing list,
   - Autoconf 2.59 or later
   - Automake 1.9.6 or later
 
-* The `bootstrap' script sets up the source directory for you to hack,
+* The 'bootstrap' script sets up the source directory for you to hack,
   though it may take quite some time to run.  If you don't intend to
-  re-run the test suite, you can speed up the `bootstrap' step by an
+  re-run the test suite, you can speed up the 'bootstrap' step by an
   order of magnitude if you call it like this instead:
 
     reconfdirs='. libltdl' ./bootstrap
@@ -276,18 +276,18 @@ third number, so:
 Version numbers are chosen to make it easy for users to decide two
 things:
 
-  Q: How `developed' is this release?
+  Q: How 'developed' is this release?
   A: The higher the number, the better!
-  Q: How `stable' is this release?
-  A: - If the <minor-number> is even, it is a stable release, `2.0'.
+  Q: How 'stable' is this release?
+  A: - If the <minor-number> is even, it is a stable release, '2.0'.
      - If the <minor-number> is odd, it is a development version with
-       new features compared to the last stable release, `2.1a'.
-     - If it has an `odd'[1] letter after the version number,  it is a
-       snapshot direct from CVS, `2.1a'.
-     - If it has an `even'[1] letter after the version number, it is an
-       alpha quality release, `2.1b'.
+       new features compared to the last stable release, '2.1a'.
+     - If it has an 'odd'[1] letter after the version number,  it is a
+       snapshot direct from CVS, '2.1a'.
+     - If it has an 'even'[1] letter after the version number, it is an
+       alpha quality release, '2.1b'.
      - If it has three numbers in the version, it is a patch release,
-       fixing bugs from the stable release (with no new features), `2.0.1'.
+       fixing bugs from the stable release (with no new features), '2.0.1'.
 
 [1] We always increment the letter in the repository before *and* after
     making a release tarball.  This means that "odd" letters
