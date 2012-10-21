@@ -198,7 +198,7 @@ sc_prohibit_test_const_follows_var:
 	  $(_sc_search_regexp)
 
 # Check for opening brace on next line in shell function definition.
-exclude_file_name_regexp--sc_require_function_nl_brace = (^HACKING|\.[ch])$$
+exclude_file_name_regexp--sc_require_function_nl_brace = (^HACKING|\.[ch]|\.texi)$$
 sc_require_function_nl_brace:
 	@for file in $$($(VC_LIST_EXCEPT)); do				\
 	  sed -n '/^func_[^	 ]*[	 ]*(/{				\

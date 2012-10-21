@@ -51,7 +51,7 @@ the value of a selection of the following shell variables in
 package.
 
 @example
-    vc_ignore=".gitignore"
+    vc_ignore=.gitignore
 @end example
 
 @table @code
@@ -61,11 +61,11 @@ package.
 A newline-delimited list of triples of @strong{programs} (which must
 accept the option @option{--version} without hanging or failing), the
 @strong{minimum version required} (or just `-' in the version field if
-any version will be sufficient) and @strong{homepage @acronym{url} (to
+any version will be sufficient) and @strong{homepage URL (to
 help users locate missing packages)
 
 @smallexample
-buildreq='      
+buildreq='
         git        1.5.5   http://git-scm.com
         help2man   1.29    http://www.gnu.org/s/help2man
 '
@@ -91,8 +91,8 @@ or else bail out with a diagnostic.
 @item buildreq_readme
 Name of a file containing instructions on installing missing packages
 required in @code{buildreq}. Usually, the instructions at the given
-@acronym{url} should be sufficient, though some projects add additional
-notes in @file{HACKING}.
+URL should be sufficient, though some projects add additional notes
+in @file{HACKING}.
 
 @smallexample
 buildreq_readme=README-hacking
@@ -166,7 +166,7 @@ fall-back automatically to the gnulib defaults; unless you set
 alternative values here in @file{bootstrap.conf}.
 
 If you check @file{gnulib-cache.m4} into your repository, then these
-values will be extracted automatically. @pxref{Usage Patterns}, for more
+values will be extracted automatically. @xref{Usage Patterns}, for more
 details.
 
 
@@ -175,7 +175,7 @@ details.
 The list of gnulib modules required at @command{gnulib-tool} time.
 
 If you check @file{gnulib-cache.m4} into your repository, then this list
-will be extracted automatically. @pxref{Usage Patterns}, for more
+will be extracted automatically. @xref{Usage Patterns}, for more
 details.
 
 
