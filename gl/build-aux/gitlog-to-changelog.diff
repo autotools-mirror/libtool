@@ -1,0 +1,56 @@
+--- gnulib/build-aux/gitlog-to-changelog	2012-10-22 15:47:21.000000000 +0700
++++ build-aux/gitlog-to-changelog	2012-10-22 15:47:14.000000000 +0700
+@@ -351,26 +351,6 @@
+               . substr ($_, 5) . "\n";
+         }
+ 
+-      # If clustering of commit messages has been disabled, if this header
+-      # would be different from the previous date/name/email/coauthors header,
+-      # or if this or the previous entry consists of two or more paragraphs,
+-      # then print the header.
+-      if ( ! $cluster
+-          || $date_line ne $prev_date_line
+-          || "@coauthors" ne "@prev_coauthors"
+-          || $multi_paragraph
+-          || $prev_multi_paragraph)
+-        {
+-          $prev_date_line eq ''
+-            or print "\n";
+-          print $date_line;
+-          @coauthors
+-            and print join ("\n", @coauthors), "\n";
+-        }
+-      $prev_date_line = $date_line;
+-      @prev_coauthors = @coauthors;
+-      $prev_multi_paragraph = $multi_paragraph;
+-
+       # If there were any lines
+       if (@line == 0)
+         {
+@@ -378,6 +358,26 @@
+         }
+       else
+         {
++          # If clustering of commit messages has been disabled, if this header
++          # would be different from the previous date/name/email/coauthors header,
++          # or if this or the previous entry consists of two or more paragraphs,
++          # then print the header.
++          if ( ! $cluster
++              || $date_line ne $prev_date_line
++              || "@coauthors" ne "@prev_coauthors"
++              || $multi_paragraph
++              || $prev_multi_paragraph)
++            {
++              $prev_date_line eq ''
++                or print "\n";
++              print $date_line;
++              @coauthors
++                and print join ("\n", @coauthors), "\n";
++            }
++          $prev_date_line = $date_line;
++          @prev_coauthors = @coauthors;
++          $prev_multi_paragraph = $multi_paragraph;
++
+           if ($append_dot)
+             {
+               # If the first line of the message has enough room, then
