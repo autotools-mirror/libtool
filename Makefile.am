@@ -131,7 +131,8 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 	  else \
 	    serial=`$(git_commit_count)`; \
 	  fi; \
-	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
+	    then echo "  GEN     " $@; \
 	  else echo $(bootstrap_edit) "'$(ltversion_in)' > '$@'"; fi; \
 	  $(bootstrap_edit) '$(ltversion_in)' > '$@'; \
 	  chmod a-w '$@'; \
@@ -158,7 +159,8 @@ $(ltmain_sh): $(ltmain_in) $(dotversion)
 	done; \
 	if $$rebuild; then \
 	  rm -f '$@'; \
-	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
+	    then echo "  GEN     " $@; \
 	  else echo "$(inline_source) '$(ltmain_in)' |" $(bootstrap_edit) "> '$@'"; fi; \
 	  $(inline_source) '$(ltmain_in)' | $(bootstrap_edit) > '$@'; \
 	  chmod a-w '$@'; \
@@ -294,7 +296,8 @@ libtool: $(ltmain_sh) $(config_status) $(dotversion)
 	  case $$prereq in *.version);; *) rebuild=:;; esac; \
 	done; \
 	if $$rebuild; then \
-	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
+	    then echo "  GEN     " $@; \
 	  else echo '$(SHELL) $(top_builddir)/config.status "$@"'; fi; \
 	  cd '$(top_builddir)' && '$(SHELL)' ./config.status '$@'; \
 	fi
@@ -547,7 +550,8 @@ EXTRA_DIST += $(edit_readme_alpha)
 re_odd_version	= '\([0-9][0-9]*.[0-9][0-9]*.[0-9]*[13579]\)'
 $(readme): FORCE
 	@if test -n `expr $(VERSION) : $(re_odd_version)`; then \
-	  if test 0 = '$(V)'; then echo "  GEN   " $@; \
+	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && 1 != '$(V)'; \
+	    then echo "  GEN     " $@; \
 	  else echo "$(SHELL) $(edit_readme_alpha) $@"; fi; \
 	  $(SHELL) $(edit_readme_alpha) '$@'; \
 	fi
