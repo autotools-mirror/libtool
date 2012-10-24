@@ -4240,13 +4240,15 @@ func_show_eval ()
 {
     $debug_cmd
 
+    $require_term_colors
+
     _G_cmd=$1
     _G_fail_exp=${2-':'}
 
     ${opt_silent-'false'} || {
       func_quote_for_eval $_G_cmd
       eval func_truncate_cmd $func_quote_for_eval_result
-      func_echo "running: $func_truncate_cmd_result"
+      func_echo "running: $tc_bold$func_truncate_cmd_result$tc_reset"
     }
 
     ${opt_dry_run-'false'} || {
