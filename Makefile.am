@@ -550,7 +550,7 @@ EXTRA_DIST += $(edit_readme_alpha)
 re_odd_version	= '\([0-9][0-9]*.[0-9][0-9]*.[0-9]*[13579]\)'
 $(readme): FORCE
 	@if test -n `expr $(VERSION) : $(re_odd_version)`; then \
-	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && 1 != '$(V)'; \
+	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
 	    then echo "  GEN     " $@; \
 	  else echo "$(SHELL) $(edit_readme_alpha) $@"; fi; \
 	  $(SHELL) $(edit_readme_alpha) '$@'; \
