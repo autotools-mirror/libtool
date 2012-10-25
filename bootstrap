@@ -374,7 +374,7 @@ func_require_term_colors ()
     : ${_G_HAVE_XSI_OPS="yes"}
     # The += operator was introduced in bash 3.1
     case $BASH_VERSION in
-      [12].* | 3.0 | 3.0.*) ;;
+      [12].* | 3.0 | 3.0*) ;;
       *)
         : ${_G_HAVE_PLUSEQ_OP="yes"}
         ;;
