@@ -2259,11 +2259,12 @@ func_check_versions ()
       _G_instver=`func_get_version $_G_app`
 
       test -z "$_G_instver" \
-          || func_verbose "found '$_G_app' version $_G_instver"
+          || func_verbose "found '$_G_app' version $_G_instver."
 
       # Fail if --version didn't work.
       if test -z "$_G_instver"; then
-        func_error "'$_G_app' not found"
+        func_error "Prerequisite '$_G_app' not found. Please install it, or
+'export $_G_appvar=/path/to/$_G_app'."
         func_check_versions_result=false
 
       # Fail if a new version than what we have is required.
