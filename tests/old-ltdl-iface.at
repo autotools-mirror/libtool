@@ -124,7 +124,7 @@ libtoolize: Consider updating to use of 'include ltdl/ltdl.mk' in Makefile.am.
 ]])
 
 AT_DATA([experr],
-[[libtoolize: error: Use of 'include ltdl/Makefile.inc' is deprecated!
+[[libtoolize:   error: Use of 'include ltdl/Makefile.inc' is deprecated!
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--ltdl=ltdl --nonrecursive --install], 0, [expout], [experr])

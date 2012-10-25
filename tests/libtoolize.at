@@ -115,7 +115,7 @@ AT_DATA([Makefile.am],
 ]])
 
 AT_DATA(experr,
-[[libtoolize: error: AC_CONFIG_MACRO_DIRS([m4]) conflicts with ACLOCAL_AMFLAGS=-I me2.
+[[libtoolize:   error: AC_CONFIG_MACRO_DIRS([m4]) conflicts with ACLOCAL_AMFLAGS=-I me2.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 1, [ignore], experr)
@@ -241,8 +241,8 @@ libtoolize: copying file 'm4/lt~obsolete.m4'
 ]])
 
 AT_DATA(experr,
-[[libtoolize: error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
-libtoolize: error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
+[[libtoolize:   error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
+libtoolize:   error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
@@ -255,8 +255,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 : >expout
 
 AT_DATA(experr,
-[[libtoolize: error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
-libtoolize: error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
+[[libtoolize:   error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
+libtoolize:   error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
@@ -318,8 +318,8 @@ libtoolize: copying file 'm4/lt~obsolete.m4'
 ]])
 
 AT_DATA(experr,
-[[libtoolize: error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
-libtoolize: error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
+[[libtoolize:   error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
+libtoolize:   error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
@@ -332,8 +332,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
 : >expout
 
 AT_DATA(experr,
-[[libtoolize: error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
-libtoolize: error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
+[[libtoolize:   error: 'build-aux/ltmain.sh' is newer: use '--force' to overwrite
+libtoolize:   error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
@@ -716,7 +716,7 @@ libtoolize: copying file 'm4/libtool.m4'
 ]])
 
 AT_DATA([experr],
-[[libtoolize: error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
+[[libtoolize:   error: 'm4/ltoptions.m4' is newer: use '--force' to overwrite
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
@@ -1104,7 +1104,7 @@ LIBTOOLIZE_OPTIONS=narf
 export LIBTOOLIZE_OPTIONS
 
 AT_DATA(experr,
-[[libtoolize: error: garbled LIBTOOLIZE_OPTIONS near 'narf'
+[[libtoolize:   error: garbled LIBTOOLIZE_OPTIONS near 'narf'
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 1, [ignore], experr)
