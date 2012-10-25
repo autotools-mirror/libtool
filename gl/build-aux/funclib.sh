@@ -1023,8 +1023,8 @@ else
     $debug_cmd
 
     case $2 in
-      .*) func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%\\\\$2\$%%"`;;
-      *)  func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%$2\$%%"`;;
+      .*) func_stripname_result=`$ECHO "$3" | $SED -e "s%^$1%%" -e "s%\\\\$2\$%%"`;;
+      *)  func_stripname_result=`$ECHO "$3" | $SED -e "s%^$1%%" -e "s%$2\$%%"`;;
     esac
   }
 fi
@@ -1096,7 +1096,7 @@ func_tr_sh ()
 
     case $1 in
     [0-9]* | *[!a-zA-Z0-9_]*)
-      func_tr_sh_result=`$ECHO "$1" | $SED 's/^\([0-9]\)/_\1/; s/[^a-zA-Z0-9_]/_/g'`
+      func_tr_sh_result=`$ECHO "$1" | $SED -e 's/^\([0-9]\)/_\1/' -e 's/[^a-zA-Z0-9_]/_/g'`
       ;;
     * )
       func_tr_sh_result=$1

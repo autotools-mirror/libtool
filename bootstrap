@@ -1033,8 +1033,8 @@ else
     $debug_cmd
 
     case $2 in
-      .*) func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%\\\\$2\$%%"`;;
-      *)  func_stripname_result=`$ECHO "$3" | $SED "s%^$1%%; s%$2\$%%"`;;
+      .*) func_stripname_result=`$ECHO "$3" | $SED -e "s%^$1%%" -e "s%\\\\$2\$%%"`;;
+      *)  func_stripname_result=`$ECHO "$3" | $SED -e "s%^$1%%" -e "s%$2\$%%"`;;
     esac
   }
 fi
@@ -1106,7 +1106,7 @@ func_tr_sh ()
 
     case $1 in
     [0-9]* | *[!a-zA-Z0-9_]*)
-      func_tr_sh_result=`$ECHO "$1" | $SED 's/^\([0-9]\)/_\1/; s/[^a-zA-Z0-9_]/_/g'`
+      func_tr_sh_result=`$ECHO "$1" | $SED -e 's/^\([0-9]\)/_\1/' -e 's/[^a-zA-Z0-9_]/_/g'`
       ;;
     * )
       func_tr_sh_result=$1
@@ -1730,7 +1730,12 @@ func_usage_message ()
 
     eval \$bs_echo \""Usage: $usage"\"
     echo
-    $SED -n 's|^# ||;/^Written by/{x;p;x;};h' < "$progpath"
+    $SED -n 's|^# ||
+        /^Written by/{
+          x;p;x
+        }
+	h
+	/^Written by/q' < "$progpath"
     echo
     eval \$bs_echo \""$usage_message"\"
 }
@@ -1838,7 +1843,10 @@ func_autoconf_configure ()
 {
     $debug_cmd
 
-    _G_sed_no_comment='s|#.*$||; s|^dnl .*$||; s| dnl .*$||;'
+    _G_sed_no_comment='
+      s|#.*$||
+      s|^dnl .*$||
+      s| dnl .*$||'
     _G_ac_init=
 
     # If we were passed a genuine file, make sure it calls AC_INIT.
@@ -2137,7 +2145,7 @@ func_extract_trace_first ()
 
     func_extract_trace ${1+"$@"}
     func_extract_trace_first_result=`$bs_echo "$func_extract_trace_result" \
-      |$SED 's|:.*$||g;1q'`
+      |$SED -e 's|:.*$||g' -e 1q`
 }
 
 
@@ -3299,7 +3307,7 @@ func_require_buildreq_automake ()
       # ...and AM_INIT_AUTOMAKE is declared...
       test -n "$func_extract_trace_result" && {
         automake_version=`$bs_echo "$func_extract_trace_result" \
-           |$SED 's|[^0-9]*||; s| .*$||'`
+           |$SED -e 's|[^0-9]*||' -e 's| .*$||'`
         test -n "$automake_version" || automake_version=-
 
         func_append buildreq "\
@@ -3576,13 +3584,15 @@ func_require_dotgitmodules_parameters ()
                                    /[	 ]*path *= */{
 			             s|[   ]*||g;s|^[^=]*=||;p
 			           }
-		                 };d' .gitmodules |$SED 1q`
+		                 }
+				 d' .gitmodules |$SED 1q`
       test -n "$gnulib_url" \
         || gnulib_url=`$SED -e '/^.submodule "gnulib".$/,${
                                   /[	 ]*url *= */{
 			            s|[   ]*||g;s|^[^=]*=||;p
 			          }
-		                };d' .gitmodules |$SED 1q`
+		                }
+				d' .gitmodules |$SED 1q`
 
       func_verbose "gnulib_path='$gnulib_path'"
       func_verbose "gnulib_url='$gnulib_url'"
@@ -3802,7 +3812,8 @@ func_require_package ()
       $require_package_name
 
       package=`echo "$package_name" \
-        |$SED 's/GNU //;y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
+        |$SED -e 's/GNU //' \
+	      -e 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
     }
 
     func_verbose "package='$package'"
@@ -4511,7 +4522,7 @@ func_update_po_files ()
     test -d "$_G_ref_po_dir" || mkdir $_G_ref_po_dir || return
     func_download_po_files $_G_ref_po_dir $_G_domain \
       && ls "$_G_ref_po_dir"/*.po 2>/dev/null \
-         |$SED 's|.*/||; s|\.po$||' > "$_G_po_dir/LINGUAS" || return
+         |$SED -e 's|.*/||' -e 's|\.po$||' > "$_G_po_dir/LINGUAS" || return
 
     # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6+.
     func_find_tool SHA1SUM sha1sum gsha1sum shasum

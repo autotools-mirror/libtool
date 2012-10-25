@@ -1117,7 +1117,7 @@ func_require_buildreq_automake ()
       # ...and AM_INIT_AUTOMAKE is declared...
       test -n "$func_extract_trace_result" && {
         automake_version=`$bs_echo "$func_extract_trace_result" \
-           |$SED 's|[^0-9]*||; s| .*$||'`
+           |$SED -e 's|[^0-9]*||' -e 's| .*$||'`
         test -n "$automake_version" || automake_version=-
 
         func_append buildreq "\
@@ -1394,13 +1394,15 @@ func_require_dotgitmodules_parameters ()
                                    /[	 ]*path *= */{
 			             s|[   ]*||g;s|^[^=]*=||;p
 			           }
-		                 };d' .gitmodules |$SED 1q`
+		                 }
+				 d' .gitmodules |$SED 1q`
       test -n "$gnulib_url" \
         || gnulib_url=`$SED -e '/^.submodule "gnulib".$/,${
                                   /[	 ]*url *= */{
 			            s|[   ]*||g;s|^[^=]*=||;p
 			          }
-		                };d' .gitmodules |$SED 1q`
+		                }
+				d' .gitmodules |$SED 1q`
 
       func_verbose "gnulib_path='$gnulib_path'"
       func_verbose "gnulib_url='$gnulib_url'"
@@ -1620,7 +1622,8 @@ func_require_package ()
       $require_package_name
 
       package=`echo "$package_name" \
-        |$SED 's/GNU //;y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
+        |$SED -e 's/GNU //' \
+	      -e 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
     }
 
     func_verbose "package='$package'"
@@ -2329,7 +2332,7 @@ func_update_po_files ()
     test -d "$_G_ref_po_dir" || mkdir $_G_ref_po_dir || return
     func_download_po_files $_G_ref_po_dir $_G_domain \
       && ls "$_G_ref_po_dir"/*.po 2>/dev/null \
-         |$SED 's|.*/||; s|\.po$||' > "$_G_po_dir/LINGUAS" || return
+         |$SED -e 's|.*/||' -e 's|\.po$||' > "$_G_po_dir/LINGUAS" || return
 
     # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6+.
     func_find_tool SHA1SUM sha1sum gsha1sum shasum
