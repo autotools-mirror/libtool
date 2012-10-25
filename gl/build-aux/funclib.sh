@@ -594,7 +594,7 @@ func_error ()
 
     $require_term_colors
 
-    func_echo_infix_1 "$tc_standout${tc_red}error$tc_reset" "$*" >&2
+    func_echo_infix_1 "$tc_standout${tc_red}  error$tc_reset" "$*" >&2
 }
 
 
