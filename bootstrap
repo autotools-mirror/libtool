@@ -321,18 +321,32 @@ func_require_term_colors ()
 {
     $debug_cmd
 
-    test -t 1 && {
-      test -n "`tput sgr0 2>/dev/null`" && {
-        tc_reset=`tput sgr0`
-        test -n "`tput bold 2>/dev/null`" && tc_bold=`tput bold`
-          tc_standout=$tc_bold
-      test -n "`tput smso 2>/dev/null`" && tc_standout=`tput smso`
-        test -n "`tput setaf 1 2>/dev/null`" && tc_red=`tput setaf 1`
-        test -n "`tput setaf 2 2>/dev/null`" && tc_green=`tput setaf 2`
-        test -n "`tput setaf 4 2>/dev/null`" && tc_blue=`tput setaf 4`
-        test -n "`tput setaf 5 2>/dev/null`" && tc_cyan=`tput setaf 5`
-      }
-    }
+    test -t 1 && {                                                       
+      # COLORTERM and USE_ANSI_COLORS environment variables take         
+      # precedence, because most terminfo databases neglect to describe  
+      # whether color sequences are supported.                           
+      test -n "${COLORTERM+set}" && : ${USE_ANSI_COLORS="1"}             
+                                                                       
+      if test 1 = "$USE_ANSI_COLORS"; then                             
+        # Standard ANSI escape sequences                                 
+        tc_reset='[0m'                                                 
+        tc_bold='[1m';   tc_standout='[7m'                           
+        tc_red='[31m';   tc_green='[32m'                             
+        tc_blue='[34m';  tc_cyan='[36m'                              
+      else                                                               
+        # Otherwise trust the terminfo database after all.               
+        test -n "`tput sgr0 2>/dev/null`" && {                           
+          tc_reset=`tput sgr0`                                           
+          test -n "`tput bold 2>/dev/null`" && tc_bold=`tput bold`       
+          tc_standout=$tc_bold                                           
+          test -n "`tput smso 2>/dev/null`" && tc_standout=`tput smso`   
+          test -n "`tput setaf 1 2>/dev/null`" && tc_red=`tput setaf 1`  
+          test -n "`tput setaf 2 2>/dev/null`" && tc_green=`tput setaf 2`
+          test -n "`tput setaf 4 2>/dev/null`" && tc_blue=`tput setaf 4` 
+          test -n "`tput setaf 5 2>/dev/null`" && tc_cyan=`tput setaf 5` 
+        }                                                                
+      fi                                                                 
+    }                                                                    
 
     require_term_colors=:
 }
