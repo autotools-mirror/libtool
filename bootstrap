@@ -3621,16 +3621,13 @@ func_require_gnulib_submodule ()
       $require_gnulib_url
 
       if test -f .gitmodules && test -f "$gnulib_path/gnulib-tool"; then
-        func_show_eval "$GIT submodule update" \
-            'func_fatal_error "Unable to update gnulib submodule."'
+        : All present and correct.
 
       elif test -n "$opt_gnulib_srcdir"; then
         # Older git can't clone into an empty directory.
         rmdir "$gnulib_path" 2>/dev/null
         func_show_eval "$GIT clone --reference '$opt_gnulib_srcdir' \
                 '$gnulib_url' '$gnulib_path'" \
-            && func_show_eval "$GIT submodule init" \
-            && func_show_eval "$GIT submodule update" \
             || func_fatal_error "Unable to fetch gnulib submodule."
 
       # Without --gnulib-srcdir, and no existing checked out submodule, we
@@ -3645,13 +3642,15 @@ func_require_gnulib_submodule ()
         func_show_eval "$GIT clone $shallow '$gnulib_url' '$gnulib_path'" \
           func_cleanup_gnulib
 
-        func_show_eval "$GIT submodule update" \
-            'func_fatal_error "Unable to update gnulib submodule."'
-
 	# FIXME: Solaris /bin/sh will try to execute '-' if any of
 	#        these signals are caught after this.
         trap - 1 2 13 15
       fi
+
+      # Make sure we've checked out the correct revision of gnulib.
+      func_show_eval "$GIT submodule init" \
+          && func_show_eval "$GIT submodule update" \
+          ||  func_fatal_error "Unable to update gnulib submodule."
     fi
 
     require_gnulib_submodule=:
