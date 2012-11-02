@@ -60,6 +60,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     in import libraries using the -headers option of dumpbin. Also fix a
     bug in the dumpbin wrapper which could lead to broken symbol listings
     in some corner cases.
+  - Use the improved Microsoft dumpbin support to mend preloading of
+    import libraries for Microsoft Visual C/C++.
 
 ** Important incompatible changes:
 

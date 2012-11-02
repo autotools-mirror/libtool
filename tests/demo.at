@@ -295,6 +295,8 @@ int main ()
       if (s->address) {
         const char *name = s->name;
         printf ("found symbol: %s\n", name);
+        if (STREQ ("@INIT@", name))
+	  ((void(*)())s->address)();
         if (STREQ ("hello", name))
 	  phello = (int(*)())s->address;
         else if (STREQ ("foo", name))

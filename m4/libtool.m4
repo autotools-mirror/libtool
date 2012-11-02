@@ -3649,21 +3649,41 @@ case `$NM -V 2>&1` in
   symcode='[[ABCDGIRSTW]]' ;;
 esac
 
+if test "$lt_cv_nm_interface" = "MS dumpbin"; then
+  # Gets list of data symbols to import.
+  lt_cv_sys_global_symbol_to_import="sed -n -e 's/^I .* \(.*\)$/\1/p'"
+  # Adjust the below global symbol transforms to fixup imported variables.
+  lt_cdecl_hook=" -e 's/^I .* \(.*\)$/extern __declspec(dllimport) char \1;/p'"
+  lt_c_name_hook=" -e 's/^I .* \(.*\)$/  {\"\1\", (void *) 0},/p'"
+  lt_c_name_lib_hook="\
+  -e 's/^I .* \(lib.*\)$/  {\"\1\", (void *) 0},/p'\
+  -e 's/^I .* \(.*\)$/  {\"lib\1\", (void *) 0},/p'"
+else
+  # Disable hooks by default.
+  lt_cv_sys_global_symbol_to_import=
+  lt_cdecl_hook=
+  lt_c_name_hook=
+  lt_c_name_lib_hook=
+fi
+
 # Transform an extracted symbol line into a proper C declaration.
 # Some systems (esp. on ia64) link data and code symbols differently,
 # so use this general approach.
 lt_cv_sys_global_symbol_to_cdecl="sed -n"\
+$lt_cdecl_hook\
 " -e 's/^T .* \(.*\)$/extern int \1();/p'"\
 " -e 's/^$symcode$symcode* .* \(.*\)$/extern char \1;/p'"
 
 # Transform an extracted symbol line into symbol name and symbol address
 lt_cv_sys_global_symbol_to_c_name_address="sed -n"\
+$lt_c_name_hook\
 " -e 's/^: \(.*\) .*$/  {\"\1\", (void *) 0},/p'"\
 " -e 's/^$symcode$symcode* .* \(.*\)$/  {\"\1\", (void *) \&\1},/p'"
 
 # Transform an extracted symbol line into symbol name with lib prefix and
 # symbol address.
 lt_cv_sys_global_symbol_to_c_name_address_lib_prefix="sed -n"\
+$lt_c_name_lib_hook\
 " -e 's/^: \(.*\) .*$/  {\"\1\", (void *) 0},/p'"\
 " -e 's/^$symcode$symcode* .* \(lib.*\)$/  {\"\1\", (void *) \&\1},/p'"\
 " -e 's/^$symcode$symcode* .* \(.*\)$/  {\"lib\1\", (void *) \&\1},/p'"
@@ -3684,8 +3704,8 @@ for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
   if test "$lt_cv_nm_interface" = "MS dumpbin"; then
-    # Fake it for dumpbin and say T for any non-static function
-    # and D for any global variable.
+    # Fake it for dumpbin and say T for any non-static function,
+    # D for any global variable and I for any imported variable.
     # Also find C++ and __fastcall symbols from MSVC++,
     # which start with @ or ?.
     lt_cv_sys_global_symbol_pipe="$AWK ['"\
@@ -3694,7 +3714,7 @@ for ac_symprfx in "" "_"; do
 "     /Section length .*#relocs.*(pick any)/{hide[last_section]=1};"\
 "     /^ *Symbol name *: /{split(\$ 0,sn,\":\"); si=substr(sn[2],2)};"\
 "     /^ *Type *: code/{print \"T\",si,substr(si,length(prfx))};"\
-"     /^ *Type *: data/{print \"D\",si,substr(si,length(prfx))};"\
+"     /^ *Type *: data/{print \"I\",si,substr(si,length(prfx))};"\
 "     \$ 0!~/External *\|/{next};"\
 "     / 0+ UNDEF /{next}; / UNDEF \([^|]\)*()/{next};"\
 "     {if(hide[section]) next};"\
@@ -3841,6 +3861,8 @@ _LT_DECL([global_symbol_pipe], [lt_cv_sys_global_symbol_pipe], [1],
     [Take the output of nm and produce a listing of raw symbols and C names])
 _LT_DECL([global_symbol_to_cdecl], [lt_cv_sys_global_symbol_to_cdecl], [1],
     [Transform the output of nm in a proper C declaration])
+_LT_DECL([global_symbol_to_import], [lt_cv_sys_global_symbol_to_import], [1],
+    [Transform the output of nm into a list of symbols to manually relocate])
 _LT_DECL([global_symbol_to_c_name_address],
     [lt_cv_sys_global_symbol_to_c_name_address], [1],
     [Transform the output of nm in a C name address pair])

@@ -210,6 +210,11 @@ vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 {
   lt_dlsymlist	       *symbol = (lt_dlsymlist*) module;
 
+  if (symbol[1].name && STREQ (symbol[1].name, "@INIT@"))
+    {
+      symbol++;			/* Skip optional init entry. */
+    }
+
   symbol +=2;			/* Skip header (originator then libname). */
 
   while (symbol->name)
@@ -273,6 +278,13 @@ add_symlist (const lt_dlsymlist *symlist)
 	  tmp->symlist = symlist;
 	  tmp->next = preloaded_symlists;
 	  preloaded_symlists = tmp;
+
+	  if (symlist[1].name && STREQ (symlist[1].name, "@INIT@"))
+	    {
+	      void (*init_symlist)(void);
+	      *(void **)(&init_symlist) = symlist[1].address;
+	      (*init_symlist)();
+	    }
 	}
       else
 	{

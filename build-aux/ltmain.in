@@ -2798,6 +2798,11 @@ extern \"C\" {
 	    echo '/* NONE */' >> "$output_objdir/$my_dlsyms"
 	  fi
 
+	  func_show_eval '$RM "${nlist}I"'
+	  if test -n "$global_symbol_to_import"; then
+	    eval "$global_symbol_to_import"' < "$nlist"S > "$nlist"I'
+	  fi
+
 	  echo >> "$output_objdir/$my_dlsyms" "\
 
 /* The mapping between symbol names and symbols.  */
@@ -2806,11 +2811,30 @@ typedef struct {
   void *address;
 } lt_dlsymlist;
 extern LT_DLSYM_CONST lt_dlsymlist
-lt_${my_prefix}_LTX_preloaded_symbols[];
+lt_${my_prefix}_LTX_preloaded_symbols[];\
+"
+
+	  if test -s "$nlist"I; then
+	    echo >> "$output_objdir/$my_dlsyms" "\
+static void lt_syminit(void)
+{
+  LT_DLSYM_CONST lt_dlsymlist *symbol = lt_${my_prefix}_LTX_preloaded_symbols;
+  for (; symbol->name; ++symbol)
+    {"
+	    $SED 's/.*/      if (!strcmp (symbol->name, \"&\")) symbol->address = (void *) \&&;/' < "$nlist"I >> "$output_objdir/$my_dlsyms"
+	    echo >> "$output_objdir/$my_dlsyms" "\
+    }
+}"
+	  fi
+	  echo >> "$output_objdir/$my_dlsyms" "\
 LT_DLSYM_CONST lt_dlsymlist
 lt_${my_prefix}_LTX_preloaded_symbols[] =
-{\
-  { \"$my_originator\", (void *) 0 },"
+{ {\"$my_originator\", (void *) 0},"
+
+	  if test -s "$nlist"I; then
+	    echo >> "$output_objdir/$my_dlsyms" "\
+  {\"@INIT@\", (void *) &lt_syminit},"
+	  fi
 
 	  case $need_lib_prefix in
 	  no)
@@ -2869,7 +2893,7 @@ static const void *lt_preloaded_setup() {
 	func_show_eval '(cd $output_objdir && $LTCC$symtab_cflags -c$no_builtin_flag$pic_flag_for_symtable "$my_dlsyms")' 'exit $?'
 
 	# Clean up the generated files.
-	func_show_eval '$RM "$output_objdir/$my_dlsyms" "$nlist" "${nlist}S" "${nlist}T"'
+	func_show_eval '$RM "$output_objdir/$my_dlsyms" "$nlist" "${nlist}S" "${nlist}T" "${nlist}I"'
 
 	# Transform the symbol file into the correct name.
 	symfileobj=$output_objdir/${my_outputname}S.$objext
