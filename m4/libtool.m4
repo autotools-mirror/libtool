@@ -3654,19 +3654,19 @@ esac
 # so use this general approach.
 lt_cv_sys_global_symbol_to_cdecl="sed -n"\
 " -e 's/^T .* \(.*\)$/extern int \1();/p'"\
-" -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
+" -e 's/^$symcode$symcode* .* \(.*\)$/extern char \1;/p'"
 
 # Transform an extracted symbol line into symbol name and symbol address
 lt_cv_sys_global_symbol_to_c_name_address="sed -n"\
-" -e 's/^: \([[^ ]]*\)[[ ]]*$/  {\\\"\1\\\", (void *) 0},/p'"\
-" -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
+" -e 's/^: \(.*\) .*$/  {\"\1\", (void *) 0},/p'"\
+" -e 's/^$symcode$symcode* .* \(.*\)$/  {\"\1\", (void *) \&\1},/p'"
 
 # Transform an extracted symbol line into symbol name with lib prefix and
 # symbol address.
 lt_cv_sys_global_symbol_to_c_name_address_lib_prefix="sed -n"\
-" -e 's/^: \([[^ ]]*\)[[ ]]*$/  {\\\"\1\\\", (void *) 0},/p'"\
-" -e 's/^$symcode* \([[^ ]]*\) \(lib[[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"\
-" -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"lib\2\", (void *) \&\2},/p'"
+" -e 's/^: \(.*\) .*$/  {\"\1\", (void *) 0},/p'"\
+" -e 's/^$symcode$symcode* .* \(lib.*\)$/  {\"\1\", (void *) \&\1},/p'"\
+" -e 's/^$symcode$symcode* .* \(.*\)$/  {\"lib\1\", (void *) \&\1},/p'"
 
 # Handle CRLF in mingw tool chain
 opt_cr=
@@ -3771,7 +3771,7 @@ lt__PROGRAM__LTX_preloaded_symbols[[]] =
 {
   { "@PROGRAM@", (void *) 0 },
 _LT_EOF
-	  $SED "s/^$symcode$symcode* \(.*\) \(.*\)$/  {\"\2\", (void *) \&\2},/" < "$nlist" | $GREP -v main >> conftest.$ac_ext
+	  $SED "s/^$symcode$symcode* .* \(.*\)$/  {\"\1\", (void *) \&\1},/" < "$nlist" | $GREP -v main >> conftest.$ac_ext
 	  cat <<\_LT_EOF >> conftest.$ac_ext
   {0, (void *) 0}
 };
