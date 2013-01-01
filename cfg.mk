@@ -1,6 +1,6 @@
 # cfg.mk -- Configuration for maintainer-makefile
 #
-#   Copyright (c) 2011-2012 Free Software Foundation, Inc.
+#   Copyright (c) 2011-2013 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2011
 #
 #   This file is part of GNU Libtool.

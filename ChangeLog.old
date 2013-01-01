@@ -24999,7 +24999,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* For historical reasons: this is when I started writing libtool.
 -- 
-  Copyright (C) 1996-2012 Free Software Foundation, Inc.
+  Copyright (C) 1996-2013 Free Software Foundation, Inc.
 
   This file is part of GNU Libtool.
 

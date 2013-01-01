@@ -1,6 +1,6 @@
 /* lt_error.h -- error propogation interface
 
-   Copyright (C) 1999-2001, 2004, 2007, 2011-2012 Free Software
+   Copyright (C) 1999-2001, 2004, 2007, 2011-2013 Free Software
    Foundation, Inc.
    Written by Thomas Tanner, 1999
 

@@ -1,6 +1,6 @@
 /* loader-loadlibrary.c --  dynamic linking for Win32
 
-   Copyright (C) 1998-2000, 2004-2008, 2010-2012 Free Software
+   Copyright (C) 1998-2000, 2004-2008, 2010-2013 Free Software
    Foundation, Inc.
    Written by Thomas Tanner, 1998
 
