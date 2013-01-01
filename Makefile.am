@@ -46,7 +46,7 @@ EXTRA_LTLIBRARIES	=
 # Using 'cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
-git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '.tarball-version'
+git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '--fallback' '$(VERSION)' '.tarball-version'
 rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's|-.*$$||g'`
 
 
@@ -126,11 +126,10 @@ $(ltversion_m4): $(ltversion_in) $(dotversion)
 	done; \
 	if $$rebuild; then \
 	  rm -f '$@'; \
-	  if test -f '$(srcdir)/.serial'; then \
-	    serial=`cat '$(srcdir)/.serial'`; \
-	  else \
-	    serial=`$(git_commit_count)`; \
+	  if test -d '$(srcdir)/.git' && git --version >/dev/null 2>&1; then \
+	    $(git_commit_count) > '$(srcdir)/.serial'; \
 	  fi; \
+	  serial=`cat '$(srcdir)/.serial'`; \
 	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
 	    then echo "  GEN     " $@; \
 	  else echo $(bootstrap_edit) "'$(ltversion_in)' > '$@'"; fi; \
