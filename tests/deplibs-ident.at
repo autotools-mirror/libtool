@@ -68,7 +68,7 @@ int main() { return a1() + a2() + a3() + c(); }
 	   [0],[stdout],[ignore])
   AT_CHECK([$EGREP 'cee.*cee' stdout], 1, [ignore], [ignore])
   AT_XFAIL_IF([case $host in
-                 *-*-aix*|hppa*-*-hpux*|*-*-interix*|*-*-openbsd*) false;;
+                 *-*-aix*|*-*-bitrig*|hppa*-*-hpux*|*-*-interix*|*-*-openbsd*) false;;
                  *):;;
                esac])
   dnl This is currently broken in libtool

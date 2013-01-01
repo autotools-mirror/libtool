@@ -92,6 +92,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
             [m4_define([AC_CONFIG_MACRO_DIRS],
                 m4_defn([AC_CONFIG_MACRO_DIR]))])
 
+** Changes in supported systems or compilers:
+
+  - Support for bitrig (*-*-bitrig*).
+
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 
 * New features:
