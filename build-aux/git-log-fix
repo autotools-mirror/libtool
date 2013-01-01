@@ -2,6 +2,11 @@
 # option.  It specifies what changes to make to each given SHA1's commit
 # log and metadata, using Perl-eval'able expressions.
 
+109bc05e0d356ab48cc363521b8cd0abc943a6f5
+# Date:   Wed Dec 19 11:20:28 2012 +0100
+# Remove unsupported tag.
+s|Tested-by:[\s\S]*$||
+
 c82eaf360b1d2797054296c5e894c1271fffb7cf
 # Date:   Sun Oct 21 18:17:52 2012 -0500
 # Add file reference.
