@@ -62,163 +62,163 @@ s|\n\n|\n|g
 ## branch.
 # Date:   Tue Oct  2 21:05:53 2012 +0700
 4440d6523bf9c668720f9ffa66fb89e91912a504
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 0fc275469ef020177d8dff2c041456f6b6155537
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 692bc68dc9a580647a164d6338ca7e13cb593966
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 6cb0d0d771bc1e3be402929b900000ca7a8a16d4
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 d50e123595d80b5582d0663ad50e3454051c482d
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 e0f66dc54d2f7906a2513c68d76362be4bcbbef3
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 ae68608314993e81836257ac1eec449256decd53
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 d576fa9da144f2e9ab14337c9590d4abfdea985f
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 3cbc0e26f0a7f0bbea559912c3da920b4ead8e5e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 83d52fd6d2039c048f731133bec0ae8a1bf9382d
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 1e70622d7c127b4dd90b3a5b0650d323ec2305fc
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 1fcb9bc4e4b7b7166a6f45da633f813faee6e00f
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 bf6aa3082089d12bf4500b469c096263823a75b4
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 43acd6749a29f079452cfb70b6c6e1c8f1469128
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 8c6e33197e36463cb7fcf5d575a53c3f414ec4ff
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 7db681a2696c75dc6c55261ea8fd11f92e42db2b
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 59f8a3a6e1a26d501e5865f7611d8828aac5579c
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 f2a640f7e03e5dcf1510833a0e1e4991032b5f96
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 90529a55ef40653051730d3c20203fa2ad5e8f7f
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 d702946c65b309c389ae717a4d2d6fe158c3ee5f
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 8392cd263e847a22b2409c35bf03d7c9e68d2cd0
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 430e782755bbe8061a5e7f9d856b33e3b7da3ac8
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 d60b4387c178100b0bd3835c61d0f4771330bf6a
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 47a889a4ca2009e2147fa5b2f95baefe1dca8288
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 8f975a1368594126e37d85511f1f96164e466d93
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 f8a4b90f9a712f47b7627d2cf96eed74825df91f
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 b25625e6b25427dba80051b2924060b1e84ea73e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 3467227ccb6c99f4c2122b9fb3fa67d54b5bd54b
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 8bfac9e3e82646868907aede4ebe4deb158a2e8a
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 baffe661910947df0dcd5a5bbd6512fc0bce59b9
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 822881fe3c69ca474b8e13d60243dd9c1a1c3fea
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 f7f249a0e6b5093b8752f1ba863345bfcd5a237e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 c03789b8ee33f136d3bbd7f7a111ad863bb4c7e8
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 78385ffd8af73b927549c3596da67233f2f92f0e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 7d25536e80b68042a6d999c11a0c5c9dc948f82e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 7a2a8f32bb83d6b16db8436b530ec5e88fbd0751
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 c5dec32e37e90ce46813efe7dfe8c5500cc55bbc
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 a2445f0fdbeaa72c18a893714e4437ea01faa08a
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 0c953ba5cc71bd1de615df28fbf16e27be62244e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 f32a760fbd40796be0b7e3be41226a82db1748d4
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 a80878742dfd0f5127c1ddc5f803fab980eb816a
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 d56683630a6415e59f1be7a6540c4733e9671bd8
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 ca821436009a93c2e8f3c5ce07ed23d90bbba49e
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 c7d7e46fbea7d6249680da71ecda1d84bdec858a
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 156a851bc5d758f2d4d7fd89cef678ae72f35e77
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 87c4cffb19cf5ba8dc088e0ad357e5c3d4be2433
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 c5230035e5df31976285bf36141d89236416230d
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 cb4ed2559e89354ea846a686543206d3445ea5ec
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 9f3cec5b2ec476bd4fd978c1e23398b25d36cd2f
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 5f27eeb0a37f15b32ccb1b97b2ed9022f5df9a60
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 013c91874e974543d2f58843c1e839ba102d6ee0
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 006695fed2e9cd10664c97c69880a82545dde1ef
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 ff3b32aed7db925a7390d92ffede055b4c8ccf18
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 d43b40113ec1e8289e48d77f00e8947f2fd98fd4
 # Date:   Tue Oct 2 21:02:16 2012 +0700
@@ -284,7 +284,7 @@ s|\n(Improve )|\nlibtool: $1|
 9333e74fc7b76a11ed04a19343eb5dd75a1035f3
 # Date:   Sun Feb 19 16:21:00 2012 -0600
 # Elide duplicate log entries.
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 c0c49f289f22ae670066657c60905986da3b555f
 # Date:   Sun Feb 19 15:33:48 2012 -0600
@@ -324,7 +324,7 @@ s|\n(Support )|\nlibtool: $1|
 962aa919f51cdf8e2cee4fb2d1d9bafa34d50887
 # Date:   Fri Nov 25 14:53:42 2011 +0700
 # Elide duplicate log entries.
-s|\n[\s\S]*$||
+s|$|Omit-from-ChangeLog: Yes|
 
 11d16ab06c36948c053c507f5f9e06ff3de221c7
 # Date:   Fri Nov 25 14:39:57 2011 +0700

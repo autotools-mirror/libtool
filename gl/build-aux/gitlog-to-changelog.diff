@@ -1,6 +1,32 @@
---- gnulib/build-aux/gitlog-to-changelog	2012-10-22 15:47:21.000000000 +0700
-+++ build-aux/gitlog-to-changelog	2012-10-22 15:47:14.000000000 +0700
-@@ -351,26 +351,6 @@
+diff --git a/build-aux/gitlog-to-changelog b/build-aux/gitlog-to-changelog
+index e02d34c..aeae458 100755
+--- a/build-aux/gitlog-to-changelog
++++ b/build-aux/gitlog-to-changelog
+@@ -99,6 +99,8 @@ at the beginning of a log message line.  They are not copied to the output.
+   Co-authored-by: Joe User <user\@example.com>
+     List the specified name and email address on a second
+     ChangeLog header, denoting a co-author.
++  Omit-from-ChangeLog: Yes
++    No ChangeLog entry is made for this commit.
+   Signed-off-by: Joe User <user\@example.com>
+     These lines are simply elided.
+ 
+@@ -323,10 +325,14 @@ sub git_dir_option($)
+         strftime ("%F", localtime ($1)), $2;
+ 
+       my @coauthors = grep /^Co-authored-by:.*$/, @line;
++
++      my $omit = grep /^Omit-from-ChangeLog:\s+[Yy]es$/, @line;
++
+       # Omit meta-data lines we've already interpreted.
+       @line = grep !/^(?:Signed-off-by:[ ].*>$
+                        |Co-authored-by:[ ]
+                        |Copyright-paperwork-exempt:[ ]
++                       |Omit-from-ChangeLog:[ ]
+                        )/x, @line;
+ 
+       # Remove leading and trailing blank lines.
+@@ -351,33 +357,33 @@ sub git_dir_option($)
                . substr ($_, 5) . "\n";
          }
  
@@ -27,9 +53,10 @@
        # If there were any lines
        if (@line == 0)
          {
-@@ -378,6 +358,26 @@
+           warn "$ME: warning: empty commit message:\n  $date_line\n";
          }
-       else
+-      else
++      elsif ( ! $omit )
          {
 +          # If clustering of commit messages has been disabled, if this header
 +          # would be different from the previous date/name/email/coauthors header,
