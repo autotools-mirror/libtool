@@ -89,7 +89,7 @@ func_require_AWK ()
 	  IFS=$require_AWK_IFS
           if test -f "$_G_dir/$_G_prog" && test -x "$_G_dir/$_G_prog"
 	  then
-	    AWK="$_G_dir/$_G_prog"
+	    AWK=$_G_dir/$_G_prog
             break 2
           fi
         done
