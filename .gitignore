@@ -33,6 +33,7 @@
 .libs
 /.pc
 /.sc-start*
+/.serial
 /.version
 /COPYING
 /ChangeLog
