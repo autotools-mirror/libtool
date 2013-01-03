@@ -2,6 +2,11 @@
 # option.  It specifies what changes to make to each given SHA1's commit
 # log and metadata, using Perl-eval'able expressions.
 
+8b6f961a68c73fc7d6c61ef9cd55ffa41dbbf028
+# Date:   Tue Jan  1 19:39:24 2013 +0100
+# No empty lines in a single commit.
+s|\n\n|\n|g
+
 109bc05e0d356ab48cc363521b8cd0abc943a6f5
 # Date:   Wed Dec 19 11:20:28 2012 +0100
 # Remove unsupported tag.
