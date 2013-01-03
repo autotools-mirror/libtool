@@ -536,6 +536,7 @@ $(changelog): FORCE
 	  rm -f '$@'; mv '$@T' '$@'; \
 	  cat '$(changelog_old)' >> '$@'; \
 	fi
+	@echo 'NOTE: 55 empty commit log warnings above are expected'
 
 ## Arrange so that .tarball-version appears only in the distribution
 ## tarball, and never in a checked-out repository.
