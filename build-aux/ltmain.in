@@ -2660,6 +2660,8 @@ extern \"C\" {
 # define LT_DLSYM_CONST const
 #endif
 
+#define STREQ(s1, s2) (strcmp ((s1), (s2)) == 0)
+
 /* External symbol declarations for the compiler. */\
 "
 
@@ -2821,7 +2823,7 @@ static void lt_syminit(void)
   LT_DLSYM_CONST lt_dlsymlist *symbol = lt_${my_prefix}_LTX_preloaded_symbols;
   for (; symbol->name; ++symbol)
     {"
-	    $SED 's/.*/      if (!strcmp (symbol->name, \"&\")) symbol->address = (void *) \&&;/' < "$nlist"I >> "$output_objdir/$my_dlsyms"
+	    $SED 's/.*/      if (STREQ (symbol->name, \"&\")) symbol->address = (void *) \&&;/' < "$nlist"I >> "$output_objdir/$my_dlsyms"
 	    echo >> "$output_objdir/$my_dlsyms" "\
     }
 }"
