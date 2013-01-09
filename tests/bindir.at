@@ -82,7 +82,7 @@ func_save_and_prepend_path ()
 {
   save_PATH=$PATH
   if $bindirneeded; then
-    PATH=$1:$PATH
+    PATH=$1$PATH_SEPARATOR$PATH
   fi
   export PATH
 }
@@ -143,7 +143,7 @@ LT_AT_NOINST_EXEC_CHECK([./main])
 # Ensure libraries can be found on PATH, if we are on one
 # of the affected platforms, before testing the shared version.
 
-func_save_and_prepend_path $curdir/$objdir
+func_save_and_prepend_path "$curdir/$objdir"
 $bindirneeded && {
   LT_AT_NOINST_EXEC_CHECK([$objdir/main])
 }
@@ -194,7 +194,7 @@ func_save_and_prepend_path ()
 {
   save_PATH=$PATH
   if $bindirneeded; then
-    PATH=$1:$PATH
+    PATH=$1$PATH_SEPARATOR$PATH
   fi
   export PATH
 }
@@ -282,9 +282,7 @@ do
   fi
 
   # And that it can be executed.
-  extrapath=
-  $bindirneeded && extrapath=$libdir/../bin
-  func_save_and_prepend_path $extrapath
+  func_save_and_prepend_path "$libdir/../bin"
   LT_AT_EXEC_CHECK([$curdir/sbin/main$EXEEXT], [0], [ignore], [ignore], [])
   func_restore_path
 
@@ -346,9 +344,7 @@ do
     fi
 
     # And that it can be executed.
-    extrapath=
-    $bindirneeded && extrapath=$bindir
-    func_save_and_prepend_path $extrapath
+    func_save_and_prepend_path "$bindir"
     LT_AT_EXEC_CHECK([$curdir/sbin/main$EXEEXT], [0], [ignore], [ignore], [])
     func_restore_path
 
