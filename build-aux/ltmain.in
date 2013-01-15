@@ -7566,7 +7566,6 @@ EOF
 	fi
 
 	orig_export_symbols=
-	always_export_symbols=false
 	case $host_os in
 	cygwin* | mingw* | cegcc*)
 	  if test -n "$export_symbols" && test -z "$export_symbols_regex"; then
@@ -7580,7 +7579,7 @@ EOF
 	      # include_expsyms logic still works.
 	      orig_export_symbols=$export_symbols
 	      export_symbols=
-	      always_export_symbols=:
+	      always_export_symbols=yes
 	    fi
 	  fi
 	  ;;
@@ -7588,7 +7587,7 @@ EOF
 
 	# Prepare the list of exported symbols
 	if test -z "$export_symbols"; then
-	  if $always_export_symbols || test -n "$export_symbols_regex"; then
+	  if test yes = "$always_export_symbols" || test -n "$export_symbols_regex"; then
 	    func_verbose "generating symbol list for '$libname.la'"
 	    export_symbols=$output_objdir/$libname.exp
 	    $opt_dry_run || $RM $export_symbols
