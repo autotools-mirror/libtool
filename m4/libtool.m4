@@ -5161,7 +5161,7 @@ _LT_EOF
 	# Tell ltmain to make .dll files, not .so files.
 	shrext_cmds=.dll
 	# FIXME: Setting linknames here is a bad hack.
-	_LT_TAGVAR(archive_cmds, $1)='$CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-dll~linknames='
+	_LT_TAGVAR(archive_cmds, $1)='$CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~linknames='
 	_LT_TAGVAR(archive_expsym_cmds, $1)='if test EXPORTS = "`$SED 1q $export_symbols`"; then
 	    cp "$export_symbols" "$output_objdir/$soname.def";
 	    echo "$tool_output_objdir$soname.def" > "$output_objdir/$soname.exp";
@@ -6153,7 +6153,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	  # Tell ltmain to make .dll files, not .so files.
 	  shrext_cmds=.dll
 	  # FIXME: Setting linknames here is a bad hack.
-	  _LT_TAGVAR(archive_cmds, $1)='$CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-dll~linknames='
+	  _LT_TAGVAR(archive_cmds, $1)='$CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~linknames='
 	  _LT_TAGVAR(archive_expsym_cmds, $1)='if test EXPORTS = "`$SED 1q $export_symbols`"; then
 	      cp "$export_symbols" "$output_objdir/$soname.def";
 	      echo "$tool_output_objdir$soname.def" > "$output_objdir/$soname.exp";
