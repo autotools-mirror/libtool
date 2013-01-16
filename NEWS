@@ -62,6 +62,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     in some corner cases.
   - Use the improved Microsoft dumpbin support to mend preloading of
     import libraries for Microsoft Visual C/C++.
+  - No longer mangle module-definition (.def) files when feeding them to
+    the Microsoft Visual C/C++ linker via the -export-symbols argument to
+    the libtool script, thus matching how .def files are handled when
+    using GNU tools.
 
 ** Important incompatible changes:
 
