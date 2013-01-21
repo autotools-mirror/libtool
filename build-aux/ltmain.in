@@ -656,8 +656,9 @@ func_execute_cmds ()
 
     save_ifs=$IFS; IFS='~'
     for cmd in $1; do
-      IFS=$save_ifs
+      IFS=$sp$nl
       eval cmd=\"$cmd\"
+      IFS=$save_ifs
       func_show_eval "$cmd" "${2-:}"
     done
     IFS=$save_ifs
@@ -7964,8 +7965,9 @@ EOF
 
 	save_ifs=$IFS; IFS='~'
 	for cmd in $cmds; do
-	  IFS=$save_ifs
+	  IFS=$sp$nl
 	  eval cmd=\"$cmd\"
+	  IFS=$save_ifs
 	  $opt_quiet || {
 	    func_quote_for_expand "$cmd"
 	    eval "func_echo $func_quote_for_expand_result"
