@@ -66,6 +66,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     the Microsoft Visual C/C++ linker via the -export-symbols argument to
     the libtool script, thus matching how .def files are handled when
     using GNU tools.
+  - Recognize more variants (e.g. those starting with a LIBRARY statement)
+    of module-definitions (.def) files when using them instead of a raw
+    list of symbols to export.
 
 ** Important incompatible changes:
 

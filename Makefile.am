@@ -627,6 +627,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/runpath-in-lalib.at \
 		  tests/static.at \
 		  tests/export.at \
+		  tests/export-def.at \
 		  tests/search-path.at \
 		  tests/indirect_deps.at \
 		  tests/archive-in-archive.at \

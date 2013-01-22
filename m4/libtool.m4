@@ -3530,6 +3530,21 @@ _LT_DECL([], [MANIFEST_TOOL], [1], [Manifest tool])dnl
 ])# _LT_PATH_MANIFEST_TOOL
 
 
+# _LT_DLL_DEF_P([FILE])
+# ---------------------
+# True iff FILE is a Windows DLL '.def' file.
+# Keep in sync with func_dll_def_p in the libtool script
+AC_DEFUN([_LT_DLL_DEF_P],
+[dnl
+  test DEF = "`$SED -n dnl
+    -e '\''s/^[[ 	]]*//'\'' dnl Strip leading whitespace
+    -e '\''/^\(;.*\)*$/d'\'' dnl      Delete empty lines and comments
+    -e '\''s/^\(EXPORTS\|LIBRARY\)\([[ 	]].*\)*$/DEF/p'\'' dnl
+    -e q dnl                          Only consider the first "real" line
+    $1`" dnl
+])# _LT_DLL_DEF_P
+
+
 # LT_LIB_M
 # --------
 # check for math library
@@ -4782,9 +4797,9 @@ _LT_EOF
 
       if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
         _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname $wl--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
-	# If the export-symbols file already is a .def file (1st line
-	# is EXPORTS), use it as is; otherwise, prepend...
-	_LT_TAGVAR(archive_expsym_cmds, $1)='if test EXPORTS = "`$SED 1q $export_symbols`"; then
+	# If the export-symbols file already is a .def file, use it as
+	# is; otherwise, prepend EXPORTS...
+	_LT_TAGVAR(archive_expsym_cmds, $1)='if _LT_DLL_DEF_P([$export_symbols]); then
           cp $export_symbols $output_objdir/$soname.def;
         else
           echo EXPORTS > $output_objdir/$soname.def;
@@ -5162,7 +5177,7 @@ _LT_EOF
 	shrext_cmds=.dll
 	# FIXME: Setting linknames here is a bad hack.
 	_LT_TAGVAR(archive_cmds, $1)='$CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~linknames='
-	_LT_TAGVAR(archive_expsym_cmds, $1)='if test EXPORTS = "`$SED 1q $export_symbols`"; then
+	_LT_TAGVAR(archive_expsym_cmds, $1)='if _LT_DLL_DEF_P([$export_symbols]); then
             cp "$export_symbols" "$output_objdir/$soname.def";
             echo "$tool_output_objdir$soname.def" > "$output_objdir/$soname.exp";
           else
@@ -6154,7 +6169,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	  shrext_cmds=.dll
 	  # FIXME: Setting linknames here is a bad hack.
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -o $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~linknames='
-	  _LT_TAGVAR(archive_expsym_cmds, $1)='if test EXPORTS = "`$SED 1q $export_symbols`"; then
+	  _LT_TAGVAR(archive_expsym_cmds, $1)='if _LT_DLL_DEF_P([$export_symbols]); then
               cp "$export_symbols" "$output_objdir/$soname.def";
               echo "$tool_output_objdir$soname.def" > "$output_objdir/$soname.exp";
             else
@@ -6194,9 +6209,9 @@ if test yes != "$_lt_caught_CXX_error"; then
 
 	  if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
 	    _LT_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname $wl--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
-	    # If the export-symbols file already is a .def file (1st line
-	    # is EXPORTS), use it as is; otherwise, prepend...
-	    _LT_TAGVAR(archive_expsym_cmds, $1)='if test EXPORTS = "`$SED 1q $export_symbols`"; then
+	    # If the export-symbols file already is a .def file, use it as
+	    # is; otherwise, prepend EXPORTS...
+	    _LT_TAGVAR(archive_expsym_cmds, $1)='if _LT_DLL_DEF_P([$export_symbols]); then
               cp $export_symbols $output_objdir/$soname.def;
             else
               echo EXPORTS > $output_objdir/$soname.def;

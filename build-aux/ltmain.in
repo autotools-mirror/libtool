@@ -1315,6 +1315,23 @@ func_convert_path_nix_to_cygwin ()
 # end func_convert_path_nix_to_cygwin
 
 
+# func_dll_def_p FILE
+# True iff FILE is a Windows DLL '.def' file.
+# Keep in sync with _LT_DLL_DEF_P in libtool.m4
+func_dll_def_p ()
+{
+  $debug_cmd
+
+  func_dll_def_p_tmp=`$SED -n \
+    -e 's/^[ 	]*//' \
+    -e '/^\(;.*\)*$/d' \
+    -e 's/^\(EXPORTS\|LIBRARY\)\([ 	].*\)*$/DEF/p' \
+    -e q \
+    "$1"`
+  test DEF = "$func_dll_def_p_tmp"
+}
+
+
 # func_mode_compile arg...
 func_mode_compile ()
 {
@@ -7571,7 +7588,7 @@ EOF
 	cygwin* | mingw* | cegcc*)
 	  if test -n "$export_symbols" && test -z "$export_symbols_regex"; then
 	    # exporting using user supplied symfile
-	    if test EXPORTS != "`$SED 1q $export_symbols`"; then
+	    func_dll_def_p "$export_symbols" || {
 	      # and it's NOT already a .def file. Must figure out
 	      # which of the given symbols are data symbols and tag
 	      # them as such. So, trigger use of export_symbols_cmds.
@@ -7581,7 +7598,7 @@ EOF
 	      orig_export_symbols=$export_symbols
 	      export_symbols=
 	      always_export_symbols=yes
-	    fi
+	    }
 	  fi
 	  ;;
 	esac
