@@ -2588,60 +2588,50 @@ func_gnulib_tool ()
     test true = "$gnulib_tool" || {
       if test -n "$gnulib_modules"; then
         $require_gnulib_cache
-        $require_build_aux
-        $require_macro_dir
+        $require_gnulib_tool_base_options
+
+        gnulib_mode=--import
 
         # Try not to pick up any stale values from 'gnulib-cache.m4'.
         rm -f "$gnulib_cache"
 
-        gnulib_mode=--import
-
-        # 'gnulib_modules' and others are maintained in 'bootstrap.conf':
-        # Use 'gnulib --import' to fetch gnulib modules.
-        test -n "$build_aux" \
-            && func_append_uniq gnulib_tool_options " --aux-dir=$build_aux"
-        test -n "$macro_dir" \
-            && func_append_uniq gnulib_tool_options " --m4-base=$macro_dir"
-        test -n "$doc_base" \
-            && func_append_uniq gnulib_tool_options " --doc-base=$doc_base"
-        test -n "$gnulib_name" \
-            && func_append_uniq gnulib_tool_options " --lib=$gnulib_name"
-        test -n "$local_gl_dir" \
-            && func_append_uniq gnulib_tool_options " --local-dir=$local_gl_dir"
-        test -n "$source_base" \
-            && func_append_uniq gnulib_tool_options " --source-base=$source_base"
+        gnulib_tool_all_options=$gnulib_tool_options
+        test -n "$gnulib_tool_base_options" \
+            && func_append_uniq gnulib_tool_all_options " $gnulib_tool_base_options"
         test -n "$gnulib_mk" \
-            && func_append_uniq gnulib_tool_options " --makefile-name=$gnulib_mk"
+            && func_append_uniq gnulib_tool_all_options " --makefile-name=$gnulib_mk"
         test -n "$tests_base" && {
-          func_append_uniq gnulib_tool_options " --tests-base=$tests_base"
-          func_append_uniq gnulib_tool_options " --with-tests"
+          func_append_uniq gnulib_tool_all_options " --tests-base=$tests_base"
+          func_append_uniq gnulib_tool_all_options " --with-tests"
         }
       else
 
         # 'gnulib_modules' and others are cached in 'gnulib-cache.m4':
         # Use 'gnulib --update' to fetch gnulib modules.
         gnulib_mode=--update
+
+        gnulib_tool_all_options=$gnulib_tool_options
       fi
 
       # Add a sensible default libtool option to gnulib_tool_options.
       # The embedded echo is to squash whitespace before globbing.
-      case `echo " "$gnulib_tool_options" "` in
+      case `echo " "$gnulib_tool_all_options" "` in
         *" --no-libtool "*|*" --libtool "*) ;;
         *)  if test true = "$LIBTOOLIZE"; then
-              func_append_uniq gnulib_tool_options " --no-libtool"
+              func_append_uniq gnulib_tool_all_options " --no-libtool"
             else
-              func_append_uniq gnulib_tool_options " --libtool"
+              func_append_uniq gnulib_tool_all_options " --libtool"
             fi
             ;;
       esac
 
-      $opt_copy || func_append_uniq gnulib_tool_options " --symlink"
+      $opt_copy || func_append_uniq gnulib_tool_all_options " --symlink"
 
-      func_append_uniq gnulib_tool_options " $gnulib_mode"
-      func_append gnulib_tool_options " $gnulib_modules"
+      func_append_uniq gnulib_tool_all_options " $gnulib_mode"
+      func_append gnulib_tool_all_options " $gnulib_modules"
 
       # The embedded echo is to squash whitespace before display.
-      gnulib_cmd=`echo $gnulib_tool $gnulib_tool_options`
+      gnulib_cmd=`echo $gnulib_tool $gnulib_tool_all_options`
 
       func_show_eval "$gnulib_cmd" 'exit $?'
 
@@ -3686,6 +3676,43 @@ func_require_gnulib_tool ()
     }
 
     require_gnulib_tool=:
+}
+
+
+# require_gnulib_tool_base_options
+# --------------------------------
+# Ensure that '$gnulib_tool_base_options' contains all the base options
+# required according to user configuration from bootstrap.conf.
+require_gnulib_tool_base_options=func_require_gnulib_tool_base_options
+func_require_gnulib_tool_base_options ()
+{
+    $debug_cmd
+
+    $require_gnulib_tool
+
+    gnulib_tool_base_options=
+
+    test true = "$gnulib_tool" || {
+      $require_build_aux
+      $require_macro_dir
+
+      # 'gnulib_modules' and others are maintained in 'bootstrap.conf':
+      # Use 'gnulib --import' to fetch gnulib modules.
+      test -n "$build_aux" \
+          && func_append_uniq gnulib_tool_base_options " --aux-dir=$build_aux"
+      test -n "$macro_dir" \
+          && func_append_uniq gnulib_tool_base_options " --m4-base=$macro_dir"
+      test -n "$doc_base" \
+          && func_append_uniq gnulib_tool_base_options " --doc-base=$doc_base"
+      test -n "$gnulib_name" \
+          && func_append_uniq gnulib_tool_base_options " --lib=$gnulib_name"
+      test -n "$local_gl_dir" \
+          && func_append_uniq gnulib_tool_base_options " --local-dir=$local_gl_dir"
+      test -n "$source_base" \
+          && func_append_uniq gnulib_tool_base_options " --source-base=$source_base"
+    }
+
+    require_gnulib_tool_base_options=:
 }
 
 
