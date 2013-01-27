@@ -4359,7 +4359,7 @@ func_insert_if_absent ()
       linesold=`func_gitignore_entries "$file" |wc -l`
       linesnew=`$bs_echo "$str" \
                 |func_gitignore_entries - "$file" |sort -u |wc -l`
-      test $linesold -eq $linesnew \
+      test "$linesold" -eq "$linesnew" \
         || sed "1i\\$nl$str$nl" "$file" \
         || func_permissions_error "$file"
     done
