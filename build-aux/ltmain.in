@@ -1323,9 +1323,9 @@ func_dll_def_p ()
   $debug_cmd
 
   func_dll_def_p_tmp=`$SED -n \
-    -e 's/^[ 	]*//' \
+    -e 's/^[	 ]*//' \
     -e '/^\(;.*\)*$/d' \
-    -e 's/^\(EXPORTS\|LIBRARY\)\([ 	].*\)*$/DEF/p' \
+    -e 's/^\(EXPORTS\|LIBRARY\)\([	 ].*\)*$/DEF/p' \
     -e q \
     "$1"`
   test DEF = "$func_dll_def_p_tmp"

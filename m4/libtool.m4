@@ -3537,9 +3537,9 @@ _LT_DECL([], [MANIFEST_TOOL], [1], [Manifest tool])dnl
 AC_DEFUN([_LT_DLL_DEF_P],
 [dnl
   test DEF = "`$SED -n dnl
-    -e '\''s/^[[ 	]]*//'\'' dnl Strip leading whitespace
+    -e '\''s/^[[	 ]]*//'\'' dnl Strip leading whitespace
     -e '\''/^\(;.*\)*$/d'\'' dnl      Delete empty lines and comments
-    -e '\''s/^\(EXPORTS\|LIBRARY\)\([[ 	]].*\)*$/DEF/p'\'' dnl
+    -e '\''s/^\(EXPORTS\|LIBRARY\)\([[	 ]].*\)*$/DEF/p'\'' dnl
     -e q dnl                          Only consider the first "real" line
     $1`" dnl
 ])# _LT_DLL_DEF_P
