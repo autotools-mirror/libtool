@@ -1696,7 +1696,7 @@ not
 libdir='/tmp/usr/local/lib'
 @end example
 
-@code{inst-prefix} is also used to insure that if the installed
+@code{inst-prefix} is also used to ensure that if the installed
 object must be relinked upon installation, that it is relinked
 against the libraries in @var{inst-prefix-dir}/@code{prefix},
 not @code{prefix}.
