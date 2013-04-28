@@ -3397,13 +3397,13 @@ else
 	case `"$tmp_nm" -B /dev/null 2>&1 | sed '1q'` in
 	*/dev/null* | *'Invalid file or object type'*)
 	  lt_cv_path_NM="$tmp_nm -B"
-	  break
+	  break 2
 	  ;;
 	*)
 	  case `"$tmp_nm" -p /dev/null 2>&1 | sed '1q'` in
 	  */dev/null*)
 	    lt_cv_path_NM="$tmp_nm -p"
-	    break
+	    break 2
 	    ;;
 	  *)
 	    lt_cv_path_NM=${lt_cv_path_NM="$tmp_nm"} # keep the first match, but
