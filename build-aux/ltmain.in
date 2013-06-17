@@ -3637,10 +3637,6 @@ int setenv (const char *, const char *, int);
 # define getcwd  _getcwd
 # define putenv  _putenv
 # define S_IXUSR _S_IEXEC
-# ifndef _INTPTR_T_DEFINED
-#  define _INTPTR_T_DEFINED
-#  define intptr_t int
-# endif
 #elif defined __MINGW32__
 # define setmode _setmode
 # define stat    _stat
@@ -3797,12 +3793,12 @@ main (int argc, char *argv[])
   char *actual_cwrapper_name;
   char *target_name;
   char *lt_argv_zero;
-  intptr_t rval = 127;
+  int rval = 127;
 
   int i;
 
   program_name = (char *) xstrdup (base_name (argv[0]));
-  newargz = XMALLOC (char *, argc + 1);
+  newargz = XMALLOC (char *, (size_t) argc + 1);
 
   /* very simple arg parsing; don't want to rely on getopt
    * also, copy all non cwrapper options to newargz, except
@@ -3964,7 +3960,7 @@ EOF
 		cat <<"EOF"
   /* execv doesn't actually work on mingw as expected on unix */
   newargz = prepare_spawn (newargz);
-  rval = _spawnv (_P_WAIT, lt_argv_zero, (const char * const *) newargz);
+  rval = (int) _spawnv (_P_WAIT, lt_argv_zero, (const char * const *) newargz);
   if (rval == -1)
     {
       /* failed to start process */
@@ -4068,7 +4064,7 @@ find_executable (const char *wrapper)
   const char *p_next;
   /* static buffer for getcwd */
   char tmp[LT_PATHMAX + 1];
-  int tmp_len;
+  size_t tmp_len;
   char *concat_name;
 
   lt_debugprintf (__FILE__, __LINE__, "(find_executable): %s\n",
@@ -4119,7 +4115,7 @@ find_executable (const char *wrapper)
 	      for (q = p; *q; q++)
 		if (IS_PATH_SEPARATOR (*q))
 		  break;
-	      p_len = q - p;
+	      p_len = (size_t) (q - p);
 	      p_next = (*q == '\0' ? q : q + 1);
 	      if (p_len == 0)
 		{
@@ -4303,7 +4299,7 @@ lt_setenv (const char *name, const char *value)
     char *str = xstrdup (value);
     setenv (name, str, 1);
 #else
-    int len = strlen (name) + 1 + strlen (value) + 1;
+    size_t len = strlen (name) + 1 + strlen (value) + 1;
     char *str = XMALLOC (char, len);
     sprintf (str, "%s=%s", name, value);
     if (putenv (str) != EXIT_SUCCESS)
@@ -4320,8 +4316,8 @@ lt_extend_str (const char *orig_value, const char *add, int to_end)
   char *new_value;
   if (orig_value && *orig_value)
     {
-      int orig_value_len = strlen (orig_value);
-      int add_len = strlen (add);
+      size_t orig_value_len = strlen (orig_value);
+      size_t add_len = strlen (add);
       new_value = XMALLOC (char, add_len + orig_value_len + 1);
       if (to_end)
         {
@@ -4352,7 +4348,7 @@ lt_update_exe_path (const char *name, const char *value)
     {
       char *new_value = lt_extend_str (getenv (name), value, 0);
       /* some systems can't cope with a ':'-terminated path #' */
-      int len = strlen (new_value);
+      size_t len = strlen (new_value);
       while ((len > 0) && IS_PATH_SEPARATOR (new_value[len-1]))
         {
           new_value[--len] = '\0';
