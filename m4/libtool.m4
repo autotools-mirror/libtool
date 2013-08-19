@@ -1309,6 +1309,38 @@ ia64-*-hpux*)
   rm -rf conftest*
   ;;
 
+mips64*-*linux*)
+  # Find out what ABI is being produced by ac_compile, and set linker
+  # options accordingly.
+  echo '[#]line '$LINENO' "configure"' > conftest.$ac_ext
+  if AC_TRY_EVAL(ac_compile); then
+    emul=elf
+    case `/usr/bin/file conftest.$ac_objext` in
+      *32-bit*)
+	emul="${emul}32"
+	;;
+      *64-bit*)
+	emul="${emul}64"
+	;;
+    esac
+    case `/usr/bin/file conftest.$ac_objext` in
+      *MSB*)
+	emul="${emul}btsmip"
+	;;
+      *LSB*)
+	emul="${emul}ltsmip"
+	;;
+    esac
+    case `/usr/bin/file conftest.$ac_objext` in
+      *N32*)
+	emul="${emul}n32"
+	;;
+    esac
+    LD="${LD-ld} -m $emul"
+  fi
+  rm -rf conftest*
+  ;;
+
 x86_64-*kfreebsd*-gnu|x86_64-*linux*|powerpc*-*linux*| \
 s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
   # Find out what ABI is being produced by ac_compile, and set linker
