@@ -4750,8 +4750,13 @@ bootstrap_parse_options ()
                       shift
                       ;;
 
-        --skip-git)   opt_skip_git=: ;;
-        --skip-po)    opt_skip_po=: ;;
+        --skip-git|--no-git)
+                      opt_skip_git=:
+                      ;;
+
+        --skip-po|--no-po)
+                      opt_skip_po=:
+                      ;;
 
         # Separate non-argument short options:
         -c*|-f*|-n*)
