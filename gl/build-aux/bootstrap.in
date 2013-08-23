@@ -2302,6 +2302,17 @@ func_check_versions ()
       _G_reqver=$1; shift
       _G_url=$1; shift
 
+      # Diagnose bad buildreq formatting.
+      case $_G_url in
+      [a-z]*://*) ;; # looks like a url
+      *) func_fatal_error "\
+'$_G_url' from the buildreq table in
+'bootstrap.conf' does not look like the URL for downloading
+$_G_app. Please ensure that buildreq is a strict newline
+delimited list of triples; 'program min-version url'."
+        ;;
+      esac
+
       # Honor $APP variables ($TAR, $AUTOCONF, etc.)
       _G_appvar=`echo $_G_app |tr '[a-z]' '[A-Z]'`
       test TAR = "$_G_appvar" && _G_appvar=AMTAR
