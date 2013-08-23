@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2012-10-21.11; # UTC
+scriptversion=2013-08-22.10; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -167,7 +167,7 @@ sed_double_quote_subst='s/\(["`\\]\)/\\\1/g'
 sed_make_literal_regex='s|[].[^$\\*\/]|\\&|g'
 
 # Sed substitution that converts a w32 file name or path
-# which contains forward slashes, into one that contains
+# that contains forward slashes, into one that contains
 # (escaped) backslashes.  A very naive implementation.
 sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
 
@@ -925,7 +925,7 @@ func_relative_path ()
 #   i) func_quote_for_eval_result
 #      double-quoted, suitable for a subsequent eval
 #  ii) func_quote_for_eval_unquoted_result
-#      has just all characters which are still active within double
+#      has all characters that are still active within double
 #      quotes backslashified.
 func_quote_for_eval ()
 {

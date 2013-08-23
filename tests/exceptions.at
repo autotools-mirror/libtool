@@ -39,7 +39,7 @@ CPPFLAGS="$LTDLINCL $CPPFLAGS"
 # Win32 (and cygwin) notes
 # ------------------------
 # When using C++ and Win32 DLLs, data types used in the DLL's interface
-# which are other-than-POD, must have vtables, typeinfo, and other
+# that are other-than-POD, must have vtables, typeinfo, and other
 # elements resolved when the client is linked.  This includes exception
 # classes.  Therefore, the exception class "modexc" thrown by the
 # dynamically-loaded module must be defined in a separate DLL, to which

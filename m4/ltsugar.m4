@@ -34,7 +34,7 @@ m4_define([_lt_join],
 # ------------
 # Manipulate m4 lists.
 # These macros are necessary as long as will still need to support
-# Autoconf-2.59 which quotes differently.
+# Autoconf-2.59, which quotes differently.
 m4_define([lt_car], [[$1]])
 m4_define([lt_cdr],
 [m4_if([$#], 0, [m4_fatal([$0: cannot be called without arguments])],

@@ -166,7 +166,7 @@ lt_dlloader_remove (const char *name)
       return 0;
     }
 
-  /* Fail if there are any open modules which use this loader.  */
+  /* Fail if there are any open modules that use this loader.  */
   iface = lt_dlinterface_register (id_string, NULL);
   while ((handle = lt_dlhandle_iterate (iface, handle)))
     {

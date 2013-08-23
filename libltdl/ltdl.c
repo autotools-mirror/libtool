@@ -306,7 +306,7 @@ lt_dlexit (void)
 			  ++errors;
 			}
 		      /* Make sure that the handle pointed to by 'cur' still exists.
-			 lt_dlclose recursively closes dependent libraries which removes
+			 lt_dlclose recursively closes dependent libraries, which removes
 			 them from the linked list.  One of these might be the one
 			 pointed to by 'cur'.  */
 		      if (cur)

@@ -177,7 +177,7 @@ m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
 m4_require([_LT_WITH_SYSROOT])dnl
 
 _LT_CONFIG_LIBTOOL_INIT([
-# See if we are running on zsh, and set the options which allow our
+# See if we are running on zsh, and set the options that allow our
 # commands through without removal of \ escapes INIT.
 if test -n "\${ZSH_VERSION+set}"; then
    setopt NO_GLOB_SUBST
@@ -703,7 +703,7 @@ m4_defun([_LT_CONFIG],
 _LT_CONFIG_SAVE_COMMANDS([
   m4_define([_LT_TAG], m4_if([$1], [], [C], [$1]))dnl
   m4_if(_LT_TAG, [C], [
-    # See if we are running on zsh, and set the options which allow our
+    # See if we are running on zsh, and set the options that allow our
     # commands through without removal of \ escapes.
     if test -n "${ZSH_VERSION+set}"; then
       setopt NO_GLOB_SUBST
@@ -1162,8 +1162,8 @@ m4_define([_LT_SHELL_INIT],
 # -----------------------
 # Find how we can fake an echo command that does not interpret backslash.
 # In particular, with Autoconf 2.60 or later we add some code to the start
-# of the generated configure script which will find a shell with a builtin
-# printf (which we can use as an echo command).
+# of the generated configure script that will find a shell with a builtin
+# printf (that we can use as an echo command).
 m4_defun([_LT_PROG_ECHO_BACKSLASH],
 [ECHO='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
 ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO
@@ -1246,7 +1246,7 @@ esac
 
  AC_MSG_RESULT([${lt_sysroot:-no}])
 _LT_DECL([], [lt_sysroot], [0], [The root where to search for ]dnl
-[dependent libraries, and in which our libraries should be installed.])])
+[dependent libraries, and where our libraries should be installed.])])
 
 # _LT_ENABLE_LOCK
 # ---------------
@@ -1260,7 +1260,7 @@ test no = "$enable_libtool_lock" || enable_libtool_lock=yes
 # libtool support.
 case $host in
 ia64-*-hpux*)
-  # Find out which ABI is being produced by ac_compile, and set mode
+  # Find out what ABI is being produced by ac_compile, and set mode
   # options accordingly.
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
@@ -1276,7 +1276,7 @@ ia64-*-hpux*)
   rm -rf conftest*
   ;;
 *-*-irix6*)
-  # Find out which ABI is being produced by ac_compile, and set linker
+  # Find out what ABI is being produced by ac_compile, and set linker
   # options accordingly.
   echo '[#]line '$LINENO' "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
@@ -1311,7 +1311,7 @@ ia64-*-hpux*)
 
 x86_64-*kfreebsd*-gnu|x86_64-*linux*|powerpc*-*linux*| \
 s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
-  # Find out which ABI is being produced by ac_compile, and set linker
+  # Find out what ABI is being produced by ac_compile, and set linker
   # options accordingly.  Note that the listed cases only cover the
   # situations where additional linker options are needed (such as when
   # doing 32-bit compilation for a host where ld defaults to 64-bit, or
@@ -1390,7 +1390,7 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
   fi
   ;;
 *-*solaris*)
-  # Find out which ABI is being produced by ac_compile, and set linker
+  # Find out what ABI is being produced by ac_compile, and set linker
   # options accordingly.
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
@@ -2084,7 +2084,7 @@ _LT_DECL([], [objdir], [0],
          [The name of the directory that contains temporary libtool files])dnl
 m4_pattern_allow([LT_OBJDIR])dnl
 AC_DEFINE_UNQUOTED([LT_OBJDIR], "$lt_cv_objdir/",
-  [Define to the sub-directory in which libtool stores uninstalled libraries.])
+  [Define to the sub-directory where libtool stores uninstalled libraries.])
 ])# _LT_CHECK_OBJDIR
 
 
@@ -2921,7 +2921,7 @@ _LT_DECL([], [sys_lib_dlsearch_path_spec], [2],
 
 # _LT_PATH_TOOL_PREFIX(TOOL)
 # --------------------------
-# find a file program which can recognize shared library
+# find a file program that can recognize shared library
 AC_DEFUN([_LT_PATH_TOOL_PREFIX],
 [m4_require([_LT_DECL_EGREP])dnl
 AC_MSG_CHECKING([for $1])
@@ -2991,7 +2991,7 @@ dnl AC_DEFUN([AC_PATH_TOOL_PREFIX], [])
 
 # _LT_PATH_MAGIC
 # --------------
-# find a file program which can recognize a shared library
+# find a file program that can recognize a shared library
 m4_defun([_LT_PATH_MAGIC],
 [_LT_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin$PATH_SEPARATOR$PATH)
 if test -z "$lt_cv_path_MAGIC_CMD"; then
@@ -3027,7 +3027,7 @@ if test yes = "$GCC"; then
   AC_MSG_CHECKING([for ld used by $CC])
   case $host in
   *-*-mingw*)
-    # gcc leaves a trailing carriage return which upsets mingw
+    # gcc leaves a trailing carriage return, which upsets mingw
     ac_prog=`($CC -print-prog-name=ld) 2>&5 | tr -d '\015'` ;;
   *)
     ac_prog=`($CC -print-prog-name=ld) 2>&5` ;;
@@ -3172,7 +3172,7 @@ lt_cv_deplibs_check_method='unknown'
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
 # 'file_magic [[regex]]' -- check by looking for files in library path
-# which responds to the $file_magic_cmd with a given extended regex.
+# that responds to the $file_magic_cmd with a given extended regex.
 # If you have 'file' or equivalent on your system and you're not sure
 # whether 'pass_all' will *always* work, you probably want this one.
 
@@ -3497,8 +3497,8 @@ lt_cv_sharedlib_from_linklib_cmd,
 
 case $host_os in
 cygwin* | mingw* | pw32* | cegcc*)
-  # two different shell functions defined in ltmain.sh
-  # decide which to use based on capabilities of $DLLTOOL
+  # two different shell functions defined in ltmain.sh;
+  # decide which one to use based on capabilities of $DLLTOOL
   case `$DLLTOOL --help 2>&1` in
   *--identify-strict*)
     lt_cv_sharedlib_from_linklib_cmd=func_cygming_dll_for_implib
@@ -4088,7 +4088,7 @@ m4_if([$1], [CXX], [
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
 	    ;;
 	  ecpc* )
-	    # old Intel C++ for x86_64 which still supported -KPIC.
+	    # old Intel C++ for x86_64, which still supported -KPIC.
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
@@ -4396,7 +4396,7 @@ m4_if([$1], [CXX], [
 
     linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
       case $cc_basename in
-      # old Intel for x86_64 which still supported -KPIC.
+      # old Intel for x86_64, which still supported -KPIC.
       ecc*)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
@@ -4547,7 +4547,7 @@ m4_if([$1], [CXX], [
   fi
 ])
 case $host_os in
-  # For platforms which do not support PIC, -DPIC is meaningless:
+  # For platforms that do not support PIC, -DPIC is meaningless:
   *djgpp*)
     _LT_TAGVAR(lt_prog_compiler_pic, $1)=
     ;;
@@ -5825,7 +5825,7 @@ if test -n "$compiler"; then
   LT_SYS_DLOPEN_SELF
   _LT_CMD_STRIPLIB
 
-  # Report which library types will actually be built
+  # Report what library types will actually be built
   AC_MSG_CHECKING([if libtool supports shared libraries])
   AC_MSG_RESULT([$can_build_shared])
 
@@ -7849,7 +7849,7 @@ _LT_DECL([NL2SP], [lt_NL2SP], [1], [turn newlines into spaces])dnl
 
 # _LT_PATH_CONVERSION_FUNCTIONS
 # -----------------------------
-# Determine which file name conversion functions should be used by
+# Determine what file name conversion functions should be used by
 # func_to_host_file (and, implicitly, by func_to_host_path).  These are needed
 # for certain cross-compile configurations and native mingw.
 m4_defun([_LT_PATH_CONVERSION_FUNCTIONS],

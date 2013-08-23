@@ -63,7 +63,7 @@ GNU Libtool
 * Fix -dlopen "self" on AIX.  Reported by Gary Kumfert <kumfert@llnl.gov>.
 
 * Fix denial of service if using installed 'libtool' on a different mount point
-  together with a compiler which does not understand '-c -o'.
+  together with a compiler that does not understand '-c -o'.
   Reported by Marcin Siennicki.
 
 * Look at better -no-undefined support, maybe along the idea of
@@ -83,7 +83,7 @@ GNU Libtool
    -> report 'file not found'
    if it cannot be loaded (e.g. due to missing dependencies)
    -> report dlerror
-    open question: which error should be reported if all dlloaders fail
+    open question: what error should be reported if all dlloaders fail
     or if a specific module type can only be loaded by one of them, how report its dlerror?
    Also report dlerror() for dlclose and dlsym if available
  - Make sure that the dependency_libs of a dlpreopened module won't be loaded.
@@ -200,7 +200,7 @@ GNU Libtool
 
 * The definitions for LT_SYS_MODULE_EXT, LT_SYS_MODULE_PATH and
   LT_SYS_DLSEARCH_PATH  should not rely on the _LT_SYS_DYNAMIC_LINKER
-  macro.  This involves moving the code which sets the variables
+  macro.  This involves moving the code that sets the variables
   library_names_spec, shlibpath_var and sys_lib_dlsearch_path_spec from
   into a separate macro, and AC_REQUIRING the newly extracted macro in the
   respective ltdl.m4 macros.
@@ -247,7 +247,7 @@ GNU Libtool
   time.
 
 * Figure out how to use data items in dlls with win32.
-  The difficult part is compiling each object which will be linked with an
+  The difficult part is compiling each object that will be linked with an
   import lib differently than if it will be linked with a static lib.  This
   will almost definitely require that automake pass some hints about linkage
   in to each object compilation line.

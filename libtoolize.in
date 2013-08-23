@@ -1207,7 +1207,7 @@ func_check_macros ()
 # func_autoconf_configure MAYBE-CONFIGURE-FILE
 # --------------------------------------------
 # Ensure that MAYBE-CONFIGURE-FILE is the name of a file in the current
-# directory which contains an uncommented call to AC_INIT.
+# directory that contains an uncommented call to AC_INIT.
 func_autoconf_configure ()
 {
     $debug_cmd

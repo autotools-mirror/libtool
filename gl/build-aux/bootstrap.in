@@ -13,7 +13,7 @@
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2013-01-20.16; # UTC
+scriptversion=2013-08-22.10; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -182,7 +182,7 @@ gnulib_tool_options="
 "
 
 # bootstrap removes any macro-files that are not included by aclocal.m4,
-# except for files listed in this variable which are always kept.
+# except for files listed in this variable that are always kept.
 gnulib_precious="
         gnulib-tool.m4
 "
@@ -227,8 +227,8 @@ copy=false
 
 # Set this to ".cvsignore .gitignore" in 'bootstrap.conf' if you want
 # those files to be generated in directories like 'lib/', 'm4/', and 'po/',
-# or set it to "auto" to make this script select which to use based
-# on which version control system (if any) is used in the source directory.
+# or set it to "auto" to make this script select what to use based
+# on what version control system (if any) is used in the source directory.
 # Or set it to "none" to ignore VCS ignore files entirely.  Default is
 # "auto".
 vc_ignore=
@@ -241,7 +241,7 @@ vc_ignore=
 # After 'bootstrap.conf' has been sourced, execution proceeds by calling
 # 'func_bootstrap'.  Wherever a function is decorated with
 # 'func_hookable func_name', you will find a matching 'func_run_hooks
-# func_name' which executes all functions added with 'func_add_hook
+# func_name', which executes all functions added with 'func_add_hook
 # func_name my_func'.
 #
 # You might notice that many of these functions begin with a series of
@@ -726,7 +726,7 @@ $2"
 # the usual portability constraints of this script, that may seem a very
 # demanding requirement, but it should be ok.  Ignore any failure,
 # which is fine, since this is only a convenience to help developers
-# avoid the relatively unusual case in which a symlinked-to .m4 file is
+# avoid the relatively unusual case where a symlinked-to .m4 file is
 # git-removed from gnulib between successive runs of this script.
 func_clean_dangling_symlinks ()
 {
@@ -1762,7 +1762,7 @@ func_require_patch ()
     $debug_cmd
 
     test -n "$PATCH" || {
-      # Find a patch program, preferring gpatch which is usually better
+      # Find a patch program, preferring gpatch, which is usually better
       # than the vendor patch.
       func_find_tool PATCH gpatch patch
     }

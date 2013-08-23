@@ -38,7 +38,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix a long-standing latent bug in autom4te include path for autotests
     with VPATH builds.
-  - Fix a long-standing latent bug in libtoolize which could delete lines
+  - Fix a long-standing latent bug in libtoolize that could delete lines
     from libltdl/Makefile.am in recursive mode due to underquoting in a
     sed script.
   - Fix a long-standing bug in libtoolize, by outputting the 'putting
@@ -58,7 +58,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Correctly recognize import libraries when Microsoft dumpbin is used
     as the name lister and extend the dumpbin wrapper to find symbols
     in import libraries using the -headers option of dumpbin. Also fix a
-    bug in the dumpbin wrapper which could lead to broken symbol listings
+    bug in the dumpbin wrapper that could lead to broken symbol listings
     in some corner cases.
   - Use the improved Microsoft dumpbin support to mend preloading of
     import libraries for Microsoft Visual C/C++.

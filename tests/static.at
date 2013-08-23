@@ -55,7 +55,7 @@
 
 # - should -Bstatic/-Bdynamic be mixable with -static or -static-libtool-libs?
 #   Semantics could be as follows:
-#   - '-static'/'-static-libtool-libs' set the default which is the initial
+#   - '-static'/'-static-libtool-libs' set the default, which is the initial
 #     value, then '-Bstatic'/'-Bdynamic' override that
 #   - '-Bdefault' resets to the default value given by the other switches.
 

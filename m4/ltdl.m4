@@ -551,7 +551,7 @@ dnl AC_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS], [])
 # -----------------
 AC_DEFUN([LT_SYS_MODULE_EXT],
 [m4_require([_LT_SYS_DYNAMIC_LINKER])dnl
-AC_CACHE_CHECK([which extension is used for runtime loadable modules],
+AC_CACHE_CHECK([what extension is used for runtime loadable modules],
   [libltdl_cv_shlibext],
 [
 module=yes
@@ -581,7 +581,7 @@ dnl AC_DEFUN([AC_LTDL_SHLIBEXT], [])
 # ------------------
 AC_DEFUN([LT_SYS_MODULE_PATH],
 [m4_require([_LT_SYS_DYNAMIC_LINKER])dnl
-AC_CACHE_CHECK([which variable specifies run-time module search path],
+AC_CACHE_CHECK([what variable specifies run-time module search path],
   [lt_cv_module_path_var], [lt_cv_module_path_var=$shlibpath_var])
 if test -n "$lt_cv_module_path_var"; then
   m4_pattern_allow([LT_MODULE_PATH_VAR])dnl

@@ -9,7 +9,7 @@
 
 # Source required external libraries:
 # Set a version string for this script.
-scriptversion=2012-10-21.11; # UTC
+scriptversion=2013-08-22.10; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -177,7 +177,7 @@ sed_double_quote_subst='s/\(["`\\]\)/\\\1/g'
 sed_make_literal_regex='s|[].[^$\\*\/]|\\&|g'
 
 # Sed substitution that converts a w32 file name or path
-# which contains forward slashes, into one that contains
+# that contains forward slashes, into one that contains
 # (escaped) backslashes.  A very naive implementation.
 sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
 
@@ -935,7 +935,7 @@ func_relative_path ()
 #   i) func_quote_for_eval_result
 #      double-quoted, suitable for a subsequent eval
 #  ii) func_quote_for_eval_unquoted_result
-#      has just all characters which are still active within double
+#      has all characters that are still active within double
 #      quotes backslashified.
 func_quote_for_eval ()
 {
@@ -1795,7 +1795,7 @@ test -z "$progpath" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
 test extract-trace = "$progname" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
 
 # Set a version string.
-scriptversion=2012-10-07.10; # UTC
+scriptversion=2013-08-22.10; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1838,7 +1838,7 @@ scriptversion=2012-10-07.10; # UTC
 # func_autoconf_configure MAYBE-CONFIGURE-FILE
 # --------------------------------------------
 # Ensure that MAYBE-CONFIGURE-FILE is the name of a file in the current
-# directory which contains an uncommented call to AC_INIT.
+# directory that contains an uncommented call to AC_INIT.
 func_autoconf_configure ()
 {
     $debug_cmd
@@ -1961,7 +1961,7 @@ func_tool_version_output ()
 # require_configure_ac
 # --------------------
 # Ensure that there is a 'configure.ac' or 'configure.in' file in the
-# current directory which contains an uncommented call to AC_INIT, and
+# current directory that contains an uncommented call to AC_INIT, and
 # that '$configure_ac' contains its name.
 require_configure_ac=func_require_configure_ac
 func_require_configure_ac ()
@@ -2203,7 +2203,7 @@ test extract-trace = "$progname" && func_main "$@"
 # End:
 
 # Set a version string for *this* script.
-scriptversion=2013-01-20.16; # UTC
+scriptversion=2013-08-22.10; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2372,7 +2372,7 @@ gnulib_tool_options="
 "
 
 # bootstrap removes any macro-files that are not included by aclocal.m4,
-# except for files listed in this variable which are always kept.
+# except for files listed in this variable that are always kept.
 gnulib_precious="
         gnulib-tool.m4
 "
@@ -2417,8 +2417,8 @@ copy=false
 
 # Set this to ".cvsignore .gitignore" in 'bootstrap.conf' if you want
 # those files to be generated in directories like 'lib/', 'm4/', and 'po/',
-# or set it to "auto" to make this script select which to use based
-# on which version control system (if any) is used in the source directory.
+# or set it to "auto" to make this script select what to use based
+# on what version control system (if any) is used in the source directory.
 # Or set it to "none" to ignore VCS ignore files entirely.  Default is
 # "auto".
 vc_ignore=
@@ -2431,7 +2431,7 @@ vc_ignore=
 # After 'bootstrap.conf' has been sourced, execution proceeds by calling
 # 'func_bootstrap'.  Wherever a function is decorated with
 # 'func_hookable func_name', you will find a matching 'func_run_hooks
-# func_name' which executes all functions added with 'func_add_hook
+# func_name', which executes all functions added with 'func_add_hook
 # func_name my_func'.
 #
 # You might notice that many of these functions begin with a series of
@@ -2916,7 +2916,7 @@ $2"
 # the usual portability constraints of this script, that may seem a very
 # demanding requirement, but it should be ok.  Ignore any failure,
 # which is fine, since this is only a convenience to help developers
-# avoid the relatively unusual case in which a symlinked-to .m4 file is
+# avoid the relatively unusual case where a symlinked-to .m4 file is
 # git-removed from gnulib between successive runs of this script.
 func_clean_dangling_symlinks ()
 {
@@ -3952,7 +3952,7 @@ func_require_patch ()
     $debug_cmd
 
     test -n "$PATCH" || {
-      # Find a patch program, preferring gpatch which is usually better
+      # Find a patch program, preferring gpatch, which is usually better
       # than the vendor patch.
       func_find_tool PATCH gpatch patch
     }

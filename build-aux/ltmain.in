@@ -3104,8 +3104,8 @@ func_cygming_dll_for_implib_fallback_core ()
       /./p' |
     # we now have a list, one entry per line, of the stringified
     # contents of the appropriate section of all members of the
-    # archive which possess that section. Heuristic: eliminate
-    # all those which have a first or second character that is
+    # archive that possess that section. Heuristic: eliminate
+    # all those that have a first or second character that is
     # a '.' (that is, objdump's representation of an unprintable
     # character.) This should work for all archives with less than
     # 0x302f exports -- but will fail for DLLs whose name actually
@@ -3268,7 +3268,7 @@ func_extract_archives ()
 #
 # ARG is the value that the WRAPPER_SCRIPT_BELONGS_IN_OBJDIR
 # variable will take.  If 'yes', then the emitted script
-# will assume that the directory in which it is stored is
+# will assume that the directory where it is stored is
 # the $objdir directory.  This is a cygwin/mingw-specific
 # behavior.
 func_emit_wrapper ()
@@ -3336,9 +3336,9 @@ _LTECHO_EOF'
 
 # Very basic option parsing. These options are (a) specific to
 # the libtool wrapper, (b) are identical between the wrapper
-# /script/ and the wrapper /executable/ which is used only on
+# /script/ and the wrapper /executable/ that is used only on
 # windows platforms, and (c) all begin with the string "--lt-"
-# (application programs are unlikely to have options which match
+# (application programs are unlikely to have options that match
 # this pattern).
 #
 # There are only two supported options: --lt-debug and
@@ -4535,12 +4535,12 @@ func_mode_link ()
     *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-cegcc*)
       # It is impossible to link a dll without this setting, and
       # we shouldn't force the makefile maintainer to figure out
-      # which system we are compiling for in order to pass an extra
+      # what system we are compiling for in order to pass an extra
       # flag for every libtool invocation.
       # allow_undefined=no
 
       # FIXME: Unfortunately, there are problems with the above when trying
-      # to make a dll which has undefined symbols, in which case not
+      # to make a dll that has undefined symbols, in which case not
       # even a static library is built.  For now, we need to specify
       # -no-undefined on the libtool link line when we can be certain
       # that all symbols are satisfied, otherwise we get a static library.
@@ -6765,7 +6765,7 @@ func_mode_link ()
 	  # use the current revision as the major version
 	  # and those that subtract age and use age as
 	  # a minor version.  But, then there is irix
-	  # which has an extra 1 added just for fun
+	  # that has an extra 1 added just for fun
 	  #
 	  case $version_type in
 	  # correct linux to gnu/linux during the next big refactor
@@ -7674,7 +7674,7 @@ EOF
 	  # The given exports_symbols file has to be filtered, so filter it.
 	  func_verbose "filter symbol list for '$libname.la' to tag DATA exports"
 	  # FIXME: $output_objdir/$libname.filter potentially contains lots of
-	  # 's' commands which not all seds can handle. GNU sed should be fine
+	  # 's' commands, which not all seds can handle. GNU sed should be fine
 	  # though. Also, the filter scales superlinearly with the number of
 	  # global variables. join(1) would be nice here, but unfortunately
 	  # isn't a blessed tool.
@@ -7923,7 +7923,7 @@ EOF
 	      # The given exports_symbols file has to be filtered, so filter it.
 	      func_verbose "filter symbol list for '$libname.la' to tag DATA exports"
 	      # FIXME: $output_objdir/$libname.filter potentially contains lots of
-	      # 's' commands which not all seds can handle. GNU sed should be fine
+	      # 's' commands, which not all seds can handle. GNU sed should be fine
 	      # though. Also, the filter scales superlinearly with the number of
 	      # global variables. join(1) would be nice here, but unfortunately
 	      # isn't a blessed tool.
@@ -9075,7 +9075,7 @@ exit $exit_status
 
 
 # The TAGs below are defined such that we never get into a situation
-# in which we disable both kinds of libraries.  Given conflicting
+# where we disable both kinds of libraries.  Given conflicting
 # choices, we go for a static library, that is the most portable,
 # since we can't tell whether shared libraries were disabled because
 # the user asked for that or because the platform doesn't support

@@ -36,9 +36,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 /*
  lt_strlcat appends the NULL-terminated string src to the end of dst.
  It will append at most dstsize - strlen(dst) - 1 bytes,
- NULL-terminating the result. The total length of the string which
+ NULL-terminating the result. The total length of the string that
  would have been created given sufficient buffer size (may be longer
- than dstsize) is returned.  This function substitutes for strlcat()
+ than dstsize) is returned.  This function substitutes for strlcat(),
  which is available under NetBSD, FreeBSD and Solaris 9.
 
  Buffer overflow can be checked as follows:
@@ -84,9 +84,9 @@ lt_strlcat(char *dst, const char *src, const size_t dstsize)
 /*
   lt_strlcpy copies up to dstsize - 1 characters from the NULL-terminated
   string src to dst, NULL-terminating the result. The total length of
-  the string which would have been created given sufficient buffer
+  the string that would have been created given sufficient buffer
   size (may be longer than dstsize) is returned. This function
-  substitutes for strlcpy() which is available under OpenBSD, FreeBSD
+  substitutes for strlcpy(), which is available under OpenBSD, FreeBSD
   and Solaris 9.
 
   Buffer overflow can be checked as  follows:

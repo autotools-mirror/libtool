@@ -4,8 +4,8 @@
 You currently need GNU make to build the Libtool package itself.
 
 @item
-On AIX there are two different styles of shared linking, one in which symbols
-are bound at link-time and one in which symbols are bound at runtime only,
+On AIX there are two different styles of shared linking, one where symbols
+are bound at link-time and one where symbols are bound at runtime only,
 similar to ELF@.  In case of doubt use @code{LDFLAGS=-Wl,-brtl} for the latter style.
 
 @item

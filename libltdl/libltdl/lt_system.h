@@ -61,7 +61,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 # define LT_END_C_DECLS		/* empty */
 #endif
 
-/* LT_STMT_START/END are used to create macros which expand to a
+/* LT_STMT_START/END are used to create macros that expand to a
    a single compound statement in a portable way.  */
 #if defined  __GNUC__ && !defined  __STRICT_ANSI__ && !defined  __cplusplus
 #  define LT_STMT_START        (void)(

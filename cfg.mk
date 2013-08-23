@@ -55,10 +55,10 @@ local-checks-to-skip =				\
 
 # GPL_version: checks for GPLv3, which we don't use
 # cast_of_x_alloc_return_value:
-#         We support C++ compilation which does require casting here.
+#         We support C++ compilation, which does require casting here.
 # prohibit_always-defined_macros:
 #	we have our own argz and dirent, which use the same macros but
-#	which are not always-defined in our case.
+#	are not always-defined in our case.
 # prohibit_always_true_header_tests:
 #	we have our own argz and dirent, which are not *always* true,
 #	so the guards cannot be removed in our case.

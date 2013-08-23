@@ -306,7 +306,7 @@ loadlibraryerror (const char *default_errmsg)
   return len ? error_message : default_errmsg;
 }
 
-/* A function called through the getthreaderrormode variable which checks
+/* A function called through the getthreaderrormode variable that checks
    if the system supports GetThreadErrorMode (or GetErrorMode) and arranges
    for it or a fallback implementation to be called directly in the future.
    The selected version is then called. */
@@ -339,7 +339,7 @@ fallback_getthreaderrormode (void)
   return (DWORD) SetErrorMode (SEM_FAILCRITICALERRORS);
 }
 
-/* A function called through the setthreaderrormode variable which checks
+/* A function called through the setthreaderrormode variable that checks
    if the system supports SetThreadErrorMode and arranges for it or a
    fallback implementation to be called directly in the future.
    The selected version is then called. */

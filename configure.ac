@@ -76,7 +76,7 @@ AC_SUBST([AUTOTEST], ['$(AUTOM4TE) --language=autotest'])
 ## Display a configure time version banner. ##
 ## ---------------------------------------- ##
 
-# This is a sanity check so we can see which version is used in bug reports.
+# This is a sanity check so we can see what version is used in bug reports.
 AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION])
 echo
 

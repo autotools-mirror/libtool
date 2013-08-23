@@ -58,7 +58,7 @@ package.
 
 @cnindex buildreq
 @item buildreq
-A newline-delimited list of triples of @strong{programs} (which must
+A newline-delimited list of triples of @strong{programs} (that must
 accept the option @option{--version} without hanging or failing), the
 @strong{minimum version required} (or just `-' in the version field if
 any version will be sufficient) and @strong{homepage URL (to
@@ -223,7 +223,7 @@ gnulib_tool_options='
 @item gnulib_precious
 Normally, @command{bootstrap} removes any macro-files that are not
 included by @file{aclocal.m4} before it returns, except for files listed
-in this variable which are always kept.
+in this variable that are always kept.
 
 @smallexample
 gnulib_precious='
@@ -311,7 +311,7 @@ further effect.
 Set this to @samp{.cvsignore .gitignore} if you want both of those files
 to be generated in directories such as @file{lib/}, @file{m4/}, and
 @file{po/}, or set it to @samp{auto} to make @command{bootstrap} select
-which to use based on which version control system (if any) is used in
+what to use based on what version control system (if any) is used in
 the source directory.  Or set it to @samp{none} to disregard VCS ignore
 files entirely.  Default is @samp{auto}.
 
