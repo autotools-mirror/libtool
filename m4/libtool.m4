@@ -1260,7 +1260,8 @@ test no = "$enable_libtool_lock" || enable_libtool_lock=yes
 # libtool support.
 case $host in
 ia64-*-hpux*)
-  # Find out which ABI we are using.
+  # Find out which ABI is being produced by ac_compile, and set mode
+  # options accordingly.
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
     case `/usr/bin/file conftest.$ac_objext` in
@@ -1275,7 +1276,8 @@ ia64-*-hpux*)
   rm -rf conftest*
   ;;
 *-*-irix6*)
-  # Find out which ABI we are using.
+  # Find out which ABI is being produced by ac_compile, and set linker
+  # options accordingly.
   echo '[#]line '$LINENO' "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
     if test yes = "$lt_cv_prog_gnu_ld"; then
@@ -1309,7 +1311,12 @@ ia64-*-hpux*)
 
 x86_64-*kfreebsd*-gnu|x86_64-*linux*|powerpc*-*linux*| \
 s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
-  # Find out which ABI we are using.
+  # Find out which ABI is being produced by ac_compile, and set linker
+  # options accordingly.  Note that the listed cases only cover the
+  # situations where additional linker options are needed (such as when
+  # doing 32-bit compilation for a host where ld defaults to 64-bit, or
+  # vice versa); the common cases where no linker options are needed do
+  # not appear in the list.
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
     case `/usr/bin/file conftest.o` in
@@ -1383,7 +1390,8 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
   fi
   ;;
 *-*solaris*)
-  # Find out which ABI we are using.
+  # Find out which ABI is being produced by ac_compile, and set linker
+  # options accordingly.
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
     case `/usr/bin/file conftest.o` in
