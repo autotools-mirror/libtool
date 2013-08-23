@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2013-08-22.10; # UTC
+scriptversion=2013-08-23.20; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -82,7 +82,7 @@ done
 sp=' '
 nl='
 '
-IFS="	$sp$nl"
+IFS="$sp	$nl"
 
 # There are still modern systems that have problems with 'echo' mis-
 # handling backslashes, among others, so make sure $bs_echo is set to a
