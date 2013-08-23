@@ -2203,7 +2203,7 @@ test extract-trace = "$progname" && func_main "$@"
 # End:
 
 # Set a version string for *this* script.
-scriptversion=2013-08-22.10; # UTC
+scriptversion=2013-08-23.19; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -4479,6 +4479,35 @@ func_get_version ()
 }
 
 
+# func_check_tool APP
+# -------------------
+# Search PATH for an executable at APP.
+func_check_tool ()
+{
+    $debug_cmd
+
+    func_check_tool_result=
+
+    case $1 in
+    *[\\/]*)
+      test -x "$1" && func_check_tool_result=$1
+      ;;
+    *)
+      save_IFS=$IFS
+      IFS=:
+      for _G_check_tool_path in $PATH; do
+        IFS=$save_IFS
+	if test -x "$_G_check_tool_path/$1"; then
+	  func_check_tool_result=$_G_check_tool_path/$1
+	  break
+	fi
+      done
+      IFS=$save_IFS
+      ;;
+    esac
+}
+
+
 # func_check_versions APP1 VER1 URL1 ...[APPN VERN URLN]
 # ------------------------------------------------------
 func_check_versions ()
@@ -4507,26 +4536,39 @@ delimited list of triples; 'program min-version url'."
       _G_appvar=`echo $_G_app |tr '[a-z]' '[A-Z]'`
       test TAR = "$_G_appvar" && _G_appvar=AMTAR
       eval "_G_app=\${$_G_appvar-$_G_app}"
-      _G_instver=`func_get_version $_G_app`
 
-      test -z "$_G_instver" \
-          || func_verbose "found '$_G_app' version $_G_instver."
-
-      # Fail if --version didn't work.
-      if test -z "$_G_instver"; then
-        func_error "Prerequisite '$_G_app' not found. Please install it, or
+      # Fail if no version specified, but the program can't be found.
+      if test x- = "x$_G_reqver"; then
+        func_check_tool $_G_app
+	if test -z "$func_check_tool_result"; then
+	  func_error "Prerequisite '$_G_app' not not found. Please install it, or
 'export $_G_appvar=/path/to/$_G_app'."
-        func_check_versions_result=false
-
-      # Fail if a new version than what we have is required.
-      elif test x- != "x$_G_reqver"; then
-        _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
-        test "$_G_newer" != "$_G_instver" && {
-          func_error "\
-'$_G_app' version == $_G_instver is too old
-'$_G_app' version >= $_G_reqver is required"
           func_check_versions_result=false
-        }
+	else
+	  func_verbose "found '$func_check_tool_result' for $_G_appvar."
+	fi
+      else
+        _G_instver=`func_get_version $_G_app`
+
+        test -z "$_G_instver" \
+            || func_verbose "found '$_G_app' version $_G_instver."
+
+        # Fail if --version didn't work.
+        if test -z "$_G_instver"; then
+          func_error "Prerequisite '$_G_app' not found. Please install it, or
+'export $_G_appvar=/path/to/$_G_app'."
+          func_check_versions_result=false
+
+        # Fail if a newer version than what we have is required.
+        else
+          _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
+          test "$_G_newer" != "$_G_instver" && {
+            func_error "\
+  '$_G_app' version == $_G_instver is too old
+  '$_G_app' version >= $_G_reqver is required"
+            func_check_versions_result=false
+          }
+        fi
       fi
     done
 }
