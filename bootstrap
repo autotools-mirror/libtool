@@ -2203,7 +2203,7 @@ test extract-trace = "$progname" && func_main "$@"
 # End:
 
 # Set a version string for *this* script.
-scriptversion=2013-08-23.19; # UTC
+scriptversion=2013-08-23.20; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2586,6 +2586,13 @@ func_gnulib_tool ()
     $require_libtoolize
 
     test true = "$gnulib_tool" || {
+      # bootstrap.conf written for gnulib bootstrap expects
+      # gnulib_tool_option_extras to which --no-changelog is appended,
+      # but libtool bootstrap expects you to append to gnulib_tool_options
+      # so that you can override the --no-changelog default: make sure we
+      # support both styles so users can migrate between them easily.
+      gnulib_tool_all_options="$gnulib_tool_options $gnulib_tool_option_extras"
+
       if test -n "$gnulib_modules"; then
         $require_gnulib_cache
         $require_gnulib_tool_base_options
@@ -2595,7 +2602,6 @@ func_gnulib_tool ()
         # Try not to pick up any stale values from 'gnulib-cache.m4'.
         rm -f "$gnulib_cache"
 
-        gnulib_tool_all_options=$gnulib_tool_options
         test -n "$gnulib_tool_base_options" \
             && func_append_uniq gnulib_tool_all_options " $gnulib_tool_base_options"
         test -n "$gnulib_mk" \
@@ -2609,8 +2615,6 @@ func_gnulib_tool ()
         # 'gnulib_modules' and others are cached in 'gnulib-cache.m4':
         # Use 'gnulib --update' to fetch gnulib modules.
         gnulib_mode=--update
-
-        gnulib_tool_all_options=$gnulib_tool_options
       fi
 
       # Add a sensible default libtool option to gnulib_tool_options.
@@ -4625,7 +4629,7 @@ func_update_po_files ()
          |$SED -e 's|.*/||' -e 's|\.po$||' > "$_G_po_dir/LINGUAS" || return
 
     # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6+.
-    func_find_tool SHA1SUM sha1sum gsha1sum shasum
+    func_find_tool SHA1SUM sha1sum gsha1sum shasum sha1
 
     _G_langs=`cd $_G_ref_po_dir && echo *.po|$SED 's|\.po||g'`
     test '*' = "$_G_langs" && _G_langs=x
@@ -4635,11 +4639,11 @@ func_update_po_files ()
       _G_cksum_file=$_G_ref_po_dir/$_G_po.s1
       if ! test -f "$_G_cksum_file" ||
           ! test -f "$_G_po_dir/$_G_po.po" ||
-          ! $SHA1SUM -c --status "$_G_cksum_file" \
+          ! $SHA1SUM -c "$_G_cksum_file" \
               < "$_G_new_po" > /dev/null; then
         echo "updated $_G_po_dir/$_G_po.po..."
         cp "$_G_new_po" "$_G_po_dir/$_G_po.po" \
-          && $SHA1SUM < "$_G_new_po" > "$_G_cksum_file"
+          && $SHA1SUM < "$_G_new_po" > "$_G_cksum_file" || return
       fi
     done
 }
