@@ -2435,7 +2435,7 @@ func_update_po_files ()
          |$SED -e 's|.*/||' -e 's|\.po$||' > "$_G_po_dir/LINGUAS" || return
 
     # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6+.
-    func_find_tool SHA1SUM sha1sum gsha1sum shasum
+    func_find_tool SHA1SUM sha1sum gsha1sum shasum sha1
 
     _G_langs=`cd $_G_ref_po_dir && echo *.po|$SED 's|\.po||g'`
     test '*' = "$_G_langs" && _G_langs=x
@@ -2445,11 +2445,11 @@ func_update_po_files ()
       _G_cksum_file=$_G_ref_po_dir/$_G_po.s1
       if ! test -f "$_G_cksum_file" ||
           ! test -f "$_G_po_dir/$_G_po.po" ||
-          ! $SHA1SUM -c --status "$_G_cksum_file" \
+          ! $SHA1SUM -c "$_G_cksum_file" \
               < "$_G_new_po" > /dev/null; then
         echo "updated $_G_po_dir/$_G_po.po..."
         cp "$_G_new_po" "$_G_po_dir/$_G_po.po" \
-          && $SHA1SUM < "$_G_new_po" > "$_G_cksum_file"
+          && $SHA1SUM < "$_G_new_po" > "$_G_cksum_file" || return
       fi
     done
 }
