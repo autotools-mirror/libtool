@@ -2,6 +2,11 @@
 # option.  It specifies what changes to make to each given SHA1's commit
 # log and metadata, using Perl-eval'able expressions.
 
+2636f57059967d3438250234279edac7cfd13d35
+# Date:    Wed Sep 4 18:47:08 2013 -0700
+# Separate summary and file change description.
+s|(\* )|maint: add Brooks Moses to AUTHORS file.\n$1|
+
 8b6f961a68c73fc7d6c61ef9cd55ffa41dbbf028
 # Date:   Tue Jan  1 19:39:24 2013 +0100
 # No empty lines in a single commit.
