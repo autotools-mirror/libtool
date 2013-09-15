@@ -271,10 +271,6 @@ func_bootstrap ()
     # Post-option preparation.
     func_prep
 
-    # Ensure ChangeLog presence.
-    func_ifcontains "$gnulib_modules" gitlog-to-changelog \
-      func_ensure_changelog
-
     # Reconfigure the package.
     func_reconfigure
 
@@ -354,6 +350,19 @@ func_hookable func_reconfigure
 func_reconfigure ()
 {
     $debug_cmd
+
+    # Ensure ChangeLog presence.
+    if test -n "$gnulib_modules"; then
+      func_ifcontains "$gnulib_modules" gitlog-to-changelog \
+        func_ensure_changelog
+    else
+      $require_gnulib_cache
+      if sed -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache |
+         func_grep_q gitlog-to-changelog
+      then
+        func_ensure_changelog
+      fi
+    fi
 
     # Released 'autopoint' has the tendency to install macros that have
     # been obsoleted in current 'gnulib., so run this before 'gnulib-tool'.
