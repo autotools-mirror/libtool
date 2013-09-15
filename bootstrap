@@ -2203,7 +2203,7 @@ test extract-trace = "$progname" && func_main "$@"
 # End:
 
 # Set a version string for *this* script.
-scriptversion=2013-08-29.21; # UTC
+scriptversion=2013-09-15.06; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2766,12 +2766,8 @@ func_gnulib_tool_copy_file ()
 {
     $debug_cmd
 
-    $require_gnulib_path
     $require_gnulib_tool
     $require_patch
-
-    gnulib_copy_cmd="$gnulib_tool --copy-file"
-    $opt_copy || func_append gnulib_copy_cmd " --symlink"
 
     if test true = "$gnulib_tool"; then
       # If gnulib-tool is not available (e.g. bootstrapping in a
@@ -2786,12 +2782,14 @@ or else specify the location of your 'git' binary by
 setting 'GIT' in the environment so that a fresh
 'gnulib' submodule can be cloned."
     else
-      test -f "$gnulib_path/$1" || {
+      $require_gnulib_copy_cmd
+
+      $gnulib_copy_cmd $1 $2 2>/dev/null || {
+        $require_gnulib_path
+
         func_error "'$gnulib_path/$1' does not exist"
         return 1
       }
-
-      $gnulib_copy_cmd $1 $2
     fi
 }
 
@@ -3325,6 +3323,8 @@ func_require_buildreq_patch ()
 {
     $debug_cmd
 
+    $require_local_gl_dir
+
     # This ensures PATCH is set appropriately by the time
     # func_check_versions enforces $buildreq.
     $require_patch
@@ -3397,6 +3397,28 @@ defaulting to '$copyright_holder'."
     }
 
     require_copyright_holder=:
+}
+
+
+# require_doc_base
+# ----------------
+# Ensure doc_base has a sensible value, extracted from 'gnulib-cache.m4'
+# if possible, otherwise letting 'gnulib-tool' pick a default.
+require_doc_base=func_require_doc_base
+func_require_doc_base ()
+{
+    $debug_cmd
+
+    $require_gnulib_cache
+
+    test -f "$gnulib_cache" && test -z "$doc_base" && {
+      func_extract_trace_first "gl_DOC_BASE" "$gnulib_cache"
+      doc_base=$func_extract_trace_first_result
+
+      test -n "$doc_base" && func_verbose "doc_base='$doc_base'"
+    }
+
+    require_doc_base=:
 }
 
 
@@ -3495,6 +3517,25 @@ func_require_gnulib_cache ()
 }
 
 
+# require_gnulib_copy_cmd
+# -----------------------
+# Only calculate the options for copying files with gnulib once.
+require_gnulib_copy_cmd=func_require_gnulib_copy_cmd
+func_require_gnulib_copy_cmd ()
+{
+    $debug_cmd
+
+    $require_gnulib_tool
+    $require_gnulib_tool_base_options
+
+    gnulib_copy_cmd="$gnulib_tool $gnulib_tool_base_options --copy-file"
+    $opt_copy || func_append gnulib_copy_cmd " --symlink"
+    $opt_quiet || func_append gnulib_copy_cmd " --verbose"
+
+    require_gnulib_copy_cmd=:
+}
+
+
 # require_gnulib_merge_changelog
 # ------------------------------
 # See if we can use gnulib's git-merge-changelog merge driver.
@@ -3533,10 +3574,9 @@ func_require_gnulib_mk ()
 {
     $debug_cmd
 
-    test -f "$gnulib_cache" && test -z "$gnulib_mk" && {
-      $require_gnulib_cache
-      $require_macro_dir
+    $require_gnulib_cache
 
+    test -f "$gnulib_cache" && test -z "$gnulib_mk" && {
       func_extract_trace_first "gl_MAKEFILE_NAME" "$gnulib_cache"
       gnulib_mk=$func_extract_trace_first_result
 
@@ -3544,6 +3584,28 @@ func_require_gnulib_mk ()
     }
 
     require_gnulib_mk=:
+}
+
+
+# require_gnulib_name
+# -------------------
+# Ensure gnulib_name has a sensible value, extracted from 'gnulib-cache.m4'
+# if possible, otherwise letting 'gnulib-tool' pick a default.
+require_gnulib_name=func_require_gnulib_name
+func_require_gnulib_name ()
+{
+    $debug_cmd
+
+    $require_gnulib_cache
+
+    test -f "$gnulib_cache" && test -z "$gnulib_name" && {
+      func_extract_trace_first "gl_LIB" "$gnulib_cache"
+      gnulib_name=$func_extract_trace_first_result
+
+      test -n "$gnulib_name" && func_verbose "gnulib_name='$gnulib_name'"
+    }
+
+    require_gnulib_name=:
 }
 
 
@@ -3696,21 +3758,24 @@ func_require_gnulib_tool_base_options ()
     gnulib_tool_base_options=
 
     test true = "$gnulib_tool" || {
-      $require_build_aux
-      $require_macro_dir
-
       # 'gnulib_modules' and others are maintained in 'bootstrap.conf':
       # Use 'gnulib --import' to fetch gnulib modules.
+      $require_build_aux
       test -n "$build_aux" \
           && func_append_uniq gnulib_tool_base_options " --aux-dir=$build_aux"
+      $require_macro_dir
       test -n "$macro_dir" \
           && func_append_uniq gnulib_tool_base_options " --m4-base=$macro_dir"
+      $require_doc_base
       test -n "$doc_base" \
           && func_append_uniq gnulib_tool_base_options " --doc-base=$doc_base"
+      $require_gnulib_name
       test -n "$gnulib_name" \
           && func_append_uniq gnulib_tool_base_options " --lib=$gnulib_name"
+      $require_local_gl_dir
       test -n "$local_gl_dir" \
           && func_append_uniq gnulib_tool_base_options " --local-dir=$local_gl_dir"
+      $require_source_base
       test -n "$source_base" \
           && func_append_uniq gnulib_tool_base_options " --source-base=$source_base"
     }
@@ -3750,6 +3815,28 @@ func_require_libtoolize ()
     export LIBTOOLIZE
 
     require_libtoolize=:
+}
+
+
+# require_local_gl_dir
+# --------------------
+# Ensure local_gl_dir has a sensible value, extracted from 'gnulib-cache.m4'
+# if possible, otherwise letting 'gnulib-tool' pick a default.
+require_local_gl_dir=func_require_local_gl_dir
+func_require_local_gl_dir ()
+{
+    $debug_cmd
+
+    $require_gnulib_cache
+
+    test -f "$gnulib_cache" && test -z "$local_gl_dir" && {
+      func_extract_trace_first "gl_LOCAL_DIR" "$gnulib_cache"
+      local_gl_dir=$func_extract_trace_first_result
+
+      test -n "$local_gl_dir" && func_verbose "local_gl_dir='$local_gl_dir'"
+    }
+
+    require_local_gl_dir=:
 }
 
 
@@ -3981,8 +4068,6 @@ func_require_source_base ()
     $require_gnulib_cache
 
     test -f "$gnulib_cache" && test -z "$source_base" && {
-      $require_macro_dir
-
       func_extract_trace_first "gl_SOURCE_BASE" "$gnulib_cache"
 
       source_base=$func_extract_trace_first_result
