@@ -13,7 +13,7 @@
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2013-09-15.06; # UTC
+scriptversion=2013-09-16.03; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -357,7 +357,7 @@ func_reconfigure ()
         func_ensure_changelog
     else
       $require_gnulib_cache
-      if sed -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache |
+      if sed -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache 2>/dev/null |
          func_grep_q gitlog-to-changelog
       then
         func_ensure_changelog
