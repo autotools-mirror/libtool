@@ -1919,7 +1919,7 @@ else
     ;;
 
   darwin*)
-  # if libdl is installed we need to link against it
+    # if libdl is installed we need to link against it
     AC_CHECK_LIB([dl], [dlopen],
 		[lt_cv_dlopen=dlopen lt_cv_dlopen_libs=-ldl],[
     lt_cv_dlopen=dyld
