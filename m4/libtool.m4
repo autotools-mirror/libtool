@@ -1931,7 +1931,7 @@ else
   tpf*)
     # Don't try to run any link tests for TPF.  We know it's impossible
     # because TPF is a cross-compiler, and we know how we open DSOs.
-    lt_cv_dlopen="dlopen"
+    lt_cv_dlopen=dlopen
     lt_cv_dlopen_libs=
     lt_cv_dlopen_self=no
     ;;
