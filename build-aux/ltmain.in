@@ -4739,6 +4739,12 @@ func_mode_link ()
 	  prev=
 	  continue
 	  ;;
+	mllvm)
+	  # Clang does not use LLVM to link, so we can simply discard any
+	  # '-mllvm $arg' options when doing the link step.
+	  prev=
+	  continue
+	  ;;
 	objectlist)
 	  if test -f "$arg"; then
 	    save_arg=$arg
@@ -5074,6 +5080,11 @@ func_mode_link ()
 	 esac
 	fi
 	func_append deplibs " $arg"
+	continue
+	;;
+
+      -mllvm)
+	prev=mllvm
 	continue
 	;;
 
