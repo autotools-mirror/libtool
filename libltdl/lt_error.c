@@ -1,4 +1,4 @@
-/* lt_error.c -- error propogation interface
+/* lt_error.c -- error propagation interface
 
    Copyright (C) 1999-2001, 2004-2005, 2007, 2011-2013 Free Software
    Foundation, Inc.

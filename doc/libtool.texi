@@ -1295,7 +1295,7 @@ enabled by @option{--no-quiet} are shown.
 Thus, there are now three different message levels (not counting
 @option{--debug}), depending on whether the normal messages and/or
 the additional verbose messages are displayed.  Note that there is
-no mechanism to diplay verbose messages, without also displaying
+no mechanism to display verbose messages, without also displaying
 normal messages.
 
 @table @strong
@@ -5885,7 +5885,7 @@ OpenBSD, to name a few).
 
 The @option{-fpic} or @option{-fPIC} flags can be used to generate
 position-independent code.  @option{-fPIC} is guaranteed to generate
-working code, but the code is slower on m68k, m88k, and Sparc chips.
+working code, but the code is slower on m68k, m88k, and SPARC chips.
 However, using @option{-fpic} on those chips imposes arbitrary size limits
 on the shared libraries.
 @end table
