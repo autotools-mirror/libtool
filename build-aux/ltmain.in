@@ -6984,7 +6984,7 @@ func_mode_link ()
 	# Check to see if the archive will have undefined symbols.
 	if test yes = "$allow_undefined"; then
 	  if test unsupported = "$allow_undefined_flag"; then
-	    if test "$build_old_libs" = yes; then
+	    if test yes = "$build_old_libs"; then
 	      func_warning "undefined symbols not allowed in $host shared libraries; building static only"
 	      build_libtool_libs=no
 	    else
