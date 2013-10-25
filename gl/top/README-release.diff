@@ -18,7 +18,7 @@
 +  forgotten since last release (they should be updated in git along with
 +  commits that require it so that users can work with git snapshots).
 +
-+* Update the LTDL_VERSION_INFO in libltdl/Makefile.inc for changes since
++* Update the LTDL_VERSION_INFO in libltdl/ltdl.mk for changes since
 +  the last release.
 +
 +* Run "./bootstrap && ./configure".
