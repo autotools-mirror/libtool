@@ -2300,53 +2300,6 @@ func_insert_if_absent ()
 }
 
 
-# func_sort_ver VER1 VER2
-# -----------------------
-# 'sort -V' is not generally available.
-# Note this deviates from the version comparison in automake
-# in that it treats 1.5 < 1.5.0, and treats 1.4.4a < 1.4-p3a
-# but this should suffice as we won't be specifying old
-# version formats or redundant trailing .0 in bootstrap.conf.
-# If we did want full compatibility then we should probably
-# use m4_version_compare from autoconf.
-func_sort_ver ()
-{
-    $debug_cmd
-
-    ver1=$1
-    ver2=$2
-
-    # Split on '.' and compare each component.
-    i=1
-    while :; do
-      p1=`echo "$ver1" |cut -d. -f$i`
-      p2=`echo "$ver2" |cut -d. -f$i`
-      if test ! "$p1"; then
-        echo "$1 $2"
-        break
-      elif test ! "$p2"; then
-        echo "$2 $1"
-        break
-      elif test ! "$p1" = "$p2"; then
-        if test "$p1" -gt "$p2" 2>/dev/null; then # numeric comparison
-          echo "$2 $1"
-        elif test "$p2" -gt "$p1" 2>/dev/null; then # numeric comparison
-          echo "$1 $2"
-        else # numeric, then lexicographic comparison
-          lp=`printf "$p1\n$p2\n" |sort -n |tail -n1`
-          if test "$lp" = "$p2"; then
-            echo "$1 $2"
-          else
-            echo "$2 $1"
-          fi
-        fi
-        break
-      fi
-      i=`expr $i + 1`
-    done
-}
-
-
 # func_get_version APP
 # --------------------
 # echo the version number (if any) of APP, which is looked up along your
