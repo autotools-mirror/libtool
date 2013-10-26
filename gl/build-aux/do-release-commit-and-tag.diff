@@ -1,22 +1,26 @@
---- gnulib/build-aux/do-release-commit-and-tag	2012-09-16 10:56:58.000000000 +0700
-+++ gl/build-aux/do-release-commit-and-tag	2012-09-16 11:01:14.000000000 +0700
-@@ -86,6 +86,10 @@
- branch=$(git branch | sed -ne '/^\* /{s///;p;q;}')
- builddir=.
+--- gnulib/build-aux/do-release-commit-and-tag	2013-01-26 16:46:26.000000000 +1300
++++ gl/build-aux/do-release-commit-and-tag	2013-10-26 15:42:36.000000000 +1300
+@@ -5,6 +5,9 @@
+ # will serve to identify the release, so apply a signed tag to it as well.
+ VERSION=2012-08-01.09 # UTC
  
-+for gsort in $SORT gsort sort; do
-+  echo 1|$gsort -V >/dev/null 2>/dev/null && break
-+done
++# Make sure we've evaluated scripts we depend on.
++test -z "$progpath" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
 +
- while test $# != 0
- do
-   # Handle --option=value by splitting apart and putting back on argv.
-@@ -125,7 +129,7 @@
+ # Note: this is a bash script (could be zsh or dash)
+ 
+ # Copyright (C) 2009-2013 Free Software Foundation, Inc.
+@@ -125,10 +128,9 @@
    || die 'failed to determine previous version number from .prev-version'
  
  # Verify that $ver is sensible (> .prev-version).
 -case $(printf "$prev_ver\n$ver\n"|sort -V -u|tr '\n' ':') in
-+case $(printf "$prev_ver\n$ver\n"|$gsort -V -u|tr '\n' ':') in
-   "$prev_ver:$ver:") ;;
-   *) die "invalid version: $ver (<= $prev_ver)";;
- esac
+-  "$prev_ver:$ver:") ;;
+-  *) die "invalid version: $ver (<= $prev_ver)";;
+-esac
++newer_ver=$(func_sort_ver $prev_ver $ver |cut -d' ' -f2)
++test "$newer_ver" != "$ver" && \
++  die "invalid version: $ver (<= $prev_ver)"
+ 
+ case $type in
+   alpha|beta|stable) ;;
