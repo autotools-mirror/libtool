@@ -796,7 +796,7 @@ rm -f libhello.la "hell$EXEEXT"
 
 # If this check fails (i.e. the make succeeds), then the installed library
 # was used, which is wrong.
-AT_CHECK([$unset LIBTOOL LIBTOOLIZE; $MAKE hell$EXEEXT libhello_la_OBJECTS=hello.lo || (exit 1)],
+AT_CHECK([$as_unset LIBTOOL; $as_unset LIBTOOLIZE; $MAKE hell$EXEEXT libhello_la_OBJECTS=hello.lo || (exit 1)],
          [1], [ignore], [ignore])
 
 AT_CLEANUP

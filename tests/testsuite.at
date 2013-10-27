@@ -51,11 +51,6 @@ fi
 if test -n "$to_tool_file_cmd"; then
   configure_options="$configure_options lt_cv_to_tool_file_cmd=$to_tool_file_cmd"
 fi
-if (FOO=bar; unset FOO) >/dev/null 2>&1; then
-  unset=unset
-else
-  unset=false
-fi
 : ${mkdir_p="$abs_top_srcdir/build-aux/install-sh -d"}
 # Fix relative paths in $lt_INSTALL
 case $lt_INSTALL in
@@ -193,7 +188,7 @@ m4_define([LT_AT_CONFIGURE],
 m4_define([LT_AT_MAKE],
 [for target in m4_default([$1], [all])
 do
-  AT_CHECK([$unset LIBTOOL LIBTOOLIZE; $MAKE $target $2], [0], [ignore], [ignore])
+  AT_CHECK([$as_unset LIBTOOL; $as_unset LIBTOOLIZE; $MAKE $target $2], [0], [ignore], [ignore])
 done
 ])
 
