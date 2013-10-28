@@ -100,13 +100,9 @@ scriptversion=2013-09-16.03; # UTC
 : ${CMP="cmp"}
 : ${CONFIG_SHELL="/bin/sh"}
 : ${DIFF="diff"}
-: ${EGREP="grep -E"}
-: ${FGREP="grep -F"}
 : ${GIT="git"}
-: ${GREP="grep"}
 : ${LN_S="ln -s"}
 : ${RM="rm"}
-: ${SED="sed"}
 
 export ACLOCAL
 export AUTOCONF
@@ -314,6 +310,10 @@ func_prep ()
     $require_checkout_only_file
 
     $require_gnulib_merge_changelog
+
+    # Report the results of SED and GREP searches from funclib.sh.
+    func_verbose "GREP='$GREP'"
+    func_verbose "SED='$SED'"
 
     # fetch update files from the translation project
     func_update_translations
