@@ -54,7 +54,7 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 # Bootstrap. #
 # ---------- #
 
-SCRIPT_ENV	= SED='$(SED)'
+SCRIPT_ENV	= GREP='$(GREP)' SED='$(SED)'
 
 build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 		  $(srcdir)/$(aux_dir)/do-release-commit-and-tag \

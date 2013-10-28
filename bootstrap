@@ -159,6 +159,7 @@ else
   bs_echo='sh -c $bs_echo_body bs_echo'
 fi
 
+
 # Unless the user overrides by setting SED, search the path for either GNU
 # sed, or the sed that truncates its output the least.
 test -z "$SED" && {
@@ -218,6 +219,58 @@ test -z "$SED" && {
 }
 
 
+# Unless the user overrides by setting GREP, search the path for either GNU
+# grep, or the sed that truncates its output the least.
+test -z "$GREP" && {
+  _G_path_prog_max=0
+  _G_path_prog_found=false
+  _G_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  for _G_dir in $PATH:/usr/xpg4/bin; do
+    IFS=$_G_save_IFS
+    test -z "$_G_dir" && _G_dir=.
+    for _G_prog_name in grep ggrep; do
+      for _exeext in '' .EXE; do
+        _G_path_prog="$_G_dir/$_G_prog_name$_exeext"
+        func_executable_p "$_G_path_prog" || continue
+        case `"$_G_path_prog" --version 2>&1` in
+          *GNU*) _G_path_GREP=$_G_path_prog _G_path_prog_found=: ;;
+          *)
+            _G_count=0
+            $bs_echo_n 0123456789 >conftest.in
+            while :
+            do
+              cat conftest.in conftest.in >conftest.tmp
+              mv conftest.tmp conftest.in
+              cp conftest.in conftest.nl
+              $bs_echo 'GREP' >> conftest.nl
+	      "$_G_path_prog" -e 'GREP$' -e '-(cannot match)-' <conftest.nl >conftest.out 2>/dev/null || break
+              diff conftest.out conftest.nl >/dev/null 2>&1 || break
+              _G_count=`expr $_G_count + 1`
+              if test $_G_count -gt $_G_path_prog_max; then
+                # Best one so far, save it but keep looking for a better one
+                _G_path_GREP=$_G_path_prog
+                _G_path_prog_max=$_G_count
+              fi
+              # 10*(2^10) chars as input seems more than enough
+              test $_G_count -gt 10 && break
+            done
+            rm -f conftest.in conftest.tmp conftest.nl conftest.out
+            ;;
+        esac
+
+        $_G_path_prog_found && break 3
+      done
+    done
+  done
+  IFS=$_G_save_IFS
+  test -z "$_G_path_GREP" && {
+    echo "no acceptable grep could be found in \$PATH" >&2
+    exit 1
+  }
+  GREP=$_G_path_GREP
+}
+
+
 ## ------------------------------- ##
 ## User overridable command paths. ##
 ## ------------------------------- ##
@@ -229,9 +282,8 @@ test -z "$SED" && {
 
 : ${CP="cp -f"}
 : ${ECHO="$bs_echo"}
-: ${EGREP="grep -E"}
-: ${FGREP="grep -F"}
-: ${GREP="grep"}
+: ${EGREP="$GREP -E"}
+: ${FGREP="$GREP -F"}
 : ${LN_S="ln -s"}
 : ${MAKE="make"}
 : ${MKDIR="mkdir"}
