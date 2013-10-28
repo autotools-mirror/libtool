@@ -54,6 +54,8 @@ rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed '
 # Bootstrap. #
 # ---------- #
 
+SCRIPT_ENV	= SED='$(SED)'
+
 build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 		  $(srcdir)/$(aux_dir)/do-release-commit-and-tag \
 		  $(srcdir)/$(aux_dir)/gendocs.sh \
@@ -161,7 +163,7 @@ $(ltmain_sh): $(ltmain_in) $(dotversion)
 	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
 	    then echo "  GEN     " $@; \
 	  else echo "$(inline_source) '$(ltmain_in)' |" $(bootstrap_edit) "> '$@'"; fi; \
-	  $(inline_source) '$(ltmain_in)' | $(bootstrap_edit) > '$@'; \
+	  $(SCRIPT_ENV) '$(inline_source)' '$(ltmain_in)' | $(bootstrap_edit) > '$@'; \
 	  chmod a-w '$@'; \
 	fi
 
@@ -248,7 +250,7 @@ all-local: $(LTDL_BOOTSTRAP_DEPS)
 ## ---------------- ##
 
 abs_aux_dir = `$(lt__cd) '$(srcdir)/$(aux_dir)' && pwd`
-ltdl_ac_aux_dir = `$(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
+ltdl_ac_aux_dir = `$(SCRIPT_ENV) $(extract_trace) AC_CONFIG_AUX_DIR $(srcdir)/libltdl/configure.ac`
 
 configure_edit = $(bootstrap_edit) \
 	-e '/^\. /s|@auxscriptsdir\@|'$(abs_aux_dir)'|g' \
@@ -507,7 +509,7 @@ install-data-local: $(lt_Makefile_in)
 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 ## Inline helper-scripts for installed libtoolize script
-	'$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
+	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
 	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
 
 

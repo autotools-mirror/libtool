@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2013-08-23.20; # UTC
+scriptversion=2013-10-28.02; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -84,6 +84,31 @@ nl='
 '
 IFS="$sp	$nl"
 
+# There are apparently some retarded systems that use ';' as a PATH separator!
+if test "${PATH_SEPARATOR+set}" != set; then
+  PATH_SEPARATOR=:
+  (PATH='/bin;/bin'; FPATH=$PATH; sh -c :) >/dev/null 2>&1 && {
+    (PATH='/bin:/bin'; FPATH=$PATH; sh -c :) >/dev/null 2>&1 ||
+      PATH_SEPARATOR=';'
+  }
+fi
+
+
+
+## ------------------------- ##
+## Locate command utilities. ##
+## ------------------------- ##
+
+
+# func_executable_p FILE
+# ----------------------
+# Check that FILE is an executable regular file.
+func_executable_p ()
+{
+    test -f "$1" && test -x "$1"
+}
+
+
 # There are still modern systems that have problems with 'echo' mis-
 # handling backslashes, among others, so make sure $bs_echo is set to a
 # command that correctly interprets backslashes.
@@ -124,6 +149,64 @@ else
   bs_echo='sh -c $bs_echo_body bs_echo'
 fi
 
+# Unless the user overrides by setting SED, search the path for either GNU
+# sed, or the sed that truncates its output the least.
+test -z "$SED" && {
+  _G_sed_script=s/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/
+  for _G_i in 1 2 3 4 5 6 7; do
+    _G_sed_script="$_G_sed_script$nl$_G_sed_script"
+  done
+  echo "$_G_sed_script" 2>/dev/null | sed 99q >conftest.sed
+  _G_sed_script=
+
+  _G_path_prog_found=false
+  _G_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  for _G_dir in $PATH:/usr/xpg4/bin; do
+    IFS=$_G_save_IFS
+    test -z "$_G_dir" && _G_dir=.
+    for _G_prog_name in sed gsed; do
+      for _exeext in '' .EXE; do
+        _G_path_prog="$_G_dir/$_G_prog_name$_exeext"
+        func_executable_p "$_G_path_prog" || continue
+        case `"$_G_path_prog" --version 2>&1` in
+          *GNU*) _G_path_SED=$_G_path_prog _G_path_prog_found=: ;;
+          *)
+            _G_count=0
+            _G_path_prog_max=0
+            $bs_echo_n 0123456789 >conftest.in
+            while :
+            do
+              cat conftest.in conftest.in >conftest.tmp
+              mv conftest.tmp conftest.in
+              cp conftest.in conftest.nl
+              $bs_echo '' >> conftest.nl
+              "$_G_path_prog" -f conftest.sed <conftest.nl >conftest.out 2>/dev/null || break
+              diff conftest.out conftest.nl >/dev/null 2>&1 || break
+              _G_count=`expr $_G_count + 1`
+              if test $_G_count -gt $_G_path_prog_max; then
+                # Best one so far, save it but keep looking for a better one
+                _G_path_SED=$_G_path_prog
+                _G_path_prog_max=$_G_count
+              fi
+              # 10*(2^10) chars as input seems more than enough
+              test $_G_count -gt 10 && break
+            done
+            rm -f conftest.in conftest.tmp conftest.nl conftest.out
+            ;;
+        esac
+
+        $_G_path_prog_found && break 3
+      done
+    done
+  done
+  IFS=$_G_save_IFS
+  test -z "$_G_path_SED" && {
+    echo "no acceptable sed could be found in \$PATH" >&2
+    exit 1
+  }
+  SED=$_G_path_SED
+}
+
 
 ## ------------------------------- ##
 ## User overridable command paths. ##
@@ -144,7 +227,6 @@ fi
 : ${MKDIR="mkdir"}
 : ${MV="mv -f"}
 : ${RM="rm -f"}
-: ${SED="sed"}
 : ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 
 
