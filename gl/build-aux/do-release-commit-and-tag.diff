@@ -1,5 +1,5 @@
---- gnulib/build-aux/do-release-commit-and-tag	2013-01-26 16:46:26.000000000 +1300
-+++ gl/build-aux/do-release-commit-and-tag	2013-10-26 15:42:36.000000000 +1300
+--- ./gnulib/build-aux/do-release-commit-and-tag	2013-01-26 16:46:26.000000000 +1300
++++ gl/build-aux/do-release-commit-and-tag	2013-10-28 20:21:38.000000000 +1300
 @@ -5,6 +5,9 @@
  # will serve to identify the release, so apply a signed tag to it as well.
  VERSION=2012-08-01.09 # UTC
@@ -10,7 +10,7 @@
  # Note: this is a bash script (could be zsh or dash)
  
  # Copyright (C) 2009-2013 Free Software Foundation, Inc.
-@@ -125,10 +128,9 @@
+@@ -125,10 +128,8 @@
    || die 'failed to determine previous version number from .prev-version'
  
  # Verify that $ver is sensible (> .prev-version).
@@ -18,9 +18,8 @@
 -  "$prev_ver:$ver:") ;;
 -  *) die "invalid version: $ver (<= $prev_ver)";;
 -esac
-+newer_ver=$(func_sort_ver $prev_ver $ver |cut -d' ' -f2)
-+test "$newer_ver" != "$ver" && \
-+  die "invalid version: $ver (<= $prev_ver)"
++func_lt_ver "$prev_ver" "$ver" \
++  || die "invalid version: $ver (<= $prev_ver)"
  
  case $type in
    alpha|beta|stable) ;;

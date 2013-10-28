@@ -2421,8 +2421,7 @@ delimited list of triples; 'program min-version url'."
 
         # Fail if a newer version than what we have is required.
         else
-          _G_newer=`func_sort_ver $_G_reqver $_G_instver |cut -d' ' -f2`
-          test "$_G_newer" != "$_G_instver" && {
+          func_lt_ver "$_G_reqver" "$_G_instver" || {
             func_error "\
   '$_G_app' version == $_G_instver is too old
   '$_G_app' version >= $_G_reqver is required"
