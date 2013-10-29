@@ -1092,7 +1092,7 @@ for tool in autoconf libtoolize autopoint; do
             '$tool' $_G_version http://www.gnu.org/s/'$b'
 "
         func_verbose \
-            "auto-adding '\'$tool'-'$_G_version\'' to build requirements"
+            "auto-adding '\'$tool'-$_G_version'\'' to build requirements"
       }
     }
 
