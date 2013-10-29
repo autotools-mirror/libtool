@@ -352,6 +352,15 @@ AT_CHECK([{ test -n "[$]$1" && test "X[$]$1" != Xno; } || (exit 77)])
 m4_case([$1],
   [CXX],
   [AT_CHECK([test g++ != "$CXX" || (g++ -v >/dev/null 2>&1) || (exit 77)])],
+  [FC],
+  [# Autoconf will accept f77 or similar as a valid FC, but often f77
+   # will not compile fortran90 code; in that case skip the FC checks.
+   AT_DATA([fc_test.f90],
+[[	program main
+
+	end
+]])
+   AT_CHECK([$FC $FCFLAGS fc_test.f90 || exit 77], [], [ignore], [ignore])],
   [GCJ],
   [# There are just too many broken gcj installations out there, either missing
    # libgcj.spec or unable to find it.  Skip the test for them.
