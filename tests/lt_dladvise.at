@@ -329,7 +329,7 @@ dlpreloadable='preload'
 # ------------------------------------------------------------------------- #
 
 have_shared=false
-$LIBTOOL --features | grep 'enable shared libraries' >/dev/null && have_shared=:
+$LIBTOOL --features | $GREP 'enable shared libraries' >/dev/null && have_shared=:
 
 case $host_os,$have_shared in
 cygwin* | mingw* | cegcc* | *,false)

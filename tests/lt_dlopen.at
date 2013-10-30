@@ -27,7 +27,7 @@ AT_KEYWORDS([libltdl])
 AT_XFAIL_IF([:])
 
 # This test only works if the system allows undefined symbols.
-eval `$LIBTOOL --config | grep '^allow_undefined_flag='`
+eval `$LIBTOOL --config | $GREP '^allow_undefined_flag='`
 AT_CHECK([test unsupported != "$allow_undefined_flag" || exit 77])
 
 AT_DATA([main.c],
@@ -98,6 +98,6 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT 
 
 LT_AT_EXEC_CHECK([./main], [], [ignore], [ignore], [./good-plugin.la])
 LT_AT_EXEC_CHECK([./main], [1], [ignore], [stderr], [./missing-symbol-plugin.la])
-AT_CHECK([grep 'missing symbol' stderr], [], [ignore])
+AT_CHECK([$GREP 'missing symbol' stderr], [], [ignore])
 
 AT_CLEANUP

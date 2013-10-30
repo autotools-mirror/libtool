@@ -145,7 +145,7 @@ echo stamp > $lockfile
 AT_CHECK([$LIBTOOL --dry-run --mode=link $CC $CFLAGS $LDFLAGS ]dnl
 	 [ -o libbar.la bar.lo -rpath /foo libfoo.la],
 	 [], [ignore], [ignore])
-AT_CHECK([grep stamp $lockfile], [], [ignore])
+AT_CHECK([$GREP stamp $lockfile], [], [ignore])
 
 AT_CLEANUP
 
@@ -187,7 +187,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS ]dnl
 AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main],
 	 [ignore], [ignore], [stderr])
 
-AT_CHECK([grep 'Could not find object file' stderr],[1],[ignore],[ignore])
+AT_CHECK([$GREP 'Could not find object file' stderr],[1],[ignore],[ignore])
 
 AT_XFAIL_IF([
 eval "`$LIBTOOL --config | $EGREP '^(whole_archive_flag_spec)='`"
@@ -201,7 +201,7 @@ rm -rf .libs/*.dSYM
 
 AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main],
 	 [ignore], [ignore], [stderr])
-AT_CHECK([grep 'Could not find object file' stderr],[1],[ignore],[ignore])
+AT_CHECK([$GREP 'Could not find object file' stderr],[1],[ignore],[ignore])
 
 AT_CLEANUP
 
@@ -234,7 +234,7 @@ AT_SETUP([darwin can lt_dlopen .dylib and .so files])
 AT_KEYWORDS([libltdl dylib])
 
 # This test requires shared library support.
-AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
+AT_CHECK([$LIBTOOL --features | $GREP 'enable shared libraries' || exit 77],
 	 [], [ignore])
 
 eval `$LIBTOOL --config | $EGREP '^shrext_cmds='`
@@ -437,10 +437,10 @@ rm $libdir/libsimple-dylib.la
 for dir in inst/lib "$libdir"; do
   LT_AT_EXEC_CHECK([./ltdl-loader], [], [stdout], [ignore],
 	    [$dir/simple-module World])
-  AT_CHECK([grep "Hello, World" stdout], [], [ignore])
+  AT_CHECK([$GREP "Hello, World" stdout], [], [ignore])
   LT_AT_EXEC_CHECK([./ltdl-loader], [], [stdout], [ignore],
 	    [$dir/libsimple-dylib World])
-  AT_CHECK([grep "Hello, World" stdout], [], [ignore])
+  AT_CHECK([$GREP "Hello, World" stdout], [], [ignore])
 done
 
 AT_CLEANUP

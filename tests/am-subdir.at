@@ -78,9 +78,9 @@ void sub (void) { printf ("** This is libsub **\n"); }
 LT_AT_BOOTSTRAP([--copy], [-I m4], [ignore], [--add-missing])
 
 LT_AT_EXEC_CHECK([subdir/subdemo], 0, stdout)
-AT_CHECK([grep 'Welcome to GNU Libtool subdir-objects test' stdout],
+AT_CHECK([$GREP 'Welcome to GNU Libtool subdir-objects test' stdout],
 	 [], [ignore])
-AT_CHECK([grep 'This is libsub' stdout],
+AT_CHECK([$GREP 'This is libsub' stdout],
 	 [], [ignore])
 
 AT_CLEANUP

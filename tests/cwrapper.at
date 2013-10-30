@@ -26,7 +26,7 @@ AT_SETUP([cwrapper for uninstalled executables])
 AT_KEYWORDS([libtool])
 
 # make sure existing libtool is configured for shared libraries
-AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && exit 77],
+AT_CHECK([$LIBTOOL --features | $GREP 'disable shared libraries' && exit 77],
 	 [1], [ignore])
 
 AT_DATA([trivial.c],
@@ -98,7 +98,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o usea$EXEEXT usea.$OBJEXT 
          [], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./usea], [0], [ignore], [stderr], [--lt-debug])
 LT_AT_UNIFY_NL([stderr])
-AT_CHECK([grep 'libtool wrapper' stderr], [0], [ignore], [ignore])
+AT_CHECK([$GREP 'libtool wrapper' stderr], [0], [ignore], [ignore])
 
 
 # Test compile-time activation of wrapper debugging.
@@ -128,7 +128,7 @@ for debugwrapper_flags in '-DLT_DEBUGWRAPPER'; do
            [], [ignore], [ignore])
   LT_AT_EXEC_CHECK([./usea], [0], [ignore], [stderr], [])
   LT_AT_UNIFY_NL([stderr])
-  AT_CHECK([grep 'libtool wrapper' stderr], [0], [ignore], [ignore])
+  AT_CHECK([$GREP 'libtool wrapper' stderr], [0], [ignore], [ignore])
 done
 
 
@@ -177,7 +177,7 @@ for dirpath in $PATH; do
 done
 IFS=$save_IFS
 
-until $ECHO "PATH=$PATH" | grep 'PATH=.\{250\}'; do
+until $ECHO "PATH=$PATH" | $GREP 'PATH=.\{250\}'; do
   PATH=$PATH$PATH_SEPARATOR$dirpath
 done
 export PATH
@@ -190,9 +190,9 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -no-fast-install ]dnl
 AT_CHECK([test -f "$objdir/lt-usea.c" || exit 77])
 
 # Try to make sure the test is relevant.
-AT_CHECK([grep ' *fputs' $objdir/lt-usea.c > /dev/null])
+AT_CHECK([$GREP ' *fputs' $objdir/lt-usea.c > /dev/null])
 # Check for no overly long fputs.
-AT_CHECK([grep ' *fputs.\{250\}' $objdir/lt-usea.c], [1])
+AT_CHECK([$GREP ' *fputs.\{250\}' $objdir/lt-usea.c], [1])
 
 
 AT_CLEANUP
@@ -202,7 +202,7 @@ AT_SETUP([cwrapper and installed shared libraries])
 AT_KEYWORDS([libtool])
 
 # make sure existing libtool is configured for shared libraries
-AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
+AT_CHECK([$LIBTOOL --features | $GREP 'enable shared libraries' || exit 77],
 	 [], [ignore])
 
 LDFLAGS="$LDFLAGS -no-undefined"

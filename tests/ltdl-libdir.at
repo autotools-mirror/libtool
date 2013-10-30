@@ -24,7 +24,7 @@ AT_SETUP([libdir of installed modules])
 AT_KEYWORDS([libltdl])
 
 # This test requires shared library support.
-AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
+AT_CHECK([$LIBTOOL --features | $GREP 'enable shared libraries' || exit 77],
 	 [], [ignore])
 
 # With MinGW, try Windows-style paths only.

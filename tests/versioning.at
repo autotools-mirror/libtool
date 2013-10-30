@@ -110,7 +110,7 @@ done
 # Hypothesis: -version-info is ignored for convenience archives.
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba1.lo ]dnl
 	 [-version-info 0:0:0], [], [ignore], [stderr])
-AT_CHECK([grep 'version-info.*ignored for convenience' stderr], [], [ignore])
+AT_CHECK([$GREP 'version-info.*ignored for convenience' stderr], [], [ignore])
 
 # Hypothesis: the deprecated -version-number works.
 # Be sure not to use zero here, it's not portable.
@@ -131,7 +131,7 @@ done
 # Hypothesis: we diagnose when AGE is higher than CURRENT.
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba1.lo ]dnl
 	 [-version-info 1:3:2 -rpath $libdir], [1], [ignore], [stderr])
-AT_CHECK([grep 'AGE.*is greater than' stderr], [], [ignore])
+AT_CHECK([$GREP 'AGE.*is greater than' stderr], [], [ignore])
 
 # Hypothesis: we diagnose invalid values.
 for version_info in 1:2:3:4 -1 0:-1 0:0:-1; do

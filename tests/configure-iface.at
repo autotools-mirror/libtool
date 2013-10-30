@@ -320,7 +320,7 @@ print-ltdl:
 
 LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [ignore], [ignore], [], [], [ignore])
 AT_CHECK([$MAKE print-ltdl], [], [stdout], [ignore])
-AT_CHECK([grep libltdl/libltdlc.la stdout], [], [ignore])
+AT_CHECK([$GREP libltdl/libltdlc.la stdout], [], [ignore])
 
 AT_CLEANUP
 

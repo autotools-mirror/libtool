@@ -122,7 +122,7 @@ return 0;
 
 
 curdir=`pwd`
-eval "`$LIBTOOL --config | grep '^objdir='`"
+eval "`$LIBTOOL --config | $GREP '^objdir='`"
 
 AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o foo.lo $CPPFLAGS $CFLAGS foo.c],[0],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o baz.lo $CPPFLAGS $CFLAGS baz.c],[0],[ignore],[ignore])
@@ -181,7 +181,7 @@ case $host_os in
     ;;
 esac
 
-eval "`$LIBTOOL --config | grep '^build_libtool_libs='`"
+eval "`$LIBTOOL --config | $GREP '^build_libtool_libs='`"
 AT_CHECK([test yes = "$build_libtool_libs" || exit 77])
 
 ####

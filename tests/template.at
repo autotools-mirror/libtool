@@ -214,7 +214,7 @@ cd obj
 
 # If the compiler supports -c -o, we want to use it:
 # it may make a difference for templates
-eval `$LIBTOOL --tag=CXX --config | grep ^compiler_c_o=`
+eval `$LIBTOOL --tag=CXX --config | $GREP ^compiler_c_o=`
 case $compiler_c_o in
 yes)
   main_o=sub/main.$OBJEXT

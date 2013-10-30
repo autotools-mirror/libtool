@@ -25,7 +25,7 @@
 AT_SETUP([Export test])
 AT_KEYWORDS([libtool])
 
-AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)],
+AT_CHECK([$LIBTOOL --features | $GREP 'disable shared libraries' && (exit 77)],
 	 [1], [ignore])
 AT_CHECK([eval `$LIBTOOL --config | $SED -n '/^archive_expsym_cmds=/,/^$/p'`
 	  test -n "$archive_expsym_cmds" || echo false >can-hide

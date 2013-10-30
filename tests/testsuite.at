@@ -35,7 +35,7 @@ for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
   if eval \$$tool --version >/dev/null 2>&1; then :; else eval $tool=no; fi
 done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
-eval `$LIBTOOL --config | grep '^EGREP='`
+eval `$LIBTOOL --config | $GREP '^EGREP='`
 eval `$LIBTOOL --config | $EGREP '^(FGREP|objdir|objext)'`
 eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_file_cmd|to_tool_file_cmd)='`
 configure_options=--prefix=/nonexistent
@@ -142,7 +142,7 @@ AT_KEYWORDS([autoconf])
 # --------------------------
 m4_define([LT_AT_AUTOMAKE],
 [AT_CHECK([$AUTOMAKE $1], [0], [ignore], [stderr],
-  [AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
+  [AT_CHECK([$GREP 'require .*but have' stderr && (exit 77)], [1])])
 AT_XFAIL_IF([test no = "$AUTOMAKE"])
 AT_KEYWORDS([automake])
 ])
@@ -165,7 +165,7 @@ m4_define([LT_AT_AUTORECONF],
 	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
 ]])
 AT_CHECK([$AUTORECONF $1], [0], [ignore], [stderr],
-  [AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
+  [AT_CHECK([$GREP 'require .*but have' stderr && (exit 77)], [1])])
 AT_XFAIL_IF(
   [case ,$AUTORECONF,$AUTOCONF,$AUTOHEADER,$ACLOCAL,$AUTOMAKE, in *,no,*) :;; *) false;; esac])
 AT_KEYWORDS([autoconf automake])

@@ -28,7 +28,7 @@ AT_KEYWORDS([libtool])
 # Ensure that install_override_mode overrides the mode of the shared
 # library (and only the shared library).
 
-AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
+AT_CHECK([$LIBTOOL --features | $GREP 'enable shared libraries' || exit 77],
 	 [], [ignore])
 $SED 's|^\(install_override_mode\)=.*|\1=755|' < $LIBTOOL > ./libtool
 LIBTOOL=./libtool
@@ -43,10 +43,10 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo ]dnl
 	 [-rpath $inst -no-undefined], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL liba.la $inst],
 	 [], [stdout], [ignore])
-AT_CHECK([grep ' -m 755' stdout], [], [ignore])
+AT_CHECK([$GREP ' -m 755' stdout], [], [ignore])
 AT_CHECK([$LIBTOOL --mode=install $lt_INSTALL -m 644 liba.la $inst],
 	 [], [stdout], [ignore])
-AT_CHECK([grep ' -m 755' stdout], [], [ignore])
-AT_CHECK([grep ' -m 644.*liba.la' stdout], [], [ignore])
+AT_CHECK([$GREP ' -m 755' stdout], [], [ignore])
+AT_CHECK([$GREP ' -m 644.*liba.la' stdout], [], [ignore])
 
 AT_CLEANUP

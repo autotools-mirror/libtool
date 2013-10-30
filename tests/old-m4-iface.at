@@ -98,10 +98,10 @@ $SED '/AM_PROG_LIBTOOL/d' configure.in >configure.int
 mv -f configure.int configure.in
 AT_CHECK([$LIBTOOLIZE -n], [0], [stdout], [stderr])
 # ensure no shell errors:
-AT_CHECK([grep -v "^libtoolize: " stderr], [1])
-AT_CHECK([grep "Remember to add.*LT_INIT.*to configure.in" stdout], [0], [ignore])
-AT_CHECK([grep "Consider adding.*LT_WITH_LTDL" stdout], [1])
-AT_CHECK([grep "Remember to add.*LT_CONFIG_LTDL_DIR" stdout], [1])
+AT_CHECK([$GREP -v "^libtoolize: " stderr], [1])
+AT_CHECK([$GREP "Remember to add.*LT_INIT.*to configure.in" stdout], [0], [ignore])
+AT_CHECK([$GREP "Consider adding.*LT_WITH_LTDL" stdout], [1])
+AT_CHECK([$GREP "Remember to add.*LT_CONFIG_LTDL_DIR" stdout], [1])
 
 AT_CLEANUP
 

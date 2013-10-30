@@ -59,7 +59,7 @@ compile="$GCJ $GCJFLAGS" link="$GCJ $GCJFLAGS $LDFLAGS" source=a.java
 ])
 
 # Linker flags are not passed to the archiver, so don't test static libraries.
-if $LIBTOOL --features | grep 'enable shared libraries'; then
+if $LIBTOOL --features | $GREP 'enable shared libraries'; then
   library_and_module='library.la "module.la -module -avoid-version"'
 else
   library_and_module=

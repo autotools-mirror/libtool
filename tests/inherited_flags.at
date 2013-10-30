@@ -79,26 +79,26 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo
 # 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'
 # here.  This fails on win32/MSVC because the generated command lines have a
 # different syntax.  So drop the first 'l'.
-AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)], [1], [ignore])
-AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
+AT_CHECK([$LIBTOOL --features | $GREP 'disable shared libraries' && (exit 77)], [1], [ignore])
+AT_CHECK([$GREP 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la],
 	[ignore],[stdout],[ignore])
-AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
 
 # now check for duplicates
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /nonexistent ./libfoo.la ./libbar.la ./libboth.la],
 	 [ignore],[stdout],[ignore])
-AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
-AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la ./libboth.la],
 	[ignore],[stdout],[ignore])
-AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
-AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 
 mv libboth.la libboth.la.bak
@@ -107,7 +107,7 @@ rm libboth.la.bak
 
 AT_CHECK([$LIBTOOL -n --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -framework Cocoa -framework ApplicationServices -o libbaz.la baz.lo libboth.la -no-undefined -rpath /nonexistent],
 	 [], [stdout], [ignore])
-AT_CHECK([grep Cocoa.ltframework stdout], [1], [], [])
-AT_CHECK([grep ' -framework Cocoa' stdout], [0], [ignore], [])
+AT_CHECK([$GREP Cocoa.ltframework stdout], [1], [], [])
+AT_CHECK([$GREP ' -framework Cocoa' stdout], [0], [ignore], [])
 
 AT_CLEANUP

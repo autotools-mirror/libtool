@@ -131,7 +131,7 @@ libdir='/somewhere'
 for file in ./missing-closing-quote.la ./wrong-quotes.la \
 	    ./no-dlname.la ./nonexistent-dlname.la; do
   LT_AT_EXEC_CHECK([./main], [1], [stdout], [ignore], [$file])
-  AT_CHECK([grep 'plugin failed to open' stdout], [], [ignore])
+  AT_CHECK([$GREP 'plugin failed to open' stdout], [], [ignore])
 done
 
 AT_CLEANUP

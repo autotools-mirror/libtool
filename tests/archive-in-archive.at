@@ -53,7 +53,7 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC --tag=disable-shared $CC $CFLAGS $LDFLAG
 AT_CHECK([$LIBTOOL --mode=install cp libbar.la $thisdir], [], [ignore], [ignore])
 eval `$EGREP '^(old_library)=' < libbar.la`
 libbar=$old_library
-AT_CHECK([$AR -t $libbar | grep $libfoo],[1],[ignore],[ignore])
-AT_CHECK([$AR -t $libbar | grep foo.$OBJEXT],[],[ignore],[ignore])
-AT_CHECK([$AR -t $libbar | grep bar.$OBJEXT],[],[ignore],[ignore])
+AT_CHECK([$AR -t $libbar | $GREP $libfoo],[1],[ignore],[ignore])
+AT_CHECK([$AR -t $libbar | $GREP foo.$OBJEXT],[],[ignore],[ignore])
+AT_CHECK([$AR -t $libbar | $GREP bar.$OBJEXT],[],[ignore],[ignore])
 AT_CLEANUP

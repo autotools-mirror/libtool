@@ -25,7 +25,7 @@
 AT_SETUP([export from a DLL with a .def file])
 AT_KEYWORDS([libtool])
 
-AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)],
+AT_CHECK([$LIBTOOL --features | $GREP 'disable shared libraries' && (exit 77)],
 	 [1], [ignore])
 eval `$LIBTOOL --config | $EGREP '^(shrext_cmds|libname_spec|soname_spec)='`
 

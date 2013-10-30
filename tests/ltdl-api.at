@@ -32,8 +32,8 @@ AT_CHECK([test -f "$argz_o" || exit 77])
 AT_CHECK([eval "$NM \"\$argz_o\" | $global_symbol_pipe"],
 	 [], [stdout], [ignore])
 # Check for global symbols beginning with "argz_"
-AT_CHECK([grep "^T argz_" stdout], [1])
+AT_CHECK([$GREP "^T argz_" stdout], [1])
 # and also for the _ prefixed version "_argz_"
-AT_CHECK([grep "^T _argz_" stdout], [1])
+AT_CHECK([$GREP "^T _argz_" stdout], [1])
 
 AT_CLEANUP

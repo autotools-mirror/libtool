@@ -601,13 +601,13 @@ prefixdir=`pwd`/_inst
 m4_define([_LT_CHECK_EXECUTE],
 [LT_AT_MAKE
 LT_AT_EXEC_CHECK([./mdemo_static], 0, [ignore], [],
-    [./foo1.la ./libfoo2.la | grep '^try_iterate: '])
+    [./foo1.la ./libfoo2.la | $GREP '^try_iterate: '])
 LT_AT_EXEC_CHECK([./mdemo], 0, [ignore], [],
-    [./foo1.la ./libfoo2.la | grep '^try_iterate: '])
+    [./foo1.la ./libfoo2.la | $GREP '^try_iterate: '])
 LT_AT_EXEC_CHECK([./mdemo_static], 0, [ignore], [],
-    [`pwd`/foo1.la `pwd`/libfoo2.la | grep '^try_iterate: '])
+    [`pwd`/foo1.la `pwd`/libfoo2.la | $GREP '^try_iterate: '])
 LT_AT_EXEC_CHECK([./mdemo], 0, [ignore], [],
-    [`pwd`/foo1.la `pwd`/libfoo2.la | grep '^try_iterate: '])
+    [`pwd`/foo1.la `pwd`/libfoo2.la | $GREP '^try_iterate: '])
 ])
 
 # _LT_CHECK_INSTALL
@@ -620,9 +620,9 @@ m4_define([_LT_CHECK_INSTALL],
 PATH=$prefixdir/lib:$PATH
 
 LT_AT_EXEC_CHECK([$prefixdir/bin/mdemo_static], 0, [ignore], [],
-    [$prefixdir/lib/foo1.la $prefixdir/lib/libfoo2.la | grep '^try_iterate: '])
+    [$prefixdir/lib/foo1.la $prefixdir/lib/libfoo2.la | $GREP '^try_iterate: '])
 LT_AT_EXEC_CHECK([$prefixdir/bin/mdemo], 0, [ignore], [],
-    [$prefixdir/lib/foo1.la $prefixdir/lib/libfoo2.la | grep '^try_iterate: '])
+    [$prefixdir/lib/foo1.la $prefixdir/lib/libfoo2.la | $GREP '^try_iterate: '])
 ])
 
 

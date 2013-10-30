@@ -57,7 +57,7 @@ LT_AT_NORMALIZE_COMPILER_OUTPUT([stderr], [libtool-stderr])
 #   selections and the available locales.
 #
 #   Continuing processing using the "C" locale.
-AT_CHECK([grep locale stdout stderr && exit 77], [1])
+AT_CHECK([$GREP locale stdout stderr && exit 77], [1])
 AT_CHECK([diff expected-stderr libtool-stderr])
 AT_CHECK([diff expected-stdout libtool-stdout])
 
@@ -66,7 +66,7 @@ m4_define([lt_localize],
 [[LANGUAGE='a; nosuchprogram " '\''  & $x /#+*(){}|,:`\ !%']])
 AT_CHECK([(lt_localize $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c b.c)],
 	 [0], [stdout], [stderr])
-AT_CHECK([grep nosuchprogram stdout stderr], [1])
+AT_CHECK([$GREP nosuchprogram stdout stderr], [1])
 
 m4_popdef([lt_localize])
 

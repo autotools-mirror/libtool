@@ -24,7 +24,7 @@ AT_SETUP([lt_dlopenext error messages])
 AT_KEYWORDS([libltdl])
 
 # This test requires shared library support.
-AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
+AT_CHECK([$LIBTOOL --features | $GREP 'enable shared libraries' || exit 77],
 	 [], [ignore])
 
 prefix=`pwd`/inst
@@ -234,7 +234,7 @@ for lafile in $have_lafile; do
   for dir in inst/lib "$libdir"; do
     LT_AT_EXEC_CHECK([./ltdl-loader], [], [stdout], [ignore],
 		     [$dir/simple-module World])
-    AT_CHECK([grep "Hello, World" stdout], [], [ignore])
+    AT_CHECK([$GREP "Hello, World" stdout], [], [ignore])
 
     for var in MODULE_PATH LTDL_LIBRARY_PATH $shlibpath_var
     do
@@ -242,7 +242,7 @@ for lafile in $have_lafile; do
       export $var
       LT_AT_EXEC_CHECK([./ltdl-loader], [], [stdout], [ignore],
 		       [simple-module World])
-      AT_CHECK([grep "Hello, World" stdout], [], [ignore])
+      AT_CHECK([$GREP "Hello, World" stdout], [], [ignore])
       $unset $var || eval $var=
     done
   done

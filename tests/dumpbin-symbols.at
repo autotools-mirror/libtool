@@ -39,7 +39,7 @@ int some_variable = 0;
 
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c variable.c], [], [ignore], [ignore])
 AT_CHECK([$NM variable.$OBJEXT], [], [stdout], [ignore])
-AT_CHECK([grep 'External.*some_variable' stdout || exit 77], [], [ignore])
+AT_CHECK([$GREP 'External.*some_variable' stdout || exit 77], [], [ignore])
 
 eval `$LIBTOOL --config | $EGREP '^(global_symbol_pipe)='`
 
@@ -106,6 +106,6 @@ String Table Size = 0x11 bytes
 # Check if the _convenience symbol from section SECT3 in conv.lib is
 # present even if section SECT3 in foo.obj is hidden.
 AT_CHECK([< dumpbin-output eval "$global_symbol_pipe"], [], [stdout])
-AT_CHECK([grep convenience stdout], [], [ignore])
+AT_CHECK([$GREP convenience stdout], [], [ignore])
 
 AT_CLEANUP

@@ -86,8 +86,8 @@ bindir_broken=$prefix_broken/bin
 have_static=false
 have_shared=false
 per_deplib=false
-$LIBTOOL --features | grep 'enable static libraries' >/dev/null && have_static=:
-$LIBTOOL --features | grep 'enable shared libraries' >/dev/null && have_shared=:
+$LIBTOOL --features | $GREP 'enable static libraries' >/dev/null && have_static=:
+$LIBTOOL --features | $GREP 'enable shared libraries' >/dev/null && have_shared=:
 eval `$LIBTOOL --config |
         $EGREP '^(per_deplib_(static|dynamic)_flag|shlibpath_var|link_static_flag)='`
 if test -n "$per_deplib_static_flag" && test -n "$per_deplib_dynamic_flag"; then

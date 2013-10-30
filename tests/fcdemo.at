@@ -277,7 +277,7 @@ LT_AT_HOST_DATA([expout],
 LT_AT_EXEC_CHECK([./fprogram], 0, [stdout])
 
 # A weaker output content check that is agnostic to the issues above.
-AT_CHECK([grep 'Welcome to GNU libtool Fortran demo!' stdout],
+AT_CHECK([$GREP 'Welcome to GNU libtool Fortran demo!' stdout],
          [0], [ignore])
 
 # Similarly, we can't reliably compare actual output with the following.
@@ -298,7 +298,7 @@ The Fortran subroutine is ok!
 LT_AT_EXEC_CHECK([./cprogram], 0, [stdout])
 
 # A weaker output content check that is agnostic to the issues above.
-AT_CHECK([grep 'Welcome to GNU libtool mixed C/Fortran demo!' stdout],
+AT_CHECK([$GREP 'Welcome to GNU libtool mixed C/Fortran demo!' stdout],
          [0], [ignore])
 ])
 

@@ -58,8 +58,8 @@ AT_CHECK([$LIBTOOL --mode=install cp liba.la $libdir/liba.la], [], [ignore], [ig
 AT_CHECK([$LIBTOOL --mode=install cp libb.la $libdir/libb.la], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp m$EXEEXT $bindir/m$EXEEXT], [], [ignore], [ignore])
 
-AT_CHECK([grep /foobar $libdir/liba.la], [], [ignore])
-AT_CHECK([grep /foobar $libdir/libb.la], [], [ignore])
+AT_CHECK([$GREP /foobar $libdir/liba.la], [], [ignore])
+AT_CHECK([$GREP /foobar $libdir/libb.la], [], [ignore])
 
 # TODO: check that m gets -R, too.
 

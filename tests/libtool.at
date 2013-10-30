@@ -33,10 +33,10 @@ AT_BANNER([Basic libtool operation.])
 AT_SETUP([check help output])
 
 AT_CHECK([$LIBTOOL --help], [0], [stdout], [stderr])
-AT_CHECK([grep '^Usage:' stdout stderr], [0], [ignore])
+AT_CHECK([$GREP '^Usage:' stdout stderr], [0], [ignore])
 
 AT_CHECK([$LIBTOOL --mode=link --help], [0], [stdout], [stderr])
-AT_CHECK([grep '^Usage:' stdout stderr], [0], [ignore])
+AT_CHECK([$GREP '^Usage:' stdout stderr], [0], [ignore])
 
 AT_CLEANUP
 
@@ -48,7 +48,7 @@ AT_CLEANUP
 AT_SETUP([diagnose no mode specified])
 
 AT_CHECK([$LIBTOOL], [1], [ignore], [stderr])
-AT_CHECK([grep 'you must specify a MODE' stderr], [0], [ignore])
+AT_CHECK([$GREP 'you must specify a MODE' stderr], [0], [ignore])
 
 AT_CLEANUP
 
@@ -59,7 +59,7 @@ AT_CLEANUP
 
 AT_SETUP([quote shell meta-characters in filenames])
 
-eval `$LIBTOOL --config | grep '^wl='`
+eval `$LIBTOOL --config | $GREP '^wl='`
 
 # Do the torture test.
 for mode in compile link install; do
@@ -103,7 +103,7 @@ for mode in compile link install; do
   # We must not attempt to match $preargs in the output, because libtool
   # may modify them.  For example, on Cygwin, 'libtool --mode=link gcc -o
   # foo foo.o'  becomes 'gcc -o foo.exe foo.o'.
-  AT_CHECK([grep "$mode:.*$match_preflag$flag:test " stdout], [0], [ignore])
+  AT_CHECK([$GREP "$mode:.*$match_preflag$flag:test " stdout], [0], [ignore])
 
 
   # Non-trivial...
@@ -116,14 +116,14 @@ for mode in compile link install; do
 	   [0], [stdout])
   # NOTE: we use "..."'"'"..." to insert a literal quote into the expression
   #       because "...\"..." is not expanded consistently by all shells.
-  AT_CHECK([grep "$mode:.*$match_preflag"'"\?'"$flag\\\\\\\\:test\\\\\\\\"'"\? ' stdout],
+  AT_CHECK([$GREP "$mode:.*$match_preflag"'"\?'"$flag\\\\\\\\:test\\\\\\\\"'"\? ' stdout],
 	      [0], [ignore])
 
   # Shell metacharacters that should be backslashified by libtool.
   for mchar in \" \` \$; do
     AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
 	     [0], [stdout])
-    AT_CHECK([grep "$mode:.*$match_preflag"'"'"\?$flag\\\\$mchar:test\\\\$mchar"'"'"\? " stdout], [0], [ignore])
+    AT_CHECK([$GREP "$mode:.*$match_preflag"'"'"\?$flag\\\\$mchar:test\\\\$mchar"'"'"\? " stdout], [0], [ignore])
   done
 
   # Shell metacharacters that should be double quoted by libtool, and need
@@ -132,7 +132,7 @@ for mode in compile link install; do
 
     AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
 	     [0], [stdout])
-    AT_CHECK([grep "$mode:.*$match_preflag\"$flag\\$mchar:test\\$mchar\" " stdout], [0], [ignore])
+    AT_CHECK([$GREP "$mode:.*$match_preflag\"$flag\\$mchar:test\\$mchar\" " stdout], [0], [ignore])
   done
 
   # Metacharacters that should be double quoted by libtool, but which are
@@ -141,7 +141,7 @@ for mode in compile link install; do
 
     AT_CHECK([$LIBTOOL -n --mode=$mode $preargs $preflag"$flag$mchar:test$mchar" $postargs],
 	     [0], [stdout])
-    AT_CHECK([grep "$mode:.*$match_preflag\"$flag$mchar:test$mchar\" " stdout], [0], [ignore])
+    AT_CHECK([$GREP "$mode:.*$match_preflag\"$flag$mchar:test$mchar\" " stdout], [0], [ignore])
   done
 done
 
@@ -163,14 +163,14 @@ for ext in $extensions; do
   # Try a sample compile command.
   AT_CHECK([$LIBTOOL -n --mode=compile compiler -c foo.$ext],
            [1], [ignore], [stderr])
-  AT_CHECK([grep 'cannot' stderr], [1], [ignore])
+  AT_CHECK([$GREP 'cannot' stderr], [1], [ignore])
 done
 
 # Make sure that invalid suffixes are not recognized.
 for name in $bad_names; do
   AT_CHECK([$LIBTOOL -n --mode=compile compiler -c $name],
            [1], [ignore], [stderr])
-  AT_CHECK([grep 'cannot' stderr], [0], [ignore])
+  AT_CHECK([$GREP 'cannot' stderr], [0], [ignore])
 done
 
 AT_CLEANUP
@@ -205,7 +205,7 @@ AT_CLEANUP
 AT_SETUP([check objectlist file operation])
 
 AT_CHECK([$LIBTOOL -n --mode=link $CC -objectlist nonexistent], [1], [ignore], [stderr])
-AT_CHECK([grep 'nonexistent' stderr], [0], [ignore])
+AT_CHECK([$GREP 'nonexistent' stderr], [0], [ignore])
 
 AT_CLEANUP
 
@@ -233,12 +233,12 @@ AT_CHECK([test -n "$traced_tags"])
 for tag in $traced_tags; do
   AT_CHECK([$LIBTOOL -n --mode=link --tag=$tag compiler -o liba.la foo.lo],
            [], [ignore], [stderr])
-  AT_CHECK([grep 'ignoring unknown tag' stderr], [1], [ignore])
+  AT_CHECK([$GREP 'ignoring unknown tag' stderr], [1], [ignore])
 done
 
 # Ensure the above command would have failed for unknown tags
 AT_CHECK([$LIBTOOL -n --mode=link --tag=UnKnOwN compiler -o liba.la foo.lo],
          [], [ignore], [stderr])
-AT_CHECK([grep 'ignoring unknown tag' stderr], [0], [ignore])
+AT_CHECK([$GREP 'ignoring unknown tag' stderr], [0], [ignore])
 
 AT_CLEANUP

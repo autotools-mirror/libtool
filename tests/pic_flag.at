@@ -36,8 +36,8 @@ C_pic_flag='-fpic -DPIC'
 AT_CHECK([$CC $CPPFLAGS $CFLAGS $C_pic_flag -c foo.c || exit 77],
 	 [], [stdout], [stderr])
 # The configure test for the PIC flag also checks for warnings.
-AT_CHECK([grep fpic stdout stderr && exit 77], [1])
-AT_CHECK([[grep '[uU]nknown.*option' stdout stderr && exit 77]], [1])
+AT_CHECK([$GREP fpic stdout stderr && exit 77], [1])
+AT_CHECK([[$GREP '[uU]nknown.*option' stdout stderr && exit 77]], [1])
 
 CXX_pic_flag='-fpic -DPIC'
 if $CXX $CPPFLAGS $CXXFLAGS $CXX_pic_flag -c foo.cpp; then :; else
@@ -57,7 +57,7 @@ LT_AT_CONFIGURE([lt_cv_prog_compiler_pic="$C_pic_flag" ]dnl
 		[./configure])
 : ${MAKE=make}
 AT_CHECK([$MAKE], [], [stdout], [ignore])
-AT_CHECK([if ./libtool --features | grep 'enable shared libraries'; then ]dnl
-	 [  grep ' -fpic' stdout; else exit 77; fi], [], [ignore], [ignore])
+AT_CHECK([if ./libtool --features | $GREP 'enable shared libraries'; then ]dnl
+	 [  $GREP ' -fpic' stdout; else exit 77; fi], [], [ignore], [ignore])
 
 AT_CLEANUP

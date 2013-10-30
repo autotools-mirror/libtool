@@ -77,7 +77,7 @@ HCURSOR get_cursor (void)
 }
 ]])
 
-eval "`$LIBTOOL --config | grep '^build_libtool_libs='`"
+eval "`$LIBTOOL --config | $GREP '^build_libtool_libs='`"
 AT_CHECK([test yes = "$build_libtool_libs" || exit 77])
 
 AT_CHECK([$LIBTOOL --mode=compile --tag=CC \
@@ -92,6 +92,6 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC --tag=disable-static \
 
 # If -luser32 was found, then libtool will build a shared library,
 # otherwise libtool will fall back to creating a static library.
-AT_CHECK([grep old_library=\'\' libgc.la], [], [ignore])
+AT_CHECK([$GREP old_library=\'\' libgc.la], [], [ignore])
 
 AT_CLEANUP

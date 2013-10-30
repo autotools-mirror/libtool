@@ -29,15 +29,15 @@ AT_KEYWORDS([libtoolize])
 
 AT_CHECK([$LIBTOOLIZE --help], [], [ignore])
 AT_CHECK([$LIBTOOLIZE --version], [], [stdout])
-AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
+AT_CHECK([$GREP 'Copyright.*Free Software Foundation' stdout], [], [ignore])
 AT_CHECK([$LIBTOOL --help], [], [ignore])
 AT_CHECK([$LIBTOOL --help-all], [], [ignore])
 AT_CHECK([$LIBTOOL --version], [], [stdout])
-AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
+AT_CHECK([$GREP 'Copyright.*Free Software Foundation' stdout], [], [ignore])
 
 AT_CHECK([$LIBTOOL], [1], [stdout], [stderr])
-AT_CHECK([grep 'specify a MODE' stderr], [], [ignore])
-AT_CHECK([grep ' --help' stdout], [], [ignore])
+AT_CHECK([$GREP 'specify a MODE' stderr], [], [ignore])
+AT_CHECK([$GREP ' --help' stdout], [], [ignore])
 
 AT_CLEANUP
 
@@ -122,11 +122,11 @@ AT_CHECK([case "$LIBTOOL $CC $CPPFLAGS $CFLAGS $LDFLAGS " in ]dnl
 check_trace ()
 {
   if test X--debug = "X$trace"; then
-    AT_CHECK([grep 'enabling shell trace mode' stdout stderr], [0], [ignore])
-    AT_CHECK([grep ' --mode' stderr], [0], [ignore])
+    AT_CHECK([$GREP 'enabling shell trace mode' stdout stderr], [0], [ignore])
+    AT_CHECK([$GREP ' --mode' stderr], [0], [ignore])
   else
-    AT_CHECK([grep 'enabling shell trace mode' stdout stderr], [1])
-    AT_CHECK([grep ' --mode' stderr], [1])
+    AT_CHECK([$GREP 'enabling shell trace mode' stdout stderr], [1])
+    AT_CHECK([$GREP ' --mode' stderr], [1])
   fi
 }
 
@@ -163,12 +163,12 @@ for trace in '' --debug; do
   # it was passed at link mode.
   AT_CHECK([$orig_LIBTOOL --mode=install $lt_INSTALL liba.la libb.la $libdir],
 	   [], [stdout], [stderr])
-  if grep ': relinking ' stdout stderr; then
+  if $GREP ': relinking ' stdout stderr; then
     if test X--debug = "X$trace"; then
-      AT_CHECK([grep ' --mode=relink' stdout stderr | grep ' --debug '],
+      AT_CHECK([$GREP ' --mode=relink' stdout stderr | $GREP ' --debug '],
 	       [0], [ignore])
     else
-      AT_CHECK([grep ' --mode=relink' stdout stderr | grep ' --debug '],
+      AT_CHECK([$GREP ' --mode=relink' stdout stderr | $GREP ' --debug '],
 	       [1])
     fi
   fi

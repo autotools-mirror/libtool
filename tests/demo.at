@@ -566,7 +566,7 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-direct
 	@echo "You may ignore any linking errors from the following command:"
 	@shlib=./$(objdir)/libhello.a; \
-	  eval "`grep '^library_names' libhello.la`"; \
+	  eval "`$(GREP) '^library_names' libhello.la`"; \
 	  for lib in $$library_names; do \
 	    shlib="./$(objdir)/$$lib"; \
 	  done; \
@@ -593,7 +593,7 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
 	@$(SET_HARDCODE_FLAGS); \
-	  eval `$(LIBTOOL) --config | grep '^shlibpath_var='`; \
+	  eval `$(LIBTOOL) --config | $(GREP) '^shlibpath_var='`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  echo "$$shlibpath_var=./$(objdir) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
@@ -668,7 +668,7 @@ for file in hc-*; do
   elif $FGREP "$objdir" $file > /dev/null 2>&1; then
     # We retry fgrep without tr, in case the above lead to a false negative.
     hardcoded=yes
-  elif ($SED -e '1!d' $file | grep 'unsupported') >/dev/null 2>&1; then
+  elif ($SED -e '1!d' $file | $GREP 'unsupported') >/dev/null 2>&1; then
     hardcoded=unsupported
   fi
 

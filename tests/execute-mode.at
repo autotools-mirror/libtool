@@ -214,8 +214,8 @@ done
 # Check that .la files are not transformed by the wrapper searching loop.
 AT_CHECK([$LIBTOOL --mode=execute echo ./main$EXEEXT liba.lo libfakelib.la], [], [stdout])
 # This could be .libs/lt-main or similar (or just plain 'main').
-AT_CHECK([grep main stdout], [], [ignore])
-AT_CHECK([grep liba.lo stdout], [], [ignore])
-AT_CHECK([grep libfakelib.la stdout], [], [ignore])
+AT_CHECK([$GREP main stdout], [], [ignore])
+AT_CHECK([$GREP liba.lo stdout], [], [ignore])
+AT_CHECK([$GREP libfakelib.la stdout], [], [ignore])
 
 AT_CLEANUP

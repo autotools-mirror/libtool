@@ -104,7 +104,7 @@ LT_AT_BOOTSTRAP([], [-I $abs_top_srcdir/libltdl/m4], [ignore],
 
 AT_CHECK([$MAKE install DESTDIR=$sysroot], [0], [ignore], [ignore])
 AT_CHECK([test -f "$sysroot/$prefix/lib/lib1.la"])
-AT_CHECK([grep -F "$sysroot" "$sysroot/$prefix/lib/lib1.la"], [1])
+AT_CHECK([$GREP -F "$sysroot" "$sysroot/$prefix/lib/lib1.la"], [1])
 cd ..
 
 # Build and install package 2.
@@ -145,7 +145,7 @@ LT_AT_BOOTSTRAP([], [-I $abs_top_srcdir/libltdl/m4], [ignore],
 
 AT_CHECK([$MAKE install DESTDIR=$sysroot], [0], [ignore], [ignore])
 AT_CHECK([test -f "$sysroot/$prefix/lib/lib2.la"])
-AT_CHECK([grep -F "$sysroot" "$sysroot/$prefix/lib/lib2.la"], [1])
+AT_CHECK([$GREP -F "$sysroot" "$sysroot/$prefix/lib/lib2.la"], [1])
 cd ..
 
 # Build and install a program.
@@ -185,10 +185,10 @@ LT_AT_BOOTSTRAP([], [-I $abs_top_srcdir/libltdl/m4], [ignore],
 
 AT_CHECK([$MAKE install DESTDIR=$sysroot], [0], [ignore], [ignore])
 AT_CHECK([test -f "$sysroot/$prefix/bin/prog$EXEEXT"])
-AT_CHECK([grep -F "$sysroot" "$sysroot/$prefix/bin/prog$EXEEXT"], [1])
-AT_CHECK([grep "'.*=" $sysroot/$prefix/lib/lib2.la], [0], [ignore])
+AT_CHECK([$GREP -F "$sysroot" "$sysroot/$prefix/bin/prog$EXEEXT"], [1])
+AT_CHECK([$GREP "'.*=" $sysroot/$prefix/lib/lib2.la], [0], [ignore])
 AT_CHECK([./libtool --mode=finish $sysroot/$prefix/lib/lib@<:@12@:>@.la], [0], [ignore])
-AT_CHECK([grep "'.*=" $sysroot/$prefix/lib/lib@<:@12@:>@.la], [1])
+AT_CHECK([$GREP "'.*=" $sysroot/$prefix/lib/lib@<:@12@:>@.la], [1])
 
 # missing tests
 # 1) pass absolute .la files

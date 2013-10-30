@@ -1160,7 +1160,7 @@ AT_DATA([libltdl/acinclude.m4],
 LT_AT_CHECK_LIBTOOLIZE([--copy --force --ltdl], 0, [ignore])
 
 # check files are left as expected
-AT_CHECK([grep 'keep me' acinclude.m4], 0, [ignore])
+AT_CHECK([$GREP 'keep me' acinclude.m4], 0, [ignore])
 AT_CHECK([test -f libltdl/acinclude.m4], 1, [ignore], [ignore])
 
 AT_CLEANUP

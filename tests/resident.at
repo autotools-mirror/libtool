@@ -143,6 +143,6 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT 
 	 [-dlopen plugin.la $LIBLTDL],
 	 [], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main], [], [stdout], [ignore], [./plugin.la])
-AT_CHECK([grep 'called from atexit handler' stdout], [], [ignore])
+AT_CHECK([$GREP 'called from atexit handler' stdout], [], [ignore])
 
 AT_CLEANUP
