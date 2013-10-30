@@ -47,7 +47,7 @@ EXTRA_LTLIBRARIES	=
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
 git_version_gen = '$(SHELL)' '$(aux_dir)/git-version-gen' '--fallback' '$(VERSION)' '.tarball-version'
-rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | sed 's|-.*$$||g'`
+rebuild = rebuild=:; revision=`$(lt__cd) $(srcdir) && $(git_version_gen) | $(SED) 's|-.*$$||g'`
 
 
 # ---------- #
