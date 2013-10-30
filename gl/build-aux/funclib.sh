@@ -194,6 +194,11 @@ else
 fi
 
 
+# We want to be able to use the functions in this file before configure
+# has figured out where the best binaries are kept, which means we have
+# to search for them ourselves - except when the results are already set
+# where we skip the searches.
+
 # Unless the user overrides by setting SED, search the path for either GNU
 # sed, or the sed that truncates its output the least.
 test -z "$SED" && {
@@ -236,7 +241,7 @@ test -z "$SED" && {
 
 
 # Unless the user overrides by setting GREP, search the path for either GNU
-# grep, or the sed that truncates its output the least.
+# grep, or the grep that truncates its output the least.
 test -z "$GREP" && {
   func_check_prog_grep ()
   {
