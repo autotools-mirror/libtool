@@ -30,7 +30,7 @@ AT_KEYWORDS([libtool])
 
 AT_CHECK([$LIBTOOL --features | grep 'enable shared libraries' || exit 77],
 	 [], [ignore])
-sed 's|^\(install_override_mode\)=.*|\1=755|' < $LIBTOOL > ./libtool
+$SED 's|^\(install_override_mode\)=.*|\1=755|' < $LIBTOOL > ./libtool
 LIBTOOL=./libtool
 chmod a+rx $LIBTOOL
 

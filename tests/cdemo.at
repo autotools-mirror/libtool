@@ -186,7 +186,7 @@ LT_AT_CHECK_CONFIG([--disable-static])
 AT_CHECK([$EGREP "^allow_undefined_flag=.\{0,1\}unsupported.\{0,1\}$" libtool && (exit 77)],
           1, [ignore])
 
-sed 's|allow_undefined=no|allow_undefined=yes|g' libtool > ltnew && mv -f ltnew libtool
+$SED 's|allow_undefined=no|allow_undefined=yes|g' libtool > ltnew && mv -f ltnew libtool
 
 LT_AT_CHECK_EXECUTE([], [./cdemo])
 

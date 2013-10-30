@@ -57,7 +57,7 @@ orig_CFLAGS=$CFLAGS
 orig_LIBTOOL=$LIBTOOL
 for restrictive_flags in '-Wall -Werror' '-std=c89 -Wall -Werror' '-std=c99 -Wall -Werror'; do
   CFLAGS="$orig_CFLAGS $restrictive_flags"
-  sed "s/LTCFLAGS=.*/&' $restrictive_flags'/" < "$orig_LIBTOOL" > ./libtool
+  $SED "s/LTCFLAGS=.*/&' $restrictive_flags'/" < "$orig_LIBTOOL" > ./libtool
   chmod +x libtool
   LIBTOOL=./libtool
 
@@ -106,8 +106,8 @@ AT_CHECK([grep 'libtool wrapper' stderr], [0], [ignore], [ignore])
 # if necessary -- even though the loop by design executes only once.
 for debugwrapper_flags in '-DLT_DEBUGWRAPPER'; do
   CFLAGS="$orig_CFLAGS $debugwrapper_flags"
-  sed -e "s/LTCFLAGS=.*/&' $debugwrapper_flags'/" \
-      -e "s/^lt_option_debug=/lt_option_debug=1/" \
+  $SED -e "s/LTCFLAGS=.*/&' $debugwrapper_flags'/" \
+       -e "s/^lt_option_debug=/lt_option_debug=1/" \
     < "$orig_LIBTOOL" > ./libtool
   LIBTOOL=./libtool
 

@@ -555,13 +555,13 @@ CLEANFILES = $(hardcode_tests)
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
-objdir = `$(LIBTOOL) --config | sed -n -e 's/^objdir=\(.*\)$$/\1/p'`
+objdir = `$(LIBTOOL) --config | $(SED) -n -e 's/^objdir=\(.*\)$$/\1/p'`
 
 # Test programs to see what gets hardcoded.
 .PHONY: hardcode
 hardcode: $(hardcode_tests)
 SET_HARDCODE_FLAGS = \
-  eval `$(LIBTOOL) --config | sed -n -e '/^hardcode_.*=/p; /^wl=/p'`
+  eval `$(LIBTOOL) --config | $(SED) -n -e '/^hardcode_.*=/p; /^wl=/p'`
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-direct
 	@echo "You may ignore any linking errors from the following command:"
@@ -668,7 +668,7 @@ for file in hc-*; do
   elif $FGREP "$objdir" $file > /dev/null 2>&1; then
     # We retry fgrep without tr, in case the above lead to a false negative.
     hardcoded=yes
-  elif (sed -e '1!d' $file | grep 'unsupported') >/dev/null 2>&1; then
+  elif ($SED -e '1!d' $file | grep 'unsupported') >/dev/null 2>&1; then
     hardcoded=unsupported
   fi
 

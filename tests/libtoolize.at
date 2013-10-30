@@ -790,9 +790,6 @@ LT_AT_ACLOCAL([-I $abs_top_srcdir/m4])
 
 ## The following code is adapted (and simplified) from libtoolize.in
 ####
-: ${GREP="grep"}
-: ${SED="sed"}
-
 basename='s|^.*/||'
 
 # func_grep expression filename

@@ -74,7 +74,7 @@ if test $# != 1; then
                   exit 1
 fi
 
-echo $1 | sed "s|^.*/||"
+echo $1 | $SED "s|^.*/||"
 ]])
 
 chmod +x bin/basename
@@ -114,7 +114,7 @@ cp bar.c baz.c
 
 objects=
 for obj in 1 2 3 4 5 6 7 8; do
-  sed "s/foo/foo$obj/" < foo.c > foo$obj.c
+  $SED "s/foo/foo$obj/" < foo.c > foo$obj.c
   AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c foo$obj.c],
 	   [], [ignore], [ignore])
   objects="$objects foo$obj.lo"

@@ -194,20 +194,20 @@ do
   AT_CHECK([$LIBTOOL --mode=execute ./foo abc "$arg1" "$arg2" xyz], [], [stdout], [ignore])
   AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
   AT_CHECK([test -z "$arg2" || $FGREP "$arg2" stdout], [], [ignore])
-  AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  AT_CHECK([test `$SED -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
   AT_CHECK([$LIBTOOL --mode=execute ./lt-wrapper abc "$arg1" "$arg2" xyz </dev/null], [], [stdout])
   AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
   AT_CHECK([test -z "$arg2" || $FGREP "$arg2" stdout], [], [ignore])
-  AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  AT_CHECK([test `$SED -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
   AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper abc "$arg1" "$arg2" xyz], [], [stdout])
   AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
   AT_CHECK([test -z "$arg2" || $FGREP "$arg2" stdout], [], [ignore])
-  AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  AT_CHECK([test `$SED -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
   AT_CHECK([$LIBTOOL --mode=execute ./main$EXEEXT abc "$arg1" "$arg2" xyz], [], [stdout])
   AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
   AT_CHECK([test -z "$arg2" || $FGREP "$arg2" stdout], [], [ignore])
   # Do not match EOL here, cross setups may have an extra \r here.
-  AT_CHECK([test `sed -n '/^abc/,/^xyz/p' stdout | wc -l` -eq 4])
+  AT_CHECK([test `$SED -n '/^abc/,/^xyz/p' stdout | wc -l` -eq 4])
   arg1=
 done
 

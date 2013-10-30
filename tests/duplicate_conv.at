@@ -25,7 +25,7 @@
 AT_SETUP([duplicate convenience archive names])
 AT_KEYWORDS([libtool])
 
-eval `$LIBTOOL --config | sed -n '/^reload_cmds=/,/^$/p'`
+eval `$LIBTOOL --config | $SED -n '/^reload_cmds=/,/^$/p'`
 
 # We create two convenience archives with the same name, and _also_
 # containing an object with the same name.  This is necessary to detect

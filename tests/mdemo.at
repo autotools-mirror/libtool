@@ -697,7 +697,7 @@ after=$objdir/temp/temp/after
 
 # Create a new libtool script that will enter dry run if the environment
 # variable force_dry_run is set
-sed 's|^[[	 ]]*opt_dry_run=.*$|opt_dry_run=$force_dry_run|' libtool > ltnew && mv ltnew libtool
+$SED 's|^[[	 ]]*opt_dry_run=.*$|opt_dry_run=$force_dry_run|' libtool > ltnew && mv ltnew libtool
 export force_dry_run
 
 # main.o is not compiled with libtool, but it depends on it, so make

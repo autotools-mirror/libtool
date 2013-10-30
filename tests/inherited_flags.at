@@ -62,15 +62,15 @@ $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libboth.la both.lo -rpath 
 
 
 mv libfoo.la libfoo.la.bak
-sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_inlikely_existing_lib/g' < libfoo.la.bak > libfoo.la
+$SED -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_inlikely_existing_lib/g' < libfoo.la.bak > libfoo.la
 rm libfoo.la.bak
 
 mv libbar.la libbar.la.bak
-sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_unlikely_existing_lib/g' < libbar.la.bak > libbar.la
+$SED -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_unlikely_existing_lib/g' < libbar.la.bak > libbar.la
 rm libbar.la.bak
 
 mv libboth.la libboth.la.bak
-sed -e "s/^inherited_linker_flags.*/inherited_linker_flags='-llt_inlikely_existing_lib -llt_unlikely_existing_lib'/g" < libboth.la.bak > libboth.la
+$SED -e "s/^inherited_linker_flags.*/inherited_linker_flags='-llt_inlikely_existing_lib -llt_unlikely_existing_lib'/g" < libboth.la.bak > libboth.la
 rm libboth.la.bak
 
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /nonexistent ./libfoo.la ./libbar.la],
@@ -102,7 +102,7 @@ AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 
 mv libboth.la libboth.la.bak
-sed "s/^inherited_linker_flags.*/inherited_linker_flags='-framework Cocoa -framework ApplicationServices'/" < libboth.la.bak > libboth.la
+$SED "s/^inherited_linker_flags.*/inherited_linker_flags='-framework Cocoa -framework ApplicationServices'/" < libboth.la.bak > libboth.la
 rm libboth.la.bak
 
 AT_CHECK([$LIBTOOL -n --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -framework Cocoa -framework ApplicationServices -o libbaz.la baz.lo libboth.la -no-undefined -rpath /nonexistent],
