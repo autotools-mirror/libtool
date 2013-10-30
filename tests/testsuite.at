@@ -35,8 +35,7 @@ for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
   if eval \$$tool --version >/dev/null 2>&1; then :; else eval $tool=no; fi
 done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
-eval `$LIBTOOL --config | $GREP '^EGREP='`
-eval `$LIBTOOL --config | $EGREP '^(FGREP|objdir|objext)'`
+eval `$LIBTOOL --config | $EGREP '^(objdir|objext)'`
 eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_file_cmd|to_tool_file_cmd)='`
 configure_options=--prefix=/nonexistent
 if test -n "$host_alias"; then
