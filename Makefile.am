@@ -604,7 +604,9 @@ tests_dir	= $(top_srcdir)/tests
 package_m4	= $(tests_dir)/package.m4
 testsuite	= $(tests_dir)/testsuite
 
-# The testsuite files are evaluated in the order given here.
+# The testsuite files are evaluated in the order given here. When
+# adding new tests, make sure cmdline_wrap.at stays at the end so
+# that it can check for previous failures and skip if necessary.
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
 		  tests/libtoolize.at \
@@ -672,14 +674,15 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/no-executables.at \
 		  tests/deplibs-ident.at \
 		  tests/configure-iface.at \
-		  tests/stresstest.at \
-		  tests/cmdline_wrap.at \
 		  tests/f77demo.at \
 		  tests/fcdemo.at \
 		  tests/darwin.at \
 		  tests/dumpbin-symbols.at \
 		  tests/deplibs-mingw.at \
-		  tests/sysroot.at
+		  tests/sysroot.at \
+		  tests/stresstest.at \
+		  tests/cmdline_wrap.at \
+		  $(NOTHING_ELSE)
 
 EXTRA_DIST     += $(testsuite) $(TESTSUITE_AT) $(package_m4)
 
