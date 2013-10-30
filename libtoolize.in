@@ -137,8 +137,8 @@ libtoolize_environment_options ()
     my_sed_env_rest='1s/^[^,:; ]*[,:; ]*\(.*\)$/\1/;q'
 
     while test -n "$LIBTOOLIZE_OPTIONS"; do
-      opt=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_opt"`
-      LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_rest"`
+      opt=`echo "$LIBTOOLIZE_OPTIONS" | $SED "$my_sed_env_opt"`
+      LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | $SED "$my_sed_env_rest"`
 
       case $opt in
         --debug|--no-warn|--no-warning|--no-warnings|--quiet|--verbose)
@@ -1188,7 +1188,7 @@ func_check_macros ()
 
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
-    $SED 's|dnl .*$||; s|# .*$||' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
+    $SED 's|dnl .*$||; s|# .*$||' "$configure_ac" | $GREP AC_PROG_RANLIB >/dev/null &&
       func_echo "'AC_PROG_RANLIB' is rendered obsolete by 'LT_INIT'"
 
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
@@ -1217,7 +1217,7 @@ func_autoconf_configure ()
 
     # If we were passed a genuine file, make sure it calls AC_INIT.
     test -f "$1" \
-      && _G_ac_init=`$SED "$_G_sed_no_comment" "$1" |grep AC_INIT`
+      && _G_ac_init=`$SED "$_G_sed_no_comment" "$1" |$GREP AC_INIT`
 
     # Otherwise it is not a genuine Autoconf input file.
     test -n "$_G_ac_init"

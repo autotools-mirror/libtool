@@ -204,6 +204,11 @@ else
 fi
 
 
+# We want to be able to use the functions in this file before configure
+# has figured out where the best binaries are kept, which means we have
+# to search for them ourselves - except when the results are already set
+# where we skip the searches.
+
 # Unless the user overrides by setting SED, search the path for either GNU
 # sed, or the sed that truncates its output the least.
 test -z "$SED" && {
@@ -246,7 +251,7 @@ test -z "$SED" && {
 
 
 # Unless the user overrides by setting GREP, search the path for either GNU
-# grep, or the sed that truncates its output the least.
+# grep, or the grep that truncates its output the least.
 test -z "$GREP" && {
   func_check_prog_grep ()
   {
@@ -735,11 +740,11 @@ func_echo_infix_1 ()
     for _G_tc in "$tc_reset" "$tc_bold" "$tc_standout" "$tc_red" "$tc_green" "$tc_blue" "$tc_cyan"
     do
       test -n "$_G_tc" && {
-        _G_esc_tc=`$bs_echo "$_G_tc" | sed "$sed_make_literal_regex"`
-        _G_indent=`$bs_echo "$_G_indent" | sed "s|$_G_esc_tc||g"`
+        _G_esc_tc=`$bs_echo "$_G_tc" | $SED "$sed_make_literal_regex"`
+        _G_indent=`$bs_echo "$_G_indent" | $SED "s|$_G_esc_tc||g"`
       }
     done
-    _G_indent="$progname: "`echo "$_G_indent" | sed 's|.| |g'`"  " ## exclude from sc_prohibit_nested_quotes
+    _G_indent="$progname: "`echo "$_G_indent" | $SED 's|.| |g'`"  " ## exclude from sc_prohibit_nested_quotes
 
     func_echo_infix_1_IFS=$IFS
     IFS=$nl
@@ -1336,7 +1341,7 @@ func_lt_ver ()
 {
     $debug_cmd
 
-    test "x$1" = x`func_sort_ver "$1" "$2" | sed 1q`
+    test "x$1" = x`func_sort_ver "$1" "$2" | $SED 1q`
 }
 
 
@@ -2025,7 +2030,7 @@ func_autoconf_configure ()
 
     # If we were passed a genuine file, make sure it calls AC_INIT.
     test -f "$1" \
-      && _G_ac_init=`$SED "$_G_sed_no_comment" "$1" |grep AC_INIT`
+      && _G_ac_init=`$SED "$_G_sed_no_comment" "$1" |$GREP AC_INIT`
 
     # Otherwise it is not a genuine Autoconf input file.
     test -n "$_G_ac_init"
@@ -2721,7 +2726,7 @@ func_reconfigure ()
         func_ensure_changelog
     else
       $require_gnulib_cache
-      if sed -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache 2>/dev/null |
+      if $SED -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache 2>/dev/null |
          func_grep_q gitlog-to-changelog
       then
         func_ensure_changelog
@@ -3138,7 +3143,7 @@ func_clean_unused_macros ()
 
       # We use 'ls|grep' instead of 'ls *.m4' to avoid exceeding
       # command line length limits in some shells.
-      for file in `cd "$macro_dir" && ls -1 |grep '\.m4$'`; do
+      for file in `cd "$macro_dir" && ls -1 |$GREP '\.m4$'`; do
 
 	# Remove a macro file when aclocal.m4 does not m4_include it...
         func_grep_q 'm4_include([[]'$macro_dir/$file'])' $aclocal_m4s \
@@ -4625,7 +4630,7 @@ func_gitignore_entries ()
 {
     $debug_cmd
 
-    sed -e '/^#/d' -e '/^$/d' "$@"
+    $SED -e '/^#/d' -e '/^$/d' "$@"
 }
 
 
@@ -4658,7 +4663,7 @@ func_insert_if_absent ()
       linesnew=`{ $bs_echo "$str"; cat "$file"; } \
                 |func_gitignore_entries |sort -u |wc -l`
       test "$linesold" -eq "$linesnew" \
-        || { sed "1i\\$nl$str$nl" "$file" >"$file"T && mv "$file"T "$file"; } \
+        || { $SED "1i\\$nl$str$nl" "$file" >"$file"T && mv "$file"T "$file"; } \
         || func_permissions_error "$file"
     done
 }

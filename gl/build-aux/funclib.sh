@@ -730,11 +730,11 @@ func_echo_infix_1 ()
     for _G_tc in "$tc_reset" "$tc_bold" "$tc_standout" "$tc_red" "$tc_green" "$tc_blue" "$tc_cyan"
     do
       test -n "$_G_tc" && {
-        _G_esc_tc=`$bs_echo "$_G_tc" | sed "$sed_make_literal_regex"`
-        _G_indent=`$bs_echo "$_G_indent" | sed "s|$_G_esc_tc||g"`
+        _G_esc_tc=`$bs_echo "$_G_tc" | $SED "$sed_make_literal_regex"`
+        _G_indent=`$bs_echo "$_G_indent" | $SED "s|$_G_esc_tc||g"`
       }
     done
-    _G_indent="$progname: "`echo "$_G_indent" | sed 's|.| |g'`"  " ## exclude from sc_prohibit_nested_quotes
+    _G_indent="$progname: "`echo "$_G_indent" | $SED 's|.| |g'`"  " ## exclude from sc_prohibit_nested_quotes
 
     func_echo_infix_1_IFS=$IFS
     IFS=$nl
@@ -1331,7 +1331,7 @@ func_lt_ver ()
 {
     $debug_cmd
 
-    test "x$1" = x`func_sort_ver "$1" "$2" | sed 1q`
+    test "x$1" = x`func_sort_ver "$1" "$2" | $SED 1q`
 }
 
 

@@ -357,7 +357,7 @@ func_reconfigure ()
         func_ensure_changelog
     else
       $require_gnulib_cache
-      if sed -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache 2>/dev/null |
+      if $SED -n '/^gl_MODULES(\[/,/^])$/p' $gnulib_cache 2>/dev/null |
          func_grep_q gitlog-to-changelog
       then
         func_ensure_changelog
@@ -774,7 +774,7 @@ func_clean_unused_macros ()
 
       # We use 'ls|grep' instead of 'ls *.m4' to avoid exceeding
       # command line length limits in some shells.
-      for file in `cd "$macro_dir" && ls -1 |grep '\.m4$'`; do
+      for file in `cd "$macro_dir" && ls -1 |$GREP '\.m4$'`; do
 
 	# Remove a macro file when aclocal.m4 does not m4_include it...
         func_grep_q 'm4_include([[]'$macro_dir/$file'])' $aclocal_m4s \
@@ -2261,7 +2261,7 @@ func_gitignore_entries ()
 {
     $debug_cmd
 
-    sed -e '/^#/d' -e '/^$/d' "$@"
+    $SED -e '/^#/d' -e '/^$/d' "$@"
 }
 
 
@@ -2294,7 +2294,7 @@ func_insert_if_absent ()
       linesnew=`{ $bs_echo "$str"; cat "$file"; } \
                 |func_gitignore_entries |sort -u |wc -l`
       test "$linesold" -eq "$linesnew" \
-        || { sed "1i\\$nl$str$nl" "$file" >"$file"T && mv "$file"T "$file"; } \
+        || { $SED "1i\\$nl$str$nl" "$file" >"$file"T && mv "$file"T "$file"; } \
         || func_permissions_error "$file"
     done
 }
