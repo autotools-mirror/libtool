@@ -1323,7 +1323,7 @@ func_sort_ver ()
     $debug_cmd
 
     printf '%s\n%s\n' "$1" "$2" |
-    sort -t. -k1n -k1 -k2n -k2 -k3n -k3 -k4n -k4 -k5n -k5 -k6n -k6 -k7n -k7 -k8n -k8 -k9n -k9
+    sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n -k 5,5n -k 6,6n -k 7,7n -k 8,8n -k 9,9n
 }
 
 # func_lt_ver PREV CURR
