@@ -259,8 +259,16 @@ public class A$i {
 };
 EOF
 
-  $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c foo$i.java
-  $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c A$i.java
+  # Workaround http://gcc.gnu.org/bugzilla/show_bug.cgi?id=42143
+  # Some 4.3.x and 4.4.x releases of gcj insert a spurious dummy symbol
+  # into every object file when compiling directly from .java to .o, so
+  # we have to make .class files first, and then compile those to native
+  # objects:
+  $GCJ $GCJFLAGS -C foo$i.java
+  $GCJ $GCJFLAGS -C A$i.java
+
+  $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c foo$i.class
+  $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c A$i.class
   $LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba$i.la A$i.lo
 done
 AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba12.la liba1.la liba2.la -rpath /notexist],
