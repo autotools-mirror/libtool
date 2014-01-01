@@ -8088,15 +8088,17 @@ EOF
       # the extraction.
       reload_conv_objs=
       gentop=
-      # reload_cmds runs $LD directly, so let us get rid of
-      # -Wl from whole_archive_flag_spec and hope we can get by with
-      # turning comma into space..
-      wl=
-
+      # if reload_cmds runs $LD directly, get rid of -Wl from
+      # whole_archive_flag_spec and hope we can get by with turning comma
+      # into space.
+      case $reload_cmds in
+        *\$LD\ *) wl= ;;
+      esac
       if test -n "$convenience"; then
 	if test -n "$whole_archive_flag_spec"; then
 	  eval tmp_whole_archive_flags=\"$whole_archive_flag_spec\"
-	  reload_conv_objs=$reload_objs\ `$ECHO "$tmp_whole_archive_flags" | $SED 's|,| |g'`
+	  test -n "$wl" || tmp_whole_archive_flags=`$ECHO "$tmp_whole_archive_flags" | $SED 's|,| |g'`
+	  reload_conv_objs=$reload_objs\ $tmp_whole_archive_flags
 	else
 	  gentop=$output_objdir/${obj}x
 	  func_append generated " $gentop"
