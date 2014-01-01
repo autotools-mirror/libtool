@@ -2,9 +2,6 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
-
-* Noteworthy changes in release 2.4.2.418 (2013-10-27) [alpha]
-
 ** New features:
 
   - Moved to gnulib release infrastructure.
