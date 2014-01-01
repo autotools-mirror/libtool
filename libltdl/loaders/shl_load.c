@@ -1,6 +1,6 @@
 /* loader-shl_load.c --  dynamic linking with shl_load (HP-UX)
 
-   Copyright (C) 1998-2000, 2004, 2006-2008, 2011-2013 Free Software
+   Copyright (C) 1998-2000, 2004, 2006-2008, 2011-2014 Free Software
    Foundation, Inc.
    Written by Thomas Tanner, 1998
 
