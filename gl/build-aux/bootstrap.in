@@ -13,7 +13,7 @@
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2013-09-16.03; # UTC
+scriptversion=2014-01-01.22; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1998,27 +1998,30 @@ func_grep_q ()
 # func_ifcontains LIST MEMBER YES-CMD [NO-CMD]
 # --------------------------------------------
 # If whitespace-separated LIST contains MEMBER then execute YES-CMD,
-# otherwise if NO-CMD was give, execute that.
+# otherwise if NO-CMD was given, execute that.
 func_ifcontains ()
 {
     $debug_cmd
 
-    # The embedded echo is to squash whitespace before globbing.
-    _G_wslist=`$bs_echo " "$1" "`
+    _G_wslist=$1
     _G_member=$2
     _G_yes_cmd=$3
     _G_no_cmd=${4-":"}
 
-    case $_G_wslist in
-      *" $_G_member "*)
-        eval "$_G_yes_cmd"
-	_G_status=$?
-	;;
-      *)
-	eval "$_G_no_cmd"
-	_G_status=$?
-	;;
-    esac
+    _G_found=false
+    for _G_item in $_G_wslist; do
+      test "x$_G_item" = "x$_G_member" && {
+        _G_found=:
+	break
+      }
+    done
+    if $_G_found; then
+      eval "$_G_yes_cmd"
+      _G_status=$?
+    else
+      eval "$_G_no_cmd"
+      _G_status=$?
+    fi
 
     test 0 -eq "$_G_status" || exit $_G_status
 }

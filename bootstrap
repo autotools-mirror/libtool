@@ -14,7 +14,7 @@ scriptversion=2013-10-28.05; # UTC
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
 
-# Copyright (C) 2004-2013 Free Software Foundation, Inc.
+# Copyright (C) 2004-2014 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -1360,7 +1360,7 @@ scriptversion=2012-10-21.11; # UTC
 # A portable, pluggable option parser for Bourne shell.
 # Written by Gary V. Vaughan, 2010
 
-# Copyright (C) 2010-2013 Free Software Foundation, Inc.
+# Copyright (C) 2010-2014 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -1965,7 +1965,7 @@ func_version ()
 # Extract macro arguments from autotools input with GNU M4.
 # Written by Gary V. Vaughan, 2010
 #
-# Copyright (C) 2010-2013 Free Software Foundation, Inc.
+# Copyright (C) 2010-2014 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -2382,7 +2382,7 @@ test extract-trace = "$progname" && func_main "$@"
 # End:
 
 # Set a version string for *this* script.
-scriptversion=2013-09-16.03; # UTC
+scriptversion=2014-01-01.22; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -4367,27 +4367,30 @@ func_grep_q ()
 # func_ifcontains LIST MEMBER YES-CMD [NO-CMD]
 # --------------------------------------------
 # If whitespace-separated LIST contains MEMBER then execute YES-CMD,
-# otherwise if NO-CMD was give, execute that.
+# otherwise if NO-CMD was given, execute that.
 func_ifcontains ()
 {
     $debug_cmd
 
-    # The embedded echo is to squash whitespace before globbing.
-    _G_wslist=`$bs_echo " "$1" "`
+    _G_wslist=$1
     _G_member=$2
     _G_yes_cmd=$3
     _G_no_cmd=${4-":"}
 
-    case $_G_wslist in
-      *" $_G_member "*)
-        eval "$_G_yes_cmd"
-	_G_status=$?
-	;;
-      *)
-	eval "$_G_no_cmd"
-	_G_status=$?
-	;;
-    esac
+    _G_found=false
+    for _G_item in $_G_wslist; do
+      test "x$_G_item" = "x$_G_member" && {
+        _G_found=:
+	break
+      }
+    done
+    if $_G_found; then
+      eval "$_G_yes_cmd"
+      _G_status=$?
+    else
+      eval "$_G_no_cmd"
+      _G_status=$?
+    fi
 
     test 0 -eq "$_G_status" || exit $_G_status
 }
