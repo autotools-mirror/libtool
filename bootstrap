@@ -1327,8 +1327,8 @@ func_sort_ver ()
 {
     $debug_cmd
 
-    printf '%s\n%s\n' "$1" "$2" |
-    sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n -k 5,5n -k 6,6n -k 7,7n -k 8,8n -k 9,9n
+    printf '%s\n%s\n' "$1" "$2" \
+      | sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n -k 5,5n -k 6,6n -k 7,7n -k 8,8n -k 9,9n
 }
 
 # func_lt_ver PREV CURR
