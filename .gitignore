@@ -48,6 +48,7 @@
 /release
 Makefile
 Makefile.in
+README
 \#*#
 _libs
 acinclude.m4
