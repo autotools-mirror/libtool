@@ -146,7 +146,7 @@ func_remove_hook ()
 {
     $debug_cmd
 
-    eval ${1}_hooks='`$bs_echo "\$'$1'_hooks" |$SED "s| '$2'||"`'
+    eval ${1}_hooks='`$ECHO "\$'$1'_hooks" |$SED "s| '$2'||"`'
 }
 
 
@@ -439,8 +439,8 @@ func_fatal_help ()
 {
     $debug_cmd
 
-    eval \$bs_echo \""Usage: $usage"\"
-    eval \$bs_echo \""$fatal_help"\"
+    eval \$ECHO \""Usage: $usage"\"
+    eval \$ECHO \""$fatal_help"\"
     func_error ${1+"$@"}
     exit $EXIT_FAILURE
 }
@@ -454,7 +454,7 @@ func_help ()
     $debug_cmd
 
     func_usage_message
-    $bs_echo "$long_help_message"
+    $ECHO "$long_help_message"
     exit 0
 }
 
@@ -541,7 +541,7 @@ func_usage ()
     $debug_cmd
 
     func_usage_message
-    $bs_echo "Run '$progname --help |${PAGER-more}' for full usage"
+    $ECHO "Run '$progname --help |${PAGER-more}' for full usage"
     exit 0
 }
 
@@ -553,7 +553,7 @@ func_usage_message ()
 {
     $debug_cmd
 
-    eval \$bs_echo \""Usage: $usage"\"
+    eval \$ECHO \""Usage: $usage"\"
     echo
     $SED -n 's|^# ||
         /^Written by/{
@@ -562,7 +562,7 @@ func_usage_message ()
 	h
 	/^Written by/q' < "$progpath"
     echo
-    eval \$bs_echo \""$usage_message"\"
+    eval \$ECHO \""$usage_message"\"
 }
 
 

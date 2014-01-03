@@ -1117,7 +1117,7 @@ func_require_buildreq_automake ()
 
       # ...and AM_INIT_AUTOMAKE is declared...
       test -n "$func_extract_trace_result" && {
-        automake_version=`$bs_echo "$func_extract_trace_result" \
+        automake_version=`$ECHO "$func_extract_trace_result" \
            |$SED -e 's|[^0-9]*||' -e 's| .*$||'`
         test -n "$automake_version" || automake_version=-
 
@@ -2035,7 +2035,7 @@ func_strpad ()
     $debug_cmd
 
     _G_width=`expr "$2" - 1`
-    func_strpad_result=`$bs_echo "$1" |$SED '
+    func_strpad_result=`$ECHO "$1" |$SED '
         :a
         s|^.\{0,'"$_G_width"'\}$|&'"$3"'|
         ta
@@ -2052,7 +2052,7 @@ func_strrpad ()
     $debug_cmd
 
     _G_width=`expr "$2" - 1`
-    func_strrpad_result=`$bs_echo "$1" |$SED '
+    func_strrpad_result=`$ECHO "$1" |$SED '
         :a
         s|^.\{0,'"$_G_width"'\}$|'"$3"'&|
         ta
@@ -2137,7 +2137,7 @@ func_strtable ()
 
     # Strip off the indent, and make a divider with '-' chars, then
     # reindent.
-    _G_divider=`$bs_echo "$func_strrow_result" \
+    _G_divider=`$ECHO "$func_strrow_result" \
         |$SED 's|[^ ]|-|g
             :a
             s|- |--|g
@@ -2294,7 +2294,7 @@ func_insert_if_absent ()
           || func_verbose "inserting '$str' into '$file'"
 
       linesold=`func_gitignore_entries "$file" |wc -l`
-      linesnew=`{ $bs_echo "$str"; cat "$file"; } \
+      linesnew=`{ $ECHO "$str"; cat "$file"; } \
                 |func_gitignore_entries |sort -u |wc -l`
       test "$linesold" -eq "$linesnew" \
         || { $SED "1i\\$nl$str$nl" "$file" >"$file"T && mv "$file"T "$file"; } \
@@ -2315,7 +2315,7 @@ func_get_version ()
 
     # Rather than uncomment the sed script in-situ, strip the comments
     # programatically before passing the result to $SED for evaluation.
-    sed_get_version=`$bs_echo '# extract version within line
+    sed_get_version=`$ECHO '# extract version within line
           s|.*[v ]\{1,\}\([0-9]\{1,\}\.[.a-z0-9-]*\).*|\1|
           t done
 

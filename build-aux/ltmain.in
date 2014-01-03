@@ -82,7 +82,7 @@ func_echo ()
     IFS=$nl
     for _G_line in $_G_message; do
       IFS=$func_echo_IFS
-      $bs_echo "$progname${opt_mode+: $opt_mode}: $_G_line"
+      $ECHO "$progname${opt_mode+: $opt_mode}: $_G_line"
     done
     IFS=$func_echo_IFS
 }

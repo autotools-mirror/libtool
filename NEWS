@@ -99,9 +99,18 @@ NEWS - list of user-visible changes between releases of GNU Libtool
             [m4_define([AC_CONFIG_MACRO_DIRS],
                 m4_defn([AC_CONFIG_MACRO_DIR]))])
 
+  - Overhead of probing for a non-backslash crippled echo equivalent
+    during initialization of every script has been removed in favor of
+    trusting that "printf %s\n" works out of the box on all non-museum
+    host architectures.  Manually setting ECHO appropriately in the
+    build environment will be necessary on some ancient architectures.
+
 ** Changes in supported systems or compilers:
 
   - Support for bitrig (*-*-bitrig*).
+
+  - Solaris 7 and earlier requires ECHO=/usr/ucb/echo in the build
+    environment, to build and use libtool.
 
 New in 2.4.2 2011-10-17: git version 2.4.1a, Libtool team:
 

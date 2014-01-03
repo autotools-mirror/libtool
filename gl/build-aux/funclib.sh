@@ -153,47 +153,6 @@ func_path_progs ()
 }
 
 
-# There are still modern systems that have problems with 'echo' mis-
-# handling backslashes, among others, so make sure $bs_echo is set to a
-# command that correctly interprets backslashes.
-# (this code from Autoconf 2.68)
-
-# Printing a long string crashes Solaris 7 /usr/bin/printf.
-bs_echo='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
-bs_echo=$bs_echo$bs_echo$bs_echo$bs_echo$bs_echo
-bs_echo=$bs_echo$bs_echo$bs_echo$bs_echo$bs_echo$bs_echo
-# Prefer a ksh shell builtin over an external printf program on Solaris,
-# but without wasting forks for bash or zsh.
-if test -z "$BASH_VERSION$ZSH_VERSION" \
-    && (test "X`print -r -- $bs_echo`" = "X$bs_echo") 2>/dev/null; then
-  bs_echo='print -r --'
-  bs_echo_n='print -rn --'
-elif (test "X`printf %s $bs_echo`" = "X$bs_echo") 2>/dev/null; then
-  bs_echo='printf %s\n'
-  bs_echo_n='printf %s'
-else
-  if test "X`(/usr/ucb/echo -n -n $bs_echo) 2>/dev/null`" = "X-n $bs_echo"; then
-    bs_echo_body='eval /usr/ucb/echo -n "$1$nl"'
-    bs_echo_n='/usr/ucb/echo -n'
-  else
-    bs_echo_body='eval expr "X$1" : "X\\(.*\\)"'
-    bs_echo_n_body='eval
-      arg=$1;
-      case $arg in #(
-      *"$nl"*)
-	expr "X$arg" : "X\\(.*\\)$nl";
-	arg=`expr "X$arg" : ".*$nl\\(.*\\)"`;;
-      esac;
-      expr "X$arg" : "X\\(.*\\)" | tr -d "$nl"
-    '
-    export bs_echo_n_body
-    bs_echo_n='sh -c $bs_echo_n_body bs_echo'
-  fi
-  export bs_echo_body
-  bs_echo='sh -c $bs_echo_body bs_echo'
-fi
-
-
 # We want to be able to use the functions in this file before configure
 # has figured out where the best binaries are kept, which means we have
 # to search for them ourselves - except when the results are already set
@@ -214,13 +173,13 @@ test -z "$SED" && {
     _G_path_prog=$1
 
     _G_count=0
-    $bs_echo_n 0123456789 >conftest.in
+    printf 0123456789 >conftest.in
     while :
     do
       cat conftest.in conftest.in >conftest.tmp
       mv conftest.tmp conftest.in
       cp conftest.in conftest.nl
-      $bs_echo '' >> conftest.nl
+      echo '' >> conftest.nl
       "$_G_path_prog" -f conftest.sed <conftest.nl >conftest.out 2>/dev/null || break
       diff conftest.out conftest.nl >/dev/null 2>&1 || break
       _G_count=`expr $_G_count + 1`
@@ -249,13 +208,13 @@ test -z "$GREP" && {
 
     _G_count=0
     _G_path_prog_max=0
-    $bs_echo_n 0123456789 >conftest.in
+    printf 0123456789 >conftest.in
     while :
     do
       cat conftest.in conftest.in >conftest.tmp
       mv conftest.tmp conftest.in
       cp conftest.in conftest.nl
-      $bs_echo 'GREP' >> conftest.nl
+      echo 'GREP' >> conftest.nl
       "$_G_path_prog" -e 'GREP$' -e '-(cannot match)-' <conftest.nl >conftest.out 2>/dev/null || break
       diff conftest.out conftest.nl >/dev/null 2>&1 || break
       _G_count=`expr $_G_count + 1`
@@ -285,7 +244,7 @@ test -z "$GREP" && {
 # in the command search PATH.
 
 : ${CP="cp -f"}
-: ${ECHO="$bs_echo"}
+: ${ECHO="printf %s\n"}
 : ${EGREP="$GREP -E"}
 : ${FGREP="$GREP -F"}
 : ${LN_S="ln -s"}
@@ -383,13 +342,13 @@ exit_status=$EXIT_SUCCESS
 progpath=$0
 
 # The name of this program.
-progname=`$bs_echo "$progpath" |$SED "$sed_basename"`
+progname=`$ECHO "$progpath" |$SED "$sed_basename"`
 
 # Make sure we have an absolute progpath for reexecution:
 case $progpath in
   [\\/]*|[A-Za-z]:\\*) ;;
   *[\\/]*)
-     progdir=`$bs_echo "$progpath" |$SED "$sed_dirname"`
+     progdir=`$ECHO "$progpath" |$SED "$sed_dirname"`
      progdir=`cd "$progdir" && pwd`
      progpath=$progdir/$progname
      ;;
@@ -583,7 +542,7 @@ func_append_uniq ()
 {
     $debug_cmd
 
-    eval _G_current_value='`$bs_echo $'$1'`'
+    eval _G_current_value='`$ECHO $'$1'`'
     _G_delim=`expr "$2" : '\(.\)'`
 
     case $_G_delim$_G_current_value$_G_delim in
@@ -696,7 +655,7 @@ func_echo ()
     IFS=$nl
     for _G_line in $_G_message; do
       IFS=$func_echo_IFS
-      $bs_echo "$progname: $_G_line"
+      $ECHO "$progname: $_G_line"
     done
     IFS=$func_echo_IFS
 }
@@ -730,8 +689,8 @@ func_echo_infix_1 ()
     for _G_tc in "$tc_reset" "$tc_bold" "$tc_standout" "$tc_red" "$tc_green" "$tc_blue" "$tc_cyan"
     do
       test -n "$_G_tc" && {
-        _G_esc_tc=`$bs_echo "$_G_tc" | $SED "$sed_make_literal_regex"`
-        _G_indent=`$bs_echo "$_G_indent" | $SED "s|$_G_esc_tc||g"`
+        _G_esc_tc=`$ECHO "$_G_tc" | $SED "$sed_make_literal_regex"`
+        _G_indent=`$ECHO "$_G_indent" | $SED "s|$_G_esc_tc||g"`
       }
     done
     _G_indent="$progname: "`echo "$_G_indent" | $SED 's|.| |g'`"  " ## exclude from sc_prohibit_nested_quotes
@@ -740,7 +699,7 @@ func_echo_infix_1 ()
     IFS=$nl
     for _G_line in $_G_message; do
       IFS=$func_echo_infix_1_IFS
-      $bs_echo "$_G_prefix$tc_bold$_G_line$tc_reset" >&2
+      $ECHO "$_G_prefix$tc_bold$_G_line$tc_reset" >&2
       _G_prefix=$_G_indent
     done
     IFS=$func_echo_infix_1_IFS
