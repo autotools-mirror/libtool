@@ -2690,6 +2690,14 @@ func_reconfigure ()
 {
     $debug_cmd
 
+    $require_automake_options
+
+    # Automake (without 'foreign' option) requires that README exists.
+    case " $automake_options " in
+      " foreign ") ;;
+      *) func_ensure_README ;;
+    esac
+
     # Ensure ChangeLog presence.
     if test -n "$gnulib_modules"; then
       func_ifcontains "$gnulib_modules" gitlog-to-changelog \
@@ -2704,7 +2712,7 @@ func_reconfigure ()
     fi
 
     # Released 'autopoint' has the tendency to install macros that have
-    # been obsoleted in current 'gnulib., so run this before 'gnulib-tool'.
+    # been obsoleted in current 'gnulib', so run this before 'gnulib-tool'.
     func_autopoint
 
     # Autoreconf runs 'aclocal' before 'libtoolize', which causes spurious
@@ -3016,6 +3024,29 @@ EOT
 }
 
 
+# func_ensure_README
+# ------------------
+# Without AM_INIT_AUTOMAKE([foreign]), automake will not run to
+# completion with no README file, even though README.md or README.txt
+# is often preferable.
+func_ensure_changelog ()
+{
+    $debug_cmd
+
+    test -f README || {
+      _G_README=
+      for _G_readme in README.txt README.md README.rst; do
+        test -f $_G_readme && break
+      done
+
+      test -f $_G_readme && $LN_S $_G_readme README
+      func_verbose "$LN_S $_G_readme README"
+    }
+
+    return 0
+}
+
+
 # func_autoreconf [SUBDIR]
 # ------------------------
 # Being careful not to re-run 'autopoint' or 'libtoolize', and not to
@@ -3269,6 +3300,21 @@ func_require_autoheader ()
     }
 
     require_autoheader=:
+}
+
+
+# require_automake_options
+# ------------------------
+# Extract options from AM_AUTOMAKE_INIT.
+require_automake_options=func_require_automake_options
+func_require_automake_options ()
+{
+    $debug_cmd
+
+    func_extract_trace AM_INIT_AUTOMAKE
+    automake_options=$func_extract_trace_result
+
+    require_automake_options=:
 }
 
 
@@ -4068,7 +4114,6 @@ func_require_macro_dir ()
 # require_makefile_am
 # -------------------
 # Ensure there is a 'Makefile.am' in the current directory.
-# names an existing file.
 require_makefile_am=func_require_makefile_am
 func_require_makefile_am ()
 {
