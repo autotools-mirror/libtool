@@ -989,11 +989,12 @@ updates available."
         rm -f bootstrap.new
 	func_verbose "bootstrap script up to date"
       else
+        chmod 555 bootstrap.new
         func_warning upgrade "\
 An updated bootstrap script has been generated for you in
 'bootstrap.new'.  After you've verified that you want
 the changes, you can update with:
-    cat bootstrap.new > $progname
+    mv -f bootstrap.new $progname
     ./$progname
 
 Or you can disable this check permanently by adding the
