@@ -124,13 +124,13 @@ func_include ()
     test -n "$_G_scriptdir" || _G_scriptdir="./"
 
     $AWK '
-        BEGIN { domagic = true; }
+        BEGIN { magic = 0; }
 
-        /^#!/ && domagic == true {
+        /^#!/ && magic == 0 {
             print $0;
             print "## DO NOT EDIT - This file generated from '$1'";
             print "##               by '$progname' v'$scriptversion'";
-            domagic = false;
+            magic++;
             next;
         }
 
