@@ -3029,17 +3029,17 @@ EOT
 # Without AM_INIT_AUTOMAKE([foreign]), automake will not run to
 # completion with no README file, even though README.md or README.txt
 # is often preferable.
-func_ensure_changelog ()
+func_ensure_README ()
 {
     $debug_cmd
 
     test -f README || {
       _G_README=
       for _G_readme in README.txt README.md README.rst; do
-        test -f $_G_readme && break
+        test -f "$_G_readme" && break
       done
 
-      test -f $_G_readme && $LN_S $_G_readme README
+      test -f "$_G_readme" && $LN_S $_G_readme README
       func_verbose "$LN_S $_G_readme README"
     }
 
