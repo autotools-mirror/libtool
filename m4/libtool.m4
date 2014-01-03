@@ -8,33 +8,27 @@
 # modifications, as long as this notice is preserved.
 
 m4_define([_LT_COPYING], [dnl
-#   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
-#                 2006, 2007, 2008, 2009, 2010, 2011 Free Software
-#                 Foundation, Inc.
-#   Written by Gordon Matzigkeit, 1996
+# Copyright (C) 2014 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# GNU Libtool is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of of the License, or
+# (at your option) any later version.
 #
-#   This file is part of GNU Libtool.
+# As a special exception to the GNU General Public License, if you
+# distribute this file as part of a program or library that is built
+# using GNU Libtool, you may include this file under the  same
+# distribution terms that you use for the rest of that program.
 #
-# GNU Libtool is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 2 of
-# the License, or (at your option) any later version.
-#
-# As a special exception to the GNU General Public License,
-# if you distribute this file as part of a program or library that
-# is built using GNU Libtool, you may include this file under the
-# same distribution terms that you use for the rest of that program.
-#
-# GNU Libtool is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# GNU Libtool is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with GNU Libtool; see the file COPYING.  If not, a copy
-# can be downloaded from http://www.gnu.org/licenses/gpl.html, or
-# obtained by writing to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ])
 
 # serial 58 LT_INIT
@@ -715,12 +709,13 @@ _LT_CONFIG_SAVE_COMMANDS([
 
     cat <<_LT_EOF >> "$cfgfile"
 #! $SHELL
-
-# `$ECHO "$ofile" | sed 's%^.*/%%'` - Provide generalized library-building support services.
 # Generated automatically by $as_me ($PACKAGE) $VERSION
 # Libtool was configured on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
-#
+
+# Provide generalized library-building support services.
+# Written by Gordon Matzigkeit, 1996
+
 _LT_COPYING
 _LT_LIBTOOL_TAGS
 
