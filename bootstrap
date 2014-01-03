@@ -1533,8 +1533,6 @@ func_lt_ver ()
 # time-stamp-time-zone: "UTC"
 # End:
 #! /bin/sh
-## DO NOT EDIT - This file generated from build-aux/options-parser
-##               by inline-source v2014-01-03.01
 
 # Set a version string for this script.
 scriptversion=2014-01-03.01; # UTC
@@ -2143,8 +2141,6 @@ func_version ()
 # time-stamp-time-zone: "UTC"
 # End:
 #! /bin/sh
-## DO NOT EDIT - This file generated from build-aux/extract-trace
-##               by inline-source v2014-01-03.01
 
 # Extract macro arguments from autotools input with GNU M4.
 # Written by Gary V. Vaughan, 2010

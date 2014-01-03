@@ -124,7 +124,7 @@ func_include ()
     test -n "$_G_scriptdir" || _G_scriptdir="./"
 
     $AWK '
-        BEGIN { magic = 0; }
+        BEGIN { magic = '${_RECURSE_MAGIC-0}'; }
 
         /^#!/ && magic == 0 {
             print $0;
@@ -136,14 +136,14 @@ func_include ()
 
         /^\. ['\''"].*['\''"]$/ {
             file = substr ($2, 2, length ($2) -2);
-	    system (sprintf ("'$progpath' %s", file));
+	    system (sprintf ("env _RECURSE_MAGIC=%d '$progpath' %s", magic, file));
             next;
         }
 
         /^\. `echo [^`]*`['\''"][^'\''"]*['\''"]$/ {
             tail = substr ($0, match ($0, /`['\''"]/));
 	    file = substr (tail, 3, length (tail) -3);
-	    system (sprintf ("'$progpath' '"$_G_scriptdir"'%s", file));
+	    system (sprintf ("env _RECURSE_MAGIC=%d '$progpath' '"$_G_scriptdir"'%s", magic, file));
             next;
         }
 
