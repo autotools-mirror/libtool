@@ -3016,12 +3016,21 @@ EOT
 }
 
 
-# func_autoreconf
-# ---------------
+# func_autoreconf [SUBDIR]
+# ------------------------
 # Being careful not to re-run 'autopoint' or 'libtoolize', and not to
 # try to run 'autopoint', 'libtoolize' or 'autoheader' on packages that
 # don't use them, defer to 'autoreconf' for execution of the remaining
 # autotools to bootstrap this package.
+#
+# Projects with multiple trees to reconfigure can hook another call to
+# this function onto func_reconfigure:
+#
+#    my_autoreconf_foo ()
+#    {
+#        func_autoreconf foo
+#    }
+#    func_add_hook func_reconfigure my_autoreconf_foo
 func_autoreconf ()
 {
     $debug_cmd
@@ -3038,7 +3047,7 @@ func_autoreconf ()
     $opt_copy || func_append _G_autoreconf_options " --symlink"
     $opt_force && func_append _G_autoreconf_options " --force"
     $opt_verbose && func_append _G_autoreconf_options " --verbose"
-    func_show_eval "$AUTORECONF$_G_autoreconf_options --install" 'exit $?'
+    func_show_eval "$AUTORECONF$_G_autoreconf_options --install${1+ $1}" 'exit $?'
 
     AUTOPOINT=$save_AUTOPOINT
     LIBTOOLIZE=$save_LIBTOOLIZE
