@@ -120,7 +120,7 @@ that further limiting of the recursive set of tests is possible.  For
 example, to run only the template tests within the `max_cmd_len`, use:
 
     gmake check TESTSUITEFLAGS="-v -x -k max_cmd_len \
-	 	INNER_TESTSUITEFLAGS=',template -v -x'"
+                INNER_TESTSUITEFLAGS=',template -v -x'"
 
 If you wish to report test failures to the libtool list, you need to
 send the file `tests/testsuite.log` to the [bug mailing list][].
