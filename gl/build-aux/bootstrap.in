@@ -983,6 +983,7 @@ Please add bootstrap to your gnulib_modules list in
 'bootstrap.conf', so that I can tell you when there are
 updates available."
     else
+      rm -f bootstrap.new
       $build_aux/inline-source $build_aux/bootstrap.in > bootstrap.new
 
       if func_cmp_s "$progpath" bootstrap.new; then
