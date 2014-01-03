@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2013-10-28.05; # UTC
+scriptversion=2014-01-03.01; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -1297,7 +1297,7 @@ func_lt_ver ()
 # Local variables:
 # mode: shell-script
 # sh-indentation: 2
-# eval: (add-hook 'write-file-hooks 'time-stamp)
+# eval: (add-hook 'before-save-hook 'time-stamp)
 # time-stamp-pattern: "10/scriptversion=%:y-%02m-%02d.%02H; # UTC"
 # time-stamp-time-zone: "UTC"
 # End:
