@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Set a version string for this script.
-scriptversion=2014-01-03.01; # UTC
+scriptversion=2014-01-04.01; # UTC
 
 # A portable, pluggable option parser for Bourne shell.
 # Written by Gary V. Vaughan, 2010
@@ -423,9 +423,9 @@ func_validate_options ()
 
 
 
-## ------------------##
+## ----------------- ##
 ## Helper functions. ##
-## ------------------##
+## ----------------- ##
 
 # This section contains the helper functions used by the rest of the
 # hookable option parser framework in ascii-betical order.

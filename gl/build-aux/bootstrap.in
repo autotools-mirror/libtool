@@ -232,7 +232,7 @@ vc_ignore=
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2014-01-03.01; # UTC
+scriptversion=2014-01-04.01; # UTC
 
 
 ## ------------------- ##
@@ -1984,9 +1984,9 @@ func_require_vc_ignore_files ()
 }
 
 
-## ------------------##
+## ----------------- ##
 ## Helper functions. ##
-## ------------------##
+## ----------------- ##
 
 # This section contains the helper functions used by the rest of 'bootstrap'.
 
