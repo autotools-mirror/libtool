@@ -195,6 +195,7 @@ test -z "$SED" && {
   }
 
   func_path_progs "sed gsed" func_check_prog_sed $PATH:/usr/xpg4/bin
+  rm -f conftest.sed
   SED=$func_path_progs_result
 }
 
