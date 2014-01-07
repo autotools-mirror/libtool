@@ -2474,9 +2474,6 @@ delimited list of triples; 'program min-version url'."
       else
         _G_instver=`func_get_version $_G_app`
 
-        test -z "$_G_instver" \
-            || func_verbose "found '$_G_app' version $_G_instver."
-
         # Fail if --version didn't work.
         if test -z "$_G_instver"; then
           func_error "Prerequisite '$_G_app' not found. Please install it, or
@@ -2485,12 +2482,29 @@ delimited list of triples; 'program min-version url'."
 
         # Fail if a newer version than what we have is required.
         else
-          func_lt_ver "$_G_reqver" "$_G_instver" || {
-            func_error "\
+          func_verbose "found '$_G_app' version $_G_instver."
+
+	  case $_G_reqver in
+            =*)
+              # If $buildreq version starts with '=', version must
+	      # match the installed program exactly.
+	      test "x$_G_reqver" = "x=$_G_instver" || {
+	        func_error "\
+  '$_G_app' version == $_G_instver is too old
+  'exactly $_G_app-$_G_reqver is required"
+                func_check_versions_result=false
+              }
+	      ;;
+	    *)
+              # Otherwise, anything that is not older is a match.
+              func_lt_ver "$_G_reqver" "$_G_instver" || {
+                func_error "\
   '$_G_app' version == $_G_instver is too old
   '$_G_app' version >= $_G_reqver is required"
             func_check_versions_result=false
-          }
+              }
+	      ;;
+	  esac
         fi
       fi
     done

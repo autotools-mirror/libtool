@@ -82,6 +82,11 @@ requirement for Autobuild is added automatically, and finally if there
 are any diff files under @code{local_gl_dir}, then a versionless
 requirement for patch is also added.
 
+When there are backwards incompatibilities in a newer build-tool
+release, you can pin the version requirement for your program by
+prefixing the version number field in buildreq with a single '='
+character (no spaces).
+
 When @command{bootstrap} is invoked, it will check that all the listed
 and automatically added tools are available at the given minimum version,
 or else bail out with a diagnostic.
