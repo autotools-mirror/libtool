@@ -69,6 +69,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Recognize more variants (e.g. those starting with a LIBRARY statement)
     of module-definitions (.def) files when using them instead of a raw
     list of symbols to export.
+  - Fix a long-standing bug when using libtoolize without automake; we
+    no longer remove install-sh with --force, since it's not a file
+    libtoolize will reinstall without --install..
 
 ** Important incompatible changes:
 
