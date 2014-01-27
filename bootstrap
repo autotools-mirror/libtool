@@ -2563,7 +2563,7 @@ test extract-trace = "$progname" && func_main "$@"
 # End:
 
 # Set a version string for *this* script.
-scriptversion=2014-01-04.01; # UTC
+scriptversion=2014-01-27.02; # UTC
 
 
 ## ------------------- ##
@@ -3698,7 +3698,7 @@ func_require_git ()
     $opt_skip_git && GIT=true
 
     test true = "$GIT" || {
-      if test -f .git; then
+      if test -d .git; then
         ($GIT --version) >/dev/null 2>&1 || GIT=true
       fi
     }
