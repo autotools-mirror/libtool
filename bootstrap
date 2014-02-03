@@ -3698,7 +3698,7 @@ func_require_git ()
     $opt_skip_git && GIT=true
 
     test true = "$GIT" || {
-      if test -d .git; then
+      if test -d .git/.; then
         ($GIT --version) >/dev/null 2>&1 || GIT=true
       fi
     }
