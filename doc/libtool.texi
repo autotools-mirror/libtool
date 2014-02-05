@@ -241,7 +241,7 @@ each host type is available via a generic interface, but nasty quirks
 are hidden from the programmer.
 
 GNU Libtool's consistent interface is reassuring@dots{} users don't need
-to read obscure documentation in order to have their favorite source
+to read obscure documentation to have their favorite source
 package build shared libraries.  They just run your package
 @code{configure} script (or equivalent), and libtool does all the dirty
 work.
@@ -694,7 +694,7 @@ make it easier to clean up the build directory, and to help ensure that
 other programs fail horribly if you accidentally forget to use libtool
 when you should.
 
-Again, you may want to have a look at the @file{.la} file in order
+Again, you may want to have a look at the @file{.la} file
 to see what Libtool stores in it.  In particular, you will see that
 Libtool uses this file to remember the destination directory for the
 library (the argument to @option{-rpath}) as well as the dependency
@@ -952,7 +952,7 @@ burger$
 @end example
 
 Argh.  Now GDB complains because it cannot find the shared library that
-@file{hell} is linked against.  So, we must use libtool in order to
+@file{hell} is linked against.  So, we must use libtool to
 properly set the library path and run the debugger.  Fortunately, we can
 forget all about the @file{@value{objdir}} directory, and just run it on
 the executable wrapper (@pxref{Execute mode}):
@@ -2039,7 +2039,7 @@ automake, The Automake Manual}, for more information.
 @cindex configuring libtool
 
 Libtool requires intimate knowledge of your compiler suite and operating
-system in order to be able to create shared libraries and link against
+system to be able to create shared libraries and link against
 them properly.  When you install the libtool distribution, a
 system-specific libtool script is installed into your binary directory.
 
@@ -2054,7 +2054,7 @@ system features, then generates the @file{Makefile}s (and possibly a
 @file{config.h} header file), after which you can run @code{make} and
 build the package.
 
-Libtool adds its own tests to your @code{configure} script in order to
+Libtool adds its own tests to your @code{configure} script to
 generate a libtool script for the installer's host machine.
 
 @menu
@@ -2747,7 +2747,7 @@ Manipulation Program, for those who haven't taken the plunge.  See
 @url{http://www.gimp.org/}.} distribution @file{README}:
 
 @example
-The GIMP uses GNU Libtool in order to build shared libraries on a
+The GIMP uses GNU Libtool to build shared libraries on a
 variety of systems.  While this is very nice for making usable
 binaries, it can be a pain when trying to debug a program.  For that
 reason, compilation of shared libraries can be turned off by
@@ -2761,7 +2761,7 @@ specifying the @option{--disable-shared} option to @file{configure}.
 @cindex languages, non-C
 @cindex C++, using
 
-Libtool was first implemented in order to add support for writing shared
+Libtool was first implemented to add support for writing shared
 libraries in the C language.  However, over time, libtool is being
 integrated with other languages, so that programmers are free to reap
 the benefits of shared libraries in their favorite programming language.
@@ -2788,7 +2788,7 @@ process, because its object files differ from C ones in only three ways:
 @item
 Because of name mangling, C++ libraries are only usable by the C++
 compiler that created them.  This decision was made by the designers of
-C++ in order to protect users from conflicting implementations of
+C++ to protect users from conflicting implementations of
 features such as constructors, exception handling, and RTTI.
 
 @item
@@ -3040,7 +3040,7 @@ the old version at runtime: set @var{revision} to 0, bump @var{current}
 and @var{age}.
 
 @item
-Programs may need to be changed, recompiled, relinked in order to use
+Programs may need to be changed, recompiled, and relinked in order to use
 the new version.  Bump @var{current}, set @var{revision} and @var{age}
 to 0.
 @end enumerate
@@ -3074,8 +3074,8 @@ library interface versions, because the library interface rarely changes
 at the same time that the release number does, and the library suffix is
 never the same across all platforms.
 
-So, in order to accommodate both views, you can use the @option{-release}
-flag in order to set release information for libraries for which you do not
+So, to accommodate both views, you can use the @option{-release}
+flag to set release information for libraries for which you do not
 want to use @option{-version-info}.  For the @file{libbfd} example, the
 next release that uses libtool should be built with @samp{-release
 2.9.0}, which will produce the following files on GNU/Linux:
@@ -3194,8 +3194,7 @@ Non-ANSI compilers will report errors if functions are prototyped.
 @end table
 
 These complications mean that your library interface headers must use
-some C preprocessor magic in order to be usable by each of the above
-compilers.
+some C preprocessor magic to be usable by each of the above compilers.
 
 @file{foo.h} in the @file{tests/demo} subdirectory of the libtool
 distribution serves as an example for how to write a header file that
@@ -3323,7 +3322,7 @@ burger$
 
 When you link a program against @file{libhello}, you don't need to
 specify the same @samp{-l} options again: libtool will do that for you,
-in order to guarantee that all the required libraries are found.  This
+to guarantee that all the required libraries are found.  This
 restriction is only necessary to preserve compatibility with static
 library systems and simple dynamic library systems.
 
@@ -3446,13 +3445,13 @@ then the compile time linker refuses to create the executable.
 
 @item
 Declaring a static library to the linker, so that it is searched at link
-time in order to satisfy any undefined references in the above object
+time to satisfy any undefined references in the above object
 files.  If the static library cannot be found, then the compile time
 linker refuses to create the executable.
 
 @item
 Declaring a shared library to the runtime linker, so that it is searched
-at runtime in order to satisfy any undefined references in the above
+at runtime to satisfy any undefined references in the above
 files.  If the shared library cannot be found, then the dynamic linker
 aborts the program before it runs.
 
@@ -3738,7 +3737,7 @@ family of functions.  Some platforms do not even use the same function
 names (notably HP-UX, with its @code{shl_load} family).
 
 @item
-The application developer must write a custom search function in order
+The application developer must write a custom search function
 to discover the correct module filename to supply to @code{dlopen}.
 @end itemize
 
@@ -3825,7 +3824,7 @@ relies on the old deprecated symbol names, defining
 @samp{LT_NON_POSIX_NAMESPACE} before you include @file{ltdl.h} provides
 conversion macros.  Whichever set of symbols you use, the new API is
 not binary compatible with the last, so you will need to recompile
-your application in order to use this version of libltdl.
+your application to use this version of libltdl.
 
 @noindent
 Note that libltdl is not well tested in a multithreaded environment,
@@ -4266,7 +4265,7 @@ the module @var{handle}.  The contents of the struct must not be modified.
 Return @code{NULL} on failure.
 @end deftypefun
 
-Furthermore, in order to save you from having to keep a list of the
+Furthermore, to save you from having to keep a list of the
 handles of all the modules you have loaded, these functions allow you to
 iterate over libltdl's list of loaded modules:
 
@@ -4886,7 +4885,7 @@ This is the default unless you explicitly add @code{installable} to
 your @code{LTDL_INIT} options.
 
 This keyword will cause options to be passed to the @command{configure}
-script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
+script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR}
 to cause it to be built as a convenience library.  If you're not
 using automake, you will need to define @code{top_build_prefix},
 @code{top_builddir}, and @code{top_srcdir} in your makefile so that
@@ -4910,7 +4909,7 @@ other libraries that might use @code{libltdl} too.
 
 @item installable
 This keyword will pass options to the @command{configure}
-script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
+script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR}
 to cause it to be built as an installable library.  If you're not
 using automake, you will need to define @code{top_build_prefix},
 @code{top_builddir} and @code{top_srcdir} in your makefile so that
@@ -5103,7 +5102,7 @@ past problems with libtool, and known deficiencies in other operating
 systems.
 
 As described in the @file{README} file, you may run @kbd{make -k check}
-after you have built libtool (possibly before you install it) in order
+after you have built libtool (possibly before you install it)
 to make sure that it meets basic functional requirements.
 
 @menu
@@ -5709,7 +5708,7 @@ usually willing to volunteer to help you with new ports, so you can send
 the information to them.
 
 To do the port yourself, you'll definitely need to modify the
-@code{libtool.m4} macros in order to make platform-specific changes to
+@code{libtool.m4} macros to make platform-specific changes to
 the configuration process.  You should search that file for the
 @code{PORTME} keyword, which will give you some hints on what you'll
 need to change.  In general, all that is involved is modifying the
@@ -5749,7 +5748,7 @@ looks in the library link path for libraries that have the right
 libname.  Then it runs @samp{$file_magic_cmd} on the library and checks
 for a match against the extended regular expression @var{regex}.  When
 @code{file_magic_test_file} is set by @file{libtool.m4}, it is used as an
-argument to @samp{$file_magic_cmd} in order to verify whether the
+argument to @samp{$file_magic_cmd} to verify whether the
 regular expression matches its output, and warn the user otherwise.
 
 @item test_compile
@@ -6662,7 +6661,7 @@ Set to the name of the @command{ranlib} program, if any.
 @end defvar
 
 @defvar allow_undefined_flag
-The flag that is used by @samp{archive_cmds} in order to declare that
+The flag that is used by @samp{archive_cmds} to declare that
 there will be unresolved symbols in the resulting shared library.
 Empty, if no such flag is required.  Set to @samp{unsupported} if there
 is no way to generate a shared library with references to symbols that
@@ -6694,7 +6693,7 @@ not used.
 @end defvar
 
 @defvar old_archive_from_expsyms_cmds
-If a static library must be created from the export symbol list in order to
+If a static library must be created from the export symbol list to
 correctly link with a shared library, @samp{old_archive_from_expsyms_cmds}
 contains the commands needed to create that static library.  When these
 commands are executed, the variable @code{soname} contains the name of the
@@ -6988,7 +6987,7 @@ external global symbols as @code{char}.
 @end defvar
 
 @defvar no_undefined_flag
-The flag that is used by @samp{archive_cmds} in order to declare that
+The flag that is used by @samp{archive_cmds} to declare that
 there will be no unresolved symbols in the resulting shared library.
 Empty, if no such flag is required.
 @end defvar
@@ -7135,7 +7134,7 @@ libtool.
 @node Cheap tricks
 @section Cheap tricks
 
-Here are a few tricks that you can use in order to make maintainership
+Here are a few tricks that you can use to make maintainership
 easier:
 
 @itemize @bullet
