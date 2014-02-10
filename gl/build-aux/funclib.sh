@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2014-01-03.01; # UTC
+scriptversion=2014-02-10.13; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -1268,7 +1268,7 @@ func_warning ()
 # -----------------------
 # 'sort -V' is not generally available.
 # Note this deviates from the version comparison in automake
-# in that it treats 1.5 < 1.5.0, and treats 1.4.4a < 1.4-p3a
+# in that it treats 1.5 < 1.5.0, and treats 1.4-p12a < 1.4-p3a
 # but this should suffice as we won't be specifying old
 # version formats or redundant trailing .0 in bootstrap.conf.
 # If we did want full compatibility then we should probably
