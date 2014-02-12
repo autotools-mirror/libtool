@@ -8094,7 +8094,7 @@ EOF
       # whole_archive_flag_spec and hope we can get by with turning comma
       # into space.
       case $reload_cmds in
-        *\$LD\ *) wl= ;;
+        *\$LD[\ \$]*) wl= ;;
       esac
       if test -n "$convenience"; then
 	if test -n "$whole_archive_flag_spec"; then
