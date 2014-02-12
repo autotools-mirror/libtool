@@ -50,7 +50,7 @@ $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o a/liba.la a/a.lo
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o b/liba.la b/a.lo b/b.lo
 
 # Fold into convenience archive.
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libcee.la c.lo a/liba.la b/liba.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -no-undefined -o libcee.la c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ./libcee.la],
 	 [0], [ignore], [ignore])
@@ -62,7 +62,7 @@ $LIBTOOL --mode=clean rm -f libcee.la
 #        OTOH, we'd like to test the other situation, too.
 
 # Fold into static library.
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -rpath /foo -static -o libcee.la c.lo a/liba.la b/liba.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -no-undefined -rpath /foo -static -o libcee.la c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ./libcee.la],
 	 [0], [ignore], [ignore])
@@ -70,7 +70,7 @@ LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 $LIBTOOL --mode=clean rm -f libcee.la
 
 # Fold into library.
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -rpath /foo -o libcee.la c.lo a/liba.la b/liba.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -no-undefined -rpath /foo -o libcee.la c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ./libcee.la],
 	 [0], [ignore], [ignore])
