@@ -1240,7 +1240,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	  goto cleanup;
 	}
 
-      strncpy (dir, canonical, dirlen);
+      strlcpy (dir, canonical, dirlen);
       dir[dirlen] = LT_EOS_CHAR;
 
       ++base_name;

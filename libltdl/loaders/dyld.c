@@ -350,7 +350,7 @@ vm_sym (lt_user_data loader_data, lt_module module, const char *name)
 
   if (!nssym)
     {
-      strncpy (saveError, dylderror (LT__STRERROR (SYMBOL_NOT_FOUND)), 255);
+      strlcpy (saveError, dylderror (LT__STRERROR (SYMBOL_NOT_FOUND)), 255);
       saveError[255] = 0;
       if (!mh)
 	{
