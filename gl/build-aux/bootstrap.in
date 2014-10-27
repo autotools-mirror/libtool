@@ -232,7 +232,7 @@ vc_ignore=
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2014-01-27.02; # UTC
+scriptversion=2014-10-19.23; # UTC
 
 
 ## ------------------- ##
@@ -1585,8 +1585,8 @@ func_require_gnulib_submodule ()
       fi
 
       # Make sure we've checked out the correct revision of gnulib.
-      func_show_eval "$GIT submodule init" \
-          && func_show_eval "$GIT submodule update" \
+      func_show_eval "$GIT submodule init -- $gnulib_path" \
+          && func_show_eval "$GIT submodule update -- $gnulib_path" \
           ||  func_fatal_error "Unable to update gnulib submodule."
     fi
 
