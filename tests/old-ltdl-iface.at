@@ -67,7 +67,7 @@ old_LDADD = -Lltdl $(LIBLTDL)
 AT_DATA([old.c],
 [[#include <stdio.h>
 #include "ltdl.h"
-main () {
+int main () {
   putchar ('.');
   putchar (lt_dlinit () ? 'E' : '.');
   putchar (lt_dlexit () ? 'E' : '.');

@@ -133,15 +133,7 @@ AT_DATA([foo.h],
 #define HELLO_RET 0xe110
 #define FOO_RET 0xf00
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 int sub (void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 ]])
