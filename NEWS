@@ -2,6 +2,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Bug fixes:
+
+  - Installation of 'libtoolize' once again obeys '--program-prefix',
+    '--program-suffix' and '--program-transform-name' configure options.
+
 
 * Noteworthy changes in release 2.4.3 (2014-10-27) [stable]
 

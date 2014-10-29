@@ -476,7 +476,7 @@ pkgltdl_files	= COPYING.LIB \
 		  ltdl.mk \
 		  slist.c
 
-install-data-local: $(lt_Makefile_in)
+install-data-local: $(lt_Makefile_in) install-scripts-local
 	@$(NORMAL_INSTALL)
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf '$(DESTDIR)$(pkgdatadir)'/*
@@ -508,9 +508,14 @@ install-data-local: $(lt_Makefile_in)
 	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
+	chmod a+x '$(DESTDIR)$(pkgdatadir)/configure'
+
+install-scripts-local: $(lt_Makefile_in)
 ## Inline helper-scripts for installed libtoolize script
-	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
-	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
+	@p=`echo libtoolize |sed -e '$(transform)'`; \
+	echo " $(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/$$p'"; \
+	$(SCRIPT_ENV) '$(inline_source)' libtoolize > "$(DESTDIR)$(bindir)/$$p"; \
+	chmod a+x "$(DESTDIR)$(bindir)/$$p"
 
 
 ## ------------- ##
@@ -592,8 +597,9 @@ uninstall-hook:
 	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
-	@echo " rm -f '$(DESTDIR)$(bindir)/libtoolize'"; \
-	rm -f '$(DESTDIR)$(bindir)/libtoolize'
+	@p=`echo libtoolize |sed -e '$(transform)'`; \
+	echo " rm -f '$(DESTDIR)$(bindir)/$$p'"; \
+	rm -f "$(DESTDIR)$(bindir)/$$p"
 
 
 ## ----------- ##
