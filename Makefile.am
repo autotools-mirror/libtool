@@ -525,6 +525,7 @@ install-scripts-local: $(lt_Makefile_in)
 edit_readme_alpha	= $(srcdir)/$(aux_dir)/edit-readme-alpha
 gitlog_to_changelog	= $(srcdir)/$(aux_dir)/gitlog-to-changelog
 git_log_fix		= $(srcdir)/$(aux_dir)/git-log-fix
+thanks_gen		= $(srcdir)/$(aux_dir)/thanks-gen
 
 dotserial		= $(distdir)/.serial
 dotversion		= $(srcdir)/.version
@@ -532,6 +533,8 @@ tarball_version		= $(distdir)/.tarball-version
 readme			= $(distdir)/README
 changelog		= $(distdir)/ChangeLog
 changelog_old		= $(srcdir)/ChangeLog.old
+thanks			= $(distdir)/THANKS
+no_thanks		= $(srcdir)/NO-THANKS
 
 # Generate ChangeLog using git log entries for as far back as
 # they are in good shape, appending manual records from earlier.
@@ -544,7 +547,35 @@ $(changelog): FORCE
 	  cat '$(changelog_old)' >> '$@'; \
 	fi
 
-## Arrange so that .tarball-version appears only in the distribution
+# Sort in traditional ASCII order, regardless of the current locale;
+# otherwise we may get into trouble with distinct strings that the
+# current locale considers to be equal.
+ASSORT = LC_ALL=C sort
+
+# Extract all lines up to the first one starting with "##".
+prologue = perl -ne '/^\#\#/ and exit; print' $(no_thanks)
+
+# Generate THANKS using git log entries as far as possible, fixing
+# up ommisions and errors from NO-THANKS configuration.
+$(thanks): FORCE
+	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
+	  { \
+	    $(prologue); echo; \
+	    { perl -ne '/^$$/.../^$$/ and print' $(no_thanks) \
+	      | grep -v '^$$' | perl -pe 's/  +/\0/'; \
+	      {  sed -e '1,/\#\# /d' -e '/^\#\# /d' \
+	            -e 's,[	][	 ]*,	,' < $(no_thanks) \
+	          | tr '\t' '\0'; \
+	        git log --pretty=format:'%aN%x00%aE'; \
+	      } | $(ASSORT) -u; \
+	    } | $(thanks_gen) \
+	      | LC_ALL=en_US.UTF-8 sort -f; \
+	    echo; \
+	    printf ';; %s\n' 'Local Variables:' 'coding: utf-8' End:; \
+	  } > '$@'; \
+	fi
+	
+## Arrange so that .version appears only in the distribution
 ## tarball, and never in a checked-out repository.
 EXTRA_DIST += $(dotversion)
 BUILT_SOURCES += $(dotversion)
@@ -564,7 +595,7 @@ $(readme): FORCE
 
 git_commit_count = git log --pretty=oneline |wc -l |$(SED) 's|[	 ]||g'
 
-dist-hook: $(changelog) $(dotversion) $(readme)
+dist-hook: $(changelog) $(thanks) $(dotversion) $(readme)
 ## Arrange so that .tarball-version appears only in the distribution
 ## tarball, and never in a checked-out repository.
 	echo '$(VERSION)' > $(tarball_version)

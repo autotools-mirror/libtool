@@ -1,0 +1,138 @@
+These people have contributed to GNU Libtool.  Some have reported problems,
+others have contributed improvements to the documentation and actual code.
+The particular contributions are described in the version control logs and
+ChangeLog files.  If your name has been left out, if you'd rather not be
+listed, or if you'd prefer a different address be used, please send a
+note to the bug-report mailing list (as seen at end of e.g., libtool --help).
+##
+## There is no need to list here any name that appears as an Author in
+## "git log" output.  Those are automatically added when this template
+## is used to generate the THANKS file. You will still need to add
+## contributors who are not a git log Author - e.g. bug reporters.
+##
+## Folks already promoted to AUTHORS:
+##
+!Alexandre Oliva
+!Bob Friesenhahn
+!Charles Wilson
+!Gary V. Vaughan
+!Gordon Matzigkeit
+!Ossama Othman
+!Peter O'Gorman
+!Ralf Wildenhues
+!Robert Boehne
+!Scott James Remnant
+!Thomas Tanner
+##
+## Remove duplicates under alternate names, and add preferred email
+## addresses from contributors that don't match git log output here:
+##
+Akim Demaille			akim@epita.fr
+!Albert Chin
+Albert Chin-A-Young		china@thewrittenword.com
+Andreas Schwab			schwab@suse.de
+Brian Barrett			brbarret@osl.iu.edu
+!Brian W. Barret
+Bruno Haible			haible@ilog.fr
+Dalibor Topic			robilad@kaffe.org
+David Edelsohn			edelsohn@gnu.org
+DJ Delorie			dj@delorie.com
+Erez Zadok			ezk@cs.columbia.edu
+Eric Blake			ebb9@byu.net
+H.J. Lu				hjl@gnu.org
+Ian Lance Taylor		iant@google.com
+Jeff Squyres			jsquyres@cisco.com
+John David Anglin		dave.anglin@nrc.ca
+Juergen Reuter			reuter@theoc01.desy.de
+Karl Berry			karl@gnu.org
+Maciej W. Rozycki		macro@linux-mips.org
+Manfred Weichel			weichel@global.nacamar.de
+Mike Gorchak			mike@malva.ua
+Mo DeJong			mdejong@redhat.com
+Nick Hudson			skrll@netbsd.org
+Olly Betts			olly@muscat.co.uk
+Paul Eggert			eggert@cs.ucla.edu
+Pavel Roskin			proskin@gnu.org
+Peter Ekberg			peda@lysator.liu.se
+Rainer Orth			ro@TechFak.Uni-Bielefeld.de
+Robert Millan			robertmh@gnu.org
+Samuel Thibault			samuel.thibault@gnu.org
+Simon Josefsson			jas@extundo.com
+Steve Ellcey			sellcey@mips.com
+Todd Vierling			tv@netbsd.org
+Vincent Torri			vtorri@univ-evry.fr
+##
+## Add bug reporters, patch Authors you forgot to attribute at commit
+## time with 'git commit --author=...' and other non-patch contributers
+## below:
+##
+Andreas Schiffler		aschiffler@ferzkopp.net
+Brent Leback			brent.leback@st.com
+Camilo La Rota			camilo.larota@ens-lyon.fr
+Carl D. Roth			roth@cse.ucsc.edu
+Chris P. Ross			cross@eng.us.uu.net
+Christian Rössel		christian.roessel@gmx.de
+Christopher Hulbert		cchgroupmail@gmail.com
+Craig Tierney			Craig.Tierney@noaa.gov
+Dan McMahill			mcmahill@mtl.mit.edu
+Daniel Richard G.		skunk@iSKUNK.ORG
+Dave Yost			Dave@Yost.com
+Donn Washburn			n5xwb@comcast.net
+Erik van Pienbroek		erik-gnu@vanpienbroek.nl
+Ethan Mallove			ethan.mallove@sun.com
+Fred Cox			sailorfred@yahoo.com
+Jakub Bogusz			qboosh@pld-linux.org
+James Su			james.su@gmail.com
+Jay Krell			jay.krell@cornell.edu
+Jeremy C. Reed			reed@reedmedia.net
+Jim Meyering			jim@meyering.net
+Joakim Tjernlund		joakim.tjernlund@transmode.se
+Joel N. Weber II		devnull@gnu.org
+Joerg Sonnenberger		joerg@netbsd.org
+John R. Cary			cary@txcorp.com
+John Wolfe			jlw@sco.com
+Joseph Beckenbach III		jrb3@best.com
+Kenneth Albanowski		kjahds@kjahds.com
+Khem Raj			raj.khem@gmail.com
+Kurt D. Zeilenga		Kurt@OpenLDAP.Org
+Lawrence Velázquez		larryv@macports.org
+Lionel Landwerlin		llandwerlin@gmail.com
+Maciej Helminiak		dion2@wp.pl
+Mahesh Narayanamurthi		mahesh.mach@gmail.com
+Marcel Loose			loose@astron.nl
+Markus Duft			markus.duft@salomon.at
+Martin Doucha			doucha@integri.cz
+Matthijs Kooijman		matthijs@stdin.nl
+Micheal E. Faenza		mfaenza@mitre.org
+Mike Miller			mtmiller@ieee.org
+Nick Bowler			nbowler@draconx.ca
+Nix				nix@esperi.org.uk
+Olaf Lenz			olenz@fias.uni-frankfurt.de
+Ozkan Sezer			sezeroz@gmail.com
+Patrice Fromy			patrice.fromy@u-psud.fr
+Paul Biggar			paul.biggar@gmail.com
+Paul Laight			plaight@quantxautomation.co.uk
+Paul Seidler			sepek@lavabit.com
+Pavel Raiskup			praiskup@redhat.com
+Paweł Daniluk			pawel@bioexploratorium.pl
+Peter Fritzsche			peter.fritzsche@gmx.de
+Peter Jeremy			peterjeremy@optushome.com.au
+Peter Kjellerstedt		peter.kjellerstedt@axis.com
+Pádraig Brady			P@draigBrady.com
+Richard B. Kreckel		kreckel@ginac.de
+Richard Purdie			rpurdie@rpsys.net
+Robert Garron			Robert.Garron@Access3000.net
+Robert Ögren			lists@roboros.com
+Roberto Bagnara			bagnara@cs.unipr.it
+Roland Mainz			roland.mainz@nrubsig.org
+Rudolf Leitgeb			r.leitgeb@x-pin.com
+Ryan Hill			dirtyepic@gentoo.org
+Sebastian Wilhelmi		wilhelmi@ira.uka.de
+Sven Verdoolaege		skimo@liacs.nl
+Terry D. Dontje			Terry.Dontje@Sun.COM
+Tom Tromey			tromey@cygnus.com
+Ulrich Drepper			drepper@ipd.info.uni-karlsruhe.de
+Václav Zeman			vhaisman@gmail.com
+Warren Dodge			warren.l.dodge@Tektronix.com
+Xavier Pianet			xavier@xingo.com
+Юрий Андреевич Пухальский	pooh@cryptopro.ru
