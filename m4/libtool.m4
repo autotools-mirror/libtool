@@ -5015,6 +5015,9 @@ _LT_EOF
         fi
 
 	case $cc_basename in
+	tcc*)
+	  _LT_TAGVAR(export_dynamic_flag_spec, $1)='-rdynamic'
+	  ;;
 	xlf* | bgf* | bgxlf* | mpixlf*)
 	  # IBM XL Fortran 10.1 on PPC cannot create shared libs itself
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)='--whole-archive$convenience --no-whole-archive'
