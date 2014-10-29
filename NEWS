@@ -7,6 +7,14 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Installation of 'libtoolize' once again obeys '--program-prefix',
     '--program-suffix' and '--program-transform-name' configure options.
 
+** Changes in supported systems or compilers:
+
+  - Preliminary support for tcc on linux*.  Although it already worked
+    sometimes in previous releases, making sure to set LD correctly now
+    avoids mis-matching GNU ld with tcc:
+
+       ./configure CC=tcc LD=tcc
+
 
 * Noteworthy changes in release 2.4.3 (2014-10-27) [stable]
 
