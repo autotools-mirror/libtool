@@ -583,7 +583,7 @@ cos (0.0) = 1
 ** This is not GNU Hello. There is no built-in mail reader. **
 ]])
 
-prefixdir=`pwd`/_inst
+prefix=`pwd`/_inst
 ]) # _LT_SETUP
 
 
@@ -609,12 +609,12 @@ m4_define([_LT_CHECK_INSTALL],
 [LT_AT_MAKE([install])
 
 # Windows hosts search for dlls in the command path.
-PATH=$prefixdir/lib:$PATH
+PATH=$prefix/lib:$PATH
 
-LT_AT_EXEC_CHECK([$prefixdir/bin/mdemo_static], 0, [ignore], [],
-    [$prefixdir/lib/foo1.la $prefixdir/lib/libfoo2.la | $GREP '^try_iterate: '])
-LT_AT_EXEC_CHECK([$prefixdir/bin/mdemo], 0, [ignore], [],
-    [$prefixdir/lib/foo1.la $prefixdir/lib/libfoo2.la | $GREP '^try_iterate: '])
+LT_AT_EXEC_CHECK([$prefix/bin/mdemo_static], 0, [ignore], [],
+    [$prefix/lib/foo1.la $prefix/lib/libfoo2.la | $GREP '^try_iterate: '])
+LT_AT_EXEC_CHECK([$prefix/bin/mdemo], 0, [ignore], [],
+    [$prefix/lib/foo1.la $prefix/lib/libfoo2.la | $GREP '^try_iterate: '])
 ])
 
 
@@ -733,18 +733,18 @@ AT_CHECK([cmp "$before" "$after"], 0, [ignore])
 
 # Running $MAKE install
 # Libtool does not create these directories
-$lt_INSTALL -d "$prefixdir/bin"
-$lt_INSTALL -d "$prefixdir/include"
-$lt_INSTALL -d "$prefixdir/lib"
+$lt_INSTALL -d "$prefix/bin"
+$lt_INSTALL -d "$prefix/include"
+$lt_INSTALL -d "$prefix/lib"
 
 sleep 1 # for MSYS
 ls -l . "$objdir" | $EGREP -v '(^total|testsuite.log$)' > "$before"
-ls -lR "$prefixdir" | $EGREP -v '(^total|testsuite.log$)' >> "$before"
+ls -lR "$prefix" | $EGREP -v '(^total|testsuite.log$)' >> "$before"
 force_dry_run=:
 LT_AT_MAKE([install])
 
 ls -l . "$objdir" | $EGREP -v '(^total|testsuite.log$)' > "$after"
-ls -lR "$prefixdir" | $EGREP -v '(^total|testsuite.log$)' >> "$after"
+ls -lR "$prefix" | $EGREP -v '(^total|testsuite.log$)' >> "$after"
 AT_CHECK([cmp "$before" "$after"], 0, [ignore])
 
 # Now really install
@@ -753,15 +753,15 @@ LT_AT_MAKE([install])
 
 # Running $MAKE uninstall
 # Libtool does not uninstall the programs, remove them first
-rm -f "$prefixdir/bin/mdemo$EXEEXT" "$prefixdir/bin/mdemo_static$EXEEXT"
+rm -f "$prefix/bin/mdemo$EXEEXT" "$prefix/bin/mdemo_static$EXEEXT"
 
 sleep 1 # for MSYS
 ls -l . "$objdir" | $EGREP -v '(^total|testsuite.log$)' > "$before"
-ls -lR "$prefixdir" | $EGREP -v '(^total|testsuite.log$)' >> "$before"
+ls -lR "$prefix" | $EGREP -v '(^total|testsuite.log$)' >> "$before"
 force_dry_run=:
 LT_AT_MAKE([uninstall])
 ls -l . "$objdir" | $EGREP -v '(^total|testsuite.log$)' > "$after"
-ls -lR "$prefixdir" | $EGREP -v '(^total|testsuite.log$)' >> "$after"
+ls -lR "$prefix" | $EGREP -v '(^total|testsuite.log$)' >> "$after"
 AT_CHECK([cmp "$before" "$after"], 0, [ignore])
 
 # Now really uninstall

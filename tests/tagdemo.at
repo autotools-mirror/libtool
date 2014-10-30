@@ -327,7 +327,7 @@ barbaz::baz is ok!
 convenience is ok!
 ]])
 
-prefixdir=`pwd`/_inst
+prefix=`pwd`/_inst
 ]) # _LT_SETUP
 
 

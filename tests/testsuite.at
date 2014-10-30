@@ -177,7 +177,8 @@ AT_KEYWORDS([autoconf automake])
 # additional OPTIONS.
 m4_define([LT_AT_CONFIGURE],
 [AT_CHECK([: ${CONFIG_SHELL=/bin/sh}; export CONFIG_SHELL; ]dnl
-	  [$CONFIG_SHELL m4_default([$2], [./configure]) $configure_options $1],
+	  [$CONFIG_SHELL m4_default([$2], [./configure]) $configure_options ]dnl
+          [--prefix="$prefix" --exec-prefix="$prefix" --bindir="$prefix/bin" --libdir="$prefix/lib" $1],
 	  [0], [ignore], [ignore])
 ])
 
@@ -228,8 +229,7 @@ m4_define([LT_AT_CHECK],
 # Bootstrap and configure the project, and check each GREP-EXPRESSION
 # works on the resulting libtool script.
 m4_define([LT_AT_CHECK_CONFIG],
-[LT_AT_BOOTSTRAP([], [-I m4], [], [--add-missing], [],
-        [--prefix="$prefixdir" $1], [ignore])
+[LT_AT_BOOTSTRAP([], [-I m4], [], [--add-missing], [], [$1], [ignore])
 m4_if([$#], 0, [],
       [$#], 1, [], [$0_(m4_shift($@))])
 ])
@@ -259,7 +259,7 @@ m4_if([$#], 1, [], [$0(m4_shift($@))])
 m4_define([LT_AT_CHECK_UNINSTALL],
 [LT_AT_MAKE([uninstall])
 
-leftovers=`find $prefixdir ! -type d ! -name '.*' -print`
+leftovers=`find $prefix ! -type d ! -name '.*' -print`
 AT_CHECK([test -z "$leftovers"])
 ])
 

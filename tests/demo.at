@@ -347,7 +347,7 @@ cos (0.0) = 1
 ** This is not GNU Hello. There is no built-in mail reader. **
 ]])
 
-prefixdir=`pwd`/_inst
+prefix=`pwd`/_inst
 ]) # _LT_DEMO_SETUP
 
 
@@ -367,11 +367,11 @@ AT_CHECK([./helldl$EXEEXT |
 # Run the make install rule, and check that installed binaries work too.
 m4_define([_LT_CHECK_INSTALL],
 [# Windows hosts search for dlls in the command path.
-PATH=$prefixdir/lib:$PATH
+PATH=$prefix/lib:$PATH
 
 LT_AT_CHECK_EXECUTE([install],
-        [$prefixdir/bin/hell_static], [$prefixdir/bin/hell])
-AT_CHECK([$prefixdir/bin/helldl$EXEEXT |
+        [$prefix/bin/hell_static], [$prefix/bin/hell])
+AT_CHECK([$prefix/bin/helldl$EXEEXT |
     $EGREP '(Welcome to .*GNU Hell|unsupported)'], 0, [ignore])
 ])
 

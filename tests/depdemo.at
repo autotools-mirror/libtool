@@ -254,7 +254,7 @@ libm cos (0.0) = 1
 var_l1(4) + var_l2(6) + var_l4(9) == 19
 ]])
 
-prefixdir=`pwd`/_inst
+prefix=`pwd`/_inst
 ]) # _LT_SETUP
 
 
@@ -272,9 +272,9 @@ m4_define([_LT_CHECK_EXECUTE],
 # Run the make install rule, and check that installed binaries work too.
 m4_define([_LT_CHECK_INSTALL],
 [# Windows hosts search for dlls in the command path.
-PATH=$prefixdir/lib:$PATH
+PATH=$prefix/lib:$PATH
 LT_AT_CHECK_EXECUTE([install],
-        [$prefixdir/bin/depdemo_static], [$prefixdir/bin/depdemo])
+        [$prefix/bin/depdemo_static], [$prefix/bin/depdemo])
 ])
 
 
