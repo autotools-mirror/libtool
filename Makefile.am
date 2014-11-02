@@ -564,9 +564,9 @@ $(thanks): FORCE
 	    { perl -ne '/^$$/.../^$$/ and print' $(no_thanks) \
 	      | grep -v '^$$' | perl -pe 's/  +/\0/'; \
 	      {  sed -e '1,/\#\# /d' -e '/^\#\# /d' \
-	            -e 's,[	][	 ]*,	,' < $(no_thanks) \
-	          | tr '\t' '\0'; \
-	        git log --pretty=format:'%aN%x00%aE'; \
+		    -e 's|[	][	 ]*|	|' < $(no_thanks) \
+		  | tr '\t' '\0'; \
+		git log --pretty=format:'%aN%x00%aE'; \
 	      } | $(ASSORT) -u; \
 	    } | $(thanks_gen) \
 	      | LC_ALL=en_US.UTF-8 sort -f; \
@@ -574,7 +574,7 @@ $(thanks): FORCE
 	    printf ';; %s\n' 'Local Variables:' 'coding: utf-8' End:; \
 	  } > '$@'; \
 	fi
-	
+
 ## Arrange so that .version appears only in the distribution
 ## tarball, and never in a checked-out repository.
 EXTRA_DIST += $(dotversion)
