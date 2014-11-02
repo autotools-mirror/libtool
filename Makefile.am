@@ -352,10 +352,10 @@ lt_aclocal_m4_deps = \
 	$(lt_obsolete_m4) \
 	$(ltversion_m4) \
 	$(libtool_m4) \
-	$(srcdir)/$(macro_dir)/ltoptions.m4 \
+	$(srcdir)/$(macro_dir)/ltargz.m4 \
 	$(srcdir)/$(macro_dir)/ltdl.m4 \
+	$(srcdir)/$(macro_dir)/ltoptions.m4 \
 	$(srcdir)/$(macro_dir)/ltsugar.m4 \
-	$(srcdir)/$(macro_dir)/argz.m4 \
 	$(srcdir)/$(ltdl_dir)/configure.ac
 
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
@@ -435,7 +435,7 @@ pkgaux_data_files	= $(pkgaux_parent_files)
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-pkgmacro_files	= argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 \
+pkgmacro_files	= libtool.m4 ltargz.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 \
 		  ltversion.m4 lt~obsolete.m4
 
 ## These are installed as a subdirectory of pkgdatadir so that
@@ -446,11 +446,10 @@ pkgltdl_files	= COPYING.LIB \
 		  README \
 		  configure.ac \
 		  aclocal.m4 \
-		  argz_.h \
-		  argz.c \
 		  config-h.in \
 		  configure \
 		  libltdl/lt__alloc.h \
+		  libltdl/lt__argz_.h \
 		  libltdl/lt__dirent.h \
 		  libltdl/lt__glibc.h \
 		  libltdl/lt__private.h \
@@ -467,6 +466,7 @@ pkgltdl_files	= COPYING.LIB \
 		  loaders/preopen.c \
 		  loaders/shl_load.c \
 		  lt__alloc.c \
+		  lt__argz.c \
 		  lt__dirent.c \
 		  lt__strl.c \
 		  lt_dlloader.c \

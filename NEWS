@@ -2,10 +2,19 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - Libltdl maintains its own fork of argz, with macros and files in
+    the LT_ and lt__ namespaces (resp.) where they cannot clash with
+    client projects' use of gnulib argz.
+
 ** Bug fixes:
 
   - Installation of 'libtoolize' once again obeys '--program-prefix',
     '--program-suffix' and '--program-transform-name' configure options.
+  - `libtoolize` doesn't remove any files that it can't reinstall,
+    including old versions of the snippet directory, and gnulib's
+    version of the argz module and supporting files.
 
 ** Changes in supported systems or compilers:
 

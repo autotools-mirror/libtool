@@ -34,8 +34,9 @@
 # -I$(srcdir) is needed for user that built libltdl with a sub-Automake
 # (not as a sub-package!) using 'nostdinc':
 AM_CPPFLAGS	       += -DLT_CONFIG_H='<$(LT_CONFIG_H)>' \
-			  -DLTDL -I. -I$(srcdir) -Ilibltdl \
-			  -I$(srcdir)/libltdl -I$(srcdir)/libltdl/libltdl
+			  -DLTDL -I. -I$(srcdir) \
+			  -Ilibltdl  -I$(srcdir)/libltdl \
+			  -Ilibltdl/libltdl -I$(srcdir)/libltdl/libltdl
 AM_LDFLAGS	       += -no-undefined
 LTDL_VERSION_INFO	= -version-info 10:1:3
 
@@ -133,16 +134,16 @@ EXTRA_DIST	       += libltdl/COPYING.LIB \
 ## Gnulib Makefile.am snippets ##
 ## --------------------------- ##
 
-BUILT_SOURCES	+= libltdl/$(ARGZ_H)
-EXTRA_DIST	+= libltdl/argz_.h \
-		   libltdl/argz.c
+BUILT_SOURCES	+= libltdl/libltdl/$(LT_ARGZ_H)
+EXTRA_DIST	+= libltdl/libltdl/lt__argz_.h \
+		   libltdl/lt__argz.c
 
 # We need the following in order to create an <argz.h> when the system
 # doesn't have one that works with the given compiler.
-all-local $(lib_OBJECTS): libltdl/$(ARGZ_H)
-libltdl/argz.h: libltdl/argz_.h
-	$(AM_V_at)$(mkinstalldirs) . libltdl/
-	$(AM_V_GEN)cp $(srcdir)/libltdl/argz_.h $@-t
+all-local $(lib_OBJECTS): libltdl/libltdl/$(LT_ARGZ_H)
+libltdl/libltdl/lt__argz.h: libltdl/libltdl/lt__argz_.h
+	$(AM_V_at)$(mkinstalldirs) . libltdl/libltdl
+	$(AM_V_GEN)cp $(srcdir)/libltdl/libltdl/lt__argz_.h $@-t
 	$(AM_V_at)mv $@-t $@
-MOSTLYCLEANFILES += libltdl/argz.h \
-		    libltdl/argz.h-t
+MOSTLYCLEANFILES += libltdl/libltdl/lt__argz.h \
+		    libltdl/libltdl/lt__argz.h-t

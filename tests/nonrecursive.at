@@ -84,7 +84,7 @@ LT_AT_LIBTOOLIZE([--ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 # Support vanilla autoconf-2.59 & automake-1.9.6
-for file in argz.c lt__dirent.c lt__strl.c; do
+for file in lt__argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
@@ -108,7 +108,7 @@ LT_AT_LIBTOOLIZE([--copy --ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 # Support vanilla autoconf-2.59 & automake-1.9.6
-for file in argz.c lt__dirent.c lt__strl.c; do
+for file in lt__argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
@@ -134,7 +134,7 @@ LT_AT_LIBTOOLIZE([--copy --ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 # Support vanilla autoconf-2.59 & automake-1.9.6
-for file in argz.c lt__dirent.c lt__strl.c; do
+for file in lt__argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 

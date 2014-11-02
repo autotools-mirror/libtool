@@ -1,6 +1,6 @@
 /COPYING.LIB
 /Makefile.am
-/argz.h
+/libltdl/lt__argz.h
 /libgnu
 /dummy.c
 /gnulib.mk
