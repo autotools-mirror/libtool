@@ -515,6 +515,8 @@ install-scripts-local: $(lt_Makefile_in)
 ## Inline helper-scripts for installed libtoolize script
 	@p=`echo libtoolize |sed -e '$(transform)'`; \
 	echo " $(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/$$p'"; \
+	d=`echo "$(DESTDIR)$(bindir)/$$p" |$(SED) 's|[^/]*$$||'`; \
+	test -d "$$d" || $(mkinstalldirs) "$$d"; \
 	$(SCRIPT_ENV) '$(inline_source)' libtoolize > "$(DESTDIR)$(bindir)/$$p"; \
 	chmod a+x "$(DESTDIR)$(bindir)/$$p"
 
