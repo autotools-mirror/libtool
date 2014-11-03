@@ -510,6 +510,7 @@ install-data-local: $(lt_Makefile_in) install-scripts-local
 	done
 	chmod a+x '$(DESTDIR)$(pkgdatadir)/configure'
 
+.PHONY: install-scripts-local
 install-scripts-local: $(lt_Makefile_in)
 ## Inline helper-scripts for installed libtoolize script
 	@p=`echo libtoolize |sed -e '$(transform)'`; \
@@ -790,10 +791,12 @@ installcheck-local: $(testsuite_deps)
 	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITEFLAGS) \
 	  AUTOTEST_PATH='$(exec_prefix)/bin'
 
+.PHONY: check-noninteractive-old
 check-noninteractive-old:
 	$(AM_V_at)'$(MAKE)' $(AM_MAKEFLAGS) check-TESTS TESTS='$(TESTS)'
 
 # Run only noninteractive parts of the new testsuite.
+.PHONY: check-noninteractive-new
 check-noninteractive-new: $(testsuite_deps_uninstalled)
 	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
@@ -802,6 +805,7 @@ check-noninteractive-new: $(testsuite_deps_uninstalled)
 	  $(TESTSUITEFLAGS)
 
 # Run only interactive parts of the new testsuite.
+.PHONY: check-interactive
 check-interactive: $(testsuite_deps_uninstalled)
 	$(AM_V_at)$(CD_TESTDIR); \
 	CONFIG_SHELL='$(SHELL)' '$(SHELL)' "$$abs_srcdir/$(TESTSUITE)" \
@@ -809,6 +813,7 @@ check-interactive: $(testsuite_deps_uninstalled)
 	  -k interactive -k recursive INNER_TESTSUITEFLAGS=',interactive' \
 	  $(TESTSUITEFLAGS)
 
+.PHONY: check-noninteractive
 check-noninteractive: check-noninteractive-old check-noninteractive-new
 
 # We need to remove any file droppings left behind by testsuite
