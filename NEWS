@@ -24,6 +24,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
        ./configure CC=tcc LD=tcc
 
+  - Added -os2dllname option to work around 8 character base name
+    limit on OS/2.  The option has no effect on other systems.
+
 
 * Noteworthy changes in release 2.4.3 (2014-10-27) [stable]
 

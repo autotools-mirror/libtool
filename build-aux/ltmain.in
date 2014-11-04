@@ -1818,7 +1818,8 @@ The following components of LINK-COMMAND are treated specially:
   -no-install       link a not-installable executable
   -no-undefined     declare that a library does not refer to external symbols
   -o OUTPUT-FILE    create OUTPUT-FILE from the specified objects
-  -objectlist FILE  Use a list of object files found in FILE to specify objects
+  -objectlist FILE  use a list of object files found in FILE to specify objects
+  -os2dllname NAME  force a short DLL name on OS/2 (no effect on other OSes)
   -precious-files-regex REGEX
                     don't remove output files matching REGEX
   -release RELEASE  specify package release information
@@ -4606,6 +4607,7 @@ func_mode_link ()
     module=no
     no_install=no
     objs=
+    os2dllname=
     non_pic_objects=
     precious_files_regex=
     prefer_static_libs=no
@@ -4860,6 +4862,11 @@ func_mode_link ()
 	    func_fatal_error "link input file '$arg' does not exist"
 	  fi
 	  arg=$save_arg
+	  prev=
+	  continue
+	  ;;
+	os2dllname)
+	  os2dllname=$arg
 	  prev=
 	  continue
 	  ;;
@@ -5169,6 +5176,11 @@ func_mode_link ()
 
       -objectlist)
 	prev=objectlist
+	continue
+	;;
+
+      -os2dllname)
+	prev=os2dllname
 	continue
 	;;
 

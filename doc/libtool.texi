@@ -1531,6 +1531,10 @@ Create @var{output-file} from the specified objects and libraries.
 @item -objectlist @var{file}
 Use a list of object files found in @var{file} to specify objects.
 
+@item -os2dllname @var{name}
+Use this to change the DLL base name on OS/2 to @var{name}, to keep
+within the 8 character base name limit on this system.
+
 @item -precious-files-regex @var{regex}
 Prevents removal of files from the temporary output directory whose
 names match this regular expression.  You might specify @samp{\.bbg?$}

@@ -2811,7 +2811,7 @@ os2*)
   shrext_cmds=.dll
   need_lib_prefix=no
   # OS/2 can only load a DLL with a base name of 8 characters or less.
-  soname_spec='`eval $ECHO $libname | cut -b -8 | tr . _`$shared_ext'
+  soname_spec='`test -n "$os2dllname" && libname=$os2dllname; $ECHO $libname | cut -b -8 | tr . _`$shared_ext'
   library_names_spec='${libname}_dll.$libext'
   dynamic_linker='OS/2 ld.exe'
   shlibpath_var=BEGINLIBPATH
