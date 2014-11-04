@@ -2810,9 +2810,25 @@ os2*)
   libname_spec='$name'
   shrext_cmds=.dll
   need_lib_prefix=no
-  library_names_spec='$libname$shared_ext $libname.a'
+  # OS/2 can only load a DLL with a base name of 8 characters or less.
+  soname_spec='`eval $ECHO $libname | cut -b -8 | tr . _`$shared_ext'
+  library_names_spec='${libname}_dll.$libext'
   dynamic_linker='OS/2 ld.exe'
-  shlibpath_var=LIBPATH
+  shlibpath_var=BEGINLIBPATH
+  sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
+  sys_lib_dlsearch_path_spec=$sys_lib_search_path_spec
+  postinstall_cmds='base_file=`basename \$file`~
+    dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; $ECHO \$dlname'\''`~
+    dldir=$destdir/`dirname \$dlpath`~
+    test -d \$dldir || mkdir -p \$dldir~
+    $install_prog $dir/$dlname \$dldir/$dlname~
+    chmod a+x \$dldir/$dlname~
+    if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
+      eval '\''$striplib \$dldir/$dlname'\'' || exit \$?;
+    fi'
+  postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; $ECHO \$dlname'\''`~
+    dlpath=$dir/\$dldll~
+    $RM \$dlpath'
   ;;
 
 osf3* | osf4* | osf5*)
@@ -4960,6 +4976,22 @@ _LT_EOF
       _LT_TAGVAR(link_all_deplibs, $1)=yes
       ;;
 
+    os2*)
+      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+      _LT_TAGVAR(hardcode_minus_L, $1)=yes
+      _LT_TAGVAR(allow_undefined_flag, $1)=unsupported
+      shrext_cmds=.dll
+      _LT_TAGVAR(archive_cmds, $1)='$ECHO "LIBRARY ${soname%$shared_ext} INITINSTANCE TERMINSTANCE" > $output_objdir/$libname.def~
+	$ECHO "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~
+	$ECHO "DATA MULTIPLE NONSHARED" >> $output_objdir/$libname.def~
+	$ECHO EXPORTS >> $output_objdir/$libname.def~
+	emxexp $libobjs | $SED /"_DLL_InitTerm"/d >> $output_objdir/$libname.def~
+	$CC -Zdll -Zcrtdll -o $output_objdir/$soname $libobjs $deplibs $compiler_flags $output_objdir/$libname.def~
+	emximp -o $lib $output_objdir/$libname.def'
+      _LT_TAGVAR(old_archive_From_new_cmds, $1)='emximp -o $output_objdir/${libname}_dll.a $output_objdir/$libname.def'
+      _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
+      ;;
+
     interix[[3-9]]*)
       _LT_TAGVAR(hardcode_direct, $1)=no
       _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
@@ -5591,8 +5623,16 @@ _LT_EOF
       _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
       _LT_TAGVAR(hardcode_minus_L, $1)=yes
       _LT_TAGVAR(allow_undefined_flag, $1)=unsupported
-      _LT_TAGVAR(archive_cmds, $1)='$ECHO "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$ECHO "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~echo DATA >> $output_objdir/$libname.def~echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
-      _LT_TAGVAR(old_archive_from_new_cmds, $1)='emximp -o $output_objdir/$libname.a $output_objdir/$libname.def'
+      shrext_cmds=.dll
+      _LT_TAGVAR(archive_cmds, $1)='$ECHO "LIBRARY ${soname%$shared_ext} INITINSTANCE TERMINSTANCE" > $output_objdir/$libname.def~
+	$ECHO "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~
+	$ECHO "DATA MULTIPLE NONSHARED" >> $output_objdir/$libname.def~
+	$ECHO EXPORTS >> $output_objdir/$libname.def~
+	emxexp $libobjs | $SED /"_DLL_InitTerm"/d >> $output_objdir/$libname.def~
+	$CC -Zdll -Zcrtdll -o $output_objdir/$soname $libobjs $deplibs $compiler_flags $output_objdir/$libname.def~
+	emximp -o $lib $output_objdir/$libname.def'
+      _LT_TAGVAR(old_archive_From_new_cmds, $1)='emximp -o $output_objdir/${libname}_dll.a $output_objdir/$libname.def'
+      _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
       ;;
 
     osf3*)
@@ -6383,6 +6423,22 @@ if test yes != "$_lt_caught_CXX_error"; then
 	;;
       darwin* | rhapsody*)
         _LT_DARWIN_LINKER_FEATURES($1)
+	;;
+
+      os2*)
+	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+	_LT_TAGVAR(hardcode_minus_L, $1)=yes
+	_LT_TAGVAR(allow_undefined_flag, $1)=unsupported
+	shrext_cmds=.dll
+	_LT_TAGVAR(archive_cmds, $1)='$ECHO "LIBRARY ${soname%$shared_ext} INITINSTANCE TERMINSTANCE" > $output_objdir/$libname.def~
+	  $ECHO "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~
+	  $ECHO "DATA MULTIPLE NONSHARED" >> $output_objdir/$libname.def~
+	  $ECHO EXPORTS >> $output_objdir/$libname.def~
+	  emxexp $libobjs | $SED /"_DLL_InitTerm"/d >> $output_objdir/$libname.def~
+	  $CC -Zdll -Zcrtdll -o $output_objdir/$soname $libobjs $deplibs $compiler_flags $output_objdir/$libname.def~
+	  emximp -o $lib $output_objdir/$libname.def'
+	_LT_TAGVAR(old_archive_From_new_cmds, $1)='emximp -o $output_objdir/${libname}_dll.a $output_objdir/$libname.def'
+	_LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
 	;;
 
       dgux*)

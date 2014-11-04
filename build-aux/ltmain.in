@@ -2400,6 +2400,13 @@ func_mode_install ()
 	      ;;
 	    esac
 	    ;;
+	  os2*)
+	    case $realname in
+	    *_dll.a)
+	      tstripme=
+	      ;;
+	    esac
+	    ;;
 	  esac
 	  if test -n "$tstripme" && test -n "$striplib"; then
 	    func_show_eval "$striplib $destdir/$realname" 'exit $?'
