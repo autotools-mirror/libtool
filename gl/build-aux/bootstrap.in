@@ -232,7 +232,7 @@ vc_ignore=
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2014-10-19.23; # UTC
+scriptversion=2014-11-04.13; # UTC
 
 
 ## ------------------- ##
@@ -1215,7 +1215,7 @@ func_require_buildreq_patch ()
       # The ugly find invocation is necessary to exit with non-zero
       # status for old find binaries that don't support -exec fully.
       if test ! -d "$local_gl_dir" \
-          || find "$local_gl_dir" -name *.diff -exec false {} \; ; then :
+          || find "$local_gl_dir" -name "*.diff" -exec false {} \; ; then :
       else
           func_append buildreq 'patch - http://www.gnu.org/s/patch
 '
@@ -1690,6 +1690,9 @@ func_require_libtoolize ()
       func_find_tool LIBTOOLIZE libtoolize glibtoolize
     }
 
+    test -n "$LIBTOOLIZE" || func_fatal_error "\
+Please install GNU Libtool, or 'export LIBTOOLIZE=/path/to/libtoolize'."
+
     func_verbose "export LIBTOOLIZE='$LIBTOOLIZE'"
 
     # Make sure the search result is visible to subshells
@@ -1926,6 +1929,9 @@ func_require_patch ()
       # than the vendor patch.
       func_find_tool PATCH gpatch patch
     }
+
+    test -n "$PATCH" || func_fatal_error "\
+Please install GNU Patch, or 'export PATCH=/path/to/gnu/patch'."
 
     func_verbose "export PATCH='$PATCH'"
 
@@ -2563,6 +2569,9 @@ func_update_po_files ()
 
     # Find sha1sum, named gsha1sum on MacPorts, and shasum on MacOS 10.6+.
     func_find_tool SHA1SUM sha1sum gsha1sum shasum sha1
+
+    test -n "$SHA1SUM" || func_fatal_error "\
+Please install GNU Coreutils, or 'export SHA1SUM=/path/to/sha1sum'."
 
     _G_langs=`cd $_G_ref_po_dir && echo *.po|$SED 's|\.po||g'`
     test '*' = "$_G_langs" && _G_langs=x
