@@ -3452,6 +3452,9 @@ sysv4 | sysv4.3*)
 tpf*)
   lt_cv_deplibs_check_method=pass_all
   ;;
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
 esac
 ])
 
