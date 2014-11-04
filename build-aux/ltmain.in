@@ -3249,7 +3249,7 @@ func_extract_archives ()
 	      $RM "unfat-$$/$darwin_base_archive-$darwin_arch/$darwin_base_archive"
 	    done # $darwin_arches
             ## Okay now we've a bunch of thin objects, gotta fatten them up :)
-	    darwin_filelist=`find unfat-$$ -type f -name \*.o -print -o -name \*.lo -print | $SED -e "$basename" | sort -u`
+	    darwin_filelist=`find unfat-$$ -type f -name \*.o -print -o -name \*.lo -print | $SED -e "$sed_basename" | sort -u`
 	    darwin_file=
 	    darwin_files=
 	    for darwin_file in $darwin_filelist; do
