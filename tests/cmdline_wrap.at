@@ -28,7 +28,7 @@
 AT_SETUP([Run tests with low max_cmd_len])
 AT_KEYWORDS([recursive expensive])
 dnl If we already have failures, then reruns will fail too!
-fail_list=`for f in ?/fail ??/fail ???/fail ????/fail; do test -f $f && echo $f; done`
+fail_list=`for f in ?/fail ??/fail ???/fail ????/fail; do test -f "$f" && echo "$f"; done`
 echo "DEBUG: fail_list='$fail_list'"
 AT_CHECK([test -z "$fail_list" || (exit 77)])
 m4_ifdef([AT_CAPTURE_FILE],
