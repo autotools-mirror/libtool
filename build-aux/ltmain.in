@@ -5328,6 +5328,25 @@ func_mode_link ()
         continue
         ;;
 
+      -Z*)
+        if test os2 = "`expr $host : '.*\(os2\)'`"; then
+          # OS/2 uses -Zxxx to specify OS/2-specific options
+	  compiler_flags="$compiler_flags $arg"
+	  func_append compile_command " $arg"
+	  func_append finalize_command " $arg"
+	  case $arg in
+	  -Zlinker | -Zstack)
+	    prev=xcompiler
+	    ;;
+	  esac
+	  continue
+        else
+	  # Otherwise treat like 'Some other compiler flag' below
+	  func_quote_for_eval "$arg"
+	  arg=$func_quote_for_eval_result
+        fi
+	;;
+
       # Some other compiler flag.
       -* | +*)
         func_quote_for_eval "$arg"
