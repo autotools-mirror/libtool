@@ -604,7 +604,7 @@ New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
 * If you configure libtool with --disable-shared (or if libtool does not
   support shared libraries on your platform) trying to build a library using
   '-shared' is a fatal error.
-* New link mode option '-weak' tells libtool when not to propogate dependency
+* New link mode option '-weak' tells libtool when not to propagate dependency
   libraries from dlpreopened modules.
 * libtoolize installs libtool.m4, (ltdl.m4 if used,) and various supporting
   m4 definitions to AC_CONFIG_MACRO_DIR.
