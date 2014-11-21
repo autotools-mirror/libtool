@@ -129,10 +129,12 @@ LT_AT_TAG([CXX])
 AT_KEYWORDS([libtool])
 
 noskip=:
+withundef=:
 # Mac OS X.
 # The linker has issues with this test.
 case $host in
 *-darwin*) noskip=false ;;
+*-aix*) withundef=false ;;
 esac
 
 
@@ -243,7 +245,7 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXE
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main], [ignore])
 # lib convenience
-if $noskip; then
+if $noskip && $withundef; then
   AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo],
 	   [0], [ignore], [ignore])
   AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la lib/liba.la],
@@ -254,11 +256,14 @@ fi
 # both installed
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la lib/a.lo -rpath /foo],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar],
-	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la lib/liba.la],
-	 [0], [ignore], [ignore])
-LT_AT_EXEC_CHECK([./sub/main])
+if $withundef; then
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar],
+	   [0], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la lib/liba.la],
+	   [0], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./sub/main])
+fi
+
 # both convenience, libb depending on liba
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la lib/a.lo],
 	 [0], [ignore], [ignore])
