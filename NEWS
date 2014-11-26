@@ -12,9 +12,20 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Installation of 'libtoolize' once again obeys '--program-prefix',
     '--program-suffix' and '--program-transform-name' configure options.
+
   - `libtoolize` doesn't remove any files that it can't reinstall,
     including old versions of the snippet directory, and gnulib's
     version of the argz module and supporting files.
+
+** Important incompatible changes:
+
+  - LT_LIB_DLLOAD no longer prepends -ldl or -ldld to LIBS, causing
+    duplicate occurrences in libltdl link lines.  If you need to
+    add a library for dlopen() or shl_load() in your Makefile, then
+    use $(LIBADD_DLOPEN) or $(LIBADD_SHL_LOAD) respectively.  If you
+    are using libltdl, this all happens automatically, and the only
+    difference you'll see is no more duplicated library names in the
+    verbose link line.
 
 ** Changes in supported systems or compilers:
 
