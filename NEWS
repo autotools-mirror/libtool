@@ -17,6 +17,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     including old versions of the snippet directory, and gnulib's
     version of the argz module and supporting files.
 
+  - LT_FUNC_DLYSM_USCORE now works correctly on systems that don't
+    support self dlopen()ing.
+
 ** Important incompatible changes:
 
   - LT_LIB_DLLOAD no longer prepends -ldl or -ldld to LIBS, causing
