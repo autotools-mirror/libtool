@@ -817,7 +817,7 @@ _LT_EOF
 
       # ltfn_module_cmds module_cmds
       # Execute tilde-delimited MODULE_CMDS with environment primed for
-      # ${module_cmds} or ${archive_cmds} type content.
+      # $module_cmds or $archive_cmds type content.
       ltfn_module_cmds ()
       {( # subshell avoids polluting parent global environment
           module_cmds_save_ifs=$IFS; IFS='~'
