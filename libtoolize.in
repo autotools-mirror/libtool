@@ -392,11 +392,7 @@ func_copy ()
 
     # Filters always take priority.
     if test -n "$my_filter"; then
-      if $opt_dry_run || {
-          ( umask 0
-            $SED -e "$my_filter" "$my_srcfile" > "$my_destfile"
-          ) >/dev/null 2>&1
-        }
+      if $opt_dry_run || $SED -e "$my_filter" "$my_srcfile" > "$my_destfile" 2>/dev/null
       then
         func_notquiet_once "$my_msg_var"
         if $opt_verbose; then
@@ -422,11 +418,7 @@ func_copy ()
     my_copy_msg="$my_copy_type file '$my_destfile'"
     $opt_verbose && my_copy_msg="$my_copycmd $my_srcfile $my_destdir"
 
-    if $opt_dry_run || {
-        ( umask 0
-          $my_copycmd "$my_srcfile" "$my_destfile"
-        ) >/dev/null 2>&1
-      }
+    if $opt_dry_run || $my_copycmd "$my_srcfile" "$my_destfile" 2>/dev/null
     then
       func_notquiet_hdr "$my_msg_var" "$my_copy_msg"
     else
