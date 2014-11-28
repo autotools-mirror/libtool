@@ -6990,6 +6990,11 @@ func_mode_link ()
 	  versuffix=.$current
 	  ;;
 
+	sco)
+	  major=.$current
+	  versuffix=.$current
+	  ;;
+
 	sunos)
 	  major=.$current
 	  versuffix=.$current.$revision
