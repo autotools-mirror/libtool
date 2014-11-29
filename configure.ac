@@ -159,6 +159,9 @@ LT_LANG(Windows Resource)
 AC_SUBST([to_host_file_cmd])dnl
 AC_SUBST([to_tool_file_cmd])dnl
 
+# Propagate --with-aix-soname option to the testsuite.
+AC_SUBST([with_aix_soname])dnl
+
 ## ---------------------- ##
 ## Gnulib initialisation. ##
 ## ---------------------- ##

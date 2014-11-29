@@ -44,6 +44,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Support for DLL versioning, -export-symbols and -export-symbols-regex
     on OS/2.
 
+  - Support filename-based shared library versioning on AIX. See manual
+    for details.
+
 
 * Noteworthy changes in release 2.4.3 (2014-10-27) [stable]
 

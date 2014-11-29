@@ -569,6 +569,11 @@ if test "$libltdl_cv_shrext" != "$libltdl_cv_shlibext"; then
   AC_DEFINE_UNQUOTED([LT_SHARED_EXT], ["$libltdl_cv_shrext"],
     [Define to the shared library suffix, say, ".dylib".])
 fi
+if test -n "$shared_archive_member_spec"; then
+  m4_pattern_allow([LT_SHARED_LIB_MEMBER])dnl
+  AC_DEFINE_UNQUOTED([LT_SHARED_LIB_MEMBER], ["($shared_archive_member_spec.o)"],
+    [Define to the shared archive member specification, say "(shr.o)".])
+fi
 ])# LT_SYS_MODULE_EXT
 
 # Old name:

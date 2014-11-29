@@ -2189,6 +2189,35 @@ in link mode from the package @code{Makefile}.  Naturally, if you pass
 @option{-no-undefined}, you must ensure that all the library symbols
 @strong{really are} defined at link time!
 
+@item aix-soname=aix
+@itemx aix-soname=svr4
+@itemx aix-soname=both
+Enable the @option{--with-aix-soname} to @command{configure}, which the
+user can pass to override the given default.
+
+By default (and @strong{always} in releases prior to 2.4.4), Libtool always
+behaves as if @code{aix-soname=aix} is given, with no @command{configure}
+option for the user to override. Specifically, when the @option{-brtl} linker
+flag is seen in @code{LDFLAGS} at build-time, static archives are built from
+static objects only, otherwise, traditional AIX shared library archives of
+shared objects using in-archive versioning are built (with the @code{.a} file
+extension!). Similarly, with @option{-brtl} in @code{LDFLAGS}, libtool
+shared archives are built from shared objects, without any filename-based
+versioning; and without @option{-brtl} no shared archives are built at all.
+
+When @code{aix-soname=svr4} option is given, or the
+@option{--with-aix-soname=svr4} @command{configure} option is passed, static
+archives are always created from static objects, even without @option{-brtl}
+in @code{LDFLAGS}. Shared archives are made from shared objects, and filename
+based versioning is enabled.
+
+When @code{aix-soname=both} option is given, or the
+@option{--with-aix-soname=svr4} @command{configure} option is passed, static
+archives are built traditionally (as @option{aix-soname=aix}), and both
+kinds of shared archives are built. The @code{.la} pseudo-archive specifies
+one or the other depending on whether @option{-brtl} is specified in
+@code{LDFLAGS} when the library is built.
+
 @item disable-fast-install
 Change the default behaviour for @code{LT_INIT} to disable
 optimization for fast installation.  The user may still override this

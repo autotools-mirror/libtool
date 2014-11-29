@@ -67,10 +67,13 @@ int main() { return a1() + a2() + a3() + c(); }
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o b$EXEEXT b.$OBJEXT ../liba1.la ../liba2.la ../liba3.la ../../c/libcee.la -rpath /nowhere],
 	   [0],[stdout],[ignore])
   AT_CHECK([$EGREP 'cee.*cee' stdout], 1, [ignore], [ignore])
-  AT_XFAIL_IF([case $host in
-                 *-*-aix*|*-*-bitrig*|hppa*-*-hpux*|*-*-interix*|*-*-openbsd*) false;;
-                 *):;;
-               esac])
+  AT_XFAIL_IF([dnl
+    eval `$LIBTOOL --config | $EGREP '^hardcode_(direct|direct_absolute|action)='`
+    case $hardcode_action,$hardcode_direct,$hardcode_direct_absolute in
+      relink,yes,no) :;;
+      *,no,*) :;;
+      *) false;;
+    esac])
   dnl This is currently broken in libtool
 )
 

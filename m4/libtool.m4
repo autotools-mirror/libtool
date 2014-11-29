@@ -2342,20 +2342,70 @@ aix[[4-9]]*)
       fi
       ;;
     esac
+    # Using Import Files as archive members, it is possible to support
+    # filename-based versioning of shared library archives on AIX. While
+    # this would work for both with and without runtime linking, it will
+    # prevent static linking of such archives. So we do filename-based
+    # shared library versioning with .so extension only, which is used
+    # when both runtime linking and shared linking is enabled.
+    # Unfortunately, runtime linking may impact performance, so we do
+    # not want this to be the default eventually. Also, we use the
+    # versioned .so libs for executables only if there is the -brtl
+    # linker flag in LDFLAGS as well, or --with-aix-soname=svr4 only.
+    # To allow for filename-based versioning support, we need to create
+    # libNAME.so.V as an archive file, containing:
+    # *) an Import File, referring to the versioned filename of the
+    #    archive as well as the shared archive member, telling the
+    #    bitwidth (32 or 64) of that shared object, and providing the
+    #    list of exported symbols of that shared object, eventually
+    #    decorated with the 'weak' keyword
+    # *) the shared object with the F_LOADONLY flag set, to really avoid
+    #    it being seen by the linker.
+    # At run time we better use the real file rather than another symlink,
+    # but for link time we create the symlink libNAME.so -> libNAME.so.V
+
+    case $with_aix_soname,$aix_use_runtimelinking in
     # AIX (on Power*) has no versioning support, so currently we cannot hardcode correct
     # soname into executable. Probably we can add versioning support to
     # collect2, so additional links can be useful in future.
-    if test yes = "$aix_use_runtimelinking"; then
+    aix,yes) # traditional libtool
+      dynamic_linker='AIX unversionable lib.so'
       # If using run time linking (on AIX 4.2 or later) use lib<name>.so
       # instead of lib<name>.a to let people know that these are not
       # typical AIX shared libraries.
       library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
-    else
+      ;;
+    aix,no) # traditional AIX only
+      dynamic_linker='AIX lib.a[(]lib.so.V[)]'
       # We preserve .a as extension for shared libraries through AIX4.2
       # and later when we are not doing run time linking.
       library_names_spec='$libname$release.a $libname.a'
       soname_spec='$libname$release$shared_ext$major'
-    fi
+      ;;
+    svr4,*) # full svr4 only
+      dynamic_linker="AIX lib.so.V[(]$shared_archive_member_spec.o[)]"
+      library_names_spec='$libname$release$shared_ext$major $libname$shared_ext'
+      # We do not specify a path in Import Files, so LIBPATH fires.
+      shlibpath_overrides_runpath=yes
+      ;;
+    *,yes) # both, prefer svr4
+      dynamic_linker="AIX lib.so.V[(]$shared_archive_member_spec.o[)], lib.a[(]lib.so.V[)]"
+      library_names_spec='$libname$release$shared_ext$major $libname$shared_ext'
+      # unpreferred sharedlib libNAME.a needs extra handling
+      postinstall_cmds='test -n "$linkname" || linkname="$realname"~func_stripname "" ".so" "$linkname"~$install_shared_prog "$dir/$func_stripname_result.$libext" "$destdir/$func_stripname_result.$libext"~test -z "$tstripme" || test -z "$striplib" || $striplib "$destdir/$func_stripname_result.$libext"'
+      postuninstall_cmds='for n in $library_names $old_library; do :; done~func_stripname "" ".so" "$n"~test "$func_stripname_result" = "$n" || func_append rmfiles " $odir/$func_stripname_result.$libext"'
+      # We do not specify a path in Import Files, so LIBPATH fires.
+      shlibpath_overrides_runpath=yes
+      ;;
+    *,no) # both, prefer aix
+      dynamic_linker="AIX lib.a[(]lib.so.V[)], lib.so.V[(]$shared_archive_member_spec.o[)]"
+      library_names_spec='$libname$release.a $libname.a'
+      soname_spec='$libname$release$shared_ext$major'
+      # unpreferred sharedlib libNAME.so.V and symlink libNAME.so need extra handling
+      postinstall_cmds='test -z "$dlname" || $install_shared_prog $dir/$dlname $destdir/$dlname~test -z "$tstripme" || test -z "$striplib" || $striplib $destdir/$dlname~test -n "$linkname" || linkname=$realname~func_stripname "" ".a" "$linkname"~(cd "$destdir" && $LN_S -f $dlname $func_stripname_result.so)'
+      postuninstall_cmds='test -z "$dlname" || func_append rmfiles " $odir/$dlname"~for n in $old_library $library_names; do :; done~func_stripname "" ".a" "$n"~func_append rmfiles " $odir/$func_stripname_result.so"'
+      ;;
+    esac
     shlibpath_var=LIBPATH
   fi
   ;;
@@ -4764,13 +4814,17 @@ m4_if([$1], [CXX], [
   case $host_os in
   aix[[4-9]]*)
     # If we're using GNU nm, then we don't want the "-C" option.
-    # -C means demangle to AIX nm, but means don't demangle with GNU nm
-    # Also, AIX nm treats weak defined symbols like other global defined
-    # symbols, whereas GNU nm marks them as "W".
+    # -C means demangle to GNU nm, but means don't demangle to AIX nm.
+    # Without the "-l" option, or with the "-B" option, AIX nm treats
+    # weak defined symbols like other global defined symbols, whereas
+    # GNU nm marks them as "W".
+    # While the 'weak' keyword is ignored in the Export File, we need
+    # it in the Import File for the 'aix-soname' feature, so we have
+    # to replace the "-B" option with "-P" for AIX nm.
     if $NM -V 2>&1 | $GREP 'GNU' > /dev/null; then
-      _LT_TAGVAR(export_symbols_cmds, $1)='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B") || (\$ 2 == "W")) && ([substr](\$ 3,1,1) != ".")) { print \$ 3 } }'\'' | sort -u > $export_symbols'
+      _LT_TAGVAR(export_symbols_cmds, $1)='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B") || (\$ 2 == "W")) && ([substr](\$ 3,1,1) != ".")) { if (\$ 2 == "W") { print \$ 3 " weak" } else { print \$ 3 } } }'\'' | sort -u > $export_symbols'
     else
-      _LT_TAGVAR(export_symbols_cmds, $1)='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B")) && ([substr](\$ 3,1,1) != ".")) { print \$ 3 } }'\'' | sort -u > $export_symbols'
+      _LT_TAGVAR(export_symbols_cmds, $1)='`func_echo_all $NM | $SED -e '\''s/B\([[^B]]*\)$/P\1/'\''` -PCpgl $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B") || (\$ 2 == "W") || (\$ 2 == "V") || (\$ 2 == "Z")) && ([substr](\$ 1,1,1) != ".")) { if ((\$ 2 == "W") || (\$ 2 == "V") || (\$ 2 == "Z")) { print \$ 1 " weak" } else { print \$ 1 } } }'\'' | sort -u > $export_symbols'
     fi
     ;;
   pw32*)
@@ -5214,19 +5268,35 @@ _LT_EOF
 	no_entry_flag=
       else
 	# If we're using GNU nm, then we don't want the "-C" option.
-	# -C means demangle to AIX nm, but means don't demangle with GNU nm
-	# Also, AIX nm treats weak defined symbols like other global
-	# defined symbols, whereas GNU nm marks them as "W".
+	# -C means demangle to GNU nm, but means don't demangle to AIX nm.
+	# Without the "-l" option, or with the "-B" option, AIX nm treats
+	# weak defined symbols like other global defined symbols, whereas
+	# GNU nm marks them as "W".
+	# While the 'weak' keyword is ignored in the Export File, we need
+	# it in the Import File for the 'aix-soname' feature, so we have
+	# to replace the "-B" option with "-P" for AIX nm.
 	if $NM -V 2>&1 | $GREP 'GNU' > /dev/null; then
-	  _LT_TAGVAR(export_symbols_cmds, $1)='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B") || (\$ 2 == "W")) && ([substr](\$ 3,1,1) != ".")) { print \$ 3 } }'\'' | sort -u > $export_symbols'
+	  _LT_TAGVAR(export_symbols_cmds, $1)='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B") || (\$ 2 == "W")) && ([substr](\$ 3,1,1) != ".")) { if (\$ 2 == "W") { print \$ 3 " weak" } else { print \$ 3 } } }'\'' | sort -u > $export_symbols'
 	else
-	  _LT_TAGVAR(export_symbols_cmds, $1)='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B")) && ([substr](\$ 3,1,1) != ".")) { print \$ 3 } }'\'' | sort -u > $export_symbols'
+	  _LT_TAGVAR(export_symbols_cmds, $1)='`func_echo_all $NM | $SED -e '\''s/B\([[^B]]*\)$/P\1/'\''` -PCpgl $libobjs $convenience | awk '\''{ if (((\$ 2 == "T") || (\$ 2 == "D") || (\$ 2 == "B") || (\$ 2 == "W") || (\$ 2 == "V") || (\$ 2 == "Z")) && ([substr](\$ 1,1,1) != ".")) { if ((\$ 2 == "W") || (\$ 2 == "V") || (\$ 2 == "Z")) { print \$ 1 " weak" } else { print \$ 1 } } }'\'' | sort -u > $export_symbols'
 	fi
 	aix_use_runtimelinking=no
 
 	# Test if we are trying to use run time linking or normal
 	# AIX style linking. If -brtl is somewhere in LDFLAGS, we
-	# need to do runtime linking.
+	# have runtime linking enabled, and use it for executables.
+	# For shared libraries, we enable/disable runtime linking
+	# depending on the kind of the shared library created -
+	# when "with_aix_soname,aix_use_runtimelinking" is:
+	# "aix,no"   lib.a(lib.so.V) shared, rtl:no,  for executables
+	# "aix,yes"  lib.so          shared, rtl:yes, for executables
+	#            lib.a           static archive
+	# "both,no"  lib.so.V(shr.o) shared, rtl:yes
+	#            lib.a(lib.so.V) shared, rtl:no,  for executables
+	# "both,yes" lib.so.V(shr.o) shared, rtl:yes, for executables
+	#            lib.a(lib.so.V) shared, rtl:no
+	# "svr4,*"   lib.so.V(shr.o) shared, rtl:yes, for executables
+	#            lib.a           static archive
 	case $host_os in aix4.[[23]]|aix4.[[23]].*|aix[[5-9]]*)
 	  for ld_flag in $LDFLAGS; do
 	  if (test x-brtl = "x$ld_flag" || test x-Wl,-brtl = "x$ld_flag"); then
@@ -5234,6 +5304,13 @@ _LT_EOF
 	    break
 	  fi
 	  done
+	  if test svr4,no = "$with_aix_soname,$aix_use_runtimelinking"; then
+	    # With aix-soname=svr4, we create the lib.so.V shared archives only,
+	    # so we don't have lib.a shared libs to link our executables.
+	    # We have to force runtime linking in this case.
+	    aix_use_runtimelinking=yes
+	    LDFLAGS="$LDFLAGS -Wl,-brtl"
+	  fi
 	  ;;
 	esac
 
@@ -5253,6 +5330,14 @@ _LT_EOF
       _LT_TAGVAR(hardcode_libdir_separator, $1)=':'
       _LT_TAGVAR(link_all_deplibs, $1)=yes
       _LT_TAGVAR(file_list_spec, $1)='$wl-f,'
+      case $with_aix_soname,$aix_use_runtimelinking in
+      aix,*) ;; # traditional, no import file
+      svr4,* | *,yes) # use import file
+	# The Import File defines what to hardcode.
+	_LT_TAGVAR(hardcode_direct, $1)=no
+	_LT_TAGVAR(hardcode_direct_absolute, $1)=no
+	;;
+      esac
 
       if test yes = "$GCC"; then
 	case $host_os in aix4.[[012]]|aix4.[[012]].*)
@@ -5280,6 +5365,11 @@ _LT_EOF
 	if test yes = "$aix_use_runtimelinking"; then
 	  shared_flag="$shared_flag "'$wl-G'
 	fi
+	# Need to ensure runtime linking is disabled for the traditional
+	# shared library, or the linker may eventually find shared libraries
+	# /with/ Import File - we do not want to mix them.
+	shared_flag_aix='-shared'
+	shared_flag_svr4='-shared $wl-G'
       else
 	# not using gcc
 	if test ia64 = "$host_cpu"; then
@@ -5292,6 +5382,8 @@ _LT_EOF
 	  else
 	    shared_flag='$wl-bM:SRE'
 	  fi
+	  shared_flag_aix='$wl-bM:SRE'
+	  shared_flag_svr4='$wl-G'
 	fi
       fi
 
@@ -5299,7 +5391,7 @@ _LT_EOF
       # It seems that -bexpall does not export symbols beginning with
       # underscore (_), so it is better to generate a list of symbols to export.
       _LT_TAGVAR(always_export_symbols, $1)=yes
-      if test yes = "$aix_use_runtimelinking"; then
+      if test aix,yes = "$with_aix_soname,$aix_use_runtimelinking"; then
 	# Warning - without using the other runtime loading flags (-brtl),
 	# -berok will link without error, but may produce a broken library.
 	_LT_TAGVAR(allow_undefined_flag, $1)='-berok'
@@ -5330,8 +5422,20 @@ _LT_EOF
 	    _LT_TAGVAR(whole_archive_flag_spec, $1)='$convenience'
 	  fi
 	  _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
-	  # This is similar to how AIX traditionally builds its shared libraries.
-	  _LT_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $wl-bnoentry $compiler_flags $wl-bE:$export_symbols$allow_undefined_flag~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$soname'
+	  _LT_TAGVAR(archive_expsym_cmds, $1)='$RM -r $output_objdir/$realname.d~$MKDIR $output_objdir/$realname.d'
+	  # -brtl affects multiple linker settings, -berok does not and is overridden later
+	  compiler_flags_filtered='`func_echo_all "$compiler_flags " | $SED -e "s%-brtl\\([[, ]]\\)%-berok\\1%g"`'
+	  if test svr4 != "$with_aix_soname"; then
+	    # This is similar to how AIX traditionally builds its shared libraries.
+	    _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$CC '$shared_flag_aix' -o $output_objdir/$realname.d/$soname $libobjs $deplibs $wl-bnoentry '$compiler_flags_filtered'$wl-bE:$export_symbols$allow_undefined_flag~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$realname.d/$soname'
+	  fi
+	  if test aix != "$with_aix_soname"; then
+	    _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$CC '$shared_flag_svr4' -o $output_objdir/$realname.d/$shared_archive_member_spec.o $libobjs $deplibs $wl-bnoentry '$compiler_flags_filtered'$wl-bE:$export_symbols$allow_undefined_flag~$STRIP -e $output_objdir/$realname.d/$shared_archive_member_spec.o~( func_echo_all "#! $soname($shared_archive_member_spec.o)"; if test shr_64 = "$shared_archive_member_spec"; then func_echo_all "# 64"; else func_echo_all "# 32"; fi; cat $export_symbols ) > $output_objdir/$realname.d/$shared_archive_member_spec.imp~$AR $AR_FLAGS $output_objdir/$soname $output_objdir/$realname.d/$shared_archive_member_spec.o $output_objdir/$realname.d/$shared_archive_member_spec.imp'
+	  else
+	    # used by -dlpreopen to get the symbols
+	    _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$MV  $output_objdir/$realname.d/$soname $output_objdir'
+	  fi
+	  _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$RM -r $output_objdir/$realname.d'
 	fi
       fi
       ;;
@@ -6056,8 +6160,12 @@ if test -n "$compiler"; then
     ;;
 
   aix[[4-9]]*)
-    if test ia64 != "$host_cpu" && test no = "$aix_use_runtimelinking"; then
-      test yes = "$enable_shared" && enable_static=no
+    if test ia64 != "$host_cpu"; then
+      case $enable_shared,$with_aix_soname,$aix_use_runtimelinking in
+      yes,aix,yes) ;;			# shared object as lib.so file only
+      yes,svr4,*) ;;			# shared object as lib.so archive member only
+      yes,*) enable_static=no ;;	# shared object in lib.a archive as well
+      esac
     fi
     ;;
   esac
@@ -6245,7 +6353,19 @@ if test yes != "$_lt_caught_CXX_error"; then
 
           # Test if we are trying to use run time linking or normal
           # AIX style linking. If -brtl is somewhere in LDFLAGS, we
-          # need to do runtime linking.
+          # have runtime linking enabled, and use it for executables.
+          # For shared libraries, we enable/disable runtime linking
+          # depending on the kind of the shared library created -
+          # when "with_aix_soname,aix_use_runtimelinking" is:
+          # "aix,no"   lib.a(lib.so.V) shared, rtl:no,  for executables
+          # "aix,yes"  lib.so          shared, rtl:yes, for executables
+          #            lib.a           static archive
+          # "both,no"  lib.so.V(shr.o) shared, rtl:yes
+          #            lib.a(lib.so.V) shared, rtl:no,  for executables
+          # "both,yes" lib.so.V(shr.o) shared, rtl:yes, for executables
+          #            lib.a(lib.so.V) shared, rtl:no
+          # "svr4,*"   lib.so.V(shr.o) shared, rtl:yes, for executables
+          #            lib.a           static archive
           case $host_os in aix4.[[23]]|aix4.[[23]].*|aix[[5-9]]*)
 	    for ld_flag in $LDFLAGS; do
 	      case $ld_flag in
@@ -6255,6 +6375,13 @@ if test yes != "$_lt_caught_CXX_error"; then
 	        ;;
 	      esac
 	    done
+	    if test svr4,no = "$with_aix_soname,$aix_use_runtimelinking"; then
+	      # With aix-soname=svr4, we create the lib.so.V shared archives only,
+	      # so we don't have lib.a shared libs to link our executables.
+	      # We have to force runtime linking in this case.
+	      aix_use_runtimelinking=yes
+	      LDFLAGS="$LDFLAGS -Wl,-brtl"
+	    fi
 	    ;;
           esac
 
@@ -6274,6 +6401,14 @@ if test yes != "$_lt_caught_CXX_error"; then
         _LT_TAGVAR(hardcode_libdir_separator, $1)=':'
         _LT_TAGVAR(link_all_deplibs, $1)=yes
         _LT_TAGVAR(file_list_spec, $1)='$wl-f,'
+        case $with_aix_soname,$aix_use_runtimelinking in
+        aix,*) ;;	# no import file
+        svr4,* | *,yes) # use import file
+          # The Import File defines what to hardcode.
+          _LT_TAGVAR(hardcode_direct, $1)=no
+          _LT_TAGVAR(hardcode_direct_absolute, $1)=no
+          ;;
+        esac
 
         if test yes = "$GXX"; then
           case $host_os in aix4.[[012]]|aix4.[[012]].*)
@@ -6300,6 +6435,11 @@ if test yes != "$_lt_caught_CXX_error"; then
 	  if test yes = "$aix_use_runtimelinking"; then
 	    shared_flag=$shared_flag' $wl-G'
 	  fi
+	  # Need to ensure runtime linking is disabled for the traditional
+	  # shared library, or the linker may eventually find shared libraries
+	  # /with/ Import File - we do not want to mix them.
+	  shared_flag_aix='-shared'
+	  shared_flag_svr4='-shared $wl-G'
         else
           # not using gcc
           if test ia64 = "$host_cpu"; then
@@ -6312,6 +6452,8 @@ if test yes != "$_lt_caught_CXX_error"; then
 	    else
 	      shared_flag='$wl-bM:SRE'
 	    fi
+	    shared_flag_aix='$wl-bM:SRE'
+	    shared_flag_svr4='$wl-G'
           fi
         fi
 
@@ -6320,10 +6462,11 @@ if test yes != "$_lt_caught_CXX_error"; then
         # underscore (_), so it is better to generate a list of symbols to
 	# export.
         _LT_TAGVAR(always_export_symbols, $1)=yes
-        if test yes = "$aix_use_runtimelinking"; then
+	if test aix,yes = "$with_aix_soname,$aix_use_runtimelinking"; then
           # Warning - without using the other runtime loading flags (-brtl),
           # -berok will link without error, but may produce a broken library.
-          _LT_TAGVAR(allow_undefined_flag, $1)='-berok'
+          # The "-G" linker flag allows undefined symbols.
+          _LT_TAGVAR(no_undefined_flag, $1)='-bernotok'
           # Determine the default libpath from the value encoded in an empty
           # executable.
           _LT_SYS_MODULE_PATH_AIX([$1])
@@ -6352,9 +6495,21 @@ if test yes != "$_lt_caught_CXX_error"; then
 	      _LT_TAGVAR(whole_archive_flag_spec, $1)='$convenience'
 	    fi
 	    _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
-	    # This is similar to how AIX traditionally builds its shared
-	    # libraries.
-	    _LT_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $wl-bnoentry $compiler_flags $wl-bE:$export_symbols$allow_undefined_flag~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$soname'
+	    _LT_TAGVAR(archive_expsym_cmds, $1)='$RM -r $output_objdir/$realname.d~$MKDIR $output_objdir/$realname.d'
+	    # -brtl affects multiple linker settings, -berok does not and is overridden later
+	    compiler_flags_filtered='`func_echo_all "$compiler_flags " | $SED -e "s%-brtl\\([[, ]]\\)%-berok\\1%g"`'
+	    if test svr4 != "$with_aix_soname"; then
+	      # This is similar to how AIX traditionally builds its shared
+	      # libraries. Need -bnortl late, we may have -brtl in LDFLAGS.
+	      _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$CC '$shared_flag_aix' -o $output_objdir/$realname.d/$soname $libobjs $deplibs $wl-bnoentry '$compiler_flags_filtered'$wl-bE:$export_symbols$allow_undefined_flag~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$realname.d/$soname'
+	    fi
+	    if test aix != "$with_aix_soname"; then
+	      _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$CC '$shared_flag_svr4' -o $output_objdir/$realname.d/$shared_archive_member_spec.o $libobjs $deplibs $wl-bnoentry '$compiler_flags_filtered'$wl-bE:$export_symbols$allow_undefined_flag~$STRIP -e $output_objdir/$realname.d/$shared_archive_member_spec.o~( func_echo_all "#! $soname($shared_archive_member_spec.o)"; if test shr_64 = "$shared_archive_member_spec"; then func_echo_all "# 64"; else func_echo_all "# 32"; fi; cat $export_symbols ) > $output_objdir/$realname.d/$shared_archive_member_spec.imp~$AR $AR_FLAGS $output_objdir/$soname $output_objdir/$realname.d/$shared_archive_member_spec.o $output_objdir/$realname.d/$shared_archive_member_spec.imp'
+	    else
+	      # used by -dlpreopen to get the symbols
+	      _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$MV  $output_objdir/$realname.d/$soname $output_objdir'
+	    fi
+	    _LT_TAGVAR(archive_expsym_cmds, $1)="$_LT_TAGVAR(archive_expsym_cmds, $1)"'~$RM -r $output_objdir/$realname.d'
           fi
         fi
         ;;
@@ -7535,8 +7690,12 @@ if test yes != "$_lt_disable_F77"; then
         fi
         ;;
       aix[[4-9]]*)
-	if test ia64 != "$host_cpu" && test no = "$aix_use_runtimelinking"; then
-	  test yes = "$enable_shared" && enable_static=no
+	if test ia64 != "$host_cpu"; then
+	  case $enable_shared,$with_aix_soname,$aix_use_runtimelinking in
+	  yes,aix,yes) ;;		# shared object as lib.so file only
+	  yes,svr4,*) ;;		# shared object as lib.so archive member only
+	  yes,*) enable_static=no ;;	# shared object in lib.a archive as well
+	  esac
 	fi
         ;;
     esac
@@ -7669,8 +7828,12 @@ if test yes != "$_lt_disable_FC"; then
         fi
         ;;
       aix[[4-9]]*)
-	if test ia64 != "$host_cpu" && test no = "$aix_use_runtimelinking"; then
-	  test yes = "$enable_shared" && enable_static=no
+	if test ia64 != "$host_cpu"; then
+	  case $enable_shared,$with_aix_soname,$aix_use_runtimelinking in
+	  yes,aix,yes) ;;		# shared object as lib.so file only
+	  yes,svr4,*) ;;		# shared object as lib.so archive member only
+	  yes,*) enable_static=no ;;	# shared object in lib.a archive as well
+	  esac
 	fi
         ;;
     esac
