@@ -2155,7 +2155,7 @@ test -z "$progpath" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
 test extract-trace = "$progname" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/options-parser
 
 # Set a version string.
-scriptversion=2014-01-04.01; # UTC
+scriptversion=2014-12-03.16; # UTC
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2224,47 +2224,6 @@ func_autoconf_configure ()
 }
 
 
-# func_find_tool ENVVAR NAMES...
-# ------------------------------
-# Search for a required program.  Use the value of ENVVAR, if set,
-# otherwise find the first of the NAMES that can be run (i.e.,
-# supports --version).  If found, set ENVVAR to the program name,
-# die otherwise.
-func_find_tool ()
-{
-    $debug_cmd
-
-    _G_find_tool_envvar=$1
-    shift
-    _G_find_tool_names=$@
-    eval "_G_find_tool_res=\$$_G_find_tool_envvar"
-    if test -n "$_G_find_tool_res"; then
-      _G_find_tool_error_prefix="\$$find_tool_envvar: "
-    else
-      for _G_prog
-      do
-        if func_tool_version_output $_G_prog >/dev/null; then
-          _G_find_tool_res=$_G_prog
-          break
-        fi
-      done
-    fi
-    if test -n "$_G_find_tool_res"; then
-      func_tool_version_output >/dev/null $_G_find_tool_res "\
-${_G_find_tool_error_prefix}Cannot run '$_G_find_tool_res --version'"
-
-      # Make sure the result is exported to the environment for children
-      # to use.
-      eval "$_G_find_tool_envvar=\$_G_find_tool_res"
-      eval "export $_G_find_tool_envvar"
-    else
-      func_error "\
-One of these is required:
-       $_G_find_tool_names"
-    fi
-}
-
-
 # func_tool_version_output CMD [FATAL-ERROR-MSG]
 # ----------------------------------------------
 # Attempt to run 'CMD --version', discarding errors.  The output can be
@@ -2297,6 +2256,104 @@ func_tool_version_output ()
 
     (exit $_G_status)
 }
+
+
+# func_tool_version_number CMD [FATAL-ERROR-MSG]
+# ----------------------------------------------
+# Pass arguments to func_tool_version_output, but set
+# $func_tool_version_number_result to the last dot delimited digit string
+# on the first line of output.
+func_tool_version_number ()
+{
+    $debug_cmd
+
+    _G_verout=`func_tool_version_output "$@" |sed 1q`
+    _G_status=$?
+
+    # A version number starts with a digit following a space on the first
+    # line of output from `--version`.
+    if test -n "$_G_verout"; then
+      _G_vernum=`expr "$_G_verout" : '.* \([0-9][^ ]*\)'`
+    fi
+
+    if test -n "$_G_vernum"; then
+      printf '%s\n' "$_G_vernum"
+    else
+      printf '%s\n' "$_G_verout"
+    fi
+
+    (exit $_G_status)
+}
+
+
+# func_find_tool ENVVAR NAMES...
+# ------------------------------
+# Search for a required program.  Use the value of ENVVAR, if set,
+# otherwise find the first of the NAMES that can be run (i.e.,
+# supports --version).  If found, set ENVVAR to the program name,
+# die otherwise.
+func_find_tool ()
+{
+    $debug_cmd
+
+    _G_find_tool_envvar=$1
+    shift
+    _G_find_tool_names=$@
+    eval "_G_find_tool_res=\$$_G_find_tool_envvar"
+    if test -n "$_G_find_tool_res"; then
+      _G_find_tool_error_prefix="\$$find_tool_envvar: "
+    else
+      _G_find_tool_res=
+      _G_bestver=
+      for _G_prog
+      do
+        _G_find_tool_save_IFS=$IFS
+	IFS=:
+	for _G_dir in $PATH; do
+	  IFS=$_G_find_tool_save_IFS
+	  _G_progpath=$_G_dir/$_G_prog
+          test -r $_G_progpath && {
+            _G_curver=`func_tool_version_number $_G_progpath`
+	    case $_G_bestver,$_G_curver in
+	    ,)
+	      # first non--version responsive prog sticks!
+              test -n "$_G_progpath" || _G_find_tool_res=$_G_progpath
+              ;;
+            ,*)
+	      # first --version responsive prog beats non--version responsive!
+	      _G_find_tool_res=$_G_progpath
+	      _G_bestver=$_G_curver
+	      ;;
+	    *,*)
+	      # another --version responsive prog must be newer to beat previous one!
+	      test "x$_G_curver" = "x$_G_bestver" \
+		|| func_lt_ver "$_G_curver" "$_G_bestver" \
+		|| {
+		     _G_find_tool_res=$_G_progpath
+		     _G_bestver=$_G_curver
+	           }
+	      ;;
+	    esac
+          }
+	done
+	IFS=$_G_find_tool_save_IFS
+      done
+    fi
+    if test -n "$_G_find_tool_res"; then
+      func_tool_version_number >/dev/null $_G_find_tool_res "\
+${_G_find_tool_error_prefix}Cannot run '$_G_find_tool_res --version'"
+
+      # Make sure the result is exported to the environment for children
+      # to use.
+      eval "$_G_find_tool_envvar=\$_G_find_tool_res"
+      eval "export $_G_find_tool_envvar"
+    else
+      func_error "\
+One of these is required:
+       $_G_find_tool_names"
+    fi
+}
+
 
 
 ## -------------------- ##

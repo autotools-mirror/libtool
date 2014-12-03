@@ -2,6 +2,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - Libtoolize searches for the best available M4 on the user PATH at
+    runtime, rather than settling for the first one found.
+
 ** Bug fixes:
 
   - Bail out at configure time if the installed M4 is not sufficient
