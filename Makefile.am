@@ -356,6 +356,7 @@ lt_aclocal_m4_deps = \
 	$(srcdir)/$(macro_dir)/ltdl.m4 \
 	$(srcdir)/$(macro_dir)/ltoptions.m4 \
 	$(srcdir)/$(macro_dir)/ltsugar.m4 \
+	$(srcdir)/$(macro_dir)/m4.m4 \
 	$(srcdir)/$(ltdl_dir)/configure.ac
 
 lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)

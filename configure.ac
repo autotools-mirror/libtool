@@ -81,6 +81,13 @@ AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION])
 echo
 
 
+## ------------ ##
+## Shell tools. ##
+## ------------ ##
+
+AC_PROG_GNU_M4
+
+
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##

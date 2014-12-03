@@ -2,6 +2,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Bug fixes:
+
+  - Bail out at configure time if the installed M4 is not sufficient
+    for the purposes of libtoolize.
+
 
 * Noteworthy changes in release 2.4.4 (2014-11-29) [stable]
 
