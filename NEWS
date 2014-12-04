@@ -18,6 +18,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix a 2.4.4 regression so that libltdl subprojects do not warn
     about missing libltdl/libltdl directory as in prior releases.
 
+** Changes in supported systems or compilers:
+
+  - /usr/local prefixed rpaths are now added to the link-line on
+    ia64-hp-hpux*, because the default system runtime loader path does
+    not contain them.
+
 
 * Noteworthy changes in release 2.4.4 (2014-11-29) [stable]
 
