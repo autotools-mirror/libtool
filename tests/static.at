@@ -344,7 +344,10 @@ for withdep in no yes; do
   echo "### test whether non-libtool library liba3 was linked statically"
   func_move_libs a3 $prefix3 $prefix1 $prefix2
   func_test_exec $all_static `$per_deplib && echo 3 13 23 31 123 123a`
-  func_test_exec_fail -static -static-libtool-libs `$per_deplib && echo 1 2 12`
+  # no '-static-libtool-libs' flag below, because some hosts such as
+  # Cray prefer static libs by default.
+  # and doesn't exercise anything not already tested above:
+  func_test_exec_fail -static `$per_deplib && echo 1 2 12`
   func_restore_libs a3 $prefix3
 
   cd ..
