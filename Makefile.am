@@ -191,6 +191,7 @@ $(lt_Makefile_am): $(ltdl_mk)
 	  '$(SED)' -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' \
 	      '$(ltdl_mk)' \
 	    |'$(SED)' -e 's|libltdl_||; s|libltdl/||; s|: libltdl/|: |' \
+	      -e '/^[	 ]*-I\$$(srcdir)\/libltdl -Ilibltdl \\/d' \
 	      -e 's|\$$(libltdl_|$$(|' \
 	) |'$(SED)' -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
 	      -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > '$@'

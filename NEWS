@@ -15,6 +15,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - freebsd-elf library versioning was upgraded incorrectly in 2.4.4,
     but now works properly again.
 
+  - Fix a 2.4.4 regression so that libltdl subprojects do not warn
+    about missing libltdl/libltdl directory as in prior releases.
+
 
 * Noteworthy changes in release 2.4.4 (2014-11-29) [stable]
 

@@ -34,9 +34,9 @@
 # -I$(srcdir) is needed for user that built libltdl with a sub-Automake
 # (not as a sub-package!) using 'nostdinc':
 AM_CPPFLAGS	       += -DLT_CONFIG_H='<$(LT_CONFIG_H)>' \
-			  -DLTDL -I. -I$(srcdir) \
-			  -Ilibltdl  -I$(srcdir)/libltdl \
-			  -Ilibltdl/libltdl -I$(srcdir)/libltdl/libltdl
+			  -DLTDL -I. -I$(srcdir) -Ilibltdl \
+			  -I$(srcdir)/libltdl -Ilibltdl/libltdl \
+			  -I$(srcdir)/libltdl/libltdl
 AM_LDFLAGS	       += -no-undefined
 LTDL_VERSION_INFO	= -version-info 10:1:3
 
