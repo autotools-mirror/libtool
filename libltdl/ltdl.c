@@ -815,7 +815,7 @@ find_handle (const char *search_path, const char *base_name,
 
 #if !defined LTDL_DLOPEN_DEPLIBS
 static int
-load_deplibs (lt_dlhandle handle, char * LT__UNUSED deplibs)
+load_deplibs (lt_dlhandle handle, char * deplibs LT__UNUSED)
 {
   handle->depcount = 0;
   return 0;
