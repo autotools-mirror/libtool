@@ -2801,8 +2801,8 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   # available) Fedora on 64bit does not report /usr/lib64, even though
   # it is searched at run-time.
   case $host_cpu in
-    # match at least x86_64, ia64, powerpc64*
-    *64*) sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 $sys_lib_dlsearch_path_spec" ;;
+    # match at least x86_64, ia64, powerpc64*, s390x (add other glibc/ELF 64bit cpus here):
+    *64*|s390x) sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 $sys_lib_dlsearch_path_spec" ;;
   esac
 
   # We used to test for /lib/ld.so.1 and disable shared libraries on
