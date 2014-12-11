@@ -2312,7 +2312,7 @@ func_find_tool ()
 	for _G_dir in $PATH; do
 	  IFS=$_G_find_tool_save_IFS
 	  _G_progpath=$_G_dir/$_G_prog
-          test -r $_G_progpath && {
+          test -r "$_G_progpath" && {
             _G_curver=`func_tool_version_number $_G_progpath`
 	    case $_G_bestver,$_G_curver in
 	    ,)
