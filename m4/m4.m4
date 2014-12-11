@@ -31,8 +31,8 @@ AC_PATH_PROGS_FEATURE_CHECK([M4], [m4 gm4 gnum4],
       # false positive strstr.
       ac_snippet=change'quote(<,>)in''dir(<if''def>,mac,bug)'
       ac_snippet=${ac_snippet}pat'subst(a,\(b\)\|\(a\),\1)d'nl
-      ac_snippet=${ac_snippet}${as_nl}if'else(in''dex(..wi.d.,.d.),-1,bug)'
-      ac_snippet=${ac_snippet}${as_nl}if'else(in''dex(dnl
+      ac_snippet=$ac_snippet${as_nl}if'else(in''dex(..wi.d.,.d.),-1,bug)'
+      ac_snippet=$ac_snippet${as_nl}if'else(in''dex(dnl
 ;:11-:12-:12-:12-:12-:12-:12-:12-:12.:12.:12.:12.:12.:12.:12.:12.:12-,dnl
 :12-:12-:12-:12-:12-:12-:12-:12-),-1,,strstr-bug2)'
       test -z "`$ac_path_M4 -F conftest.m4f </dev/null 2>&1`" \
@@ -51,15 +51,15 @@ Glibc 2.9 - 2.12 and GNU M4 1.4.11 - 1.4.15 have another strstr bug.])])])
       *--gnu*) ac_cv_prog_gnu_m4_gnu=yes ;;
       *) ac_cv_prog_gnu_m4_gnu=no ;;
     esac])
-  if test "$ac_cv_prog_gnu_m4_gnu" = yes; then
+  if test yes = "$ac_cv_prog_gnu_m4_gnu"; then
     M4_GNU=--gnu
   else
     M4_GNU=
   fi
   AC_SUBST([M4_GNU])
-  if test x$ac_had_posixly_correct = xyes; then
+  if test yes = "$ac_had_posixly_correct"; then
     POSIXLY_CORRECT=:
-    if test $ac_cv_prog_gnu_m4_gnu = no; then
+    if test no = $ac_cv_prog_gnu_m4_gnu; then
       AC_MSG_WARN([the version of M4 that was found does not support -g])
       AC_MSG_WARN([using it with POSIXLY_CORRECT set may cause problems])
     fi
