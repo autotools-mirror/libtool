@@ -727,6 +727,15 @@ _LT_LIBTOOL_TAG_VARS
 
 _LT_EOF
 
+    cat <<'_LT_EOF' >> "$cfgfile"
+## -------------------------------------- ##
+## Shell functions shared with configure. ##
+## -------------------------------------- ##
+
+_LT_PREPARE_MUNGE_PATH_LIST
+
+_LT_EOF
+
   case $host_os in
   aix3*)
     cat <<\_LT_EOF >> "$cfgfile"
@@ -2202,6 +2211,47 @@ _LT_DECL([], [striplib], [1])
 ])# _LT_CMD_STRIPLIB
 
 
+# _LT_PREPARE_MUNGE_PATH_LIST
+# ---------------------------
+# Make sure func_munge_path_list() is defined correctly.
+m4_defun([_LT_PREPARE_MUNGE_PATH_LIST],
+[[# func_munge_path_list VARIABLE PATH
+# -----------------------------------
+# VARIABLE is name of variable containing _space_ separated list of
+# directories to be munged by the contents of PATH, which is string
+# having a format:
+# "DIR[:DIR]:"
+#       string "DIR[ DIR]" will be prepended to VARIABLE
+# ":DIR[:DIR]"
+#       string "DIR[ DIR]" will be appended to VARIABLE
+# "DIRP[:DIRP]::[DIRA:]DIRA"
+#       string "DIRP[ DIRP]" will be prepended to VARIABLE and string
+#       "DIRA[ DIRA]" will be appended to VARIABLE
+# "DIR[:DIR]"
+#       VARIABLE will be replaced by "DIR[ DIR]"
+func_munge_path_list ()
+{
+    case x@S|@2 in
+    x)
+        ;;
+    *:)
+        eval @S|@1=\"`$ECHO @S|@2 | $SED 's/:/ /g'` \$@S|@1\"
+        ;;
+    x:*)
+        eval @S|@1=\"\@S|@@S|@1 `$ECHO @S|@2 | $SED 's/:/ /g'`\"
+        ;;
+    *::*)
+        eval @S|@1=\"\@S|@@S|@1\ `$ECHO @S|@2 | $SED -e 's/.*:://' -e 's/:/ /g'`\"
+        eval @S|@1=\"`$ECHO @S|@2 | $SED -e 's/::.*//' -e 's/:/ /g'`\ \@S|@@S|@1\"
+        ;;
+    *)
+        eval @S|@1=\"`$ECHO @S|@2 | $SED 's/:/ /g'`\"
+        ;;
+    esac
+}
+]])# _LT_PREPARE_PATH_LIST
+
+
 # _LT_SYS_DYNAMIC_LINKER([TAG])
 # -----------------------------
 # PORTME Fill in your ld.so characteristics
@@ -2212,6 +2262,7 @@ m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_OBJDUMP])dnl
 m4_require([_LT_DECL_SED])dnl
 m4_require([_LT_CHECK_SHELL_FEATURES])dnl
+m4_require([_LT_PREPARE_MUNGE_PATH_LIST])dnl
 AC_MSG_CHECKING([dynamic linker characteristics])
 m4_if([$1],
 	[], [
@@ -2305,6 +2356,9 @@ hardcode_into_libs=no
 # when you set need_version to no, make sure it does not cause -set_version
 # flags to be left without arguments
 need_version=unknown
+
+AC_ARG_VAR([LT_SYS_LIBRARY_PATH],
+[User-defined run-time library search path.])
 
 case $host_os in
 aix3*)
@@ -2791,19 +2845,16 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   # before this can be enabled.
   hardcode_into_libs=yes
 
-  # Append ld.so.conf contents to the search path
+  # Ideally, we could use ldconfig to report *all* directores which are
+  # searched for libraries, however this is still not possible.  Aside from not
+  # being certain /sbin/ldconfig is available, command
+  # 'ldconfig -N -X -v | grep ^/' on 64bit Fedora does not report /usr/lib64,
+  # even though it is searched at run-time.  Try to do the best guess by
+  # appending ld.so.conf contents (and includes) to the search path.
   if test -f /etc/ld.so.conf; then
     lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s 2>/dev/null", \[$]2)); skip = 1; } { if (!skip) print \[$]0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;/^[	 ]*hwcap[	 ]/d;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;s/"//g;/^$/d' | tr '\n' ' '`
     sys_lib_dlsearch_path_spec="/lib /usr/lib $lt_ld_extra"
   fi
-  # Ideally we could use /sbin/ldconfig to report what directories are
-  # searched, but (aside from not being certain /sbin/ldconfig is
-  # available) Fedora on 64bit does not report /usr/lib64, even though
-  # it is searched at run-time.
-  case $host_cpu in
-    # match at least x86_64, ia64, powerpc64*, s390x (add other glibc/ELF 64bit cpus here):
-    *64*|s390x) sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 $sys_lib_dlsearch_path_spec" ;;
-  esac
 
   # We used to test for /lib/ld.so.1 and disable shared libraries on
   # powerpc, because MkLinux only supported shared libraries with the
@@ -3023,6 +3074,9 @@ fi
 if test set = "${lt_cv_sys_lib_search_path_spec+set}"; then
   sys_lib_search_path_spec=$lt_cv_sys_lib_search_path_spec
 fi
+
+func_munge_path_list sys_lib_dlsearch_path_spec "$LT_SYS_LIBRARY_PATH"
+
 if test set = "${lt_cv_sys_lib_dlsearch_path_spec+set}"; then
   sys_lib_dlsearch_path_spec=$lt_cv_sys_lib_dlsearch_path_spec
 fi

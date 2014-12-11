@@ -7,6 +7,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Libtoolize searches for the best available M4 on the user PATH at
     runtime, rather than settling for the first one found.
 
+  - Support munging sys_lib_dlsearch_path_spec with LT_SYS_LIBRARY_PATH
+    environment variable.
+
 ** Bug fixes:
 
   - Bail out at configure time if the installed M4 is not sufficient
@@ -23,9 +26,6 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - /usr/local prefixed rpaths are now added to the link-line on
     ia64-hp-hpux*, because the default system runtime loader path does
     not contain them.
-
-  - For various GNU/Linux (and other GNU OSes) on 64bit glibc/ELF hosts,
-    explicit /lib64 and /usr/lib64 rpaths are no longer necessary.
 
 
 * Noteworthy changes in release 2.4.4 (2014-11-29) [stable]

@@ -2419,6 +2419,27 @@ Program to use rather than checking for @command{mt}, the Manifest Tool.
 Only used on Cygwin/MS-Windows at the moment.
 @end defvar
 
+@defvar LT_SYS_LIBRARY_PATH
+Libtool has heuristics for the system search path for runtime-loaded
+libraries.  If the guessed default does not match the setup of the host
+system, this variable can be used to modify that path list, as follows
+(@code{LT_SYS_LIBRARY_PATH} is a colon-delimited list like @code{PATH}):
+@itemize @bullet
+@item @code{path:}
+The heuristically determined paths will be appened after the trailing
+colon;
+@item @code{:path}
+The heuristically determined paths will be prepended before the leading
+colon;
+@item @code{path::path}
+The heuristically determined paths will be inserted between the double
+colons;
+@item @code{path}
+With no dangling colons, the heuristically determined paths will be
+ignored entirely.
+@end itemize
+@end defvar
+
 With 1.3 era libtool, if you wanted to know any details of what
 libtool had discovered about your architecture and environment, you
 had to run the script with @option{--config} and grep through the
