@@ -720,6 +720,9 @@ _LT_CONFIG_SAVE_COMMANDS([
 _LT_COPYING
 _LT_LIBTOOL_TAGS
 
+# Configured defaults for sys_lib_dlsearch_path munging.
+: \${LT_SYS_LIBRARY_PATH="$LT_SYS_LIBRARY_PATH"}
+
 # ### BEGIN LIBTOOL CONFIG
 _LT_LIBTOOL_CONFIG_VARS
 _LT_LIBTOOL_TAG_VARS
@@ -3075,11 +3078,16 @@ if test set = "${lt_cv_sys_lib_search_path_spec+set}"; then
   sys_lib_search_path_spec=$lt_cv_sys_lib_search_path_spec
 fi
 
-func_munge_path_list sys_lib_dlsearch_path_spec "$LT_SYS_LIBRARY_PATH"
-
 if test set = "${lt_cv_sys_lib_dlsearch_path_spec+set}"; then
   sys_lib_dlsearch_path_spec=$lt_cv_sys_lib_dlsearch_path_spec
 fi
+
+# lt_cv_sys_lib... is unaugmented for libtool script decls...
+lt_cv_sys_lib_dlsearch_path_spec=$sys_lib_dlsearch_path_spec
+
+# ..but sys_lib_... needs LT_SYS_LIBRARY_PATH munging for
+# LT_SYS_DLSEARCH_PATH macro in ltdl.m4 to work with the correct paths:
+func_munge_path_list sys_lib_dlsearch_path_spec "$LT_SYS_LIBRARY_PATH"
 
 _LT_DECL([], [variables_saved_for_relink], [1],
     [Variables whose values should be saved in libtool wrapper scripts and
@@ -3113,7 +3121,7 @@ _LT_DECL([], [hardcode_into_libs], [0],
     [Whether we should hardcode library paths into libraries])
 _LT_DECL([], [sys_lib_search_path_spec], [2],
     [Compile-time system search path for libraries])
-_LT_DECL([], [sys_lib_dlsearch_path_spec], [2],
+_LT_DECL([sys_lib_dlsearch_path_spec], [lt_cv_sys_lib_dlsearch_path_spec], [2],
     [Run-time system search path for libraries])
 ])# _LT_SYS_DYNAMIC_LINKER
 
