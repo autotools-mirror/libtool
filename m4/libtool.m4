@@ -7422,6 +7422,28 @@ func_stripname_cnf ()
 } # func_stripname_cnf
 ])# _LT_FUNC_STRIPNAME_CNF
 
+
+# _LT_FUNC_SUNCC_CSTD_ABI
+# -----------------------
+# func_suncc_cstd_abi
+# Several compiler flags select an ABI that is
+# incompatible with the Cstd library. Avoid specifying
+# it if any are in CXXFLAGS.
+m4_defun([_LT_FUNC_SUNCC_CSTD_ABI], [[
+func_suncc_cstd_abi ()
+{
+    case " $CXX $CXXFLAGS " in
+    *" -compat=g "*|*\ -std=c++[0-9][0-9]\ *|*" -library=stdcxx4 "*|*" -library=stlport4 "*)
+      suncc_use_cstd_abi=no
+      ;;
+    *)
+      suncc_use_cstd_abi=yes
+      ;;
+    esac
+} # func_suncc_cstd_abi
+]])# _LT_FUNC_SUNCC_CSTD_ABI
+
+
 # _LT_SYS_HIDDEN_LIBDEPS([TAGNAME])
 # ---------------------------------
 # Figure out "hidden" library dependencies from verbose
@@ -7430,6 +7452,7 @@ func_stripname_cnf ()
 # objects, libraries and library flags.
 m4_defun([_LT_SYS_HIDDEN_LIBDEPS],
 [m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+m4_require([_LT_FUNC_SUNCC_CSTD_ABI])dnl
 AC_REQUIRE([_LT_FUNC_STRIPNAME_CNF])dnl
 # Dependencies to place before and after the object being linked:
 _LT_TAGVAR(predep_objects, $1)=
@@ -7603,20 +7626,10 @@ interix[[3-9]]*)
 
 linux*)
   case `$CC -V 2>&1 | sed 5q` in
-  *Sun\ C*)
-    # Sun C++ 5.9
+  *Sun\ C*) # Sun C++ 5.9
+    func_suncc_cstd_abi
 
-    # The more standards-conforming stlport4 library is
-    # incompatible with the Cstd library. Avoid specifying
-    # it if it's in CXXFLAGS. Ignore libCrun as
-    # -library=stlport4 depends on it.
-    case " $CXX $CXXFLAGS " in
-    *" -library=stlport4 "*)
-      solaris_use_stlport4=yes
-      ;;
-    esac
-
-    if test yes != "$solaris_use_stlport4"; then
+    if test no != "$suncc_use_cstd_abi"; then
       _LT_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
     fi
     ;;
@@ -7626,20 +7639,9 @@ linux*)
 solaris*)
   case $cc_basename in
   CC* | sunCC*)
-    # The more standards-conforming stlport4 library is
-    # incompatible with the Cstd library. Avoid specifying
-    # it if it's in CXXFLAGS. Ignore libCrun as
-    # -library=stlport4 depends on it.
-    case " $CXX $CXXFLAGS " in
-    *" -library=stlport4 "*)
-      solaris_use_stlport4=yes
-      ;;
-    esac
+    func_suncc_cstd_abi
 
-    # Adding this requires a known-good setup of shared libraries for
-    # Sun compiler versions before 5.6, else PIC objects from an old
-    # archive will be linked into the output, leading to subtle bugs.
-    if test yes != "$solaris_use_stlport4"; then
+    if test no != "$suncc_use_cstd_abi"; then
       _LT_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
     fi
     ;;
