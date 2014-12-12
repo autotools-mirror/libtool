@@ -21,13 +21,20 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix a 2.4.4 regression so that libltdl subprojects do not warn
     about missing libltdl/libltdl directory as in prior releases.
 
+  - When using Sun C++ on Solaris or GNU/Linux we used to set libtool's
+    postdeps permanently, based on the contents of $CXX and $CXXFLAGS at
+    configure time, which was brittle and error-prone.  Now, we no
+    longer check for a SunCC ABI at configure time, but augment the
+    postdeps at libtool time based on the current invocation flags on
+    each call.
+
 ** Changes in supported systems or compilers:
 
   - /usr/local prefixed rpaths are now added to the link-line on
     ia64-hp-hpux*, because the default system runtime loader path does
     not contain them.
 
-  - Previously, when using Sun C++ on Solaris or Linux, `-Cstd -Crun`
+  - Previously, when using Sun C++ on Solaris or GNU/Linux, `-Cstd -Crun`
     flags were added to $postdeps unless CXX or CXXFLAGS contained
     `-library=stlport4`.  Newer releases have added other compiler flags
     that are also incompatible with `-Cstd -Crun`, so now we don't add

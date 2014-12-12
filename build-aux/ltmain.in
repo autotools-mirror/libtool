@@ -4549,6 +4549,24 @@ func_win32_import_lib_p ()
     esac
 }
 
+# func_suncc_cstd_abi
+# !!ONLY CALL THIS FOR SUN CC AFTER $compile_command IS FULLY EXPANDED!!
+# Several compiler flags select an ABI that is incompatible with the
+# Cstd library. Avoid specifying it if any are in CXXFLAGS.
+func_suncc_cstd_abi ()
+{
+    $debug_cmd
+
+    case " $compile_command " in
+    *" -compat=g "*|*\ -std=c++[0-9][0-9]\ *|*" -library=stdcxx4 "*|*" -library=stlport4 "*)
+      suncc_use_cstd_abi=no
+      ;;
+    *)
+      suncc_use_cstd_abi=yes
+      ;;
+    esac
+}
+
 # func_mode_link arg...
 func_mode_link ()
 {
@@ -6690,6 +6708,37 @@ func_mode_link ()
 	  eval $var=\"$tmp_libs\"
 	done # for var
       fi
+
+      # Add Sun CC postdeps if required:
+      test CXX = "$tagname" && {
+        case $host_os in
+        linux*)
+          case `$CC -V 2>&1 | sed 5q` in
+          *Sun\ C*) # Sun C++ 5.9
+            func_suncc_cstd_abi
+
+            if test no != "$suncc_use_cstd_abi"; then
+              func_append postdeps ' -library=Cstd -library=Crun'
+            fi
+            ;;
+          esac
+          ;;
+
+        solaris*)
+          func_cc_basename "$CC"
+          case $func_cc_basename_result in
+          CC* | sunCC*)
+            func_suncc_cstd_abi
+
+            if test no != "$suncc_use_cstd_abi"; then
+              func_append postdeps ' -library=Cstd -library=Crun'
+            fi
+            ;;
+          esac
+          ;;
+        esac
+      }
+
       # Last step: remove runtime libs from dependency_libs
       # (they stay in deplibs)
       tmp_libs=

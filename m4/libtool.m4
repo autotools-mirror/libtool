@@ -103,19 +103,36 @@ dnl AC_DEFUN([AC_PROG_LIBTOOL], [])
 dnl AC_DEFUN([AM_PROG_LIBTOOL], [])
 
 
+# _LT_PREPARE_CC_BASENAME
+# -----------------------
+m4_defun([_LT_PREPARE_CC_BASENAME], [
+# Calculate cc_basename.  Skip known compiler wrappers and cross-prefix.
+func_cc_basename ()
+{
+    for cc_temp in @S|@*""; do
+      case $cc_temp in
+        compile | *[[\\/]]compile | ccache | *[[\\/]]ccache ) ;;
+        distcc | *[[\\/]]distcc | purify | *[[\\/]]purify ) ;;
+        \-*) ;;
+        *) break;;
+      esac
+    done
+    func_cc_basename_result=`$ECHO "$cc_temp" | $SED "s%.*/%%; s%^$host_alias-%%"`
+}
+])# _LT_PREPARE_CC_BASENAME
+
+
 # _LT_CC_BASENAME(CC)
 # -------------------
-# Calculate cc_basename.  Skip known compiler wrappers and cross-prefix.
+# It would be clearer to call AC_REQUIREs from _LT_PREPARE_CC_BASENAME,
+# but that macro is also expanded into generated libtool script, which
+# arranges for $SED and $ECHO to be set by different means.
 m4_defun([_LT_CC_BASENAME],
-[for cc_temp in $1""; do
-  case $cc_temp in
-    compile | *[[\\/]]compile | ccache | *[[\\/]]ccache ) ;;
-    distcc | *[[\\/]]distcc | purify | *[[\\/]]purify ) ;;
-    \-*) ;;
-    *) break;;
-  esac
-done
-cc_basename=`$ECHO "$cc_temp" | $SED "s%.*/%%; s%^$host_alias-%%"`
+[m4_require([_LT_PREPARE_CC_BASENAME])dnl
+AC_REQUIRE([_LT_DECL_SED])dnl
+AC_REQUIRE([_LT_PROG_ECHO_BACKSLASH])dnl
+func_cc_basename $1
+cc_basename=$func_cc_basename_result
 ])
 
 
@@ -736,6 +753,7 @@ _LT_EOF
 ## -------------------------------------- ##
 
 _LT_PREPARE_MUNGE_PATH_LIST
+_LT_PREPARE_CC_BASENAME
 
 _LT_EOF
 
@@ -7423,27 +7441,6 @@ func_stripname_cnf ()
 ])# _LT_FUNC_STRIPNAME_CNF
 
 
-# _LT_FUNC_SUNCC_CSTD_ABI
-# -----------------------
-# func_suncc_cstd_abi
-# Several compiler flags select an ABI that is
-# incompatible with the Cstd library. Avoid specifying
-# it if any are in CXXFLAGS.
-m4_defun([_LT_FUNC_SUNCC_CSTD_ABI], [[
-func_suncc_cstd_abi ()
-{
-    case " $CXX $CXXFLAGS " in
-    *" -compat=g "*|*\ -std=c++[0-9][0-9]\ *|*" -library=stdcxx4 "*|*" -library=stlport4 "*)
-      suncc_use_cstd_abi=no
-      ;;
-    *)
-      suncc_use_cstd_abi=yes
-      ;;
-    esac
-} # func_suncc_cstd_abi
-]])# _LT_FUNC_SUNCC_CSTD_ABI
-
-
 # _LT_SYS_HIDDEN_LIBDEPS([TAGNAME])
 # ---------------------------------
 # Figure out "hidden" library dependencies from verbose
@@ -7452,7 +7449,6 @@ func_suncc_cstd_abi ()
 # objects, libraries and library flags.
 m4_defun([_LT_SYS_HIDDEN_LIBDEPS],
 [m4_require([_LT_FILEUTILS_DEFAULTS])dnl
-m4_require([_LT_FUNC_SUNCC_CSTD_ABI])dnl
 AC_REQUIRE([_LT_FUNC_STRIPNAME_CNF])dnl
 # Dependencies to place before and after the object being linked:
 _LT_TAGVAR(predep_objects, $1)=
@@ -7622,30 +7618,6 @@ interix[[3-9]]*)
   _LT_TAGVAR(predep_objects,$1)=
   _LT_TAGVAR(postdep_objects,$1)=
   _LT_TAGVAR(postdeps,$1)=
-  ;;
-
-linux*)
-  case `$CC -V 2>&1 | sed 5q` in
-  *Sun\ C*) # Sun C++ 5.9
-    func_suncc_cstd_abi
-
-    if test no != "$suncc_use_cstd_abi"; then
-      _LT_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
-    fi
-    ;;
-  esac
-  ;;
-
-solaris*)
-  case $cc_basename in
-  CC* | sunCC*)
-    func_suncc_cstd_abi
-
-    if test no != "$suncc_use_cstd_abi"; then
-      _LT_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
-    fi
-    ;;
-  esac
   ;;
 esac
 ])
