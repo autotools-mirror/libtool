@@ -1,6 +1,6 @@
 /* loader-dlopen.c --  dynamic linking with dlopen/dlsym
 
-   Copyright (C) 1998-2000, 2004, 2006-2008, 2011-2014 Free Software
+   Copyright (C) 1998-2000, 2004, 2006-2008, 2011-2015 Free Software
    Foundation, Inc.
    Written by Thomas Tanner, 1998
 

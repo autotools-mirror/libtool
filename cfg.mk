@@ -1,6 +1,6 @@
 # cfg.mk -- Configuration for maintainer-makefile
 #
-#   Copyright (c) 2011-2014 Free Software Foundation, Inc.
+#   Copyright (c) 2011-2015 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2011
 #
 #   This file is part of GNU Libtool.
@@ -24,7 +24,7 @@
 update-copyright-env := UPDATE_COPYRIGHT_FORCE=1 UPDATE_COPYRIGHT_USE_INTERVALS=1
 
 # Set format of NEWS
-old_NEWS_hash := bbe93ee3022140a62e18f71eb31ed365
+old_NEWS_hash := 3b76a001f0d1060dcc612f5573562958
 
 manual_title = Portable Dynamic Shared Object Management
 

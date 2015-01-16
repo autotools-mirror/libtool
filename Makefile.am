@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-##   Copyright (C) 2003-2014 Free Software Foundation, Inc.
+##   Copyright (C) 2003-2015 Free Software Foundation, Inc.
 ##   Written by Gary V. Vaughan, 2003
 ##
 ##   This file is part of GNU Libtool.
