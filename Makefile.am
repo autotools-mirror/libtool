@@ -441,13 +441,14 @@ pkgmacro_files	= libtool.m4 ltargz.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 \
 		  ltversion.m4 lt~obsolete.m4
 
 ## These are installed as a subdirectory of pkgdatadir so that
-## libtoolize --ltdl can find them later:
+## libtoolize --ltdl can find them later. Note that this list requires
+## specific order to avoid unnecessary re-autotooling after libtoolize run.
 pkgltdl_files	= COPYING.LIB \
 		  Makefile.am \
-		  Makefile.in \
 		  README \
 		  configure.ac \
 		  aclocal.m4 \
+		  Makefile.in \
 		  config-h.in \
 		  configure \
 		  libltdl/lt__alloc.h \
