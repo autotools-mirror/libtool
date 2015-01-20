@@ -2,12 +2,17 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - LT_SYS_LIBRARY_PATH can be set in config.site, or at configure time
+    and persists correctly in the generated libtool script.
+
 ** Bug fixes:
 
   - Fix a race condition in ltdl dryrun test that would cause spurious
     random failures of that test.
 
-  - LT_SYS_SEARCHPATH is munged correctly.
+  - LT_SYS_DLSEARCH_PATH is munged correctly.
 
 
 * Noteworthy changes in release 2.4.5 (2015-01-19) [stable]
