@@ -123,6 +123,11 @@ AT_DATA([acinclude.m4],
 	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
 ]])
 LT_AT_CHECK([$ACLOCAL $1$macro_dir], [0], [ignore], [ignore])
+# After the 'aclocal' run sleep 1 second to guarantee that aclocal.m4 is going
+# to have older timestamp than other autotools later-generated files (concretely
+# for libtool case, we speak about config.h.in generated autoheader).
+# Autoreconf does the same (after the first aclocal run).
+sleep 1
 AT_XFAIL_IF([test no = "$ACLOCAL"])
 AT_KEYWORDS([automake])
 ])
