@@ -652,6 +652,7 @@ testsuite	= $(tests_dir)/testsuite
 # that it can check for previous failures and skip if necessary.
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
+		  tests/configure-funcs.at \
 		  tests/libtoolize.at \
 		  tests/libtool.at \
 		  tests/demo.at \

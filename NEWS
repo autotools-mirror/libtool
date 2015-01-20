@@ -7,6 +7,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix a race condition in ltdl dryrun test that would cause spurious
     random failures of that test.
 
+  - LT_SYS_SEARCHPATH is munged correctly.
+
 
 * Noteworthy changes in release 2.4.5 (2015-01-19) [stable]
 

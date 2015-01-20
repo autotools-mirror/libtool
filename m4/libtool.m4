@@ -748,12 +748,13 @@ _LT_LIBTOOL_TAG_VARS
 _LT_EOF
 
     cat <<'_LT_EOF' >> "$cfgfile"
-## -------------------------------------- ##
-## Shell functions shared with configure. ##
-## -------------------------------------- ##
+
+# ### BEGIN FUNCTIONS SHARED WITH CONFIGURE
 
 _LT_PREPARE_MUNGE_PATH_LIST
 _LT_PREPARE_CC_BASENAME
+
+# ### END FUNCTIONS SHARED WITH CONFIGURE
 
 _LT_EOF
 
@@ -2256,7 +2257,7 @@ func_munge_path_list ()
     x)
         ;;
     *:)
-        eval @S|@1=\"`$ECHO @S|@2 | $SED 's/:/ /g'` \$@S|@1\"
+        eval @S|@1=\"`$ECHO @S|@2 | $SED 's/:/ /g'` \@S|@@S|@1\"
         ;;
     x:*)
         eval @S|@1=\"\@S|@@S|@1 `$ECHO @S|@2 | $SED 's/:/ /g'`\"
