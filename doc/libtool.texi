@@ -602,7 +602,7 @@ Without libtool, the programmer would invoke the @command{ar} command to
 create a static library:
 
 @example
-burger$ @kbd{ar cru libhello.a hello.o foo.o}
+burger$ @kbd{ar cr libhello.a hello.o foo.o}
 burger$
 @end example
 
@@ -632,7 +632,7 @@ libtool are the same ones you would use to produce an executable named
 a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.o hello.o}
 *** Warning: Linking the shared library libhello.la against the
 *** non-libtool objects foo.o hello.o is not portable!
-ar cru .libs/libhello.a
+ar cr .libs/libhello.a
 ranlib .libs/libhello.a
 creating libhello.la
 (cd .libs && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -662,7 +662,7 @@ archive, not a shared library (@pxref{Static libraries}).}:
 @example
 a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
-ar cru @value{objdir}/libhello.a foo.o hello.o
+ar cr @value{objdir}/libhello.a foo.o hello.o
 ranlib @value{objdir}/libhello.a
 creating libhello.la
 (cd @value{objdir} && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -676,7 +676,7 @@ burger$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
 rm -fr  @value{objdir}/libhello.a @value{objdir}/libhello.la
 ld -Bshareable -o @value{objdir}/libhello.so.0.0 @value{objdir}/foo.o @value{objdir}/hello.o -lm
-ar cru @value{objdir}/libhello.a foo.o hello.o
+ar cr @value{objdir}/libhello.a foo.o hello.o
 ranlib @value{objdir}/libhello.a
 creating libhello.la
 (cd @value{objdir} && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -6001,7 +6001,7 @@ in cases where it is necessary.
 @subsection Archivers
 
 On all known systems, building a static library can be accomplished by
-running @kbd{ar cru lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
+running @kbd{ar cr lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
 where the @file{.a} file is the output library, and each @file{.o} file is an
 object file.
 
