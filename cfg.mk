@@ -176,7 +176,8 @@ sc_prohibit_test_binary_operators:
 exclude_file_name_regexp--sc_prohibit_test_dollar = ^cfg.mk$$
 sc_prohibit_test_dollar:
 	@prohibit='test[	 ]+(![	 ])?(-.[	 ]+)?X?\$$[^?#]' \
-	halt='use '\''test "$$..."'\'' instead of '\''test $$'\'		\
+	exclude='test \$${[A-Za-z_][A-Za-z0-9_]+\+y}'			\
+	halt='use '\''test "$$..."'\'' instead of '\''test $$'\'	\
 	  $(_sc_search_regexp)
 
 # Never use test -e.
