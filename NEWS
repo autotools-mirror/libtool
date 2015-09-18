@@ -2,6 +2,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Bug fixes:
+
+  - Fix significant slowdown of libtoolize for certain projects (regression
+    introduced in 2.4.3 release) caused by infinite m4 macro recursion.
 
 * Noteworthy changes in release 2.4.6 (2015-02-15) [stable]
 
