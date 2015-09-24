@@ -207,7 +207,9 @@ bootstrap_files = \
     $(ltversion_m4)
 
 .PHONY: bootstrap-deps bootstrap-deps-prep
-bootstrap-deps: bootstrap-deps-prep $(bootstrap_files)
+bootstrap-deps: bootstrap-deps-prep
+	$(MAKE) $(bootstrap_files)
+
 bootstrap-deps-prep:
 ## The following variables are substituted by 'bootstrap-dep-preps'
 	@exit_cmd=:; \
