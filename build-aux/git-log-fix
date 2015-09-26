@@ -2,6 +2,9 @@
 # option.  It specifies what changes to make to each given SHA1's commit
 # log and metadata, using Perl-eval'able expressions.
 
+0f84217752fe50155f1f00fd14efbbbbdfaaed24
+s|Subjecŧ|Subject|
+
 8c2154fb4e80967b50b98c7327ff1465d3315f3f
 # Date:   Tue Nov 18 16:14:35 2014 +0000
 # Fox a resent smelling mystique.

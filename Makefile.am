@@ -86,11 +86,13 @@ ltmain_in	= $(srcdir)/$(aux_dir)/ltmain.in
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
 ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
+no_bogus_macros	= $(srcdir)/$(aux_dir)/no-bogus-m4-defines
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
 
 EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
 		  $(libtoolize_in) $(ltmain_in) $(ltmain_sh) \
-		  $(ltversion_in) $(ltversion_m4) $(options_parser)
+		  $(ltversion_in) $(ltversion_m4) $(no_bogus_macros) \
+		  $(options_parser)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -612,12 +614,7 @@ dist-hook: $(changelog) $(thanks) $(dotversion) $(readme)
 ## ...and similarly for .serial.
 	$(git_commit_count) > $(dotserial)
 ## Ensure aclocal has not wrongly picked up old macro definitions.
-	@for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
-	  if grep "$$macro" '$(srcdir)/aclocal.m4' '$(lt_aclocal_m4)'; then \
-	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
-	    exit 1; \
-	  else :; fi; \
-	done
+	$(no_bogus_macros)
 
 distcheck-hook: syntax-check
 
