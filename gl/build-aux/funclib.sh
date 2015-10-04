@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2015-01-20.17; # UTC
+scriptversion=2015-10-04.22; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -1026,6 +1026,57 @@ func_relative_path ()
 }
 
 
+# func_quote ARG
+# --------------
+# Aesthetically quote one ARG, store the result into $func_quote_result.  Note
+# that we keep attention to performance here (so far O(N) complexity as long as
+# func_append is O(1)).
+func_quote ()
+{
+    $debug_cmd
+
+    func_quote_result=$1
+
+    case $func_quote_result in
+      *[\\\`\"\$]*)
+        case $func_quote_result in
+          *[\[\*\?]*)
+            func_quote_result=`$ECHO "$func_quote_result" | $SED "$sed_quote_subst"`
+            return 0
+            ;;
+        esac
+
+        func_quote_old_IFS=$IFS
+        for _G_char in '\' '`' '"' '$'
+        do
+          # STATE($1) PREV($2) SEPARATOR($3)
+          set start "" ""
+          func_quote_result=dummy"$_G_char$func_quote_result$_G_char"dummy
+          IFS=$_G_char
+          for _G_part in $func_quote_result
+          do
+            case $1 in
+            quote)
+              func_append func_quote_result "$3$2"
+              set quote "$_G_part" "\\$_G_char"
+              ;;
+            start)
+              set first "" ""
+              func_quote_result=
+              ;;
+            first)
+              set quote "$_G_part" ""
+              ;;
+            esac
+          done
+          IFS=$func_quote_old_IFS
+        done
+        ;;
+      *) ;;
+    esac
+}
+
+
 # func_quote_for_eval ARG...
 # --------------------------
 # Aesthetically quote ARGs to be evaled later.
@@ -1042,12 +1093,8 @@ func_quote_for_eval ()
     func_quote_for_eval_unquoted_result=
     func_quote_for_eval_result=
     while test 0 -lt $#; do
-      case $1 in
-        *[\\\`\"\$]*)
-	  _G_unquoted_arg=`printf '%s\n' "$1" |$SED "$sed_quote_subst"` ;;
-        *)
-          _G_unquoted_arg=$1 ;;
-      esac
+      func_quote "$1"
+      _G_unquoted_arg=$func_quote_result
       if test -n "$func_quote_for_eval_unquoted_result"; then
 	func_append func_quote_for_eval_unquoted_result " $_G_unquoted_arg"
       else

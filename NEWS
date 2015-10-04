@@ -17,6 +17,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix significant slowdown of libtoolize for certain projects (regression
     introduced in 2.4.3 release) caused by infinite m4 macro recursion.
 
+  - Mitigate the slowdown of libtool script (introduced in v2.4.3) caused by
+    increased number of calls to '$SED $sed_quote_subst' (bug#20006).
+
 * Noteworthy changes in release 2.4.6 (2015-02-15) [stable]
 
 ** New features:

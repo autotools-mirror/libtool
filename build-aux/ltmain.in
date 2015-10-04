@@ -3346,7 +3346,8 @@ else
   if test \"\$libtool_execute_magic\" != \"$magic\"; then
     file=\"\$0\""
 
-    qECHO=`$ECHO "$ECHO" | $SED "$sed_quote_subst"`
+    func_quote "$ECHO"
+    qECHO=$func_quote_result
     $ECHO "\
 
 # A function that is used when there is no print builtin or printf.
@@ -8596,8 +8597,8 @@ EOF
 	    relink_command="$var=$func_quote_for_eval_result; export $var; $relink_command"
 	  fi
 	done
-	relink_command="(cd `pwd`; $relink_command)"
-	relink_command=`$ECHO "$relink_command" | $SED "$sed_quote_subst"`
+	func_quote "(cd `pwd`; $relink_command)"
+	relink_command=$func_quote_result
       fi
 
       # Only actually do things if not in dry run mode.
@@ -8843,7 +8844,8 @@ EOF
       done
       # Quote the link command for shipping.
       relink_command="(cd `pwd`; $SHELL \"$progpath\" $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
-      relink_command=`$ECHO "$relink_command" | $SED "$sed_quote_subst"`
+      func_quote "$relink_command"
+      relink_command=$func_quote_result
       if test yes = "$hardcode_automatic"; then
 	relink_command=
       fi
