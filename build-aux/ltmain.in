@@ -358,6 +358,8 @@ libtool_options_prep ()
     nonopt=
     preserve_args=
 
+    _G_rc_lt_options_prep=:
+
     # Shorthand for --mode=foo, only valid as the first argument
     case $1 in
     clean|clea|cle|cl)
@@ -381,11 +383,18 @@ libtool_options_prep ()
     uninstall|uninstal|uninsta|uninst|unins|unin|uni|un|u)
       shift; set dummy --mode uninstall ${1+"$@"}; shift
       ;;
+    *)
+      _G_rc_lt_options_prep=false
+      ;;
     esac
 
-    # Pass back the list of options.
-    func_quote_for_eval ${1+"$@"}
-    libtool_options_prep_result=$func_quote_for_eval_result
+    if $_G_rc_lt_options_prep; then
+      # Pass back the list of options.
+      func_quote_for_eval ${1+"$@"}
+      libtool_options_prep_result=$func_quote_for_eval_result
+    fi
+
+    $_G_rc_lt_options_prep
 }
 func_add_hook func_options_prep libtool_options_prep
 
@@ -397,9 +406,12 @@ libtool_parse_options ()
 {
     $debug_cmd
 
+    _G_rc_lt_parse_options=false
+
     # Perform our own loop to consume as many options as possible in
     # each iteration.
     while test $# -gt 0; do
+      _G_match_lt_parse_options=:
       _G_opt=$1
       shift
       case $_G_opt in
@@ -474,15 +486,22 @@ libtool_parse_options ()
                         func_append preserve_args " $_G_opt"
                         ;;
 
-	# An option not handled by this hook function:
-        *)		set dummy "$_G_opt" ${1+"$@"};	shift; break  ;;
+        # An option not handled by this hook function:
+        *)              set dummy "$_G_opt" ${1+"$@"} ; shift
+                        _G_match_lt_parse_options=false
+                        break
+                        ;;
       esac
+      $_G_match_lt_parse_options && _G_rc_lt_parse_options=:
     done
 
+    if $_G_rc_lt_parse_options; then
+      # save modified positional parameters for caller
+      func_quote_for_eval ${1+"$@"}
+      libtool_parse_options_result=$func_quote_for_eval_result
+    fi
 
-    # save modified positional parameters for caller
-    func_quote_for_eval ${1+"$@"}
-    libtool_parse_options_result=$func_quote_for_eval_result
+    $_G_rc_lt_parse_options
 }
 func_add_hook func_parse_options libtool_parse_options
 
