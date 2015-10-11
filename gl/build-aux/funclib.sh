@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2015-10-04.22; # UTC
+scriptversion=2015-10-12.13; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -515,16 +515,16 @@ if test yes = "$_G_HAVE_PLUSEQ_OP"; then
   {
     $debug_cmd
 
-    func_quote_for_eval "$2"
-    eval "$1+=\\ \$func_quote_for_eval_result"
+    func_quote_arg pretty "$2"
+    eval "$1+=\\ \$func_quote_arg_result"
   }'
 else
   func_append_quoted ()
   {
     $debug_cmd
 
-    func_quote_for_eval "$2"
-    eval "$1=\$$1\\ \$func_quote_for_eval_result"
+    func_quote_arg pretty "$2"
+    eval "$1=\$$1\\ \$func_quote_arg_result"
   }
 fi
 
@@ -1026,132 +1026,181 @@ func_relative_path ()
 }
 
 
-# func_quote ARG
-# --------------
-# Aesthetically quote one ARG, store the result into $func_quote_result.  Note
-# that we keep attention to performance here (so far O(N) complexity as long as
-# func_append is O(1)).
+# func_quote_portable EVAL ARG
+# ----------------------------
+# Internal function to portably implement func_quote_arg.  Note that we still
+# keep attention to performance here so we as much as possible try to avoid
+# calling sed binary (so far O(N) complexity as long as func_append is O(1)).
+func_quote_portable ()
+{
+    $debug_cmd
+
+    func_quote_portable_result=$2
+
+    # one-time-loop (easy break)
+    while true
+    do
+      if $1; then
+        func_quote_portable_result=`$ECHO "$2" | $SED \
+          -e "$sed_double_quote_subst" -e "$sed_double_backslash"`
+        break
+      fi
+
+      # Quote for eval.
+      case $func_quote_portable_result in
+        *[\\\`\"\$]*)
+          case $func_quote_portable_result in
+            *[\[\*\?]*)
+              func_quote_portable_result=`$ECHO "$func_quote_portable_result" | $SED "$sed_quote_subst"`
+              break
+              ;;
+          esac
+
+          func_quote_portable_old_IFS=$IFS
+          for _G_char in '\' '`' '"' '$'
+          do
+            # STATE($1) PREV($2) SEPARATOR($3)
+            set start "" ""
+            func_quote_portable_result=dummy"$_G_char$func_quote_portable_result$_G_char"dummy
+            IFS=$_G_char
+            for _G_part in $func_quote_portable_result
+            do
+              case $1 in
+              quote)
+                func_append func_quote_portable_result "$3$2"
+                set quote "$_G_part" "\\$_G_char"
+                ;;
+              start)
+                set first "" ""
+                func_quote_portable_result=
+                ;;
+              first)
+                set quote "$_G_part" ""
+                ;;
+              esac
+            done
+          done
+          IFS=$func_quote_portable_old_IFS
+          ;;
+        *) ;;
+      esac
+      break
+    done
+
+    func_quote_portable_unquoted_result=$func_quote_portable_result
+    case $func_quote_portable_result in
+      # double-quote args containing shell metacharacters to delay
+      # word splitting, command substitution and variable expansion
+      # for a subsequent eval.
+      # many bourne shells cannot handle close brackets correctly
+      # in scan sets, so we specify it separately.
+      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+        func_quote_portable_result=\"$func_quote_portable_result\"
+        ;;
+    esac
+}
+
+
+# func_quotefast_eval ARG
+# -----------------------
+# Quote one ARG (internal).  This is equivalent to 'func_quote_arg eval ARG',
+# but optimized for speed.  Result is stored in $func_quotefast_eval.
+if test xyes = `(x=; printf -v x %q yes; echo x"$x") 2>/dev/null`; then
+  func_quotefast_eval ()
+  {
+    printf -v func_quotefast_eval_result %q "$1"
+  }
+else
+  func_quotefast_eval ()
+  {
+    func_quote_portable false "$1"
+    func_quotefast_eval_result=$func_quote_portable_result
+  }
+fi
+
+
+# func_quote_arg MODEs ARG
+# ------------------------
+# Quote one ARG to be evaled later.  MODEs argument may contain zero ore more
+# specifiers listed below separated by ',' character.  This function returns two
+# values:
+#   i) func_quote_arg_result
+#      double-quoted (when needed), suitable for a subsequent eval
+#  ii) func_quote_arg_unquoted_result
+#      has all characters that are still active within double
+#      quotes backslashified.  Available only if 'unquoted' is specified.
+#
+# Available modes:
+# ----------------
+# 'eval' (default)
+#       - escape shell special characters
+# 'expand'
+#       - the same as 'eval';  but do not quote variable references
+# 'pretty'
+#       - request aesthetic output, i.e. '"a b"' instead of 'a\ b'.  This might
+#         later used in func_quote to get output like: 'echo "a b"' instead of
+#         'echo a\ b'.  This is slower than default on some shells.
+# 'unquoted'
+#       - produce also $func_quote_arg_unquoted_result which does not contain
+#         wrapping double-quotes.
+#
+# Examples for 'func_quote_arg pretty,unquoted string':
+#
+#   string      | *_result              | *_unquoted_result
+#   ------------+-----------------------+-------------------
+#   "           | \"                    | \"
+#   a b         | "a b"                 | a b
+#   "a b"       | "\"a b\""             | \"a b\"
+#   *           | "*"                   | *
+#   z="${x-$y}" | "z=\"\${x-\$y}\""     | z=\"\${x-\$y}\"
+#
+# Examples for 'func_quote_arg pretty,unquoted,expand string':
+#
+#   string        |   *_result          |  *_unquoted_result
+#   --------------+---------------------+--------------------
+#   z="${x-$y}"   | "z=\"${x-$y}\""     | z=\"${x-$y}\"
+func_quote_arg ()
+{
+    _G_quote_expand=false
+    case ,$1, in
+      *,expand,*)
+        _G_quote_expand=:
+        ;;
+    esac
+
+    case ,$1, in
+      *,pretty,*|*,expand,*|*,unquoted,*)
+        func_quote_portable $_G_quote_expand "$2"
+        func_quote_arg_result=$func_quote_portable_result
+        func_quote_arg_unquoted_result=$func_quote_portable_unquoted_result
+        ;;
+      *)
+        # Faster quote-for-eval for some shells.
+        func_quotefast_eval "$2"
+        func_quote_arg_result=$func_quotefast_eval_result
+        ;;
+    esac
+}
+
+
+# func_quote MODEs ARGs...
+# ------------------------
+# Quote all ARGs to be evaled later and join them into single command.  See
+# func_quote_arg's description for more info.
 func_quote ()
 {
     $debug_cmd
-
-    func_quote_result=$1
-
-    case $func_quote_result in
-      *[\\\`\"\$]*)
-        case $func_quote_result in
-          *[\[\*\?]*)
-            func_quote_result=`$ECHO "$func_quote_result" | $SED "$sed_quote_subst"`
-            return 0
-            ;;
-        esac
-
-        func_quote_old_IFS=$IFS
-        for _G_char in '\' '`' '"' '$'
-        do
-          # STATE($1) PREV($2) SEPARATOR($3)
-          set start "" ""
-          func_quote_result=dummy"$_G_char$func_quote_result$_G_char"dummy
-          IFS=$_G_char
-          for _G_part in $func_quote_result
-          do
-            case $1 in
-            quote)
-              func_append func_quote_result "$3$2"
-              set quote "$_G_part" "\\$_G_char"
-              ;;
-            start)
-              set first "" ""
-              func_quote_result=
-              ;;
-            first)
-              set quote "$_G_part" ""
-              ;;
-            esac
-          done
-          IFS=$func_quote_old_IFS
-        done
-        ;;
-      *) ;;
-    esac
-}
-
-
-# func_quote_for_eval ARG...
-# --------------------------
-# Aesthetically quote ARGs to be evaled later.
-# This function returns two values:
-#   i) func_quote_for_eval_result
-#      double-quoted, suitable for a subsequent eval
-#  ii) func_quote_for_eval_unquoted_result
-#      has all characters that are still active within double
-#      quotes backslashified.
-func_quote_for_eval ()
-{
-    $debug_cmd
-
-    func_quote_for_eval_unquoted_result=
-    func_quote_for_eval_result=
+    _G_func_quote_mode=$1 ; shift
+    func_quote_result=
     while test 0 -lt $#; do
-      func_quote "$1"
-      _G_unquoted_arg=$func_quote_result
-      if test -n "$func_quote_for_eval_unquoted_result"; then
-	func_append func_quote_for_eval_unquoted_result " $_G_unquoted_arg"
+      func_quote_arg "$_G_func_quote_mode" "$1"
+      if test -n "$func_quote_result"; then
+        func_append func_quote_result " $func_quote_arg_result"
       else
-        func_append func_quote_for_eval_unquoted_result "$_G_unquoted_arg"
-      fi
-
-      case $_G_unquoted_arg in
-        # Double-quote args containing shell metacharacters to delay
-        # word splitting, command substitution and variable expansion
-        # for a subsequent eval.
-        # Many Bourne shells cannot handle close brackets correctly
-        # in scan sets, so we specify it separately.
-        *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-          _G_quoted_arg=\"$_G_unquoted_arg\"
-          ;;
-        *)
-          _G_quoted_arg=$_G_unquoted_arg
-	  ;;
-      esac
-
-      if test -n "$func_quote_for_eval_result"; then
-	func_append func_quote_for_eval_result " $_G_quoted_arg"
-      else
-        func_append func_quote_for_eval_result "$_G_quoted_arg"
+        func_append func_quote_result "$func_quote_arg_result"
       fi
       shift
     done
-}
-
-
-# func_quote_for_expand ARG
-# -------------------------
-# Aesthetically quote ARG to be evaled later; same as above,
-# but do not quote variable references.
-func_quote_for_expand ()
-{
-    $debug_cmd
-
-    case $1 in
-      *[\\\`\"]*)
-	_G_arg=`$ECHO "$1" | $SED \
-	    -e "$sed_double_quote_subst" -e "$sed_double_backslash"` ;;
-      *)
-        _G_arg=$1 ;;
-    esac
-
-    case $_G_arg in
-      # Double-quote args containing shell metacharacters to delay
-      # word splitting and command substitution for a subsequent eval.
-      # Many Bourne shells cannot handle close brackets correctly
-      # in scan sets, so we specify it separately.
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-        _G_arg=\"$_G_arg\"
-        ;;
-    esac
-
-    func_quote_for_expand_result=$_G_arg
 }
 
 
@@ -1197,8 +1246,8 @@ func_show_eval ()
     _G_cmd=$1
     _G_fail_exp=${2-':'}
 
-    func_quote_for_expand "$_G_cmd"
-    eval "func_notquiet $func_quote_for_expand_result"
+    func_quote_arg pretty,expand "$_G_cmd"
+    eval "func_notquiet $func_quote_arg_result"
 
     $opt_dry_run || {
       eval "$_G_cmd"
@@ -1223,8 +1272,8 @@ func_show_eval_locale ()
     _G_fail_exp=${2-':'}
 
     $opt_quiet || {
-      func_quote_for_expand "$_G_cmd"
-      eval "func_echo $func_quote_for_expand_result"
+      func_quote_arg expand,pretty "$_G_cmd"
+      eval "func_echo $func_quote_arg_result"
     }
 
     $opt_dry_run || {

@@ -232,7 +232,7 @@ vc_ignore=
 . `echo "$0" |${SED-sed} 's|[^/]*$||'`"extract-trace"
 
 # Set a version string for *this* script.
-scriptversion=2015-01-20.17; # UTC
+scriptversion=2015-10-12.13; # UTC
 
 
 ## ------------------- ##
@@ -260,8 +260,8 @@ func_bootstrap ()
 
     # Save the current positional parameters to prevent them being
     # corrupted by calls to 'set' in 'func_init'.
-    func_quote_for_eval ${1+"$@"}
-    _G_saved_positional_parameters=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    _G_saved_positional_parameters=$func_quote_result
 
     # Initialisation.
     func_init
@@ -2300,8 +2300,8 @@ func_show_eval ()
     _G_fail_exp=${2-':'}
 
     ${opt_silent-'false'} || {
-      func_quote_for_eval $_G_cmd
-      eval func_truncate_cmd $func_quote_for_eval_result
+      func_quote eval $_G_cmd
+      eval func_truncate_cmd $func_quote_result
       func_echo "running: $tc_bold$func_truncate_cmd_result$tc_reset"
     }
 
@@ -2688,8 +2688,8 @@ bootstrap_options_prep ()
     opt_skip_po=false
 
     # Pass back the list of options we consumed.
-    func_quote_for_eval ${1+"$@"}
-    bootstrap_options_prep_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    bootstrap_options_prep_result=$func_quote_result
 }
 func_add_hook func_options_prep bootstrap_options_prep
 
@@ -2739,8 +2739,8 @@ bootstrap_parse_options ()
     done
 
     # save modified positional parameters for caller
-    func_quote_for_eval ${1+"$@"}
-    bootstrap_parse_options_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    bootstrap_parse_options_result=$func_quote_result
 }
 func_add_hook func_parse_options bootstrap_parse_options
 
@@ -2758,8 +2758,8 @@ bootstrap_validate_options ()
         && func_fatal_help "too many arguments"
 
     # Pass back the (empty) list of unconsumed options.
-    func_quote_for_eval ${1+"$@"}
-    bootstrap_validate_options_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    bootstrap_validate_options_result=$func_quote_result
 }
 func_add_hook func_validate_options bootstrap_validate_options
 

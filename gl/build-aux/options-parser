@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Set a version string for this script.
-scriptversion=2015-10-07.11; # UTC
+scriptversion=2015-10-12.13; # UTC
 
 # A portable, pluggable option parser for Bourne shell.
 # Written by Gary V. Vaughan, 2010
@@ -211,8 +211,8 @@ func_run_hooks ()
 #    '
 #        # No change in '$@' (ignored completely by this hook).  There is
 #        # no need to do the equivalent (but slower) action:
-#        # func_quote_for_eval ${1+"$@"}
-#        # my_options_prep_result=$func_quote_for_eval_result
+#        # func_quote eval ${1+"$@"}
+#        # my_options_prep_result=$func_quote_result
 #        false
 #    }
 #    func_add_hook func_options_prep my_options_prep
@@ -248,8 +248,8 @@ func_run_hooks ()
 #        done
 #
 #        if $args_changed; then
-#          func_quote_for_eval ${1+"$@"}
-#          my_silent_option_result=$func_quote_for_eval_result
+#          func_quote eval ${1+"$@"}
+#          my_silent_option_result=$func_quote_result
 #        fi
 #
 #        $args_changed
@@ -316,8 +316,8 @@ func_options ()
     if $_G_rc_options; then
       func_options_result=$_G_res_var
     else
-      func_quote_for_eval ${1+"$@"}
-      func_options_result=$func_quote_for_eval_result
+      func_quote eval ${1+"$@"}
+      func_options_result=$func_quote_result
     fi
 
     $_G_rc_options
@@ -460,8 +460,8 @@ func_parse_options ()
 
     if $_G_rc_parse_options; then
       # save modified positional parameters for caller
-      func_quote_for_eval ${1+"$@"}
-      func_parse_options_result=$func_quote_for_eval_result
+      func_quote eval ${1+"$@"}
+      func_parse_options_result=$func_quote_result
     fi
 
     $_G_rc_parse_options

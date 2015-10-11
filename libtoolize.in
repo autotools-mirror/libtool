@@ -151,11 +151,11 @@ libtoolize_environment_options ()
 
     # Pass back the updated list of options.
     if test -n "$envopts"; then
-      func_quote_for_eval "$envopts" ${1+"$@"}
+      func_quote eval "$envopts" ${1+"$@"}
     else
-      func_quote_for_eval ${1+"$@"}
+      func_quote eval ${1+"$@"}
     fi
-    libtoolize_environment_options_result=$func_quote_for_eval_result
+    libtoolize_environment_options_result=$func_quote_result
 }
 func_add_hook func_options_prep libtoolize_environment_options
 
@@ -181,8 +181,8 @@ libtoolize_options_prep ()
     ltdl_mode=
 
     # Pass back the list of options.
-    func_quote_for_eval ${1+"$@"}
-    libtoolize_options_prep_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    libtoolize_options_prep_result=$func_quote_result
 }
 func_add_hook func_options_prep libtoolize_options_prep
 
@@ -252,8 +252,8 @@ libtoolize_parse_options ()
     done
 
     # save modified positional parameters for caller
-    func_quote_for_eval ${1+"$@"}
-    libtoolize_parse_options_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    libtoolize_parse_options_result=$func_quote_result
 }
 func_add_hook func_parse_options libtoolize_parse_options
 
@@ -286,8 +286,8 @@ libtoolize_validate_options ()
       func_fatal_help "unknown additional arguments: '${1+$@}'"
 
     # Pass back the empty argument list
-    func_quote_for_eval ${1+"$@"}
-    libtoolize_validate_options_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    libtoolize_validate_options_result=$func_quote_result
 }
 func_add_hook func_validate_options libtoolize_validate_options
 

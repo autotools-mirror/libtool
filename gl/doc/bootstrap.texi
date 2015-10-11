@@ -390,8 +390,8 @@ my_silent_option ()
     esac
 
     # return modified option list
-    func_quote_for_eval $@{1+"$@@"@}
-    func_run_hooks_result=$func_quote_for_eval_result
+    func_quote eval $@{1+"$@@"@}
+    func_run_hooks_result=$func_quote_result
 @}
 func_add_hook func_parse_options my_silent_option
 @end smallexample

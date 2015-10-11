@@ -390,8 +390,8 @@ libtool_options_prep ()
 
     if $_G_rc_lt_options_prep; then
       # Pass back the list of options.
-      func_quote_for_eval ${1+"$@"}
-      libtool_options_prep_result=$func_quote_for_eval_result
+      func_quote eval ${1+"$@"}
+      libtool_options_prep_result=$func_quote_result
     fi
 
     $_G_rc_lt_options_prep
@@ -497,8 +497,8 @@ libtool_parse_options ()
 
     if $_G_rc_lt_parse_options; then
       # save modified positional parameters for caller
-      func_quote_for_eval ${1+"$@"}
-      libtool_parse_options_result=$func_quote_for_eval_result
+      func_quote eval ${1+"$@"}
+      libtool_parse_options_result=$func_quote_result
     fi
 
     $_G_rc_lt_parse_options
@@ -558,8 +558,8 @@ libtool_validate_options ()
     }
 
     # Pass back the unparsed argument list
-    func_quote_for_eval ${1+"$@"}
-    libtool_validate_options_result=$func_quote_for_eval_result
+    func_quote eval ${1+"$@"}
+    libtool_validate_options_result=$func_quote_result
 }
 func_add_hook func_validate_options libtool_validate_options
 
@@ -1525,8 +1525,8 @@ func_mode_compile ()
       esac
     done
 
-    func_quote_for_eval "$libobj"
-    test "X$libobj" != "X$func_quote_for_eval_result" \
+    func_quote_arg pretty "$libobj"
+    test "X$libobj" != "X$func_quote_arg_result" \
       && $ECHO "X$libobj" | $GREP '[]~#^*{};<>?"'"'"'	 &()|`$[]' \
       && func_warning "libobj name '$libobj' may not contain shell special characters."
     func_dirname_and_basename "$obj" "/" ""
@@ -1599,8 +1599,8 @@ compiler."
 
     func_to_tool_file "$srcfile" func_convert_file_msys_to_w32
     srcfile=$func_to_tool_file_result
-    func_quote_for_eval "$srcfile"
-    qsrcfile=$func_quote_for_eval_result
+    func_quote_arg pretty "$srcfile"
+    qsrcfile=$func_quote_arg_result
 
     # Only build a PIC object if we are building libtool libraries.
     if test yes = "$build_libtool_libs"; then
@@ -2203,8 +2203,8 @@ func_mode_install ()
        case $nonopt in *shtool*) :;; *) false;; esac
     then
       # Aesthetically quote it.
-      func_quote_for_eval "$nonopt"
-      install_prog="$func_quote_for_eval_result "
+      func_quote_arg pretty "$nonopt"
+      install_prog="$func_quote_arg_result "
       arg=$1
       shift
     else
@@ -2214,8 +2214,8 @@ func_mode_install ()
 
     # The real first argument should be the name of the installation program.
     # Aesthetically quote it.
-    func_quote_for_eval "$arg"
-    func_append install_prog "$func_quote_for_eval_result"
+    func_quote_arg pretty "$arg"
+    func_append install_prog "$func_quote_arg_result"
     install_shared_prog=$install_prog
     case " $install_prog " in
       *[\\\ /]cp\ *) install_cp=: ;;
@@ -2272,12 +2272,12 @@ func_mode_install ()
       esac
 
       # Aesthetically quote the argument.
-      func_quote_for_eval "$arg"
-      func_append install_prog " $func_quote_for_eval_result"
+      func_quote_arg pretty "$arg"
+      func_append install_prog " $func_quote_arg_result"
       if test -n "$arg2"; then
-	func_quote_for_eval "$arg2"
+	func_quote_arg pretty "$arg2"
       fi
-      func_append install_shared_prog " $func_quote_for_eval_result"
+      func_append install_shared_prog " $func_quote_arg_result"
     done
 
     test -z "$install_prog" && \
@@ -2288,8 +2288,8 @@ func_mode_install ()
 
     if test -n "$install_override_mode" && $no_mode; then
       if $install_cp; then :; else
-	func_quote_for_eval "$install_override_mode"
-	func_append install_shared_prog " -m $func_quote_for_eval_result"
+	func_quote_arg pretty "$install_override_mode"
+	func_append install_shared_prog " -m $func_quote_arg_result"
       fi
     fi
 
@@ -2585,8 +2585,8 @@ func_mode_install ()
 	        relink_command=`$ECHO "$relink_command" | $SED 's%@OUTPUT@%'"$outputname"'%g'`
 
 	        $opt_quiet || {
-	          func_quote_for_expand "$relink_command"
-		  eval "func_echo $func_quote_for_expand_result"
+	          func_quote_arg expand,pretty "$relink_command"
+		  eval "func_echo $func_quote_arg_result"
 	        }
 	        if eval "$relink_command"; then :
 	          else
@@ -3365,8 +3365,8 @@ else
   if test \"\$libtool_execute_magic\" != \"$magic\"; then
     file=\"\$0\""
 
-    func_quote "$ECHO"
-    qECHO=$func_quote_result
+    func_quote_arg pretty "$ECHO"
+    qECHO=$func_quote_arg_result
     $ECHO "\
 
 # A function that is used when there is no print builtin or printf.
@@ -3376,7 +3376,7 @@ func_fallback_echo ()
 \$1
 _LTECHO_EOF'
 }
-    ECHO=\"$qECHO\"
+    ECHO=$qECHO
   fi
 
 # Very basic option parsing. These options are (a) specific to
@@ -4719,9 +4719,9 @@ func_mode_link ()
     while test "$#" -gt 0; do
       arg=$1
       shift
-      func_quote_for_eval "$arg"
-      qarg=$func_quote_for_eval_unquoted_result
-      func_append libtool_args " $func_quote_for_eval_result"
+      func_quote_arg pretty,unquoted "$arg"
+      qarg=$func_quote_arg_unquoted_result
+      func_append libtool_args " $func_quote_arg_result"
 
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
@@ -5319,9 +5319,9 @@ func_mode_link ()
 	save_ifs=$IFS; IFS=,
 	for flag in $args; do
 	  IFS=$save_ifs
-          func_quote_for_eval "$flag"
-	  func_append arg " $func_quote_for_eval_result"
-	  func_append compiler_flags " $func_quote_for_eval_result"
+          func_quote_arg pretty "$flag"
+	  func_append arg " $func_quote_arg_result"
+	  func_append compiler_flags " $func_quote_arg_result"
 	done
 	IFS=$save_ifs
 	func_stripname ' ' '' "$arg"
@@ -5335,10 +5335,10 @@ func_mode_link ()
 	save_ifs=$IFS; IFS=,
 	for flag in $args; do
 	  IFS=$save_ifs
-          func_quote_for_eval "$flag"
-	  func_append arg " $wl$func_quote_for_eval_result"
-	  func_append compiler_flags " $wl$func_quote_for_eval_result"
-	  func_append linker_flags " $func_quote_for_eval_result"
+          func_quote_arg pretty "$flag"
+	  func_append arg " $wl$func_quote_arg_result"
+	  func_append compiler_flags " $wl$func_quote_arg_result"
+	  func_append linker_flags " $func_quote_arg_result"
 	done
 	IFS=$save_ifs
 	func_stripname ' ' '' "$arg"
@@ -5362,8 +5362,8 @@ func_mode_link ()
 
       # -msg_* for osf cc
       -msg_*)
-	func_quote_for_eval "$arg"
-	arg=$func_quote_for_eval_result
+	func_quote_arg pretty "$arg"
+	arg=$func_quote_arg_result
 	;;
 
       # Flags to be passed through unchanged, with rationale:
@@ -5386,8 +5386,8 @@ func_mode_link ()
       -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
       -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-stdlib=*| \
       -specs=*)
-        func_quote_for_eval "$arg"
-	arg=$func_quote_for_eval_result
+        func_quote_arg pretty "$arg"
+	arg=$func_quote_arg_result
         func_append compile_command " $arg"
         func_append finalize_command " $arg"
         func_append compiler_flags " $arg"
@@ -5408,15 +5408,15 @@ func_mode_link ()
 	  continue
         else
 	  # Otherwise treat like 'Some other compiler flag' below
-	  func_quote_for_eval "$arg"
-	  arg=$func_quote_for_eval_result
+	  func_quote_arg pretty "$arg"
+	  arg=$func_quote_arg_result
         fi
 	;;
 
       # Some other compiler flag.
       -* | +*)
-        func_quote_for_eval "$arg"
-	arg=$func_quote_for_eval_result
+        func_quote_arg pretty "$arg"
+	arg=$func_quote_arg_result
 	;;
 
       *.$objext)
@@ -5536,8 +5536,8 @@ func_mode_link ()
       *)
 	# Unknown arguments in both finalize_command and compile_command need
 	# to be aesthetically quoted because they are evaled later.
-	func_quote_for_eval "$arg"
-	arg=$func_quote_for_eval_result
+	func_quote_arg pretty "$arg"
+	arg=$func_quote_arg_result
 	;;
       esac # arg
 
@@ -8043,8 +8043,8 @@ EOF
 	    for cmd in $concat_cmds; do
 	      IFS=$save_ifs
 	      $opt_quiet || {
-		  func_quote_for_expand "$cmd"
-		  eval "func_echo $func_quote_for_expand_result"
+		  func_quote_arg expand,pretty "$cmd"
+		  eval "func_echo $func_quote_arg_result"
 	      }
 	      $opt_dry_run || eval "$cmd" || {
 		lt_exit=$?
@@ -8137,8 +8137,8 @@ EOF
 	  eval cmd=\"$cmd\"
 	  IFS=$save_ifs
 	  $opt_quiet || {
-	    func_quote_for_expand "$cmd"
-	    eval "func_echo $func_quote_for_expand_result"
+	    func_quote_arg expand,pretty "$cmd"
+	    eval "func_echo $func_quote_arg_result"
 	  }
 	  $opt_dry_run || eval "$cmd" || {
 	    lt_exit=$?
@@ -8612,12 +8612,12 @@ EOF
 	  elif eval var_value=\$$var; test -z "$var_value"; then
 	    relink_command="$var=; export $var; $relink_command"
 	  else
-	    func_quote_for_eval "$var_value"
-	    relink_command="$var=$func_quote_for_eval_result; export $var; $relink_command"
+	    func_quote_arg pretty "$var_value"
+	    relink_command="$var=$func_quote_arg_result; export $var; $relink_command"
 	  fi
 	done
-	func_quote "(cd `pwd`; $relink_command)"
-	relink_command=$func_quote_result
+	func_quote_arg pretty,unquoted "(cd `pwd`; $relink_command)"
+	relink_command=$func_quote_arg_unquoted_result
       fi
 
       # Only actually do things if not in dry run mode.
@@ -8857,14 +8857,14 @@ EOF
 	elif eval var_value=\$$var; test -z "$var_value"; then
 	  relink_command="$var=; export $var; $relink_command"
 	else
-	  func_quote_for_eval "$var_value"
-	  relink_command="$var=$func_quote_for_eval_result; export $var; $relink_command"
+	  func_quote_arg pretty,unquoted "$var_value"
+	  relink_command="$var=$func_quote_arg_unquoted_result; export $var; $relink_command"
 	fi
       done
       # Quote the link command for shipping.
       relink_command="(cd `pwd`; $SHELL \"$progpath\" $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
-      func_quote "$relink_command"
-      relink_command=$func_quote_result
+      func_quote_arg pretty,unquoted "$relink_command"
+      relink_command=$func_quote_arg_unquoted_result
       if test yes = "$hardcode_automatic"; then
 	relink_command=
       fi
