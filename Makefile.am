@@ -27,7 +27,7 @@ ACLOCAL_AMFLAGS		= -I m4
 AM_CPPFLAGS		=
 AM_LDFLAGS		=
 
-SUBDIRS			= .
+SUBDIRS			= . gnulib-tests
 DIST_SUBDIRS		= $(SUBDIRS)
 EXTRA_DIST		=
 
@@ -88,11 +88,12 @@ ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
 no_bogus_macros	= $(srcdir)/$(aux_dir)/no-bogus-m4-defines
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
+u2d_copyright	= $(srcdir)/$(aux_dir)/update-copyright
 
 EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
 		  $(libtoolize_in) $(ltmain_in) $(ltmain_sh) \
 		  $(ltversion_in) $(ltversion_m4) $(no_bogus_macros) \
-		  $(options_parser)
+		  $(options_parser) $(u2d_copyright)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -538,7 +539,7 @@ git_log_fix		= $(srcdir)/$(aux_dir)/git-log-fix
 thanks_gen		= $(srcdir)/$(aux_dir)/thanks-gen
 
 dotserial		= $(distdir)/.serial
-dotversion		= $(srcdir)/.version
+dotversion		= $(top_srcdir)/.version
 tarball_version		= $(distdir)/.tarball-version
 readme			= $(distdir)/README
 changelog		= $(distdir)/ChangeLog

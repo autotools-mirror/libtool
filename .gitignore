@@ -41,6 +41,7 @@
 /INSTALL
 /README-release
 /gnulib-local
+/gnulib-tests
 /libtoolize
 /libtoolize.in
 /maint.mk

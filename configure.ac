@@ -111,7 +111,7 @@ AB_INIT([$autobuild_mode])
 
 
 dnl Make sure config.status is regenerated when the version timestamp changes
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(srcdir)/.version'])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/.version'])
 
 
 ## ------------------------------- ##
@@ -182,5 +182,5 @@ AM_MISSING_PROG([HELP2MAN], [help2man])
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile gnulib-tests/Makefile])
 AC_OUTPUT

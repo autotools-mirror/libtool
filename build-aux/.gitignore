@@ -1,4 +1,5 @@
 /announce-gen
+/ar-lib
 /compile
 /depcomp
 /do-release-commit-and-tag

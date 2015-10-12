@@ -8,6 +8,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     variable, which obsoletes AR_FLAGS.  This is due to naming conventions
     among other *FLAGS and to be consistent with Automake's ARFLAGS.
 
+  - Gnulib testsuite is enabled and run during 'make check'.
+
 ** Important incompatible changes:
 
   - Libtool changed ARFLAGS/AR_FLAGS default from 'cru' to 'cr'.
