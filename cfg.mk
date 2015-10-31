@@ -70,9 +70,9 @@ local-checks-to-skip =				\
 
 # Check for correct usage of $cc_basename in libtool.m4.
 sc_libtool_m4_cc_basename:
-	@sed -n '/case \$$cc_basename in/,/esac/ {			\
+	@$(SED) -n "/case \\\$$cc_basename in/,/esac/ {			\
 	  /^[	 ]*[a-zA-Z][a-zA-Z0-9+]*[^*][	 ]*)/p;			\
-	}' '$(srcdir)/$(macro_dir)/libtool.m4' | grep . && {		\
+	}" '$(srcdir)/$(macro_dir)/libtool.m4' | grep . && {		\
 	  msg="\$$cc_basename matches should include a trailing '*'."	\
 	  $(_sc_say_and_exit) } || :
 
@@ -142,12 +142,12 @@ sc_prohibit_set_dummy_without_shift:
 	@files=$$($(VC_LIST_EXCEPT));					\
 	if test -n "$$files"; then					\
 	  grep -nE '(set dummy|shift)' $$files |			\
-	    sed -n '/set[	 ][	 ]*dummy/{			\
+	    $(SED) -n "/set[	 ][	 ]*dummy/{			\
 	      /set.*dummy.*;.*shift/d;					\
 	      N;							\
 	      /\n.*shift/D;						\
 	      p;							\
-            }' | grep -n . && {						\
+	    }" | grep -n . && {						\
 	    msg="use 'shift' after 'set dummy'"				\
 	    $(_sc_say_and_exit) } || :;					\
 	else :;								\
@@ -216,11 +216,11 @@ sc_prohibit_test_const_follows_var:
 exclude_file_name_regexp--sc_require_function_nl_brace = (^HACKING|\.[ch]|\.texi)$$
 sc_require_function_nl_brace:
 	@for file in $$($(VC_LIST_EXCEPT)); do				\
-	  sed -n '/^func_[^	 ]*[	 ]*(/{				\
+	  $(SED) -n "/^func_[^	 ]*[	 ]*(/{				\
 	    N;								\
 	    /^func_[^	 ]* ()\n{$$/d;					\
 	    p;								\
-	  }' $$file | grep -E . && {					\
+	  }" $$file | grep -E . && {					\
 	    msg="found malformed function_definition in $$file"		\
 	    $(_sc_say_and_exit) } || :;					\
 	done
