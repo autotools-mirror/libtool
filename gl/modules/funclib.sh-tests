@@ -1,0 +1,12 @@
+Files:
+tests/test-funclib-quote.sh
+
+Depends-on:
+test-framework-sh
+all-shells-tests
+
+configure.ac:
+
+Makefile.am:
+TESTS += \
+	test-funclib-quote.sh

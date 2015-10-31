@@ -112,6 +112,13 @@ sc_prohibit_bracket_as_test:
 	halt="use 'if test' instead of 'if ['"			\
 	  $(_sc_search_regexp)
 
+# : ${foo=`bar`} is not perfectly portable (see Shellology in autoconf's manual)
+exclude_file_name_regexp--sc_prohibit_command_in_subst = ^cfg.mk$$
+sc_prohibit_command_in_subst:
+	@prohibit='\$$\{[^`}]*`[^`]*`[^}]*}'				\
+	halt='do not use `command` in $${ } substitution`'		\
+	  $(_sc_search_regexp)
+
 # Check for quotes within backquotes within quotes "`"bar"`"
 exclude_file_name_regexp--sc_prohibit_nested_quotes = ^cfg.mk$$
 sc_prohibit_nested_quotes:
@@ -238,7 +245,8 @@ define _sc_search_regexp_or_exclude
   fi || :;
 endef
 
-exclude_file_name_regexp--sc_useless_braces_in_variable_derefs = /cvsu$$
+exclude_file_name_regexp--sc_useless_braces_in_variable_derefs = \
+	test-funclib-quote.sh$$
 sc_useless_braces_in_variable_derefs:
 	@prohibit='\$${[0-9A-Za-z_]+}[^0-9A-Za-z_]'			\
 	halt='found spurious braces around variable dereference'	\
@@ -258,11 +266,9 @@ sc_useless_quotes_in_case:
 	  $(_sc_search_regexp)
 
 # List syntax-check exempted files.
-exclude_file_name_regexp--sc_error_message_uppercase = \
-  ^$(_build-aux)/cvsu$$
 exclude_file_name_regexp--sc_prohibit_strcmp = \
   ^doc/libtool.texi$$
 exclude_file_name_regexp--sc_prohibit_test_minus_ao = \
   ^m4/libtool.m4$$
-exclude_file_name_regexp--sc_space_tab = \.diff$$
+exclude_file_name_regexp--sc_space_tab = (\.diff|test-funclib-quote.sh)$$
 exclude_file_name_regexp--sc_trailing_blank-non-rfc3676 = \.diff$$
