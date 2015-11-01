@@ -1,5 +1,5 @@
 # Set a version string for this script.
-scriptversion=2015-10-12.13; # UTC
+scriptversion=2015-11-01.21; # UTC
 
 # General shell script boiler plate, and helper functions.
 # Written by Gary V. Vaughan, 2004
@@ -1106,10 +1106,27 @@ func_quote_portable ()
 # Quote one ARG (internal).  This is equivalent to 'func_quote_arg eval ARG',
 # but optimized for speed.  Result is stored in $func_quotefast_eval.
 if test xyes = `(x=; printf -v x %q yes; echo x"$x") 2>/dev/null`; then
-  func_quotefast_eval ()
-  {
-    printf -v func_quotefast_eval_result %q "$1"
-  }
+  printf -v _GL_test_printf_tilde %q '~'
+  if test '\~' = "$_GL_test_printf_tilde"; then
+    func_quotefast_eval ()
+    {
+      printf -v func_quotefast_eval_result %q "$1"
+    }
+  else
+    # Broken older Bash implementations.  Make those faster too if possible.
+    func_quotefast_eval ()
+    {
+      case $1 in
+        '~'*)
+          func_quote_portable false "$1"
+          func_quotefast_eval_result=$func_quote_portable_result
+          ;;
+        *)
+          printf -v func_quotefast_eval_result %q "$1"
+          ;;
+      esac
+    }
+  fi
 else
   func_quotefast_eval ()
   {
