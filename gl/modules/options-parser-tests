@@ -1,0 +1,13 @@
+Files:
+tests/test-option-parser.sh
+tests/test-option-parser-helper
+
+Depends-on:
+test-framework-sh
+all-shells-tests
+
+configure.ac:
+
+Makefile.am:
+TESTS += \
+	test-option-parser.sh

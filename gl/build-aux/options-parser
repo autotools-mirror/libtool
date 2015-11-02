@@ -380,7 +380,7 @@ func_parse_options ()
       shift
       case $_G_opt in
         --debug|-x)   debug_cmd='set -x'
-                      func_echo "enabling shell trace mode"
+                      func_echo "enabling shell trace mode" >&2
                       $debug_cmd
                       ;;
 
