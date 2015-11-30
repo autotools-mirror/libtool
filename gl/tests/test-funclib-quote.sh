@@ -25,7 +25,7 @@ all_shells_script=$0
 
 _compare_or_error ()
 {
-    _G_msg="strings differ:
+    _G_msg="$1: strings differ:
     a: $2
     b: $3"
     test "$2" = "$3" || all_shells_error "$_G_msg"
