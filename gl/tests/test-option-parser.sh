@@ -23,7 +23,7 @@ all_shells_script=$0
 
 . "$abs_aux_dir"/options-parser || exit 1
 
-helper=$abs_srcdir/test-option-parser-helper
+helper="$__GL_ALL_SHELLS_SHELL $abs_srcdir/test-option-parser-helper"
 
 check_output_inner ()
 {

@@ -119,10 +119,13 @@ test_parse_eat_test ()
     _G_opt=$1 ; shift
     case $_G_opt in
       --test|-t)
-        test $# = 0 && func_missing_arg $_G_opt
         _t_parse_match=:
-        opt_test=$1
-        shift
+        if test $# = 0; then
+          func_missing_arg $_G_opt
+        else
+          opt_test=$1
+          shift
+        fi
         ;;
     esac
 
