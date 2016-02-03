@@ -13,7 +13,7 @@ Makefile.am:
 Include:
 
 License:
-GPLv2+
+GPLv3+
 
 Maintainer:
 Gary V. Vaughan <gary@gnu.org>

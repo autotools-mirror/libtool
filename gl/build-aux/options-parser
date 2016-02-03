@@ -165,13 +165,13 @@ func_run_hooks ()
 
     case " $hookable_fns " in
       *" $1 "*) ;;
-      *) func_fatal_error "'$1' does not support hook funcions.n" ;;
+      *) func_fatal_error "'$1' does not support hook functions." ;;
     esac
 
     eval _G_hook_fns=\$$1_hooks; shift
 
     for _G_hook in $_G_hook_fns; do
-      if eval $_G_hook '"$@"'; then
+      if eval $_G_hook '${1+"$@"}'; then
         # store returned options list back into positional
         # parameters for next 'cmd' execution.
         eval _G_hook_result=\$${_G_hook}_result
