@@ -94,7 +94,12 @@ usage_message="Options:
 "
 
 # Additional text appended to 'usage_message' in response to '--help'.
-long_help_message=$long_help_message"
+func_help ()
+{
+    $debug_cmd
+
+    func_usage_message
+    $ECHO "$long_help_message
        'environment'   show warnings about LIBTOOLIZE_OPTIONS content
        'file'          show warnings about file copying and linking
 
@@ -120,8 +125,9 @@ include the following information:
 
 Report bugs to <@PACKAGE_BUGREPORT@>.
 GNU @PACKAGE@ home page: <@PACKAGE_URL@>.
-General help using GNU software: <http://www.gnu.org/gethelp/>.
-"
+General help using GNU software: <http://www.gnu.org/gethelp/>."
+    exit 0
+}
 
 warning_categories='environment file'
 
