@@ -1,6 +1,6 @@
 # export-def.at -- test module-definition files              -*- Autotest -*-
 
-#   Copyright (C) 2013-2015 Free Software Foundation, Inc.
+#   Copyright (C) 2013-2016 Free Software Foundation, Inc.
 #   Written by Peter Rosin, 2013
 #
 #   This file is part of GNU Libtool.

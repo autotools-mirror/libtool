@@ -241,7 +241,7 @@ revision hash string in hexadecimal appended to all of that:
     2.4.2.418.3-30eaa
 
 --
-  Copyright (C) 2004-2010, 2015 Free Software Foundation, Inc.
+  Copyright (C) 2004-2010, 2015-2016 Free Software Foundation, Inc.
 
   Written by Gary V. Vaughan, 2004
 

@@ -1,6 +1,6 @@
 # indirect_deps.at -- support for link_all_deplibs=no   -*- Autotest -*-
 
-#   Copyright (C) 2007-2008, 2011-2015 Free Software Foundation, Inc.
+#   Copyright (C) 2007-2008, 2011-2016 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2007.
 #
 #   This file is part of GNU Libtool.
