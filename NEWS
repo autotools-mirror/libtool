@@ -1212,9 +1212,10 @@ New in 0.1:
 * First release of libtool
 * Support for: *-*-freebsd*, *-*-netbsd*, *-*-sunos4*, *-*-ultrix4*
 -- 
-  Copyright (C) 1996, 1998-2016 Free Software Foundation, Inc.
 
-  This file is part of GNU Libtool.
+Copyright (C) 1996, 1998-2016 Free Software Foundation, Inc.
+
+This file is part of GNU Libtool.
 
 Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright
