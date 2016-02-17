@@ -62,16 +62,18 @@ for file in "$@"; do
     continue
   }
 
+  # Did we already in-place edited this file?
+  matched=`sed -n -e '/^This is an alpha testing release/,/a consistent, portable interface\.$/p' $file \
+           |wc -l |sed 's|^ *||'`
+  test 3 = "$matched" && {
+    echo "$progname: $file already edited" >&2
+    continue
+  }
+
   # Make sure the paragraph we are matching has not been edited since
   # this script was written.
   matched=`sed -n -e '/^\[GNU Libtool\]\[libtool\] is/,/^consistent, portable interface\.$/p' $file \
            |wc -l |sed 's|^ *||'`
-
-  # Unless, of course, it was edited by this script already.
-  test 3 = "$matched" \
-      || matched=`sed -n -e '/^This is an alpha testing release/,/a consistent, portable interface\.$/p' $file \
-                  |wc -l |sed 's|^ *||'`
-
   test 3 = "$matched" \
       || func_fatal_error "$file format has changed, please fix '$0'"
 
@@ -79,7 +81,7 @@ for file in "$@"; do
   trap 'x=$?; rm $file.T; exit $x' 1 2 13 15
 
   # Edit the first paragraph to be suitable for an alpha release.
-  sed -n '/^\[GNU Libtool\]\[libtool\] is/,/^consistent, portable interface\.$/c\
+  sed '/^\[GNU Libtool\]\[libtool\] is/,/^consistent, portable interface\.$/c\
 This is an alpha testing release of [GNU Libtool][libtool], a generic\
 library support script.  [Libtool][] hides the complexity of using shared\
 libraries behind a consistent, portable interface.' $file > $file.T

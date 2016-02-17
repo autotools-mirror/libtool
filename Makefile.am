@@ -599,7 +599,7 @@ $(dotversion):
 EXTRA_DIST += $(edit_readme_alpha)
 re_alpha_version = '\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*[-\.][-\.0-9a-z]*\)'
 $(readme): FORCE
-	@if test -n `expr $(VERSION) : $(re_alpha_version)`; then \
+	@if test -n "`expr $(VERSION) : $(re_alpha_version)`"; then \
 	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
 	    then echo "  GEN     " $@; \
 	  else echo "$(SHELL) $(edit_readme_alpha) $@"; fi; \
