@@ -185,10 +185,6 @@ libtoolize_options_prep ()
     opt_subproject=false
 
     ltdl_mode=
-
-    # Pass back the list of options.
-    func_quote eval ${1+"$@"}
-    libtoolize_options_prep_result=$func_quote_result
 }
 func_add_hook func_options_prep libtoolize_options_prep
 

@@ -393,8 +393,6 @@ libtool_options_prep ()
       func_quote eval ${1+"$@"}
       libtool_options_prep_result=$func_quote_result
     fi
-
-    $_G_rc_lt_options_prep
 }
 func_add_hook func_options_prep libtool_options_prep
 
@@ -500,8 +498,6 @@ libtool_parse_options ()
       func_quote eval ${1+"$@"}
       libtool_parse_options_result=$func_quote_result
     fi
-
-    $_G_rc_lt_parse_options
 }
 func_add_hook func_parse_options libtool_parse_options
 
