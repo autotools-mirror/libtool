@@ -168,6 +168,10 @@ lt_dlloader_remove (const char *name)
 
   /* Fail if there are any open modules that use this loader.  */
   iface = lt_dlinterface_register (id_string, NULL);
+  if (!iface)
+    /* No memory, error is already set. */
+    return 0;
+
   while ((handle = lt_dlhandle_iterate (iface, handle)))
     {
       lt_dlhandle cur = handle;
