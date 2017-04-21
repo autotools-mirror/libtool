@@ -1,6 +1,6 @@
 /* lt_dlloader.h -- dynamic library loader interface
 
-   Copyright (C) 2004, 2007-2008, 2011-2016 Free Software Foundation,
+   Copyright (C) 2004, 2007-2008, 2011-2017 Free Software Foundation,
    Inc.
    Written by Gary V. Vaughan, 2004
 

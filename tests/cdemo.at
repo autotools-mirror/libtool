@@ -1,6 +1,6 @@
 # cdemo.at -- Using Automake to build a program and library -*- Autotest -*-
 #
-#   Copyright (C) 2003-2004, 2011-2016 Free Software Foundation, Inc.
+#   Copyright (C) 2003-2004, 2011-2017 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
