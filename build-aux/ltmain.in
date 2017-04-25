@@ -8614,7 +8614,8 @@ EOF
 	    relink_command="$var=$func_quote_arg_result; export $var; $relink_command"
 	  fi
 	done
-	func_quote_arg pretty,unquoted "(cd `pwd`; $relink_command)"
+	func_quote eval cd "`pwd`"
+	func_quote_arg pretty,unquoted "($func_quote_result; $relink_command)"
 	relink_command=$func_quote_arg_unquoted_result
       fi
 
@@ -8860,7 +8861,8 @@ EOF
 	fi
       done
       # Quote the link command for shipping.
-      relink_command="(cd `pwd`; $SHELL \"$progpath\" $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
+      func_quote eval cd "`pwd`"
+      relink_command="($func_quote_result; $SHELL \"$progpath\" $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
       func_quote_arg pretty,unquoted "$relink_command"
       relink_command=$func_quote_arg_unquoted_result
       if test yes = "$hardcode_automatic"; then
