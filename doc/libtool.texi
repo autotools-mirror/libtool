@@ -1086,7 +1086,7 @@ install the executables after the libraries have been installed
 So, for our Ultrix example, we would run:
 
 @example
-a23# libtool --mode=install -c hell /usr/local/bin/hell
+a23# libtool --mode=install install -c hell /usr/local/bin/hell
 install -c hell /usr/local/bin/hell
 a23#
 @end example
@@ -1095,7 +1095,7 @@ On shared library systems that require wrapper scripts, libtool just
 ignores the wrapper script and installs the correct binary:
 
 @example
-burger# libtool --mode=install -c hell /usr/local/bin/hell
+burger# libtool --mode=install install -c hell /usr/local/bin/hell
 install -c @value{objdir}/hell /usr/local/bin/hell
 burger#
 @end example
