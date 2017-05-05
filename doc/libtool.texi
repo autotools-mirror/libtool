@@ -2180,7 +2180,7 @@ support dlopening.
 This option should be used if the package has been ported to build clean
 dlls on win32 platforms.  Usually this means that any library data items
 are exported with @code{__declspec(dllexport)} and imported with
-@code{__declspec(dllimport)}.  If this macro is not used, libtool will
+@code{__declspec(dllimport)}.  If this option is not used, libtool will
 assume that the package libraries are not dll clean and will build only
 static libraries on win32 hosts.
 
