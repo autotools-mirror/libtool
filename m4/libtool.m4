@@ -4191,8 +4191,10 @@ for ac_symprfx in "" "_"; do
     # Fake it for dumpbin and say T for any non-static function,
     # D for any global variable and I for any imported variable.
     # Also find C++ and __fastcall symbols from MSVC++ or ICC,
-    # which start with @ or ?.
+    # which start with @ or ?.  And Cygwin gawk-4.1.4-3 and newer
+    # treats input as binary, have to drop carriage return first.
     lt_cv_sys_global_symbol_pipe="$AWK ['"\
+"     {sub(/\\r\$/,\"\")};"\
 "     {last_section=section; section=\$ 3};"\
 "     /^COFF SYMBOL TABLE/{for(i in hide) delete hide[i]};"\
 "     /Section length .*#relocs.*(pick any)/{hide[last_section]=1};"\
