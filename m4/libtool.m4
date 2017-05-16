@@ -4135,13 +4135,13 @@ esac
 
 if test "$lt_cv_nm_interface" = "MS dumpbin"; then
   # Gets list of data symbols to import.
-  lt_cv_sys_global_symbol_to_import="$SED -n -e 's/^I .* \(.*\)$/\1/p'"
+  lt_cv_sys_global_symbol_to_import="$SED -n -e 's/^I .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/\1/p'"
   # Adjust the below global symbol transforms to fixup imported variables.
-  lt_cdecl_hook=" -e 's/^I .* \(.*\)$/extern __declspec(dllimport) char \1;/p'"
-  lt_c_name_hook=" -e 's/^I .* \(.*\)$/  {\"\1\", (void *) 0},/p'"
+  lt_cdecl_hook=" -e 's/^I .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/extern __declspec(dllimport) char \1;/p'"
+  lt_c_name_hook=" -e 's/^I .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/  {\"\1\", (void *) 0},/p'"
   lt_c_name_lib_hook="\
-  -e 's/^I .* \(lib.*\)$/  {\"\1\", (void *) 0},/p'\
-  -e 's/^I .* \(.*\)$/  {\"lib\1\", (void *) 0},/p'"
+  -e 's/^I .* \(lib[[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/  {\"\1\", (void *) 0},/p'\
+  -e 's/^I .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/  {\"lib\1\", (void *) 0},/p'"
 else
   # Disable hooks by default.
   lt_cv_sys_global_symbol_to_import=
@@ -4155,22 +4155,22 @@ fi
 # so use this general approach.
 lt_cv_sys_global_symbol_to_cdecl="$SED -n"\
 $lt_cdecl_hook\
-" -e 's/^T .* \(.*\)$/extern int \1();/p'"\
-" -e 's/^$symcode$symcode* .* \(.*\)$/extern char \1;/p'"
+" -e 's/^T .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/extern int \1();/p'"\
+" -e 's/^$symcode$symcode* .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/extern char \1;/p'"
 
 # Transform an extracted symbol line into symbol name and symbol address
 lt_cv_sys_global_symbol_to_c_name_address="$SED -n"\
 $lt_c_name_hook\
 " -e 's/^: \(.*\) .*$/  {\"\1\", (void *) 0},/p'"\
-" -e 's/^$symcode$symcode* .* \(.*\)$/  {\"\1\", (void *) \&\1},/p'"
+" -e 's/^$symcode$symcode* .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/  {\"\1\", (void *) \&\1},/p'"
 
 # Transform an extracted symbol line into symbol name with lib prefix and
 # symbol address.
 lt_cv_sys_global_symbol_to_c_name_address_lib_prefix="$SED -n"\
 $lt_c_name_lib_hook\
 " -e 's/^: \(.*\) .*$/  {\"\1\", (void *) 0},/p'"\
-" -e 's/^$symcode$symcode* .* \(lib.*\)$/  {\"\1\", (void *) \&\1},/p'"\
-" -e 's/^$symcode$symcode* .* \(.*\)$/  {\"lib\1\", (void *) \&\1},/p'"
+" -e 's/^$symcode$symcode* .* \(lib[[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/  {\"\1\", (void *) \&\1},/p'"\
+" -e 's/^$symcode$symcode* .* \([[a-zA-Z_]][[a-zA-Z0-9_]]*\)$/  {\"lib\1\", (void *) \&\1},/p'"
 
 # Handle CRLF in mingw tool chain
 opt_cr=
