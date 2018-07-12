@@ -10,6 +10,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Gnulib testsuite is enabled and run during 'make check'.
 
+  - Support the Windows version of the Intel C Compiler (icl) in
+    libtool script.
+
 ** Important incompatible changes:
 
   - Libtool changed ARFLAGS/AR_FLAGS default from 'cru' to 'cr'.
