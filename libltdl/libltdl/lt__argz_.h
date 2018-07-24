@@ -1,6 +1,6 @@
 /* lt__argz.h -- internal argz interface for non-glibc systems
 
-   Copyright (C) 2004, 2007-2008, 2011-2017 Free Software Foundation,
+   Copyright (C) 2004, 2007-2008, 2011-2018 Free Software Foundation,
    Inc.
    Written by Gary V. Vaughan, 2004
 
