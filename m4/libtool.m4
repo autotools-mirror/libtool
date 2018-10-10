@@ -7758,7 +7758,7 @@ if AC_TRY_EVAL(ac_compile); then
   for p in `eval "$output_verbose_link_cmd"`; do
     case $prev$p in
 
-    -L* | -R* | -l*)
+    -L* | -R* | -l* | */libclang_rt.*.a)
        # Some compilers place space between "-{L,R,l}" and the path.
        # Remove the space.
        if test x-L = x"$p" ||
