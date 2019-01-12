@@ -419,9 +419,10 @@ update_mans = \
 # manual pages if the sources for the build-tree files we want to
 # run have changed.
 $(libtool_1): $(ltmain_sh)
-	$(AM_V_GEN)$(update_mans) --help-option=--help-all libtool
+	$(AM_V_GEN)$(update_mans) -n 'Provide generalized library-building support services' --help-option=--help-all libtool
 $(libtoolize_1): $(libtoolize_in)
-	$(AM_V_GEN)$(update_mans) libtoolize
+	$(AM_V_GEN)$(update_mans) -n 'Prepare a package to use libtool' libtoolize
+
 
 
 ## ------------- ##
