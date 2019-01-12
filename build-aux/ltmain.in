@@ -7031,6 +7031,9 @@ func_mode_link ()
 	    revision=$number_minor
 	    lt_irix_increment=no
 	    ;;
+	  *)
+	    func_fatal_configuration "$modename: unknown library version type '$version_type'"
+	    ;;
 	  esac
 	  ;;
 	no)
