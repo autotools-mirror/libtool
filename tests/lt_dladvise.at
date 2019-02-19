@@ -1,6 +1,6 @@
 # lt_dladvise.at -- test libltdl functionality                -*- Autotest -*-
 #
-#   Copyright (C) 2007-2009, 2011-2018 Free Software Foundation, Inc.
+#   Copyright (C) 2007-2009, 2011-2019 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2007
 #
 #   This file is part of GNU Libtool.

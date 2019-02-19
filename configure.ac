@@ -1,6 +1,6 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 
-#   Copyright (C) 2001, 2004-2005, 2008, 2010-2018 Free Software
+#   Copyright (C) 2001, 2004-2005, 2008, 2010-2019 Free Software
 #   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2001
 #
@@ -24,7 +24,7 @@
 ####
 
 
-AC_PREREQ(2.62)
+AC_PREREQ(2.63)
 dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 
 

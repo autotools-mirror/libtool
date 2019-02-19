@@ -1,6 +1,6 @@
 # execute-mode.at -- libtool --mode=execute             -*- Autotest -*-
 #
-#   Copyright (C) 2008-2018 Free Software Foundation, Inc.
+#   Copyright (C) 2008-2019 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2008
 #
 #   This file is part of GNU Libtool.

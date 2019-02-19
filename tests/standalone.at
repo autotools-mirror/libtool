@@ -1,6 +1,6 @@
 # standalone.at -- test standalone libltdl builds             -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2008, 2011-2018 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008, 2011-2019 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2006
 #
 #   This file is part of GNU Libtool.
