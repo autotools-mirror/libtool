@@ -5414,6 +5414,8 @@ func_mode_link ()
       # -static-libsan       Link with static sanitizer runtimes (Clang)
       # -no-canonical-prefixes Do not expand any symbolic links
       # -fuse-ld=*           Linker select flags for GCC
+      # -static-*            direct GCC to link specific libraries statically
+      # -fcilkplus           Cilk Plus language extension features for C/C++
       # -rtlib=*             select c runtime lib with clang
       # --unwindlib=*        select unwinder library with clang
       # -f{file|debug|macro|profile}-prefix-map=* needed for lto linking
@@ -5426,7 +5428,7 @@ func_mode_link ()
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
       -ffile-prefix-map=*|-fdebug-prefix-map=*|-fmacro-prefix-map=*|-fprofile-prefix-map=*| \
       -fdiagnostics-color*|-frecord-gcc-switches| \
-      -fuse-ld=*|-Wa,*|-Werror|-Werror=*)
+      -fuse-ld=*|-static-*|-fcilkplus|-Wa,*|-Werror|-Werror=*)
         func_quote_arg pretty "$arg"
 	arg=$func_quote_arg_result
         func_append compile_command " $arg"
