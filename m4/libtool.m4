@@ -5222,7 +5222,7 @@ _LT_EOF
 
     haiku*)
       _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
-      _LT_TAGVAR(link_all_deplibs, $1)=yes
+      _LT_TAGVAR(link_all_deplibs, $1)=no
       ;;
 
     os2*)
@@ -6868,7 +6868,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 
       haiku*)
         _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
-        _LT_TAGVAR(link_all_deplibs, $1)=yes
+        _LT_TAGVAR(link_all_deplibs, $1)=no
         ;;
 
       hpux9*)
