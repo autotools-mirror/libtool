@@ -651,7 +651,7 @@ also that we need to add @option{-lm} to the link command line because
 libtool}).
 
 Another complication in building shared libraries is that we need to
-specify the path to the directory wher they will (eventually) be
+specify the path to the directory where they will (eventually) be
 installed (in this case, @file{/usr/local/lib})@footnote{If you don't
 specify an @code{rpath}, then libtool builds a libtool convenience
 archive, not a shared library (@pxref{Static libraries}).}:
