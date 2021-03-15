@@ -866,7 +866,7 @@ against uninstalled shared libraries. The wrapper executable thus
 performs the same function as the wrapper script used on other
 platforms, but allows to satisfy the @command{make} rules for the
 program, whose name ends in @code{$(EXEEXT)}. The actual program
-executable is created below @value{objdir}, and its name will end
+executable is created below @file{@value{objdir}}, and its name will end
 in @code{$(EXEEXT)} and may or may not contain an @code{lt-} prefix.
 This wrapper executable sets various environment values so that the
 program executable may locate its (uninstalled) shared libraries,
