@@ -370,7 +370,7 @@ lt_configure_deps = $(lt_aclocal_m4) $(lt_aclocal_m4_deps)
 $(lt_aclocal_m4): $(lt_aclocal_m4_deps)
 	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(ACLOCAL) -I ../m4
 
-$(lt_configure): $(lt_configure_deps)
+$(lt_configure): $(lt_configure_deps) $(lt_config_h_in)
 	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOCONF)
 
 $(lt_config_h_in): $(lt_configure_deps)
