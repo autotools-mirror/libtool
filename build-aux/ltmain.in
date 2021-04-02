@@ -6246,7 +6246,9 @@ func_mode_link ()
 		;;
 	      esac
 	      if $valid_a_lib; then
-		func_warning "Linking the shared library $output against the static library $deplib is not portable!"
+		if test yes != "$build_old_libs"; then
+		  func_warning "Linking the shared library $output against the static library $deplib is not portable!"
+		fi
 		deplibs="$deplib $deplibs"
 	      else
 		func_warning "Trying to link with static lib archive $deplib."
