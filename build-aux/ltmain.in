@@ -5816,7 +5816,6 @@ func_mode_link ()
       *.$libext|*.so)
 	# An archive or an explicit shared library.
 	func_append deplibs " $arg"
-	func_append old_deplibs " $arg"
 	continue
 	;;
 
@@ -6215,6 +6214,8 @@ func_mode_link ()
 	  if test conv = "$pass"; then
 	    deplibs="$deplib $deplibs"
 	    continue
+	  else
+	    func_append old_deplibs " $deplib"
 	  fi
 	  case $linkmode in
 	  lib)
@@ -7184,7 +7185,6 @@ func_mode_link ()
       # Now set the variables for building old libraries.
       build_libtool_libs=no
       oldlibs=$output
-      func_append objs "$old_deplibs"
       ;;
 
     lib)
@@ -8958,7 +8958,11 @@ func_mode_link ()
 	  build_libtool_libs=no
           ;;
 	*)
-	  oldobjs="$old_deplibs $non_pic_objects"
+	  oldobjs=$non_pic_objects
+	  # This is not correct to add old_deplibs creating an archive
+	  # so append them only when creating an executable or a shared
+	  # library.
+	  test yes != "$build_old_libs" && oldobjs="$oldobjs $old_deplibs"
 	  $preload && test -f "$symfileobj" \
 	    && func_append oldobjs " $symfileobj"
 	  addlibs=$old_convenience
@@ -9218,6 +9222,20 @@ func_mode_link ()
 	      func_append newdlprefiles " $abs"
 	    done
 	    dlprefiles=$newdlprefiles
+	  fi
+
+	  # Forward old library dependencies only when no shared
+	  # library is being built. When building the shared library,
+	  # the linker uses $deplibs to link the archives into it, but
+	  # then we don't want to add it as transitive dependency.
+	  if test -z "$library_names"; then
+	    for lib in $old_deplibs; do
+	      case $lib in
+		[\\/]* | [A-Za-z]:[\\/]*) abs=$lib ;;
+		*) abs=`pwd`"/$lib" ;;
+	      esac
+	      func_append dependency_libs " $abs"
+	    done
 	  fi
 	  $RM $output
 	  # place dlname in correct position for cygwin
