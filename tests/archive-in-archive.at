@@ -24,9 +24,6 @@
 AT_SETUP([static library contains static library])
 AT_KEYWORDS([libtool])
 
-# This test passes with MS lib.
-AT_XFAIL_IF([case $AR in ar-lib\ * | *[[/\\]]ar-lib\ *) false;; *) :;; esac])
-
 AT_DATA([foo.c],
 [
 int foo() { return 1;}
@@ -51,7 +48,10 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC --tag=disable-shared $CC $CFLAGS $LDFLAG
 AT_CHECK([$LIBTOOL --mode=install cp libbar.la $thisdir], [], [ignore], [ignore])
 eval `$EGREP '^(old_library)=' < libbar.la`
 libbar=$old_library
+# The old library (libfoo.a) must NOT be nested inside libbar.a.
 AT_CHECK([$AR -t $libbar | $GREP $libfoo],[1],[ignore],[ignore])
-AT_CHECK([$AR -t $libbar | $GREP foo.$OBJEXT],[],[ignore],[ignore])
+# Objects from libfoo must NOT be extracted into libbar.a either.
+AT_CHECK([$AR -t $libbar | $GREP foo.$OBJEXT],[1],[ignore],[ignore])
+# bar's own object must still be present.
 AT_CHECK([$AR -t $libbar | $GREP bar.$OBJEXT],[],[ignore],[ignore])
 AT_CLEANUP
