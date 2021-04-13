@@ -333,7 +333,7 @@ EXTRA_DIST     += $(lt_aclocal_m4) \
 		  $(lt_obsolete_m4) \
 		  $(stamp_mk)
 
-$(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4)
+$(lt_Makefile_in): $(lt_Makefile_am) $(lt_aclocal_m4) $(lt_config_h_in)
 	$(AM_V_GEN)cd '$(srcdir)/$(ltdl_dir)' && $(AUTOMAKE) Makefile
 
 # Don't let unused scripts leak into the libltdl Makefile
