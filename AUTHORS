@@ -17,20 +17,18 @@
     Peter O'Gorman		peter@pogma.com
     Ralf Wildenhues		Ralf.Wildenhues@gmx.de
     Gary V. Vaughan		gary@vaughan.pe
-
-* GNU Libtool and libltdl are currently being cajoled, bullied,
-  rewritten and otherwise dragged into the future by:
-
     Bob Friesenhahn		bfriesen@simple.dallas.tx.us
-
-* The following people also enjoy write access under the given rules:
-
     Peter Rosin			peda@lysator.liu.se
     Noah Misch			noah@cs.caltech.edu
     Charles Wilson		libtool@cwilson.fastmail.fm
     Brooks Moses		bmoses@google.com
+
+* GNU Libtool is currently being cajoled, bullied,
+  rewritten and otherwise dragged into the future by:
+
+    Alex Ameen    alex.ameen.tx@gmail.com
 -- 
-  Copyright (C) 1996, 1998-2019 Free Software Foundation, Inc.
+  Copyright (C) 1996, 1998-2021 Free Software Foundation, Inc.
 
   This file is part of GNU Libtool.
 
