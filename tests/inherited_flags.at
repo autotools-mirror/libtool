@@ -1,6 +1,7 @@
 # inherited_flags.at -- test inherited_linker_flags          -*- Autotest -*-
 #
-#   Copyright (C) 2005-2008, 2011-2019 Free Software Foundation, Inc.
+#   Copyright (C) 2005-2008, 2011-2019, 2021 Free Software Foundation,
+#   Inc.
 #   Written by Peter O'Garman, 2005
 #
 #   This file is part of GNU Libtool.

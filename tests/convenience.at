@@ -1,6 +1,6 @@
 # convenience.at -- testing C convenience archives            -*- Autotest -*-
 
-#   Copyright (C) 2005, 2007-2019 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007-2019, 2021 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.

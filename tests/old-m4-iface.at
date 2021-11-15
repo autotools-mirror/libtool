@@ -1,7 +1,7 @@
 # old-m4-iface.at -- exercise old m4 interface to libtool     -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2008-2009, 2011-2019 Free Software Foundation,
-#   Inc.
+#   Copyright (C) 2005, 2008-2009, 2011-2019, 2021 Free Software
+#   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.

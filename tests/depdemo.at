@@ -1,6 +1,7 @@
 # depdemo.at -- Library interdependencies		 -*- Autotest -*-
 #
-#   Copyright (C) 2003-2004, 2011-2019 Free Software Foundation, Inc.
+#   Copyright (C) 2003-2004, 2011-2019, 2021 Free Software Foundation,
+#   Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.

@@ -1,6 +1,6 @@
 /* ltdl.c -- system independent dlopen wrapper
 
-   Copyright (C) 1998-2000, 2004-2008, 2011-2019 Free Software
+   Copyright (C) 1998-2000, 2004-2008, 2011-2019, 2021 Free Software
    Foundation, Inc.
    Written by Thomas Tanner, 1998
 

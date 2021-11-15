@@ -1,6 +1,6 @@
 /* slist.c -- generalised singly linked lists
 
-   Copyright (C) 2000, 2004, 2007-2009, 2011-2019 Free Software
+   Copyright (C) 2000, 2004, 2007-2009, 2011-2019, 2021 Free Software
    Foundation, Inc.
    Written by Gary V. Vaughan, 2000
 
