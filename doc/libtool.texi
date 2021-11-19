@@ -1616,6 +1616,12 @@ Pass a linker-specific flag directly to the compiler.  With @code{-Wc,},
 multiple flags may be separated by commas, whereas @code{-Xcompiler }
 passes through commas unchanged.
 
+@item -Wa,@var{flag}
+@itemx -Xassembler @var{flag}
+Pass a linker-specific flag directly to the assembler.  With @code{-Wa,},
+multiple flags may be separated by commas, whereas @code{-Xassembler }
+passes through commas unchanged.
+
 @item -Wl,@var{flag}
 @itemx -Xlinker @var{flag}
 Pass a linker-specific flag directly to the linker.
