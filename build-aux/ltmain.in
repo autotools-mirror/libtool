@@ -4953,6 +4953,13 @@ func_mode_link ()
 	  prev=
 	  continue
 	  ;;
+	xassembler)
+	  func_append compiler_flags " -Xassembler $qarg"
+	  prev=
+	  func_append compile_command " -Xassembler $qarg"
+	  func_append finalize_command " -Xassembler $qarg"
+	  continue
+	  ;;
 	xcclinker)
 	  func_append linker_flags " $qarg"
 	  func_append compiler_flags " $qarg"
@@ -5340,6 +5347,11 @@ func_mode_link ()
 	func_stripname ' ' '' "$arg"
 	arg=$func_stripname_result
 	;;
+
+      -Xassembler)
+        prev=xassembler
+        continue
+        ;;
 
       -Xcompiler)
 	prev=xcompiler
