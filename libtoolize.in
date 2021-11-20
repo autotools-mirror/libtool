@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env sh
 
 # Prepare a package to use libtool.
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
