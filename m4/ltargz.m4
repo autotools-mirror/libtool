@@ -49,7 +49,7 @@ AS_IF([test -z "$LT_ARGZ_H"],
 	     lt_sed_extract_leading_digits='s/^\([0-9\.]*\).*/\1/'
 	     save_IFS=$IFS
 	     IFS=-.
-	     set x `uname -r | sed -e "$lt_sed_extract_leading_digits"`
+	     set x `uname -r | $SED -e "$lt_sed_extract_leading_digits"`
 	     IFS=$save_IFS
 	     lt_os_major=${2-0}
 	     lt_os_minor=${3-0}
