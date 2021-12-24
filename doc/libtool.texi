@@ -2044,6 +2044,34 @@ should not specify it.
 @xref{A Shared Library, Building a Shared Library, The Automake Manual,
 automake, The Automake Manual}, for more information.
 
+When building libtool archives which depend on built sources (for example a
+generated header file), you may find it necessary to manually record
+these dependencies.
+Because libtool archives generate object file names manually recording these
+dependencies is not as straightforward as the examples in Automake's manual
+describe in their examples.
+This effects header files in particular, because simply listing them as
+@samp{nodist_libfoo_la_SOURCES} will not cause Automake to establish a
+dependent relationship for the object files of @file{libfoo.la}.
+A useful trick (although somewhat imprecise) is to manually record built
+sources used by a libtool archive as dependencies of all the objects for that
+library as shown below (as opposed to a particular object file):
+
+@example
+# Build a libtool library, libhello.la which depends on a generated header.
+hello.h:
+	echo '#define HELLO_MESSAGE  "Hello, World!"' > $@@
+BUILT_SOURCES = hello.h
+CLEANFILES = hello.h
+nodist_libhello_la_SOURCES = hello.h
+libhello_la_SOURCES = hello.c foo.h foo.c bar.h bar.c
+# Manually record hello.h as a prerequisite for all objects in libhello.la
+$(libhello_la_OBJECTS): hello.h
+@end example
+
+@xref{Built Sources Example, Recording Dependencies manually, The Automake Manual,
+automake, The Automake Manual}, for more information.
+
 @node Configuring
 @section Configuring libtool
 @cindex configuring libtool
