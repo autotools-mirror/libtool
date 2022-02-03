@@ -589,7 +589,7 @@ libtool_validate_options ()
     case $host_os in
       # Solaris2 added to fix http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
       # see also: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
-      cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2*)
+      cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2* | *linux*)
         # don't eliminate duplications in $postdeps and $predeps
         opt_duplicate_compiler_generated_deps=:
         ;;
