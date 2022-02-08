@@ -24,7 +24,7 @@
 ####
 
 
-AC_PREREQ(2.63)
+AC_PREREQ(2.64)
 dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 
 

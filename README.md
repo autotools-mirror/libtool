@@ -191,7 +191,7 @@ send the file `tests/testsuite.log` to the [bug mailing list][].
           co -d libtool HEAD
 
 * Before you can build from git, you need to bootstrap.  This requires:
-  - Autoconf 2.62 or later
+  - Autoconf 2.64 or later
   - Automake 1.11.1 or later
   - Help2man 1.29 or later
   - Xz 4.999.8beta or later (from [tukaani.org](http://tukaani.org/xz))
