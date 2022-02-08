@@ -1,7 +1,7 @@
 # export.at -- test symbol exports                           -*- Autotest -*-
 
-#   Copyright (C) 2007-2008, 2011-2019, 2021 Free Software Foundation,
-#   Inc.
+#   Copyright (C) 2007-2008, 2011-2019, 2021-2022 Free Software
+#   Foundation, Inc.
 #   Written by Ralf Wildenhues, 2007
 #
 #   This file is part of GNU Libtool.

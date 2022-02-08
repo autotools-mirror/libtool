@@ -1,6 +1,6 @@
 /* lt__glibc.h -- support for non glibc environments
 
-   Copyright (C) 2004, 2006-2007, 2011-2019, 2021 Free Software
+   Copyright (C) 2004, 2006-2007, 2011-2019, 2021-2022 Free Software
    Foundation, Inc.
    Written by Gary V. Vaughan, 2004
 

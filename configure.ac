@@ -1,7 +1,7 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 
-#   Copyright (C) 2001, 2004-2005, 2008, 2010-2019, 2021 Free Software
-#   Foundation, Inc.
+#   Copyright (C) 2001, 2004-2005, 2008, 2010-2019, 2021-2022 Free
+#   Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2001
 #
 #   This file is part of GNU Libtool.
