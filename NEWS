@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
+* Noteworthy changes in release 2.4.7 (2022-03-06) [stable]
 
 ** New features:
 
@@ -13,9 +13,25 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Support the Windows version of the Intel C Compiler (icl) in
     libtool script.
 
+  - Pass '-fsanitize=*' flags for GCC and LLVM, and '-specs=*' for GCC
+    to linker.
+
+  - Pass '-Xassembler=*' and '-Wa,*' flag to compilers and linkers.
+
+  - The variable 'FILECMD' with default value of '/usr/bin/file' was used to
+    replace existing hard coded references to '/usr/bin/file'.
+
+  - Add MidnightBSD support.
+
 ** Important incompatible changes:
 
   - Libtool changed ARFLAGS/AR_FLAGS default from 'cru' to 'cr'.
+
+  - Do not pass '-pthread' to Solaris linker.
+
+  - 'libtool' and 'libtoolize' scripts now use '#! /usr/bin/env sh' shebang.
+    Previously '#! /bin/sh' was used, which presents challenges for
+    containerized environments.
 
 ** Bug fixes:
 
@@ -24,6 +40,15 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Mitigate the slowdown of libtool script (introduced in v2.4.3) caused by
     increased number of calls to '$SED $sed_quote_subst' (bug#20006).
+
+  - Properly parse and export TLS symbols on AIX.
+
+  - Various bug fixes surrounding use of 'sed'.
+
+  - Darwin systems set proper "allow undefined" flag on OSX 11, and
+    PowerPC 10.5.
+
+  - Removed some deprecated tests related to 'Makefile.inc' files.
 
 * Noteworthy changes in release 2.4.6 (2015-02-15) [stable]
 
