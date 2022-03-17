@@ -24,7 +24,7 @@
 update-copyright-env := UPDATE_COPYRIGHT_FORCE=1 UPDATE_COPYRIGHT_USE_INTERVALS=1
 
 # Set format of NEWS
-old_NEWS_hash := 694e28388e83b832b0d7614e305b107e
+old_NEWS_hash := 68e212222416d15e517576ce749b131f
 
 manual_title = Portable Dynamic Shared Object Management
 
