@@ -21,6 +21,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix linking libraries at runtime with tcc by adding run path.
 
+  - Fix path comparison by removing trailing slashes on install commands.
+
 ** Changes in supported systems or compilers:
 
   - Support additional flang-based compilers, 'f18' and 'f95'.
