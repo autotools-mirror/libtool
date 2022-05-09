@@ -5900,6 +5900,15 @@ func_mode_link ()
 	  lib)
 	    # Linking convenience modules into shared libraries is allowed,
 	    # but linking other static libraries is non-portable.
+      case "$deplib" in
+        # Linking certain compiler provided static libraries, while
+        # non-portable, is reasonable safe and practically necessary on
+        # certain platforms.
+        */libgcc*.$libext | */libclang_rt*.$libext)
+          deplibs="$deplib $deplibs"
+          continue
+        ;;
+      esac
 	    case " $dlpreconveniencelibs " in
 	    *" $deplib "*) ;;
 	    *)
