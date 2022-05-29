@@ -3087,6 +3087,17 @@ rdos*)
   dynamic_linker=no
   ;;
 
+serenity*)
+  version_type=linux # correct to gnu/linux during the next big refactor
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+  soname_spec='$libname$release$shared_ext$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  dynamic_linker='SerenityOS LibELF'
+  ;;
+
 solaris*)
   version_type=linux # correct to gnu/linux during the next big refactor
   need_lib_prefix=no
@@ -3683,6 +3694,10 @@ osf3* | osf4* | osf5*)
   ;;
 
 rdos*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
+serenity*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -4563,6 +4578,8 @@ m4_if([$1], [CXX], [
 	;;
       psos*)
 	;;
+      serenity*)
+        ;;
       solaris*)
 	case $cc_basename in
 	  CC* | sunCC*)
@@ -4909,6 +4926,9 @@ m4_if([$1], [CXX], [
 
     rdos*)
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
+      ;;
+
+    serenity*)
       ;;
 
     solaris*)
@@ -6023,6 +6043,9 @@ _LT_EOF
       fi
       _LT_TAGVAR(archive_cmds_need_lc, $1)='no'
       _LT_TAGVAR(hardcode_libdir_separator, $1)=:
+      ;;
+
+    serenity*)
       ;;
 
     solaris*)
@@ -7348,6 +7371,9 @@ if test yes != "$_lt_caught_CXX_error"; then
       psos*)
         # FIXME: insert proper C++ library support
         _LT_TAGVAR(ld_shlibs, $1)=no
+        ;;
+
+      serenity*)
         ;;
 
       sunos4*)
