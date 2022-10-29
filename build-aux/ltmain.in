@@ -3284,7 +3284,7 @@ func_extract_archives ()
 	    $RM -rf unfat-$$
 	    cd "$darwin_orig_dir"
 	  else
-	    cd $darwin_orig_dir
+	    cd "$darwin_orig_dir"
 	    func_extract_an_archive "$my_xdir" "$my_xabs"
 	  fi # $darwin_arches
 	} # !$opt_dry_run
