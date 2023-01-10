@@ -27,6 +27,7 @@ AT_KEYWORDS([libltdl lt_dlopen_a])
 AT_DATA([main.c],
 [[#include <ltdl.h>
 #include <stdio.h>
+#include <string.h>
 
 /* This dlopen() in the main executable should override any dlopen()s in
    shared libraries etc.
