@@ -1368,7 +1368,7 @@ mips64*-*linux*)
   ;;
 
 x86_64-*kfreebsd*-gnu|x86_64-*linux*|powerpc*-*linux*| \
-s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
+s390*-*linux*|s390*-*tpf*|sparc*-*linux*|x86_64-gnu*)
   # Find out what ABI is being produced by ac_compile, and set linker
   # options accordingly.  Note that the listed cases only cover the
   # situations where additional linker options are needed (such as when
@@ -1383,7 +1383,7 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
 	  x86_64-*kfreebsd*-gnu)
 	    LD="${LD-ld} -m elf_i386_fbsd"
 	    ;;
-	  x86_64-*linux*)
+	  x86_64-*linux*|x86_64-gnu*)
 	    case `$FILECMD conftest.o` in
 	      *x86-64*)
 		LD="${LD-ld} -m elf32_x86_64"
@@ -1412,7 +1412,7 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
 	  x86_64-*kfreebsd*-gnu)
 	    LD="${LD-ld} -m elf_x86_64_fbsd"
 	    ;;
-	  x86_64-*linux*)
+	  x86_64-*linux*|x86_64-gnu*)
 	    LD="${LD-ld} -m elf_x86_64"
 	    ;;
 	  powerpcle-*linux*)
