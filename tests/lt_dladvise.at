@@ -333,7 +333,7 @@ have_shared=false
 $LIBTOOL --features | $GREP 'enable shared libraries' >/dev/null && have_shared=:
 
 case $host_os,$have_shared in
-cygwin* | mingw* | cegcc* | *,false)
+cygwin* | mingw* | windows* | cegcc* | *,false)
   # These hosts do not support linking without -no-undefined
   CPPFLAGS="$CPPFLAGS -DHAVE_UNDEFINED_SYMBOLS=0"
   ;;

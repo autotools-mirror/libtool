@@ -64,7 +64,7 @@ for try in with-file without-file; do
 	   [], [ignore], [ignore])
 
   case $host_os in
-  mingw*)
+  mingw* | windows*)
     if file /; then
       mkdir bin new-libtool
 

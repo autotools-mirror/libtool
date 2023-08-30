@@ -274,7 +274,7 @@ AT_CHECK([test -z "$leftovers"])
 # Ensure correct line ending for expected output of host executables.
 m4_define([LT_AT_HOST_DATA],
 [AT_DATA([$1], [$2])
-case $host_os in mingw*)
+case $host_os in mingw* | windows*)
   awk '{printf ("%s\r\n", [$]0);}' < $1 > $1.t && mv -f $1.t $1 ;;
 esac])
 
@@ -285,7 +285,7 @@ esac])
 # If RESULT-FILE is given, FILE is left untouched. If not, convert in-place.
 m4_define([LT_AT_UNIFY_NL],
 [case $host_os in
-  mingw*)
+  mingw* | windows*)
     tr -d '\015' < $1 > m4_ifval([$2], [$2], [$1.t
     mv -f $1.t $1]) ;; m4_ifval([$2], [
   *)
