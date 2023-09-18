@@ -2839,7 +2839,7 @@ linux*android*)
   version_type=none # Android doesn't support versioned libraries.
   need_lib_prefix=no
   need_version=no
-  library_names_spec='$libname$release$shared_ext'
+  library_names_spec='$libname$release$shared_ext $libname$shared_ext'
   soname_spec='$libname$release$shared_ext'
   finish_cmds=
   shlibpath_var=LD_LIBRARY_PATH
@@ -2851,8 +2851,9 @@ linux*android*)
   hardcode_into_libs=yes
 
   dynamic_linker='Android linker'
-  # Don't embed -rpath directories since the linker doesn't support them.
-  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+  # -rpath works at least for libraries that are not overridden by
+  # libraries installed in system locations.
+  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath $wl$libdir'
   ;;
 
 # This must be glibc/ELF.
