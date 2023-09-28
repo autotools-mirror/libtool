@@ -2,6 +2,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Bug fixes:
+
+  - Fix incorrect use of workarounds designed for Darwin versions that
+    don't have -single_module support.
+
 
 * Noteworthy changes in release 2.5.3 (2024-09-25) [stable]
 
