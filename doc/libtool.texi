@@ -6657,8 +6657,8 @@ It should be noted that there are various projects that attempt to relax
 these requirements by various low level tricks, but they are not
 discussed here.
 Examples are
-@uref{http://alain.frisch.fr/@/flexdll.html, FlexDLL} and
-@uref{http://edll.sourceforge.net/, edll}.
+@uref{https://github.com/ocaml/flexdll, FlexDLL} and
+@uref{https://edll.sourceforge.net/, edll}.
 
 
 @node libtool script contents
