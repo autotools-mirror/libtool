@@ -15551,7 +15551,7 @@
 
 	* libltdl/ltdl.c (foreach_dirinpath): Ensure that filename is '\0'
 	terminated by all code paths.
-	Reported by Lutz Müller <lutz@users.sourceforge.net>
+	Reported by Lutz MÃ¼ller <lutz@users.sourceforge.net>
 
 2002-06-20  Gary V. Vaughan  <gary@gnu.org>
 
@@ -18669,7 +18669,7 @@
 	  and file_magic_cmd
 
 	* README: use 'libtool --version' instead of 'ltconfig --version'
-	  (suggested by Francios Pinard <pinard@iro.umontreal.ca>
+	  (suggested by FranÃ§ois Pinard <pinard@iro.umontreal.ca>
 
 2000-01-10  Gary V. Vaughan  <gary@gnu.org>
 
@@ -19442,7 +19442,7 @@
 
 	* ltconfig.in: Support new GNU ld --help output format.
 	* NEWS:  Likewise.
-	Reported by Gaël Quéri <gael@baoule.dyndns.org> and
+	Reported by GaÃ«l QuÃ©ri <gael@baoule.dyndns.org> and
 	H.J. Lu <hjl@varesearch.com>.
 
 1999-06-05  Mark Kettenis  <kettenis@gnu.org>
@@ -23515,7 +23515,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	ld's.  From Eiichi Takamori.
 
 	* ltmain.in (install): Don't print silly `library stripping'
-	warnings.  Reported by François Pinard.
+	warnings.  Reported by FranÃ§ois Pinard.
 
 1997-12-19  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -23650,7 +23650,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	because we need it for quoting substitutions.  For most of the
 	script, though, use the default echo, just like Autoconf does.
 	Without this patch, character \001 ends up in global_symbol_pipe.
-	Reported by Lars Hecking and Jürgen Fluk.
+	Reported by Lars Hecking and JÃ¼rgen Fluk.
 
 	* ltmain.in (echo): Set default to `echo=echo'.  Ooops.  That's
 	what you get for testing obscure code paths and forgetting to
