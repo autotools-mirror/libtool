@@ -199,7 +199,7 @@ send the file `tests/testsuite.log` to the [bug mailing list][].
   - Any prerequisites of the above (such as m4, perl, tex)
 
   Note that these bootstrapping dependencies are much stricter than
-  those required to use a destributed release for your own packages.
+  those required to use a distributed release for your own packages.
   After installation, GNU Libtool is designed to work either standalone,
   or optionally with:
   - Autoconf 2.59 or later

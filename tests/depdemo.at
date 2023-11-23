@@ -132,7 +132,7 @@ int main (int argc, char **argv)
 }
 ]])
 
-# Create 4 directorys of mostly identical files.
+# Create 4 directories of mostly identical files.
 for i in 1 2 3 4; do
   mkdir l$i
 

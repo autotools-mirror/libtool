@@ -2457,7 +2457,7 @@ system, this variable can be used to modify that path list, as follows
 (@code{LT_SYS_LIBRARY_PATH} is a colon-delimited list like @code{PATH}):
 @itemize @bullet
 @item @code{path:}
-The heuristically determined paths will be appened after the trailing
+The heuristically determined paths will be appended after the trailing
 colon;
 @item @code{:path}
 The heuristically determined paths will be prepended before the leading

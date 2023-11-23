@@ -739,7 +739,7 @@ New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
   libraries from dlpreopened modules.
 * libtoolize installs libtool.m4, (ltdl.m4 if used,) and various supporting
   m4 definitions to AC_CONFIG_MACRO_DIR.
-* Mode inferrence removed, shorthand for choosing modes added.
+* Mode inference removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
 * Speed up max_cmd_len check.
 * libltdl can now preopen modules from within a library, and libtool will
@@ -749,7 +749,7 @@ New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
   by module name.
 * New function in libltdl: lt_dlpreload_open opens all preloaded modules.
 * libltdl no longer loads shared libraries with global symbol resolution,
-  this caused problems when the symbols were intended to be overriden further
+  this caused problems when the symbols were intended to be overridden further
   up the stack; it is also not recommended practice.
 * New function in libltdl: lt_dlhandle_first, primes handle iterations (using
   lt_dlhandle_next) to filter by module interface.

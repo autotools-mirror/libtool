@@ -41,7 +41,7 @@ LT_BEGIN_C_DECLS
    this way allows us to expand the macro in different contexts with
    confidence that the enumeration of symbolic names will map correctly
    onto the table of error strings.  \0 is appended to the strings to
-   expilicitely initialize the string terminator. */
+   explicitly initialize the string terminator. */
 #define lt_dlerror_table						\
     LT_ERROR(UNKNOWN,		    "unknown error\0")			\
     LT_ERROR(DLOPEN_NOT_SUPPORTED,  "dlopen support not available\0")	\

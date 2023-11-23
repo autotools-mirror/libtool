@@ -156,7 +156,7 @@ argz_insert (char **pargz, size_t *pargz_len, char *before, const char *entry)
       return ENOMEM;
 
     /* Make BEFORE point to the equivalent offset in ARGZ that it
-       used to have in *PARGZ incase realloc() moved the block.  */
+       used to have in *PARGZ in case realloc() moved the block.  */
     before = argz + offset;
 
     /* Move the ARGZ entries starting at BEFORE up into the new

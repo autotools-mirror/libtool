@@ -114,7 +114,7 @@ GNU Libtool
 
 * Need to finalize the documentation, and give a specification of
   '.la' files so that people can depend on their format.  This would be
-  a good thing to put before the maintainance notes.
+  a good thing to put before the maintenance notes.
 
 * Document the installed 'libtool' and its limitations clearly (maybe implement
   --disable-script-install as well).  Or, even better, remove its limitations.
@@ -285,7 +285,7 @@ GNU Libtool
     cygwin, or unix.  Worse, you can't really do a set of
     {msys|cygwin|unix}_to_central_unixish that isn't simply a no-op -- because
     (A) they already are all unixish, and (B) what tool would you use? How would
-    the later to_mingw function "know" how to covert this new representation to
+    the later to_mingw function "know" how to convert this new representation to
     mingw.  So, {msys|cygwin|unix}_to_central_unixish would simply be a no-op
     and central_unixish_to_mingw would still do all the work (with its guts
     customized based on $build).
@@ -303,7 +303,7 @@ GNU Libtool
     So...I don't think it makes much difference *right now* in the amount of
     code required, or the number of functions implemented. At some point in the
     future we might want to generalize to an M+N scheme.  For the existing win32
-    $hosts, all of the funtionality would be on "one side" of the 2-step
+    $hosts, all of the functionality would be on "one side" of the 2-step
     conversion; the "other side" would be noop.  But we won't worry about the
     implicit quadratic complexity of the existing scheme for now.
 

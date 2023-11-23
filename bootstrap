@@ -53,7 +53,7 @@
 #
 # See gl/doc/bootstrap.texi for documentation on how to write
 # a bootstrap.conf to customize it for your project's
-# idiosyncracies.
+# idiosyncrasies.
 
 
 ## ================================================================== ##
@@ -192,7 +192,7 @@ extra_locale_categories=
 
 # Additional xgettext options to use.  Gnulib might provide you with an
 # extensive list of additional options to append to this, but gettext
-# 0.16.1 and newer appends them automaticaly, so you can safely ignore
+# 0.16.1 and newer appends them automatically, so you can safely ignore
 # the complaints from 'gnulib-tool' if your $configure_ac states:
 #
 #    AM_GNU_GETTEXT_VERSION([0.16.1])
@@ -752,7 +752,7 @@ func_require_term_colors ()
 
   # _G_HAVE_PLUSEQ_OP
   # Can be empty, in which case the shell is probed, "yes" if += is
-  # useable or anything else if it does not work.
+  # usable or anything else if it does not work.
   test -z "$_G_HAVE_PLUSEQ_OP" \
     && (eval 'x=a; x+=" b"; test "a b" = "$x"') 2>/dev/null \
     && _G_HAVE_PLUSEQ_OP=yes
@@ -902,7 +902,7 @@ eval 'func_dirname ()
 #             to NONDIR_REPLACEMENT.
 #             value returned in "$func_dirname_result"
 #   basename: Compute filename of FILE.
-#             value retuned in "$func_basename_result"
+#             value returned in "$func_basename_result"
 # For efficiency, we do not delegate to the functions above but instead
 # duplicate the functionality here.
 eval 'func_dirname_and_basename ()
@@ -1060,7 +1060,7 @@ func_mkdir_p ()
       # While some portion of DIR does not yet exist...
       while test ! -d "$_G_directory_path"; do
         # ...make a list in topmost first order.  Use a colon delimited
-	# list incase some portion of path contains whitespace.
+	# list in case some portion of path contains whitespace.
         _G_dir_list=$_G_directory_path:$_G_dir_list
 
         # If the last portion added has no slash in it, the list is done
@@ -5082,7 +5082,7 @@ func_get_version ()
     _G_app=$1
 
     # Rather than uncomment the sed script in-situ, strip the comments
-    # programatically before passing the result to $SED for evaluation.
+    # programmatically before passing the result to $SED for evaluation.
     sed_get_version=`$ECHO '# extract version within line
           s|.*[v ]\{1,\}\([0-9]\{1,\}\.[.a-z0-9-]*\).*|\1|
           t done

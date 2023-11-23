@@ -50,7 +50,7 @@ for i in old new; do
 
   cat >src/a_$i.c <<EOF
 /* w32 fun, MSVC needs to dllimport when using a shared library, so use
- * DLL_EXPORT to discriminate as that happens to coinside in this case.
+ * DLL_EXPORT to discriminate as that happens to coincide in this case.
  * gnu has auto import.
  */
 #if defined _MSC_VER && defined DLL_EXPORT
@@ -65,7 +65,7 @@ EOF
 
   cat >src/b_$i.c <<EOF
 /* w32 fun, MSVC needs to dllimport when using a shared library, so use
- * DLL_EXPORT to discriminate as that happens to coinside in this case.
+ * DLL_EXPORT to discriminate as that happens to coincide in this case.
  * gnu has auto import.
  */
 #if defined _MSC_VER && defined DLL_EXPORT

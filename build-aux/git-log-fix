@@ -255,7 +255,7 @@ cf86b942c893da74d6e9faf0125364a9f114ea01
 # Date:   Tue Aug 21 21:06:45 2012 -0500
 # Add category tag to summary line.
 s|\n(Add )|\nlibtool: $1|;
-# Spell Report attribtution correctly.
+# Spell Report attribution correctly.
 s|Thanks to (.*) for .*\n|Reported by $1.\n|
 
 9b726f35db98da01a7edaf143788cba2c2ae900a

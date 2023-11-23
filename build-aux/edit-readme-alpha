@@ -23,7 +23,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-# We used to maintain separate (but extremely similiar!) README and
+# We used to maintain separate (but extremely similar!) README and
 # README.alpha files, and had 'make dist' include the right one in a
 # distribution based on the contests of '$(VERSION)'.
 #

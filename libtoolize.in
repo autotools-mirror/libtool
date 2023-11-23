@@ -516,7 +516,7 @@ func_serial_max ()
     my_sed_rest='s/^[0-9][1-9]*\.*//'
     my_sed_digits='s/[^0-9.]//g'
 
-    # Incase they turn out to be the same, we'll set it to empty
+    # In case they turn out to be the same, we'll set it to empty
     func_serial_max_result=
 
     test "X$1$2" = X`$ECHO "$1$2" | $SED "$my_sed_digits"` || {
@@ -682,7 +682,7 @@ func_serial_update ()
       func_notquiet_hdr "$my_msg_var" "'$my_destfile' is already up to date."
     fi
 
-    # Do this after the copy for hand maintained 'aclocal.m4', incase
+    # Do this after the copy for hand maintained 'aclocal.m4', in case
     # it has 'm4_include([DESTFILE])', so the copy effectively already
     # updated 'aclocal.m4'.
     my_included_files=`func_included_files aclocal.m4`

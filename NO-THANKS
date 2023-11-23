@@ -65,7 +65,7 @@ Todd Vierling			tv@netbsd.org
 Vincent Torri			vtorri@univ-evry.fr
 ##
 ## Add bug reporters, patch Authors you forgot to attribute at commit
-## time with 'git commit --author=...' and other non-patch contributers
+## time with 'git commit --author=...' and other non-patch contributors
 ## below:
 ##
 Allan McRae			allan@archlinux.org
