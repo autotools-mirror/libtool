@@ -1725,9 +1725,9 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     lt_cv_sys_max_cmd_len=12288;    # 12K is about right
     ;;
 
-  gnu*)
-    # Under GNU Hurd, this test is not required because there is
-    # no limit to the length of command line arguments.
+  gnu* | ironclad*)
+    # Under GNU Hurd and Ironclad, this test is not required because there
+    # is no limit to the length of command line arguments.
     # Libtool will interpret -1 as no limit whatsoever
     lt_cv_sys_max_cmd_len=-1;
     ;;
@@ -2996,6 +2996,18 @@ netbsd*)
   hardcode_into_libs=yes
   ;;
 
+ironclad*)
+  version_type=linux # correct to gnu/linux during the next big refactor
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+  soname_spec='$libname$release$shared_ext$major'
+  dynamic_linker='mlibc ld.so'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  hardcode_into_libs=yes
+  ;;
+
 newsos6)
   version_type=linux # correct to gnu/linux during the next big refactor
   library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
@@ -3633,6 +3645,10 @@ irix5* | irix6* | nonstopux*)
 
 # This must be glibc/ELF.
 linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
+ironclad*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -4517,6 +4533,8 @@ m4_if([$1], [CXX], [
 	;;
       netbsd* | netbsdelf*-gnu)
 	;;
+      ironclad*)
+	;;
       *qnx* | *nto*)
         # QNX uses GNU C++, but need to define -shared option too, otherwise
         # it will coredump.
@@ -4869,6 +4887,12 @@ m4_if([$1], [CXX], [
     newsos6)
       _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
+      ;;
+
+    ironclad*)
+      _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
+      _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
+      _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
       ;;
 
     *nto* | *qnx*)
@@ -5347,6 +5371,11 @@ _LT_EOF
       else
         _LT_TAGVAR(ld_shlibs, $1)=no
       fi
+      ;;
+
+    ironclad*)
+	_LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
+	_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname $wl-retain-symbols-file $wl$export_symbols -o $lib'
       ;;
 
     netbsd* | netbsdelf*-gnu)
@@ -5890,6 +5919,9 @@ _LT_EOF
 	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath $wl$libdir'
 	;;
       esac
+      ;;
+
+    ironclad*)
       ;;
 
     netbsd* | netbsdelf*-gnu)
@@ -7191,6 +7223,10 @@ if test yes != "$_lt_caught_CXX_error"; then
 	    ;;
 	esac
 	;;
+
+      ironclad*)
+	    _LT_TAGVAR(ld_shlibs, $1)=yes
+	    ;;
 
       netbsd*)
         if echo __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
