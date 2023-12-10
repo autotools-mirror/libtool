@@ -3009,7 +3009,7 @@ correspondence between language names and tags names.
 
 @command{libtool} tries to automatically infer what tag to use from
 the compiler command being used to compile or link.  If it can't infer
-a tag, then it defaults to the configuration for the @code{C} language.
+a tag, then it exits immediately with a fatal error.
 
 The tag can also be specified using @command{libtool}'s
 @option{--tag=@var{tag}} option (@pxref{Invoking libtool}).  It is a good
