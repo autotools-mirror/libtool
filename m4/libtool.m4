@@ -6427,8 +6427,7 @@ if test yes != "$_lt_caught_CXX_error"; then
         wlarc='$wl'
 
         # ancient GNU ld didn't support --whole-archive et. al.
-        if eval "`$CC -print-prog-name=ld` --help 2>&1" |
-	  $GREP 'no-whole-archive' > /dev/null; then
+        if $LD --help 2>&1 | $GREP 'no-whole-archive' > /dev/null; then
           _LT_TAGVAR(whole_archive_flag_spec, $1)=$wlarc'--whole-archive$convenience '$wlarc'--no-whole-archive'
         else
           _LT_TAGVAR(whole_archive_flag_spec, $1)=
