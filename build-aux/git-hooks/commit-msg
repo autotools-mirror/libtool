@@ -23,7 +23,7 @@
 
 
 : ${SED="sed"}
-test set = ${ECHO+'set'} = set || ECHO='printf %s\n'
+test "${ECHO+set}" = set || ECHO='printf %s\n'
 
 basename='s|^.*/||'
 
