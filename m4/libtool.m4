@@ -9,7 +9,7 @@
 # modifications, as long as this notice is preserved.
 
 m4_define([_LT_COPYING], [dnl
-# Copyright (C) 2014 Free Software Foundation, Inc.
+# Copyright (C) 2024 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
