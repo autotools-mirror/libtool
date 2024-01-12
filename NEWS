@@ -1244,7 +1244,7 @@ New in 0.1:
 * Support for: *-*-freebsd*, *-*-netbsd*, *-*-sunos4*, *-*-ultrix4*
 -- 
 
-Copyright (C) 1996, 1998-2019, 2021-2022 Free Software Foundation, Inc.
+Copyright (C) 1996, 1998-2019, 2021-2024 Free Software Foundation, Inc.
 
 This file is part of GNU Libtool.
 

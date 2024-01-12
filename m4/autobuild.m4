@@ -1,5 +1,5 @@
 # autobuild.m4 serial 7
-dnl Copyright (C) 2004, 2006-2019, 2021-2022 Free Software Foundation,
+dnl Copyright (C) 2004, 2006-2019, 2021-2024 Free Software Foundation,
 dnl Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,

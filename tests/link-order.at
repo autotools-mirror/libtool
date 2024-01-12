@@ -1,6 +1,6 @@
 # link-order.at -- ensure that library linking order matches  -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2007-2008, 2011-2019, 2021-2022 Free Software
+#   Copyright (C) 2005, 2007-2008, 2011-2019, 2021-2024 Free Software
 #   Foundation, Inc.
 #   Written by Alexandre Oliva & Ralf Wildenhues, 2005
 #
