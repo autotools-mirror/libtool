@@ -37,7 +37,7 @@ To use Libtool, add the new generic library building commands to your
 `Makefile`, `Makefile.in`, or `Makefile.am`.  See the documentation for
 details.
 
-[install]: http://git.savannah.gnu.org/cgit/libtool.git/tree/INSTALL
+[install]: http://git.savannah.gnu.org/cgit/automake.git/tree/INSTALL
 [libtool]: http://www.gnu.org/s/libtool
 [libtool list]: mailto:libtool@gnu.org
 [news]: http://git.savannah.gnu.org/cgit/libtool.git/tree/NEWS
