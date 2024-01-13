@@ -409,10 +409,6 @@ libraries and programs.
 In summary, ``libraries are programs with multiple entry points, and
 more formally defined interfaces.''
 
-Version 0.7 of libtool was a complete redesign and rewrite of libtool to
-reflect this new paradigm.  So far, it has proved to be successful:
-libtool is simpler and more useful than before.
-
 The best way to introduce the libtool paradigm is to contrast it with
 the paradigm of existing library systems, with examples from each.  It
 is a new way of thinking, so it may take a little time to absorb, but
