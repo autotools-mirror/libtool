@@ -26,7 +26,10 @@ update-copyright-env := UPDATE_COPYRIGHT_FORCE=1 UPDATE_COPYRIGHT_USE_INTERVALS=
 update-copyright: update-release-year
 update-release-year:
 	$(AM_V_GEN)year=`date +%Y`; \
-	sed -i "/_LT_COPY/,+1 { /Copyright/ {s:[0-9][0-9][0-9][0-9]:$${year}:} }" m4/libtool.m4
+	sed -i \
+		-e "/_LT_COPY/,+1 { /Copyright/ {s:[0-9][0-9][0-9][0-9]:$${year}:} }" \
+		-e "/^Copyright/ {s:[0-9][0-9][0-9][0-9]:$${year}:} " \
+		m4/libtool.m4
 
 # Set format of NEWS
 old_NEWS_hash := 68e212222416d15e517576ce749b131f
