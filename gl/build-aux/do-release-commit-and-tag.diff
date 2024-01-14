@@ -1,20 +1,20 @@
---- ./gnulib/build-aux/do-release-commit-and-tag	2013-01-26 16:46:26.000000000 +1300
-+++ gl/build-aux/do-release-commit-and-tag	2013-10-28 20:21:38.000000000 +1300
+--- ./gnulib/build-aux/do-release-commit-and-tag
++++ gl/build-aux/do-release-commit-and-tag
 @@ -5,6 +5,9 @@
  # will serve to identify the release, so apply a signed tag to it as well.
- VERSION=2012-08-01.09 # UTC
+ VERSION=2018-03-07.03 # UTC
  
 +# Make sure we've evaluated scripts we depend on.
 +test -z "$progpath" && . `echo "$0" |${SED-sed} 's|[^/]*$||'`/funclib.sh
 +
  # Note: this is a bash script (could be zsh or dash)
  
- # Copyright (C) 2009-2013 Free Software Foundation, Inc.
+ # Copyright (C) 2009-2024 Free Software Foundation, Inc.
 @@ -125,10 +128,8 @@
    || die 'failed to determine previous version number from .prev-version'
  
  # Verify that $ver is sensible (> .prev-version).
--case $(printf "$prev_ver\n$ver\n"|sort -V -u|tr '\n' ':') in
+-case $(printf "%s\n%s\n" "$prev_ver" "$ver"|sort -V -u|tr '\n' ':') in
 -  "$prev_ver:$ver:") ;;
 -  *) die "invalid version: $ver (<= $prev_ver)";;
 -esac
