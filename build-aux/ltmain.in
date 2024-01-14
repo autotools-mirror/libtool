@@ -5406,6 +5406,8 @@ func_mode_link ()
       # -O*, -g*, -flto*, -fwhopr*, -fuse-linker-plugin GCC link-time optimization
       # -specs=*             GCC specs files
       # -stdlib=*            select c++ std lib with clang
+      # -fdiagnostics-color* simply affects output
+      # -frecord-gcc-switches used to verify flags were respected
       # -fsanitize=*         Clang/GCC memory and address sanitizer
       # -fno-sanitize*       Clang/GCC memory and address sanitizer
       # -shared-libsan       Link with shared sanitizer runtimes (Clang)
@@ -5417,6 +5419,7 @@ func_mode_link ()
       -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
       -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-stdlib=*| \
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
+      -fdiagnostics-color*|-frecord-gcc-switches| \
       -fuse-ld=*|-Wa,*|-Werror|-Werror=*)
         func_quote_arg pretty "$arg"
 	arg=$func_quote_arg_result
