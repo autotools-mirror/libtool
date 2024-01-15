@@ -44,8 +44,8 @@ else
 announcement_Cc_ = autotools-announce@gnu.org, $(PACKAGE_BUGREPORT)
 endif
 
-# Don't syntax check the mail subdirectory.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = ^mail/
+# Don't syntax check the mail subdirectory or patches to gnulib itself.
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(mail|gl)/
 
 local-checks-to-fix =				\
 	sc_require_config_h			\
