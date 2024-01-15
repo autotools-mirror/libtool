@@ -27,8 +27,8 @@ update-copyright: update-release-year
 update-release-year:
 	$(AM_V_GEN)year=`date +%Y`; \
 	sed -i \
-		-e "/_LT_COPY/,+1 { /Copyright/ {s:[0-9][0-9][0-9][0-9]:$${year}:} }" \
-		-e "/^Copyright/ {s:[0-9][0-9][0-9][0-9]:$${year}:} " \
+		-e "/_LT_COPY/,+1 { /Copyright/ {s:[0-9][0-9][0-9][0-9]:$$year:} }" \
+		-e "/^Copyright/ {s:[0-9][0-9][0-9][0-9]:$$year:} " \
 		m4/libtool.m4
 
 # Set format of NEWS
