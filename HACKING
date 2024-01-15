@@ -17,7 +17,7 @@ and is not part of a release distribution.
 
 * If a change fixes a test, mention the test in the git log entry.
 
-* If somebody reports a new bug, mention his name in the git log entry
+* If somebody reports a new bug, mention their name in the git log entry
   and in the test case you write.
 
 * The correct response to most actual bugs is to write a new test case

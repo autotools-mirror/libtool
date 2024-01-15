@@ -93,7 +93,7 @@ LT_AT_BOOTSTRAP([ignore], [ignore], [ignore], [ignore], [--force])
 LT_AT_EXEC_CHECK([./old], 0, [Hello, World!])
 
 # Now, test that libtoolize doesn't mistakenly think the user called
-# any libtool macros if in fact she didn't.
+# any libtool macros if in fact they didn't.
 $SED '/AM_PROG_LIBTOOL/d' configure.in >configure.int
 mv -f configure.int configure.in
 AT_CHECK([$LIBTOOLIZE -n], [0], [stdout], [stderr])
