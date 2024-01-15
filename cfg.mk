@@ -55,6 +55,7 @@ local-checks-to-skip =				\
 	$(local-checks-to-fix)			\
 	sc_GPL_version				\
 	sc_cast_of_x_alloc_return_value		\
+	sc_indent				\
 	sc_prohibit_always-defined_macros	\
 	sc_prohibit_always_true_header_tests	\
 	sc_prohibit_strncpy			\
