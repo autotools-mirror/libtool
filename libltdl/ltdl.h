@@ -43,7 +43,6 @@ LT_BEGIN_C_DECLS
 /* LT_STRLEN can be used safely on NULL pointers.  */
 #define LT_STRLEN(s)	(((s) && (s)[0]) ? strlen (s) : 0)
 
-
 /* --- DYNAMIC MODULE LOADING API --- */
 
 
@@ -110,7 +109,6 @@ extern LT_DLSYM_CONST lt_dlsymlist lt__PROGRAM__LTX_preloaded_symbols[];
 
 
 
-
 /* --- MODULE INFORMATION --- */
 
 
