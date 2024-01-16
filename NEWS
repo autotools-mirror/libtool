@@ -1069,7 +1069,7 @@ New in 1.2d: 1998-12-16; CVS version 1.2c, Libtool team:
 * We now have anonymous CVS access to GNU libtool.  CVSROOT is
   :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot.  The password
   is empty.  The directory is libtool.  Check our home-page at
-  http://www.gnu.org/software/libtool/libtool.html for details.
+  https://www.gnu.org/software/libtool/libtool.html for details.
 * Alexandre Oliva, Thomas Tanner and Gary V. Vaughan have taken over
   the maintenance of libtool.
 * Arguments to ltconfig have been changed to allow creation of a

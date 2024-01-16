@@ -35,7 +35,7 @@ AC_INIT([GNU Libtool],
 	m4_esyscmd([build-aux/git-version-gen .tarball-version]),
 	[bug-libtool@gnu.org])
 m4_ifndef([AC_PACKAGE_URL],
-	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/s/libtool/])])
+	  [AC_SUBST([PACKAGE_URL], [https://www.gnu.org/s/libtool/])])
 
 # Remove this when a released Autoconf is capable of bootstrapping
 # Libtool without it (probably after autoconf-2.70).
