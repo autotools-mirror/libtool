@@ -31,8 +31,8 @@ update-release-year:
 		-e "/^Copyright/ {s:[0-9][0-9][0-9][0-9]:$$year:} " \
 		m4/libtool.m4
 
-# Set format of NEWS
-old_NEWS_hash := 68e212222416d15e517576ce749b131f
+# Set format of NEWS.
+old_NEWS_hash := 3e6638705e1c1ac7104260815a46c7bd
 
 manual_title = Portable Dynamic Shared Object Management
 
