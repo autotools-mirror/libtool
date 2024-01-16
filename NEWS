@@ -2,6 +2,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Changes in supported systems or compilers:
+
+  - Removed support for bitrig (*-*-bitrig*).
 
 * Noteworthy changes in release 2.4.7 (2022-03-16) [stable]
 
