@@ -13,7 +13,7 @@ and is not part of a release distribution.
 * If you incorporate a change from somebody on the net:
   If it is a large change, you must make sure they have signed the
   appropriate paperwork, and be sure to add their name and email
-  address to THANKS
+  address to THANKS.
 
 * If a change fixes a test, mention the test in the git log entry.
 
@@ -45,7 +45,7 @@ and is not part of a release distribution.
   gnulib is up-to-date, and running 'bootstrap' to recheck the links are
   correct.
 
-* Changes other than bug fixes must be mentioned in NEWS
+* Changes other than bug fixes must be mentioned in NEWS.
 
 
 3. Test Suite
@@ -58,7 +58,7 @@ and is not part of a release distribution.
 * Use
     make -k check
   liberally, on as many platforms as you can.  Use as many compilers and
-  linkers you can.  To run old and new testsuites separately, use
+  linkers you can.  To run old and new testsuites separately, use:
     make check TESTSUITEFLAGS=-V
     make check-local
 
@@ -130,7 +130,7 @@ and is not part of a release distribution.
 6. Editing '.am' Files
 ======================
 
-* Always use $(...) and not ${...}
+* Always use $(...) and not ${...}.
 
 * Use ':', not 'true'.  Use 'exit 1', not 'false'.
 
@@ -180,7 +180,7 @@ and is not part of a release distribution.
 
 
 8. Abstraction layers in libltdl
-=================================
+================================
 
 * The libltdl API uses a layered approach to differentiate internal and
   external interfaces, among other things.  To keep the abstraction
@@ -283,10 +283,10 @@ and is not part of a release distribution.
 9. Licensing Rules
 ==================
 
-GNU Libtool uses 3 different licenses for various of the files distributed
-herein, with several variations on license text.  It is important that
-you use the correct license text in each new file added.  Here are the
-texts along with some notes on when each is appropriate.  Appropriate
+GNU Libtool uses 3 different licenses for the files distributed herein,
+with several variations on license text.  It is important that you use
+the correct license text in each new file added.  Here are the texts
+along with some notes on when each is appropriate.  Appropriate
 commenting (shell, C etc) and decoration (m4 etc) assumed throughout.
 
 
