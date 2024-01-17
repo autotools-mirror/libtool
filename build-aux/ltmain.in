@@ -5413,12 +5413,15 @@ func_mode_link ()
       # -shared-libsan       Link with shared sanitizer runtimes (Clang)
       # -static-libsan       Link with static sanitizer runtimes (Clang)
       # -fuse-ld=*           Linker select flags for GCC
+      # -rtlib=*             select c runtime lib with clang
+      # --unwindlib=*        select unwinder library with clang
       # -f{file|debug|macro|profile}-prefix-map=* needed for lto linking
       # -Wa,*                Pass flags directly to the assembler
       # -Werror, -Werror=*   Report (specified) warnings as errors
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
       -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
-      -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-stdlib=*| \
+      -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*| \
+      -stdlib=*|-rtlib=*|--unwindlib=*| \
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
       -ffile-prefix-map=*|-fdebug-prefix-map=*|-fmacro-prefix-map=*|-fprofile-prefix-map=*| \
       -fdiagnostics-color*|-frecord-gcc-switches| \
