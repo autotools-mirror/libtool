@@ -947,7 +947,15 @@ func_install_pkgltdl_files ()
 	  ;;
 
         config-h.in)
-          test subproject = "$ltdl_mode" || continue
+          test subproject = "$ltdl_mode" && {
+            # Always copy config-h.in, otherwise automake's autoheader rules
+            # will change the destination's timestamp if it is symlinked.
+            ( opt_copy=:
+              func_copy "$file" "$pkgltdldir" "$ltdl_dir" \
+                pkgltdl_header "$my_copy_filter"
+            )
+          }
+          continue
           ;;
 
         configure)
