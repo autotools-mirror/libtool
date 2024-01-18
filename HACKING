@@ -24,6 +24,14 @@ and is not part of a release distribution.
   that demonstrates the bug.  Then fix the bug, re-run the test suite,
   and check everything in.
 
+* Always run the testsuite after applying a patch:
+    make check syntax-check TESTSUITEFLAGS="--jobs=$(nproc)" -j$(nproc)
+
+  Ideally also verify the release process doesn't break:
+    make distcheck TESTSUITEFLAGS="--jobs=$(nproc)" -j$(nproc)
+  This will run check & syntax-check from above, but will take longer as
+  builds & tests in different configurations.
+
 * Some files in the libtool package are not owned by libtool.  These
   files should never be edited here.  These files are:
 	COPYING
@@ -55,12 +63,16 @@ and is not part of a release distribution.
   AT_CHECK) is on a single line so that 'testsuite -x' displays the
   whole thing.  You can use m4_do or '[... ]dnl' to wrap long lines.
 
-* Use
-    make -k check
+* Run tests in parallel with
+    make -k check TESTSUITEFLAGS="--jobs=$(nproc)"
   liberally, on as many platforms as you can.  Use as many compilers and
   linkers you can.  To run old and new testsuites separately, use:
     make check TESTSUITEFLAGS=-V
     make check-local
+
+* The gnulib module also provides some maintainer-focused tests that only
+  work when run from a git checkout.
+    make syntax-check
 
 * The new Autotest testsuite uses keywords to denote test features:
     autoconf		needs Autoconf
