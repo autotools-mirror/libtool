@@ -884,7 +884,7 @@ on to the program executable.  Therefore, the program executable may not
 employ command line options that begin with @code{--lt-}. (In fact, the
 wrapper executable will detect any command line options that begin with
 @code{--lt-} and abort with an error message if the option is not
-recognized). If this presents a problem, please contact the Libtool
+recognized.) If this presents a problem, please contact the Libtool
 team at @value{BUGADDR}.
 
 These command line options include:
@@ -1791,8 +1791,8 @@ These individual steps are often automated with @command{autoreconf}.
 
 Here is a diagram showing how such a typical Libtool configuration works
 when preparing a package for distribution, assuming that @file{m4} has
-been chosen as location for additional Autoconf macros, and
-@file{build-aux} as location for auxiliary build tools (@pxref{Input,,
+been chosen as the location for additional Autoconf macros, and
+@file{build-aux} as the location for auxiliary build tools (@pxref{Input,,
 The Autoconf Manual, autoconf, The Autoconf Manual}):
 
 @example
@@ -2045,8 +2045,8 @@ generated header file), you may find it necessary to manually record
 these dependencies.
 Because libtool archives generate object file names manually recording these
 dependencies is not as straightforward as the examples in Automake's manual
-describe in their examples.
-This effects header files in particular, because simply listing them as
+describe.
+This affects header files in particular, because simply listing them as
 @samp{nodist_libfoo_la_SOURCES} will not cause Automake to establish a
 dependent relationship for the object files of @file{libfoo.la}.
 A useful trick (although somewhat imprecise) is to manually record built
@@ -6159,7 +6159,7 @@ cross-compiling, and affects only the ability to launch host platform
 executables on the build platform using an emulation or API-enhancement
 environment such as Wine.  Failure to convert paths
 (@pxref{File Name Conversion Failure}) will cause a warning to be issued, but
-rarely causes the build to fail---and should have no affect on the compiled
+rarely causes the build to fail---and should have no effect on the compiled
 products, once installed properly on the host platform.  For more information,
 @pxref{Cross compiling}.
 
