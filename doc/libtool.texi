@@ -555,12 +555,12 @@ gcc -g -O -c foo.c -o foo.o >/dev/null 2>&1
 burger$
 @end example
 
-Note that Libtool automatically created @file{@value{objdir}} directory
+Note that Libtool automatically created the @file{@value{objdir}} directory
 upon its first execution, where PIC library object files will be stored.
 
 Since @samp{burger} supports shared libraries, and requires PIC
-objects to build them, Libtool has compiled a PIC object this time,
-and made a note of it in the libtool object:
+objects to build them, Libtool has compiled a PIC object and
+made a note of it in the libtool object:
 
 @example
 # foo.lo - a libtool object file
@@ -577,11 +577,11 @@ non_pic_object='foo.o'
 @end example
 
 @cindex @option{-no-suppress}, libtool compile mode option
-Notice that the second run of GCC has its output discarded.  This is
-done so that compiler warnings aren't annoyingly duplicated.  If you
+Notice the second run of GCC has its output discarded.  This is
+done so the compiler warnings aren't annoyingly duplicated.  If you
 need to see both sets of warnings (you might have conditional code
-inside @samp{#ifdef PIC} for example), you can turn off suppression with
-the @option{-no-suppress} option to libtool's compile mode:
+inside @samp{#ifdef PIC} for example), you can turn off suppression by
+passing the @option{-no-suppress} option to libtool's compile mode:
 
 @example
 burger$ @kbd{libtool --mode=compile gcc -no-suppress -g -O -c hello.c}
@@ -605,8 +605,8 @@ burger$
 
 @pindex ranlib
 But of course, that would be too simple, so many systems require that
-you run the @code{ranlib} command on the resulting library (to give it
-better karma, or something):
+you run the @code{ranlib} command on the resulting library in order to
+generate a symbol table:
 
 @example
 burger$ @kbd{ranlib libhello.a}
@@ -686,16 +686,15 @@ library.
 
 @cindex @file{@value{objdir}} subdirectory
 Note how libtool creates extra files in the @file{@value{objdir}}
-subdirectory, rather than the current directory.  This feature is to
-make it easier to clean up the build directory, and to help ensure that
+subdirectory, rather than the current directory.  This feature makes
+it easier to clean up the build directory, and helps ensure
 other programs fail horribly if you accidentally forget to use libtool
 when you should.
 
-Again, you may want to have a look at the @file{.la} file
-to see what Libtool stores in it.  In particular, you will see that
-Libtool uses this file to remember the destination directory for the
-library (the argument to @option{-rpath}) as well as the dependency
-on the math library (@samp{-lm}).
+Again, you should look at the @file{.la} file to see what Libtool
+stores in it.  You will see Libtool uses this file to remember the
+destination directory for the library (the argument to @option{-rpath})
+as well as the dependency on the math library (@samp{-lm}).
 
 @node Linking executables
 @section Linking executables
@@ -746,8 +745,8 @@ a23$
 
 That looks too simple to be true.  All libtool did was transform
 @file{libhello.la} to @file{./@value{objdir}/libhello.a}, but remember
-that @samp{a23} has no shared libraries.  Notice that Libtool also
-remembered that @file{libhello.la} depends on @option{-lm}, so even
+that @samp{a23} has no shared libraries.  Notice Libtool also
+remembered @file{libhello.la} depends on @option{-lm}, so even
 though we didn't specify @option{-lm} on the libtool command
 line@footnote{
 @c
@@ -775,7 +774,7 @@ burger$ @kbd{gcc -g -O -o test test.o -L/usr/local/lib -lhello -lm}
 @end example
 
 However, unless @file{/usr/local/lib} is in the standard library search
-path, you won't be able to run @code{test}.  However, if you use libtool
+path, you won't be able to run @code{test}.  If instead you use libtool
 to link the already-installed libtool library, it will do The Right
 Thing (TM) for you:
 
@@ -793,7 +792,7 @@ Note that libtool added the necessary run-time path flag, as well as
 
 @cindex wrapper scripts for programs
 @cindex program wrapper scripts
-Notice that the executable, @code{hell}, was actually created in the
+Notice the executable, @code{hell}, was actually created in the
 @file{@value{objdir}} subdirectory.  Then, a wrapper script (or, on
 certain platforms, a wrapper executable @pxref{Wrapper executables}) was
 created in the current directory.
@@ -805,9 +804,9 @@ the wrapper script.
 
 On NetBSD 1.2, libtool encodes the installation directory of
 @file{libhello}, by using the @samp{-R/usr/local/lib} compiler flag.
-Then, the wrapper script guarantees that the executable finds the
-correct shared library (the one in @file{./@value{objdir}}) until it is
-properly installed.
+Then, the wrapper script guarantees the executable finds the
+correct shared library (the one in @file{./@value{objdir}}) so it
+can be properly installed.
 
 Let's compare the two different programs:
 
