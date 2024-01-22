@@ -511,7 +511,7 @@ AT_CLEANUP
 AT_SETUP([force non-PIC objects])
 
 AT_CHECK([case $host in
-hppa*|x86_64*|s390*)
+hppa*|amd64*|x86_64*|s390*)
   # These hosts cannot use non-PIC shared libs
   exit 77 ;;
 *-solaris*|*-sunos*)
