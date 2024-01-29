@@ -323,29 +323,39 @@ dnl AC_DEFUN([AM_DISABLE_FAST_INSTALL], [])
 
 # _LT_WITH_AIX_SONAME([DEFAULT])
 # ----------------------------------
-# implement the --with-aix-soname flag, and support the `aix-soname=aix'
-# and `aix-soname=both' and `aix-soname=svr4' LT_INIT options. DEFAULT
-# is either `aix', `both' or `svr4'.  If omitted, it defaults to `aix'.
+# implement the --enable-aix-soname configure option, and support the
+# `aix-soname=aix' and `aix-soname=both' and `aix-soname=svr4' LT_INIT options.
+# DEFAULT is either `aix', `both', or `svr4'.  If omitted, it defaults to `aix'.
 m4_define([_LT_WITH_AIX_SONAME],
 [m4_define([_LT_WITH_AIX_SONAME_DEFAULT], [m4_if($1, svr4, svr4, m4_if($1, both, both, aix))])dnl
 shared_archive_member_spec=
 case $host,$enable_shared in
 power*-*-aix[[5-9]]*,yes)
   AC_MSG_CHECKING([which variant of shared library versioning to provide])
-  AC_ARG_WITH([aix-soname],
-    [AS_HELP_STRING([--with-aix-soname=aix|svr4|both],
+  AC_ARG_ENABLE([aix-soname],
+    [AS_HELP_STRING([--enable-aix-soname=aix|svr4|both],
       [shared library versioning (aka "SONAME") variant to provide on AIX, @<:@default=]_LT_WITH_AIX_SONAME_DEFAULT[@:>@.])],
-    [case $withval in
-    aix|svr4|both)
-      ;;
-    *)
-      AC_MSG_ERROR([Unknown argument to --with-aix-soname])
-      ;;
-    esac
-    lt_cv_with_aix_soname=$with_aix_soname],
-    [AC_CACHE_VAL([lt_cv_with_aix_soname],
-      [lt_cv_with_aix_soname=]_LT_WITH_AIX_SONAME_DEFAULT)
-    with_aix_soname=$lt_cv_with_aix_soname])
+    [case $enableval in
+     aix|svr4|both)
+       ;;
+     *)
+       AC_MSG_ERROR([Unknown argument to --enable-aix-soname])
+       ;;
+     esac
+     lt_cv_with_aix_soname=$enable_aix_soname],
+    [_AC_ENABLE_IF([with], [aix-soname],
+        [case $withval in
+         aix|svr4|both)
+           ;;
+         *)
+           AC_MSG_ERROR([Unknown argument to --with-aix-soname])
+           ;;
+         esac
+         lt_cv_with_aix_soname=$with_aix_soname],
+        [AC_CACHE_VAL([lt_cv_with_aix_soname],
+           [lt_cv_with_aix_soname=]_LT_WITH_AIX_SONAME_DEFAULT)])
+     enable_aix_soname=$lt_cv_with_aix_soname])
+  with_aix_soname=$enable_aix_soname
   AC_MSG_RESULT([$with_aix_soname])
   if test aix != "$with_aix_soname"; then
     # For the AIX way of multilib, we name the shared archive member

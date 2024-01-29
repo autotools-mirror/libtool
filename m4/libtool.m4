@@ -2461,7 +2461,7 @@ aix[[4-9]]*)
     # Unfortunately, runtime linking may impact performance, so we do
     # not want this to be the default eventually. Also, we use the
     # versioned .so libs for executables only if there is the -brtl
-    # linker flag in LDFLAGS as well, or --with-aix-soname=svr4 only.
+    # linker flag in LDFLAGS as well, or --enable-aix-soname=svr4 only.
     # To allow for filename-based versioning support, we need to create
     # libNAME.so.V as an archive file, containing:
     # *) an Import File, referring to the versioned filename of the
