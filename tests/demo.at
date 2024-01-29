@@ -495,6 +495,16 @@ AT_SETUP([force PIC objects])
 
 _LT_DEMO_SETUP
 
+LT_AT_CHECK_CONFIG([--enable-pic])
+_LT_CHECK_EXECUTE
+
+AT_CLEANUP
+
+
+AT_SETUP([force PIC objects (old option name)])
+
+_LT_DEMO_SETUP
+
 LT_AT_CHECK_CONFIG([--with-pic])
 _LT_CHECK_EXECUTE
 
@@ -533,7 +543,7 @@ fi
 ])
 
 _LT_DEMO_SETUP
-LT_AT_CHECK_CONFIG([--with-pic=no])
+LT_AT_CHECK_CONFIG([--disable-pic])
 _LT_CHECK_EXECUTE
 
 AT_CLEANUP

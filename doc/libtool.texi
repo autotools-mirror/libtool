@@ -2138,8 +2138,8 @@ LT_PREREQ([@value{VERSION}])
 @defmacx AC_PROG_LIBTOOL
 @defmacx AM_PROG_LIBTOOL
 Add support for the @option{--enable-shared}, @option{--disable-shared},
-@option{--enable-static}, @option{--disable-static}, @option{--with-pic}, and
-@option{--without-pic} @code{configure} flags.@footnote{@code{LT_INIT} requires
+@option{--enable-static}, @option{--disable-static}, @option{--enable-pic}, and
+@option{--disable-pic} @code{configure} flags.@footnote{@code{LT_INIT} requires
 that you define the @file{Makefile} variable @code{top_builddir} in your
 @file{Makefile.in}.  Automake does this automatically, but Autoconf
 users should set it to the relative path to the top of your build
@@ -2182,12 +2182,13 @@ behaves similarly, but it uses @option{--enable-static} and
 The package name @samp{default} matches any packages that have not set
 their name in the @code{PACKAGE} environment variable.
 
-The @option{--with-pic} and @option{--without-pic} configure flags can be used
-to specify whether or not @command{libtool} uses PIC objects.  By default,
+The @option{--enable-pic} and @option{--disable-pic} configure flags can be
+used to specify whether or not @command{libtool} uses PIC objects.  By default,
 @command{libtool} uses PIC objects for shared libraries and non-PIC objects for
-static libraries.  The @option{--with-pic} option also accepts a comma-separated
-list of package names.  Specifying @option{--with-pic=@var{pkgs}} is the same
-as configuring every package in @var{pkgs} with @option{--with-pic} and every
+static libraries.
+The @option{--enable-pic} option also accepts a comma-separated
+list of package names.  Specifying @option{--enable-pic=@var{pkgs}} is the same
+as configuring every package in @var{pkgs} with @option{--enable-pic} and every
 other package with the default configuration.  The package name @samp{default}
 is treated the same as for @option{--enable-shared} and
 @option{--enable-static}.
@@ -2301,12 +2302,12 @@ specifying @option{--enable-static} to @command{configure}.
 @item pic-only
 Change the default behaviour for @command{libtool} to try to use only
 PIC objects.  The user may still override this default by specifying
-@option{--without-pic} to @command{configure}.
+@option{--disable-pic} to @command{configure}.
 
 @item no-pic
 Change the default behaviour of @command{libtool} to try to use only
 non-PIC objects.  The user may still override this default by
-specifying @option{--with-pic} to @command{configure}.
+specifying @option{--enable-pic} to @command{configure}.
 
 @end table
 
@@ -5605,9 +5606,9 @@ update.  In each case, the tests verify that the original library will link and
 install as expected.
 
 @item @file{tests/with_pic.at}
-Tests the function of the @option{--with-pic} flag.  The @option{--with-pic}
+Tests the function of the @option{--enable-pic} flag.  The @option{--enable-pic}
 flag is used to specify whether or not @command{libtool} uses PIC objects.
-This includes tests for setting @option{--with-pic} to no, yes, or a comma
+This includes tests for setting @option{--enable-pic} to no, yes, or a comma
 delimited list of package names.
 
 @end table
