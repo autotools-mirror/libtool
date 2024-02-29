@@ -3638,7 +3638,7 @@ EOF
 #endif
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef _MSC_VER
+#if defined (WIN32) && !defined (__GNUC_)
 # include <direct.h>
 # include <process.h>
 # include <io.h>
