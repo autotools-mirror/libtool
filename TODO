@@ -124,10 +124,6 @@ GNU Libtool
 2.2. test suite
 ---------------
 
-* Rewrite the whole thing in Autotest.  This will enable us to remove
-  all the tests/*demo noise, and duplication; and thus speed up bootstrap
-  and make writing new tests a whole lot more pleasant.
-
 * We should include tests with reloadable objects in the testsuite.
 
 * Write a test case for linkage with gnu ld scripts (per 2004-08-25 patch
