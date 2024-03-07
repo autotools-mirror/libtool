@@ -5297,6 +5297,25 @@ Tests are similar to the @file{tests/f77demo.at} tests, except that Fortran 90
 is used in combination with the @samp{FC} interface provided by Autoconf and
 Automake.
 
+@item @file{tests/bugs.at}
+Unit tests for specific bugs that have been found and fixed in libtool.
+
+@item @file{tests/cmdline_wrap.at}
+Tests include a verification that libtool operates properly when the maximum
+command line length is very small.
+
+@item @file{tests/ctors.at}
+Test that libtool can handle code with C++ constructors.
+
+@item @file{tests/darwin.at}
+Tests for macOS X including compilation, concurrent library extraction, GDB
+debug information, ld warnings, and verifying .dylib and .so files can be used
+with lt_dlopen.
+
+@item @file{tests/flags.at}
+Tests include checks that compile and linker flags get passed through libtool.
+Tests flags for C, C++, Fortran 77, and Fortran 90.
+
 @end table
 
 @node When tests fail
