@@ -3918,14 +3918,9 @@ your application to use this version of libltdl.
 @noindent
 Note that libltdl is not well tested in a multithreaded environment,
 though the intention is that it should work (@pxref{Thread Safety
-in libltdl, , Using libltdl in a multi threaded environment}).  It was
-reported that GNU/Linux's glibc 2.0's @code{dlopen} with
-@samp{RTLD_LAZY} (that libltdl uses by default) is not thread-safe,
-but this problem is supposed to be fixed in glibc 2.1.  On the other
-hand, @samp{RTLD_NOW} was reported to introduce problems in
-multi-threaded applications on FreeBSD@.  Working around these problems
-is left as an exercise for the reader; contributions are certainly
-welcome.
+in libltdl, , Using libltdl in a multi threaded environment}). If there are
+any issues, working around them is left as an exercise for the reader;
+contributions are certainly welcome.
 
 @noindent
 The following macros are defined by including @file{ltdl.h}:
