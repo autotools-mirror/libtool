@@ -1,0 +1,31 @@
+Requirements to build libltdl for Android
+=========================================
+- Android NDK for Windows
+or
+- Android NDK for Linux
+
+Build steps on Windows
+======================
+1. Open cmd.exe console
+
+2. Navigate to <libtool_root>\libltdl\Android\jni, for example:
+cd "C:\Users\held\source\repos\laheller\libtool\libltdl\Android\jni"
+
+3. Execute build by callink ndk-build.cmd, for example:
+"E:\Android\NDK\android-ndk-r15c\ndk-build.cmd"
+
+4. On successful build the output libraries will be located at:
+<libtool_root>\libltdl\Android\libs\<ABI>\libltdl.so
+
+Build steps on Linux (Ubuntu)
+=============================
+1. Open terminal
+
+2. Navigate to <libtool_root>/libltdl/Android/jni, for example:
+cd ~/libtool/libltdl/Android/jni
+
+3. Execute build by callink ndk-build.cmd, for example on Ubuntu:
+/usr/lib/android-ndk/ndk-build
+
+4. On successful build the output libraries will be located at:
+~/libtool/libltdl/Android/libs/<ABI>/libltdl.so
