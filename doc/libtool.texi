@@ -481,7 +481,7 @@ To create an object file from a source file, the compiler is invoked
 with the @option{-c} flag (and any other desired flags):
 
 @example
-burger$ @kbd{gcc -g -O -c main.c}
+burger$ @kbd{gcc -I. -g -O -c main.c}
 burger$
 @end example
 
@@ -493,8 +493,8 @@ static library is as simple as creating object files that are linked to
 form an executable:
 
 @example
-burger$ @kbd{gcc -g -O -c foo.c}
-burger$ @kbd{gcc -g -O -c hello.c}
+burger$ @kbd{gcc -I. -g -O -c foo.c}
+burger$ @kbd{gcc -I. -g -O -c hello.c}
 burger$
 @end example
 
@@ -521,10 +521,10 @@ simply invoke libtool with the standard compilation command as
 arguments (@pxref{Compile mode}):
 
 @example
-a23$ @kbd{libtool --mode=compile gcc -g -O -c foo.c}
-gcc -g -O -c foo.c -o foo.o
-a23$ @kbd{libtool --mode=compile gcc -g -O -c hello.c}
-gcc -g -O -c hello.c -o hello.o
+a23$ @kbd{libtool --mode=compile gcc -I. -g -O -c foo.c}
+gcc -I. -g -O -c foo.c -o foo.o
+a23$ @kbd{libtool --mode=compile gcc -I. -g -O -c hello.c}
+gcc -I. -g -O -c hello.c -o hello.o
 a23$
 @end example
 
@@ -553,10 +553,10 @@ additional PIC object by inserting the appropriate PIC generation
 flags into the compilation command:
 
 @example
-burger$ @kbd{libtool --mode=compile gcc -g -O -c foo.c}
+burger$ @kbd{libtool --mode=compile gcc -I. -g -O -c foo.c}
 mkdir @value{objdir}
-gcc -g -O -c foo.c  -fPIC -DPIC -o @value{objdir}/foo.o
-gcc -g -O -c foo.c -o foo.o >/dev/null 2>&1
+gcc -I. -g -O -c foo.c  -fPIC -DPIC -o @value{objdir}/foo.o
+gcc -I. -g -O -c foo.c -o foo.o >/dev/null 2>&1
 burger$
 @end example
 
@@ -589,9 +589,9 @@ inside @samp{#ifdef PIC} for example), you can turn off suppression by
 passing the @option{-no-suppress} option to libtool's compile mode:
 
 @example
-burger$ @kbd{libtool --mode=compile gcc -no-suppress -g -O -c hello.c}
-gcc -g -O -c hello.c  -fPIC -DPIC -o @value{objdir}/hello.o
-gcc -g -O -c hello.c -o hello.o
+burger$ @kbd{libtool --mode=compile gcc -no-suppress -I. -g -O -c hello.c}
+gcc -I. -g -O -c hello.c  -fPIC -DPIC -o @value{objdir}/hello.o
+gcc -I. -g -O -c hello.c -o hello.o
 burger$
 @end example
 
