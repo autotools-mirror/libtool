@@ -758,7 +758,7 @@ AC_CACHE_CHECK([for _ prefix in compiled symbols],
   [lt_cv_sys_symbol_underscore=no
   cat > conftest.$ac_ext <<_LT_EOF
 void nm_test_func(){}
-int main(){nm_test_func;return 0;}
+int main(void){nm_test_func;return 0;}
 _LT_EOF
   if AC_TRY_EVAL(ac_compile); then
     # Now try to grab the symbols.
@@ -862,7 +862,7 @@ _LT_EOF
 #    define RTLD_NOW 0
 #  endif
 #endif
-int main () {
+int main (void) {
   void *handle = dlopen ("`pwd`/$libname$libltdl_cv_shlibext", RTLD_GLOBAL|RTLD_NOW);
   int status = $libltdl_dlunknown;
   if (handle) {

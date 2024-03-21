@@ -7320,7 +7320,7 @@ func_mode_link ()
 	  # whether they linked in statically or dynamically with ldd.
 	  $opt_dry_run || $RM conftest.c
 	  cat > conftest.c <<EOF
-	  int main() { return 0; }
+	  int main(void) { return 0; }
 EOF
 	  $opt_dry_run || $RM conftest
 	  if $LTCC $LTCFLAGS -o conftest conftest.c $deplibs; then
