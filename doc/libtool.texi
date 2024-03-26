@@ -2864,8 +2864,7 @@ and what special considerations you need to make if you do not use C.
 @end menu
 
 @node C++ libraries
-@section Writing libraries for C++
-@c FIXME: in the TOC, the ++ is too large (seems to be math mode)
+@section Writing libraries for C@code{++}
 @cindex trouble with C++
 @cindex pitfalls using C++
 @cindex C++, pitfalls
