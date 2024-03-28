@@ -5291,6 +5291,49 @@ Tests are similar to the @file{tests/f77demo.at} tests, except that Fortran 90
 is used in combination with the @samp{FC} interface provided by Autoconf and
 Automake.
 
+@item @file{tests/am-subdirs.at}
+Tests that a binary can be built and ran from outside of the subdir that it is
+built and ran in.
+
+@item @file{tests/destdir.at}
+Installs some libs in $DESTDIR, moves them to a different dir, then installs
+some false libraries in $DESTDIR that should not be linked against. If the
+program refers to these false libraries, there is a bug.
+
+@item @file{tests/duplicate_deps.at}
+Tests circular call of dependencies between two libraries, liba and libb.
+Function a1() from liba calls b1() from libb and function b1() from libb
+calls a2() from liba.
+
+@item @file{tests/duplicate_conv.at}
+We create two convenience archives with the same name, and also
+containing an object with the same name.
+
+@item @file{tests/duplicate_members.at}
+Tests a library with multiple files of the same name (from different
+directories), such as 1/a.c, 2/a.c, 3/a.c, etc.
+
+@item @file{tests/archive-in-archive.at}
+Tests convenience archive within another convenience archive.
+Compiles foo() in libfoo, then compiles libfoo (and bar() function)
+into libbar.
+
+@item @file{tests/deplib-in-subdir.at}
+Tests building and linking various libraries within various dirs and subdirs
+while changing directories as well.
+It should be possible to use a nontrivial relative path to the output
+file name when creating libraries and programs.  The deplibs of these
+might have relative paths as well.  When executing uninstalled programs,
+the paths relative to $PWD at build time needs to be translated to a
+path valid at execution time.
+Also test installing these libraries and programs; however,
+use consistent relative paths between 'libtool --mode=link' and
+'libtool --mode=install' in this test.
+
+@item @file{tests/indirect_deps.at}
+Tests indirect dependencies (or nested dependencies).
+libd depends on libconv, which depends on libb, which depends on liba.
+
 @item @file{tests/bugs.at}
 Unit tests for specific bugs that have been found and fixed in libtool.
 
