@@ -37,6 +37,8 @@ and is not part of a release distribution.
 	COPYING
 	INSTALL
 	doc/
+	    + gendocs_template
+	    + gendocs_template_min
 	    + fdl.texi
 	libltdl/
 	    + COPYING.LIB
@@ -49,6 +51,17 @@ and is not part of a release distribution.
 	    + mdate-sh
 	    + missing
 	    + texinfo.tex
+	m4/
+	    + 00gnulib.m4
+	    + gnulib-cache.m4
+	    + gnulib-common.m4
+	    + gnu-comp.m4
+	    + gnulib-tool.m4
+	    + ltversion.m4
+	    + zzgnulib.m4
+	GNUmakefile
+	maint.mk
+
   The ones that are important for a release can be updated by ensuring
   gnulib is up-to-date, and running 'bootstrap' to recheck the links are
   correct.
