@@ -5516,13 +5516,6 @@ for a match against the extended regular expression @var{regex}.  When
 argument to @samp{$file_magic_cmd} to verify whether the
 regular expression matches its output, and warn the user otherwise.
 
-@item test_compile
-@vindex test_compile
-just checks whether it is possible to link a program out of a list of
-libraries, and checks which of those are listed in the output of
-@code{ldd}.  It is currently unused, and will probably be dropped in the
-future.
-
 @item pass_all
 @vindex pass_all
 will pass everything without any checking.  This may work on platforms
