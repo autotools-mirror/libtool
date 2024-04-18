@@ -5412,6 +5412,7 @@ func_mode_link ()
       # -fno-sanitize*       Clang/GCC memory and address sanitizer
       # -shared-libsan       Link with shared sanitizer runtimes (Clang)
       # -static-libsan       Link with static sanitizer runtimes (Clang)
+      # -no-canonical-prefixes Do not expand any symbolic links
       # -fuse-ld=*           Linker select flags for GCC
       # -rtlib=*             select c runtime lib with clang
       # --unwindlib=*        select unwinder library with clang
@@ -5420,7 +5421,7 @@ func_mode_link ()
       # -Werror, -Werror=*   Report (specified) warnings as errors
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
       -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
-      -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*| \
+      -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-no-canonical-prefixes| \
       -stdlib=*|-rtlib=*|--unwindlib=*| \
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
       -ffile-prefix-map=*|-fdebug-prefix-map=*|-fmacro-prefix-map=*|-fprofile-prefix-map=*| \
