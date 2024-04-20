@@ -5933,18 +5933,15 @@ func_mode_link ()
 		;;
 	      esac
 	      if $valid_a_lib; then
-		echo
-		$ECHO "*** Warning: Linking the shared library $output against the"
-		$ECHO "*** static library $deplib is not portable!"
+		func_warning "Linking the shared library $output against the static library $deplib is not portable!"
 		deplibs="$deplib $deplibs"
 	      else
-		echo
-		$ECHO "*** Warning: Trying to link with static lib archive $deplib."
-		echo "*** I have the capability to make that library automatically link in when"
-		echo "*** you link to this library.  But I can only do this if you have a"
-		echo "*** shared version of the library, which you do not appear to have"
-		echo "*** because the file extensions .$libext of this argument makes me believe"
-		echo "*** that it is just a static archive that I should not use here."
+		func_warning "Trying to link with static lib archive $deplib."
+		func_warning "I have the capability to make that library automatically link in when"
+		func_warning "you link to this library.  But I can only do this if you have a"
+		func_warning "shared version of the library, which you do not appear to have"
+		func_warning "because the file extensions .$libext of this argument makes me believe"
+		func_warning "that it is just a static archive that I should not use here."
 	      fi
 	      ;;
 	    esac
@@ -6309,11 +6306,11 @@ func_mode_link ()
 	  if test -z "$dlopenmodule" && test yes = "$shouldnotlink" && test link = "$pass"; then
 	    echo
 	    if test prog = "$linkmode"; then
-	      $ECHO "*** Warning: Linking the executable $output against the loadable module"
+	      func_warning "Linking the executable $output against the loadable module"
 	    else
-	      $ECHO "*** Warning: Linking the shared library $output against the loadable module"
+	      func_warning "Linking the shared library $output against the loadable module"
 	    fi
-	    $ECHO "*** $linklib is not portable!"
+	    func_warning "$linklib is not portable!"
 	  fi
 	  if test lib = "$linkmode" &&
 	     test yes = "$hardcode_into_libs"; then
@@ -6408,11 +6405,10 @@ func_mode_link ()
 		    if /usr/bin/file -L $add 2> /dev/null |
 			 $GREP ": [^:]* bundle" >/dev/null; then
 		      if test "X$dlopenmodule" != "X$lib"; then
-			$ECHO "*** Warning: lib $linklib is a module, not a shared library"
+			func_warning "lib $linklib is a module, not a shared library"
 			if test -z "$old_library"; then
-			  echo
-			  echo "*** And there doesn't seem to be a static archive available"
-			  echo "*** The link will probably fail, sorry"
+			  func_warning "And there doesn't seem to be a static archive available"
+			  func_warning "The link will probably fail, sorry"
 			else
 			  add=$dir/$old_library
 			fi
@@ -6552,21 +6548,19 @@ func_mode_link ()
 
 	    # Just print a warning and add the library to dependency_libs so
 	    # that the program can be linked against the static library.
-	    echo
-	    $ECHO "*** Warning: This system cannot link to static lib archive $lib."
-	    echo "*** I have the capability to make that library automatically link in when"
-	    echo "*** you link to this library.  But I can only do this if you have a"
-	    echo "*** shared version of the library, which you do not appear to have."
+	    func_warning "This system cannot link to static lib archive $lib."
+	    func_warning "I have the capability to make that library automatically link in when"
+	    func_warning "you link to this library.  But I can only do this if you have a"
+	    func_warning "shared version of the library, which you do not appear to have."
 	    if test yes = "$module"; then
-	      echo "*** But as you try to build a module library, libtool will still create "
-	      echo "*** a static module, that should work as long as the dlopening application"
-	      echo "*** is linked with the -dlopen flag to resolve symbols at runtime."
+	      func_warning "But as you try to build a module library, libtool will still create "
+	      func_warning "a static module, that should work as long as the dlopening application"
+	      func_warning "is linked with the -dlopen flag to resolve symbols at runtime."
 	      if test -z "$global_symbol_pipe"; then
-		echo
-		echo "*** However, this would only work if libtool was able to extract symbol"
-		echo "*** lists from a program, using 'nm' or equivalent, but libtool could"
-		echo "*** not find such a program.  So, this module is probably useless."
-		echo "*** 'nm' from GNU binutils and a full rebuild may help."
+		func_warning "However, this would only work if libtool was able to extract symbol"
+		func_warning "lists from a program, using 'nm' or equivalent, but libtool could"
+		func_warning "not find such a program.  So, this module is probably useless."
+		func_warning "'nm' from GNU binutils and a full rebuild may help."
 	      fi
 	      if test no = "$build_old_libs"; then
 		build_libtool_libs=module
@@ -6893,9 +6887,7 @@ func_mode_link ()
 	if test pass_all != "$deplibs_check_method"; then
 	  func_fatal_error "cannot build libtool library '$output' from non-libtool objects on this host:$objs"
 	else
-	  echo
-	  $ECHO "*** Warning: Linking the shared library $output against the non-libtool"
-	  $ECHO "*** objects $objs is not portable!"
+	  func_warning "Linking the shared library $output against the non-libtool objects $objs is not portable!"
 	  func_append libobjs " $objs"
 	fi
       fi
@@ -7378,17 +7370,16 @@ func_mode_link ()
 	      fi
 	      if test -n "$a_deplib"; then
 		droppeddeps=yes
-		echo
-		$ECHO "*** Warning: linker path does not have real file for library $a_deplib."
-		echo "*** I have the capability to make that library automatically link in when"
-		echo "*** you link to this library.  But I can only do this if you have a"
-		echo "*** shared version of the library, which you do not appear to have"
-		echo "*** because I did check the linker path looking for a file starting"
+		func_warning "Linker path does not have real file for library $a_deplib."
+		func_warning "I have the capability to make that library automatically link in when"
+		func_warning "you link to this library.  But I can only do this if you have a"
+		func_warning "shared version of the library, which you do not appear to have"
+		func_warning "because I did check the linker path looking for a file starting"
 		if test -z "$potlib"; then
-		  $ECHO "*** with $libname but no candidates were found. (...for file magic test)"
+		  func_warning "with $libname but no candidates were found. (...for file magic test)"
 		else
-		  $ECHO "*** with $libname and none of the candidates passed a file format test"
-		  $ECHO "*** using a file magic. Last file checked: $potlib"
+		  func_warning "with $libname and none of the candidates passed a file format test"
+		  func_warning "using a file magic. Last file checked: $potlib"
 		fi
 	      fi
 	      ;;
@@ -7432,17 +7423,16 @@ func_mode_link ()
 	      fi
 	      if test -n "$a_deplib"; then
 		droppeddeps=yes
-		echo
-		$ECHO "*** Warning: linker path does not have real file for library $a_deplib."
-		echo "*** I have the capability to make that library automatically link in when"
-		echo "*** you link to this library.  But I can only do this if you have a"
-		echo "*** shared version of the library, which you do not appear to have"
-		echo "*** because I did check the linker path looking for a file starting"
+		func_warning "Linker path does not have real file for library $a_deplib."
+		func_warning "I have the capability to make that library automatically link in when"
+		func_warning "you link to this library.  But I can only do this if you have a"
+		func_warning "shared version of the library, which you do not appear to have"
+		func_warning "because I did check the linker path looking for a file starting"
 		if test -z "$potlib"; then
-		  $ECHO "*** with $libname but no candidates were found. (...for regex pattern test)"
+		  func_warning "with $libname but no candidates were found. (...for regex pattern test)"
 		else
-		  $ECHO "*** with $libname and none of the candidates passed a file format test"
-		  $ECHO "*** using a regex pattern. Last file checked: $potlib"
+		  func_warning "with $libname and none of the candidates passed a file format test"
+		  func_warning "using a regex pattern. Last file checked: $potlib"
 		fi
 	      fi
 	      ;;
@@ -7466,11 +7456,11 @@ func_mode_link ()
 	  *[!\	\ ]*)
 	    echo
 	    if test none = "$deplibs_check_method"; then
-	      echo "*** Warning: inter-library dependencies are not supported in this platform."
+	      func_warning "Inter-library dependencies are not supported in this platform."
 	    else
-	      echo "*** Warning: inter-library dependencies are not known to be supported."
+	      func_warning "Inter-library dependencies are not known to be supported."
 	    fi
-	    echo "*** All declared inter-library dependencies are being dropped."
+	    func_warning "All declared inter-library dependencies are being dropped."
 	    droppeddeps=yes
 	    ;;
 	  esac
@@ -7491,17 +7481,15 @@ func_mode_link ()
 
 	if test yes = "$droppeddeps"; then
 	  if test yes = "$module"; then
-	    echo
-	    echo "*** Warning: libtool could not satisfy all declared inter-library"
-	    $ECHO "*** dependencies of module $libname.  Therefore, libtool will create"
-	    echo "*** a static module, that should work as long as the dlopening"
-	    echo "*** application is linked with the -dlopen flag."
+	    func_warning "libtool could not satisfy all declared inter-library"
+	    func_warning "dependencies of module $libname.  Therefore, libtool will create"
+	    func_warning "a static module, that should work as long as the dlopening"
+	    func_warning "application is linked with the -dlopen flag."
 	    if test -z "$global_symbol_pipe"; then
-	      echo
-	      echo "*** However, this would only work if libtool was able to extract symbol"
-	      echo "*** lists from a program, using 'nm' or equivalent, but libtool could"
-	      echo "*** not find such a program.  So, this module is probably useless."
-	      echo "*** 'nm' from GNU binutils and a full rebuild may help."
+	      func_warning "However, this would only work if libtool was able to extract symbol"
+	      func_warning "lists from a program, using 'nm' or equivalent, but libtool could"
+	      func_warning "not find such a program.  So, this module is probably useless."
+	      func_warning "'nm' from GNU binutils and a full rebuild may help."
 	    fi
 	    if test no = "$build_old_libs"; then
 	      oldlibs=$output_objdir/$libname.$libext
