@@ -1319,6 +1319,13 @@ can be achieved using either option @option{-v} or option
 
 @item --version
 Print libtool version information and exit.
+
+@item -W
+@itemx --warnings=@var{CATEGORY}
+Report the warnings falling in category @var{CATEGORY}. The default
+category is @command{all}. To disable warnings, use the category
+@command{none}.
+
 @end table
 
 The current @command{libtool} implementation is done with a shell script
