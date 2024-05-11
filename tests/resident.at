@@ -116,7 +116,7 @@ extern "C"
 int
 setup_plugin (void)
 {
-  atexit (bye);
+  return atexit (bye);
 }
 ]])
 
