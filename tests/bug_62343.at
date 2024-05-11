@@ -25,6 +25,8 @@ AT_BANNER([Testing bug 62343:])
 
 AT_SETUP([Use -no-canonical-prefixes flag])
 
+AT_CHECK([$LIBTOOL --config | $EGREP '^build_libtool_libs=no' && (exit 77)], 1)
+
 AT_DATA([x.cpp],
 [[
 void f(int *p) { *p = 21; }
