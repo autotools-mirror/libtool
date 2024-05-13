@@ -2,9 +2,74 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - Pass '-fdiagnostics-color', '-frecord-gcc-switches',
+    '-fno-sanitize*', '-Werror', and 'prefix-map' flags.
+
+  - Pass the '-no-canonical-prefixes' linker flag.
+
+  - Pass '-fopenmp=*' for Clang to allow choosing between libgomp and
+    libomp.
+
+  - Pass '-shared-libsan', '-static-libsan', 'rtlib=*', and
+    'unwindlib=*' for Clang.
+
+  - Expanded process.h inclusion on Windows for more than the
+    proprietary MSVC compiler. Other alternative Windows compilers
+    also require process.h.
+
+  - Pass 'elf32_x86_64' and 'elf64_x86_64' to the linker on hurd-amd64.
+
+  - Recognize *-*-windows* config triplets.
+
+** Important incompatible changes:
+
+  - Removed test_compile from command line options.
+
+  - By default executables are created with the RUNPATH property for
+    the Android linker. RUNPATH works for libraries which are not
+    installed in system locations.
+
+  - Removed AC_PROG_SED fallback, as the macro has been supported
+    in Autoconf since the 90's.
+
+** Bug fixes:
+
+  - Check for space after -l, -L, and -R linker flags.
+
+  - Updated documentation for tests, the demo directory, and
+    elsewhere.
+
+  - Fixed Solaris 11 builds.
+
+  - Clean trailing "/" from sysroot path.
+
+  - Fixed shared library builds for System V.
+
+  - Added mingw to the list of systems not requiring libm.
+
+  - Fixed support for nios2 systems.
+
+  - Fixed linker check for '--whole-archive' support for linkers other
+    than ld.
+
+  - Use -Fe instead of -o with MSVC to avoid deprecation warnings.
+
+  - Improved reproducibility of libtool scripts.
+
+  - Avoided MinGW warning by adding CRTIMP.
+
+  - Improved grep portability.
+
+  - Fixed cross-building warnings when checking for file.
+
+
 ** Changes in supported systems or compilers:
 
   - Removed support for bitrig (*-*-bitrig*).
+
+  - Added support for flang (Fortran LLVM-based) compilers.
 
 * Noteworthy changes in release 2.4.7 (2022-03-16) [stable]
 
