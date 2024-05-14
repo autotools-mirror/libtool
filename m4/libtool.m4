@@ -2546,6 +2546,19 @@ cygwin* | mingw* | windows* | pw32* | cegcc*)
     # gcc
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
+    # If user builds GCC with mulitlibs enabled,
+    # it should just install on $(libdir)
+    # not on $(libdir)/../bin or 32 bits dlls would override 64 bit ones.
+    if test yes = $multilib; then
+    postinstall_cmds='base_file=`basename \$file`~
+      dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
+      dldir=$destdir/`dirname \$dlpath`~
+      $install_prog $dir/$dlname $destdir/$dlname~
+      chmod a+x $destdir/$dlname~
+      if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
+        eval '\''$striplib $destdir/$dlname'\'' || exit \$?;
+      fi'
+    else
     postinstall_cmds='base_file=`basename \$file`~
       dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
       dldir=$destdir/`dirname \$dlpath`~
@@ -2555,6 +2568,7 @@ cygwin* | mingw* | windows* | pw32* | cegcc*)
       if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
         eval '\''$striplib \$dldir/$dlname'\'' || exit \$?;
       fi'
+    fi
     postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; echo \$dlname'\''`~
       dlpath=$dir/\$dldll~
        $RM \$dlpath'
