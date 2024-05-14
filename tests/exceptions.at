@@ -94,11 +94,19 @@ AT_DATA([common.h],
 # define COMMON_IMPEXP
 #endif
 
+#if __cplusplus >= 201103L
+# define ATTRIBUTE_THROW(type) noexcept (false)
+# define ATTRIBUTE_NOTHROW noexcept (true)
+#else
+# define ATTRIBUTE_THROW(type) throw (type)
+# define ATTRIBUTE_NOTHROW throw ()
+#endif
+
 class COMMON_IMPEXP modexc : public std::exception {
 public:
   modexc (std::string str) : message (str) { }
-  ~modexc () throw () { }
-  virtual const char *what () const throw ()
+  ~modexc () ATTRIBUTE_NOTHROW { }
+  virtual const char *what () const ATTRIBUTE_NOTHROW
   {
     return message.c_str ();
   }
@@ -138,7 +146,7 @@ AT_DATA([module.h],
 # define MODULE_IMPEXP
 #endif
 
-extern "C" int MODULE_IMPEXP modfoo () throw (modexc);
+extern "C" int MODULE_IMPEXP modfoo () ATTRIBUTE_THROW (modexc);
 ]])
 
 AT_DATA([module.cpp],
@@ -146,13 +154,13 @@ AT_DATA([module.cpp],
 #define LIBTOOL_TEST_IN_MODULE
 #include "module.h"
 
-int modbar (void) throw (modexc)
+int modbar (void) ATTRIBUTE_THROW (modexc)
 {
   throw modexc ("exception in module");
 }
 
 extern "C"
-int modfoo (void) throw (modexc)
+int modfoo (void) ATTRIBUTE_THROW (modexc)
 {
   try {
     modbar ();
@@ -184,18 +192,26 @@ AT_DATA([lib.h],
 # define LIB_IMPEXP
 #endif
 
+#if __cplusplus >= 201103L
+# define ATTRIBUTE_THROW(type) noexcept (false)
+# define ATTRIBUTE_NOTHROW noexcept (true)
+#else
+# define ATTRIBUTE_THROW(type) throw (type)
+# define ATTRIBUTE_NOTHROW throw ()
+#endif
+
 class LIB_IMPEXP libexc : public std::exception {
 public:
   libexc (std::string str) : message (str) { }
-  ~libexc () throw () { }
-  virtual const char *what () const throw ()
+  ~libexc () ATTRIBUTE_NOTHROW { }
+  virtual const char *what () const ATTRIBUTE_NOTHROW
   {
     return message.c_str ();
   }
 private:
   std::string message;
 };
-int LIB_IMPEXP libfoo () throw (libexc);
+int LIB_IMPEXP libfoo () ATTRIBUTE_THROW (libexc);
 ]])
 
 AT_DATA([lib.cpp],
@@ -203,12 +219,12 @@ AT_DATA([lib.cpp],
 #define LIBTOOL_TEST_IN_LIB
 #include "lib.h"
 
-int libbar (void) throw (libexc)
+int libbar (void) ATTRIBUTE_THROW (libexc)
 {
   throw libexc ("exception in library");
 }
 
-int libfoo (void) throw (libexc)
+int libfoo (void) ATTRIBUTE_THROW (libexc)
 {
   try {
     libbar ();
@@ -234,8 +250,8 @@ AT_DATA([main.cpp],
 class exc : public std::exception {
 public:
   exc (std::string str) : message (str) { }
-  ~exc () throw () { }
-  virtual const char *what () const throw ()
+  ~exc () ATTRIBUTE_NOTHROW { }
+  virtual const char *what () const ATTRIBUTE_NOTHROW
   {
     return message.c_str ();
   }
@@ -243,7 +259,7 @@ private:
   std::string message;
 };
 
-int foo (void) throw (exc)
+int foo (void) ATTRIBUTE_THROW (exc)
 {
   throw exc ("exception in program");
   return 0;
