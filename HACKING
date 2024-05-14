@@ -76,6 +76,12 @@ and is not part of a release distribution.
   AT_CHECK) is on a single line so that 'testsuite -x' displays the
   whole thing.  You can use m4_do or '[... ]dnl' to wrap long lines.
 
+* To debug a failing or skipped range of tests, e.g. 13 to 14:
+    make check-local TESTSUITEFLAGS="--debug 13-14"
+  More generally, in the TESTSUITEFLAGS you can use the documented
+  options for Autotest generated testsuites:
+  https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.72/html_node/testsuite-Invocation.html
+
 * Run tests in parallel with
     make -k check TESTSUITEFLAGS="--jobs=$(nproc)"
   liberally, on as many platforms as you can.  Use as many compilers and
