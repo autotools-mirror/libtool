@@ -657,6 +657,8 @@ func_serial_update ()
 
     test -f "$my_srcfile" || func_fatal_error "'$my_srcfile' does not exist."
 
+    my_src_serial=
+    my_dest_serial=
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
       my_dest_serial=`func_serial "$my_destfile" "$my_macro_regex"`
@@ -696,7 +698,7 @@ func_serial_update ()
       # serial tags, so the update message will be correctly given
       # if aclocal.m4 contains an untagged --i.e older-- macro file):
       *)
-        if test -f aclocal.m4; then
+        if test -f aclocal.m4 && test '' != "$my_src_serial"; then
           func_serial_max \
               "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
           if test "X$my_src_serial" = "X$func_serial_max_result"; then

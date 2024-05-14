@@ -681,11 +681,8 @@ AT_DATA([expout],
 libtoolize: copying file 'm4/libtool.m4'
 libtoolize: copying file 'm4/ltoptions.m4'
 libtoolize: copying file 'm4/ltsugar.m4'
-libtoolize: You should add the contents of 'm4/ltsugar.m4' to 'aclocal.m4'.
 libtoolize: copying file 'm4/ltversion.m4'
-libtoolize: You should add the contents of 'm4/ltversion.m4' to 'aclocal.m4'.
 libtoolize: copying file 'm4/lt~obsolete.m4'
-libtoolize: You should add the contents of 'm4/lt~obsolete.m4' to 'aclocal.m4'.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
