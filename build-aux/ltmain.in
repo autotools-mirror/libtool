@@ -6571,6 +6571,7 @@ func_mode_link ()
 		case $host in
 		  *-*-sco3.2v5.0.[024]*) add_dir=-L$dir ;;
 		  *-*-sysv4*uw2*) add_dir=-L$dir ;;
+		  *-*-emscripten*) add_dir=-L$dir ;;
 		  *-*-sysv5OpenUNIX* | *-*-sysv5UnixWare7.[01].[10]* | \
 		    *-*-unixware7*) add_dir=-L$dir ;;
 		  *-*-darwin* )

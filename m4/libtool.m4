@@ -3195,6 +3195,21 @@ uts4*)
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
+emscripten*)
+  version_type=none
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext'
+  soname_spec='$libname$release$shared_ext'
+  finish_cmds=
+  dynamic_linker="Emscripten linker"
+  _LT_COMPILER_PIC($1)='-fPIC'
+  _LT_TAGVAR(archive_cmds, $1)='$CC -sSIDE_MODULE=2 -shared $libobjs $deplibs $compiler_flags -o $lib'
+  _LT_TAGVAR(archive_expsym_cmds, $1)='$SED "s|^|_|" $export_symbols >$output_objdir/$soname.expsym~$CC -sSIDE_MODULE=2 -shared $libobjs $deplibs $compiler_flags -o $lib -s EXPORTED_FUNCTIONS=@$output_objdir/$soname.expsym'
+  _LT_TAGVAR(archive_cmds_need_lc, $1)=no
+  _LT_TAGVAR(no_undefined_flag, $1)=
+  ;;
+
 *)
   dynamic_linker=no
   ;;
