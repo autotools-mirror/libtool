@@ -166,6 +166,10 @@ send the file `tests/testsuite.log` to the [bug mailing list][].
 
 * The master libtool repository is stored in git.
 
+  Development and testing is primarily done on the 'development' git
+  branch. 'master' is used for release ready code. Periodically,
+  commits are cherry-picked from 'development' to 'master'.
+
   If you are a member of the savannah group for GNU Libtool, a writable
   copy of the libtool repository can be obtained by:
 
