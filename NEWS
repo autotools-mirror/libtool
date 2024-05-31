@@ -2,6 +2,21 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - Support C++17 compilers in the C++ tests.
+
+  - Add sysroot to library path for cross builds.
+
+** Bug fixes:
+
+  - Fix for uninitialized variable in libtoolize.
+
+  - Skip Fortran/C demo tests when using Clang with fsanitize to
+    avoid an incompatible ASan runtime.
+
+  - Updated documentation for testing.
+
 
 * Noteworthy changes in release 2.5.0 (2024-05-13) [alpha]
 
@@ -67,12 +82,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fixed cross-building warnings when checking for file.
 
-
 ** Changes in supported systems or compilers:
 
   - Removed support for bitrig (*-*-bitrig*).
 
   - Added support for flang (Fortran LLVM-based) compilers.
+
 
 * Noteworthy changes in release 2.4.7 (2022-03-16) [stable]
 
