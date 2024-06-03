@@ -1074,6 +1074,10 @@ libtoolize: linking file 'ltdl/ltdl.h'
 libtoolize: linking file 'ltdl/slist.c'
 ]])
 
+# Replace transformed name of $lt_name to account for program-prefix
+lt_name=`$ECHO "$LIBTOOLIZE" | $SED "s|^.*/||"`
+$SED -i "s/libtoolize/$lt_name/g" expout
+
 AT_DATA([no-m4],
 [[#! /bin/sh
 echo 'error: do not call m4' >&2
