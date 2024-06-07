@@ -29,13 +29,32 @@ AT_CHECK([$LIBTOOL --config | $EGREP '^build_libtool_libs=no' && (exit 77)], 1)
 
 AT_DATA([x.cpp],
 [[
-void f(int *p) { *p = 21; }
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
 ]])
 
+# The -no-canonical-prefixes flag sometimes fails at the compiler level
+# depending on how the environment is set up, or which other flags have to be passed.
+# So first try to compile without libtool first to test if the current environment
+# supports the -no-canonical-prefixes flag. If it doesn't, skip the test.
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CXX g++ -c x.cpp], [0], [stdout], [stderr])
+g++ -no-canonical-prefixes -c x.cpp
 
-AT_CHECK([$LIBTOOL --mode=link --tag=CXX g++ -o libx.la -no-canonical-prefixes -rpath /usr/lib64/ x.lo], [0], [stdout], [stderr])
+result=$?
+
+if test 0 -ne "$result"; then
+    AT_SKIP_IF([:])
+fi
+
+AT_CHECK([$LIBTOOL --mode=compile --tag=CXX g++ -no-canonical-prefixes -c x.cpp], [0], [stdout], [stderr])
+
+AT_CHECK([$GREP -- '-no-canonical-prefixes' stdout], [0], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=link --tag=CXX g++ -no-undefined -no-canonical-prefixes -o libx.la -rpath /usr/lib64/ x.lo], [0], [stdout], [stderr])
 
 AT_CHECK([$GREP -- '-no-canonical-prefixes' stdout], [0], [ignore])
 
