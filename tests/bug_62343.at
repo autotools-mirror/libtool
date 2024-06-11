@@ -54,7 +54,16 @@ AT_CHECK([$LIBTOOL --mode=compile --tag=CXX g++ -no-canonical-prefixes -c x.cpp]
 
 AT_CHECK([$GREP -- '-no-canonical-prefixes' stdout], [0], [ignore])
 
-AT_CHECK([$LIBTOOL --mode=link --tag=CXX g++ -no-canonical-prefixes -o libx.la -rpath /usr/lib64/ x.lo], [0], [stdout], [stderr])
+host_flags=:
+case $host_os in
+  cygwin* | mingw* | windows*)
+    host_flags=-no-undefined
+    ;;
+  *)
+    ;;
+esac
+
+AT_CHECK([$LIBTOOL --mode=link --tag=CXX g++ -no-canonical-prefixes $host_flags -o libx.la -rpath /usr/lib64/ x.lo], [0], [stdout], [stderr])
 
 AT_CHECK([$GREP -- '-no-canonical-prefixes' stdout], [0], [ignore])
 
