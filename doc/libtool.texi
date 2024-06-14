@@ -5262,103 +5262,347 @@ they test for:
 
 @table @file
 
+@item @file{tests/am-subdirs.at}
+Tests that a binary can be built and ran from outside of the sub-directory that
+it is built and ran in.
+
+@item @file{tests/archive-in-archive.at}
+Tests convenience archive within another convenience archive.
+Compiles @code{foo()} in @file{libfoo}, then compiles @file{libfoo} (and
+@code{bar()} function) into @file{libbar}.
+
+@item @file{tests/bindir.at}
+Tests include a demonstration of various scenarios related to using the
+@option{-bindir} option with @command{libtool}, verifying that installed files
+are correctly linked and executed, and demonstrating flexibility in handling
+different installation paths and adapting to changing directory structures.
+
+@item @file{tests/bug_62343.at}
+Tests that the -no-canonical-prefixes flag is not removed from the linking
+command, but it is instead passed through to the linker.
+
 @item @file{tests/cdemo.at}
-Tests include a demonstration of libtool convenience libraries, a mechanism that
-allows build-time static libraries to be created, in a way that their components
-can be later linked into programs or other libraries, even shared ones.
+Tests include a demonstration of @command{libtool} convenience libraries, a
+mechanism that allows build-time static libraries to be created, in a way that
+their components can be later linked into programs or other libraries, even
+shared ones.
+
+@item @file{tests/cmdline_wrap.at}
+Tests include a verification that @command{libtool} operates properly when the
+maximum command line length is very small.
+
+@item @file{tests/configure-funcs.at}
+Tests creation of shell functions shared with @command{configure} and
+@command{libtool}.
+
+@item @file{tests/configure-iface.at}
+Tests that exercise the configure interface to @file{libltdl}.
+
+@item @file{tests/convenience.at}
+Tests demonstrate @command{libtool}'s convenience archive capabilities for C,
+C++, Fortran, and Java languages.
+
+@item @file{tests/ctor.at}
+Test that @command{libtool} can handle code with C++ constructors.
+
+@item @file{tests/cwrapper.at}
+Test cwrapper compliance with standards for uninstalled executables, string
+length, and installed shared libraries.
+
+@item @file{tests/darwin.at}
+Tests for macOS X including compilation, concurrent library extraction,
+@command{GDB} debug information, @command{ld} warnings, and verifying
+@file{.dylib} and @file{.so} files can be used with @code{lt_dlopen}.
 
 @item @file{tests/demo.at}
-Tests include a demonstration of a trivial package that uses libtool.  The tests
-include scenarios to build both static and shared libraries, only static
-libraries, only shared libraries, disabling fast-install mode, building PIC
-code, and building non-PIC code.
+Tests include a demonstration of a trivial package that uses @command{libtool}.
+The tests include scenarios to build both static and shared libraries, only
+static libraries, only shared libraries, disabling fast-install mode, building
+PIC code, and building non-PIC code.
 
 @item @file{tests/depdemo.at}
-Tests include a demonstration of inter-library dependencies with libtool.  The
-test programs link some interdependent libraries under different scenarios.
+Tests include a demonstration of inter-library dependencies with
+@command{libtool}.  The test programs link some interdependent libraries under
+different scenarios.
 
-@item @file{tests/mdemo.at}
-Tests include a demonstration of a package that uses libtool and the system
-independent dlopen wrapper @file{libltdl} to load modules.  The library
-@file{libltdl} provides a dlopen wrapper for various platforms (POSIX) including
-support for dlpreopened modules (@pxref{Dlpreopening}).
+@item @file{tests/deplib-in-subdir.at}
+Tests building and linking various libraries within various directories and
+sub-directories while changing directories as well.  It should be possible to
+use a nontrivial relative path to the output file name when creating libraries
+and programs.  The @code{deplibs} of these might have relative paths as well.
+When executing uninstalled programs, the paths relative to @file{$PWD} at build
+time needs to be translated to a path valid at execution time.  Also test
+installing these libraries and programs; however, use consistent relative paths
+between @command{libtool} @option{--mode=link} and @command{libtool}
+@option{--mode=install} in this test.
 
-@item @file{tests/tagdemo.at}
-Tests include a demonstration of a package that uses libtool's multi-language
-support through configuration tags.  It generates a library from C++ sources,
-which is then linked to a C++ program.
+@item @file{tests/deplibs-ident.at}
+Tests the correct detection and handling of identical dependency libraries when
+using @command{libtool}.
+
+@item @file{tests/deplibs-mingw.at}
+Tests include various scenarios related to detecting deplibs correctly,
+including cases where there is no @command{file} command installed as well
+as the host OS being MinGW.
+
+@item @file{tests/destdir.at}
+Installs some libs in @file{$DESTDIR}, moves them to a different dir, then
+installs some false libraries in @file{$DESTDIR} that should not be linked
+against.  If the program refers to these false libraries, there is a bug.
+
+@item @file{tests/dlloader-api.at}
+Tests that @code{lt_dlopen} can open a shared library and call a function from
+the library, verifies that @code{lt_dlsym} can find a symbol in the opened
+library, and make sure that @code{lt_dlclose} can properly close the library.
+
+@item @file{tests/dumpbin-symbols.at}
+Tests whether on Windows a convenience symbol in a section of a @file{.lib}
+file is present even if that section is hidden in the @file{.obj} file.
+
+@item @file{tests/duplicate_conv.at}
+Tests two convenience archives with the same name, and also containing an
+object with the same name.
+
+@item @file{tests/duplicate_deps.at}
+Tests circular call of dependencies between two libraries, @file{liba} and
+@file{libb}. Function @code{a1()} from @file{liba} calls @code{b1()} from
+@file{libb} and function @code{b1()} from @file{libb} calls @code{a2()} from
+@file{liba}.
+
+@item @file{tests/duplicate_members.at}
+Tests a library with multiple files of the same name (from different
+directories), such as @file{1/a.c}, @file{2/a.c}, @file{3/a.c}, etc.
+
+@item @file{tests/early-libtool.at}
+Tests building binaries using @command{libtool} using two configure approaches.
+
+@item @file{tests/exceptions.at}
+Tests C++ exception handling with @command{libtool}.
+
+@item @file{tests/execute-mode.at}
+Tests the @option{--mode=execute} feature of @command{libtool}.
+
+@item @file{tests/exeext.at}
+Tests ensure that @code{$EXEEXT} handling works by linking and installing an
+executable.
+
+@item @file{tests/export.at}
+Tests symbol exports if shared libraries are enabled.
+
+@item @file{tests/export-def.at}
+Test exporting from a DLL with module definition (@file{.def} files).
+This test only runs if shared libraries are enabled and building a DLL is
+supported.
 
 @item @file{tests/f77demo.at}
-Tests test Fortran 77 support in libtool by creating libraries from Fortran 77
-sources, and mixed Fortran and C sources, and a Fortran 77 program to use the
-former library, and a C program to use the latter library.
+Tests test Fortran 77 support in @command{libtool} by creating libraries from
+Fortran 77 sources, and mixed Fortran and C sources, and a Fortran 77 program
+to use the former library, and a C program to use the latter library.
+
+@item @file{tests/fail.at}
+Tests to ensure that @command{libtool} really fails when it should, including
+after compile failure, program creation failure, and shared library creation
+failure.
 
 @item @file{tests/fcdemo.at}
 Tests are similar to the @file{tests/f77demo.at} tests, except that Fortran 90
 is used in combination with the @samp{FC} interface provided by Autoconf and
 Automake.
 
-@item @file{tests/am-subdirs.at}
-Tests that a binary can be built and ran from outside of the subdir that it is
-built and ran in.
+@item @file{tests/flags.at}
+Tests include checks that compile and linker flags get passed through
+@command{libtool}.  Tests flags for C, C++, Fortran 77, and Fortran 90.
 
-@item @file{tests/destdir.at}
-Installs some libs in $DESTDIR, moves them to a different dir, then installs
-some false libraries in $DESTDIR that should not be linked against. If the
-program refers to these false libraries, there is a bug.
-
-@item @file{tests/duplicate_deps.at}
-Tests circular call of dependencies between two libraries, liba and libb.
-Function a1() from liba calls b1() from libb and function b1() from libb
-calls a2() from liba.
-
-@item @file{tests/duplicate_conv.at}
-We create two convenience archives with the same name, and also
-containing an object with the same name.
-
-@item @file{tests/duplicate_members.at}
-Tests a library with multiple files of the same name (from different
-directories), such as 1/a.c, 2/a.c, 3/a.c, etc.
-
-@item @file{tests/archive-in-archive.at}
-Tests convenience archive within another convenience archive.
-Compiles foo() in libfoo, then compiles libfoo (and bar() function)
-into libbar.
-
-@item @file{tests/deplib-in-subdir.at}
-Tests building and linking various libraries within various dirs and subdirs
-while changing directories as well.
-It should be possible to use a nontrivial relative path to the output
-file name when creating libraries and programs.  The deplibs of these
-might have relative paths as well.  When executing uninstalled programs,
-the paths relative to $PWD at build time needs to be translated to a
-path valid at execution time.
-Also test installing these libraries and programs; however,
-use consistent relative paths between 'libtool --mode=link' and
-'libtool --mode=install' in this test.
+@item @file{tests/help.at}
+Tests a variety of mode commands, including mode short-hands, to ensure basic
+command line functionality. Also verify that the @option{--debug} flag is
+handled correctly in each mode.
 
 @item @file{tests/indirect_deps.at}
-Tests indirect dependencies (or nested dependencies).
-libd depends on libconv, which depends on libb, which depends on liba.
+Tests indirect dependencies (or nested dependencies). @file{libd} depends
+on @file{libconv}, which depends on @file{libb}, which depends on @file{liba}.
 
-@item @file{tests/bugs.at}
-Unit tests for specific bugs that have been found and fixed in libtool.
+@item @file{tests/infer-tag.at}
+Tests that @code{func_infer_tag} works by compiling various code snippets in
+various languages (C, C++, Fortran, Java) without a @option{--tag} flag.
 
-@item @file{tests/cmdline_wrap.at}
-Tests include a verification that libtool operates properly when the maximum
-command line length is very small.
+@item @file{tests/inherited_flags.at}
+Tests the functionality of the @code{inherited_linker_flags} variable in
+@command{libtool} library files.
 
-@item @file{tests/ctors.at}
-Test that libtool can handle code with C++ constructors.
+@item @file{tests/install.at}
+Tests install mode and ensures that @code{install_override_mode} overrides the
+mode of the shared library (and only the shared library).
 
-@item @file{tests/darwin.at}
-Tests for macOS X including compilation, concurrent library extraction, GDB
-debug information, ld warnings, and verifying .dylib and .so files can be used
-with lt_dlopen.
+@item @file{tests/lalib-syntax.at}
+Tests parsing of @file{.la} files including both correctly formed @file{.la}
+files and malformed or bogus @file{.la} files.
 
-@item @file{tests/flags.at}
-Tests include checks that compile and linker flags get passed through libtool.
-Tests flags for C, C++, Fortran 77, and Fortran 90.
+@item @file{tests/libtool.at}
+Tests basic libtool functionality including shell meta-character removal, lack
+of supplied mode option, file extension handling, simple linking,
+@option{objectlist} flag usage, and @code{LT_SUPPORTED_TAG} usage.
+
+@item @file{tests/libtoolize.at}
+Tests that errors and warnings are reported for invalid and unknown
+@code{LIBTOOLIZE_OPTIONS} as well as checking the @option{--no-warn} flag
+suppresses @command{libtoolize} warnings.
+
+@item @file{tests/link-order2.at}
+Tests to make sure that @code{depdepls} are added right after the libraries
+that pull them in which is necessary at least for static linking and on systems
+where libraries do not link against other libraries.
+
+@item @file{tests/link-order.at}
+Tests for problems with linking libraries in different order.
+
+@item @file{tests/loadlibrary.at}
+Tests @file{libltdl} (a @file{libdl} API for @code{dlopen}) support of
+@code{LoadLibrary} for dynamically linking DLLs in Windows environments.
+
+@item @file{tests/localization.at}
+Tests to verify that invoking C compiler language localization options do not
+cause problems with @command{libtool}.
+
+@item @file{tests/lt_dladvise.at}
+Tests @file{libltdl} (a @file{libdl} API for @code{dlopen}) module loading
+advisor functions.
+
+@item @file{tests/lt_dlexit.at}
+Tests @file{libltdl} (a @file{libdl} API for @code{dlopen}) for a memory use
+after free bug in @code{lt_dlexit}.
+
+@item @file{tests/lt_dlopen_a.at}
+Tests @code{lt_dlopen} with an archive file.  Verifies that @code{lt_dlopen}
+can load an archive file and successfully return a handle to it.
+
+@item @file{tests/lt_dlopen.at}
+Tests @file{libltdl} (a @file{libdl} API for @code{dlopen}) with a basic C
+example.
+
+@item @file{tests/lt_dlopenext.at}
+Tests @file{libltdl} (a @file{libdl} API for @code{dlopen}) with an extern C++
+function.
+
+@item @file{tests/ltdl-api.at}
+Tests that libtool doesn't mangle @file{gnulib} @code{argv} names.
+
+@item @file{tests/ltdl-libdir.at}
+Tests if @file{ltdl} can find an installed module using the @code{libdir}
+variable in the @file{.la} file.  Tests also include a MinGW test which uses a
+Windows-style @code{libdir} name.
+
+@item @file{tests/mdemo.at}
+Tests include a demonstration of a package that uses @command{libtool} and the
+system independent @code{dlopen} wrapper @file{libltdl} to load modules.  The
+library @file{libltdl} provides a @code{dlopen} wrapper for various platforms
+(POSIX) including support for @code{dlpreopened} modules
+(@pxref{Dlpreopening}).
+
+@item @file{tests/need_lib_prefix.at}
+Tests to check for failures on systems that require libraries to be prefixed
+with @file{lib}.
+
+@item @file{tests/nocase.at}
+Tests the @code{want_nocaseglob} configuration option to search for libraries
+regardless of case.
+
+@item @file{tests/no-executables.at}
+Tests @code{AC_NO_EXECUTABLES} macro with @command{gcc}.
+
+@item @file{tests/nonrecursive.at}
+Tests non-recursive DLL libraries with nonrecursive Automake @file{libltdl}
+(a @file{libdl} API for @code{dlopen}) build.
+
+@item @file{tests/old-m4-iface.at}
+Tests various aspects of @command{libtool}'s old @command{m4} interface.
+
+@item @file{tests/pic_flag.at}
+Tests the @option{-fpic} flag with @command{gcc} and @command{g++}.
+
+@item @file{tests/recursive.at}
+Tests recursive DLL libraries with recursive Automake @file{libltdl} (a
+@file{libdl} API for @code{dlopen}) build.
+
+@item @file{tests/resident.at}
+Tests that resident modules are not unloaded at program exit, as they need to
+be able to invoke @code{atexit} handlers.  A module being a resident module
+means it is prevented from being @code{lt_dlclosed}.
+
+@item @file{tests/runpath-in-lalib.at}
+Tests the runpath configuration options in @command{libtool} (@option{-R} and
+@option{-rpath}) and that the resulting @file{.la} files are installed in the
+directory appended to their respective library's @code{dependency_libs} by
+@option{-R}.
+
+@item @file{tests/search-path.at}
+Tests @code{sys_lib_search_path_spec}, which is an expression to get the
+compile-time system library search path.  Tests include determining if it is
+possible to link an executable to system libraries and if
+@code{sys_lib_search_path_spec} also works on MSVC (Microsoft Visual C++).
+
+@item @file{tests/shlibpath.at}
+Tests include verifying proper behaviour of the @code{shlibpath_var}, which is
+the variable responsible for telling the linker where to find shared libraries.
+Additionally, this tests the behaviour of the @code{shlibpath_overrides_runpath}
+variable, which determines if it possible to override an executable's
+hardcoded library search path with an environment variable.
+
+@item @file{tests/slist.at}
+Tests the functionality of the SList datastructure, which is an implementation
+of singly linked lists.  Tests include verifying the usual linked list
+functions such as finding, removing, deleting, reversing, and sorting the
+element(s) in SLists.
+
+@item @file{tests/standalone.at}
+Tests @file{libltdl} functionality as a standalone tool.  Tests include
+compiling a symlinked version of @file{libltdl} and a copied version of
+@file{libltdl}.  Next @file{libltdl} is installed locally and linked in a
+project without the use of Autoconf or Automake.
+
+@item @file{tests/static.at}
+Tests various flags related to static and dynamic linking including
+@option{-Bstatic} and @option{-Bdynamic}.
+
+@item @file{tests/stresstest.at}
+Tests various @command{libtool} flag and option combinations, tests linking
+various types of objects in different sections, and tests regular expressions
+to cover edge cases and unusual configurations over multiple iterations.
+
+@item @file{tests/subproject.at}
+Tests the @file{libltdl} flag for building subprojects in individual
+directories.  Tests cover soft-linked libltdl trees, copied @file{libltdl}
+trees, and linking @file{libltdl} without Autotools.
+
+@item @file{tests/sysroot.at}
+Tests that @command{libtool} runs properly in sandboxed @file{sysroot}
+directories.
+
+@item @file{tests/tagdemo.at}
+Tests include a demonstration of a package that uses @command{libtool}'s
+multi-language support through configuration tags.  It generates a library from
+C++ sources, which is then linked to a C++ program.
+
+@item @file{tests/template.at}
+Tests that @command{libtool} can handle C++ code utilizing templates.
+
+@item @file{tests/testsuite.at}
+Main testsuite framework file processed by @command{autom4te} processes enable
+running the @command{libtool} test cases.
+
+@item @file{tests/versioning.at}
+Tests @command{libtool}'s versioning system.  Tests begin with verifying the
+behaviour of @command{libtool} versioning flags @option{-version-info} and
+@option{-version-number}.  Next, this tests installing a library, then updating
+the library with a new revision, a compatible update, and an incompatabile
+update.  In each case, the tests verify that the original library will link and
+install as expected.
+
+@item @file{tests/with_pic.at}
+Tests the function of the @option{--with-pic} flag.  The @option{--with-pic}
+flag is used to specify whether or not @command{libtool} uses PIC objects.
+This includes tests for setting @option{--with-pic} to no, yes, or a comma
+delimited list of package names.
 
 @end table
 
