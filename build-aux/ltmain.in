@@ -2813,8 +2813,16 @@ extern \"C\" {
 	            eval '$ECHO ": $name " >> "$nlist"'
 	          fi
 	          func_to_tool_file "$dlprefile" func_convert_file_msys_to_w32
-	          eval "$NM \"$func_to_tool_file_result\" 2>/dev/null | $global_symbol_pipe |
-	            $SED -e '/I __imp/d' -e 's/I __nm_/D /;s/_nm__//' >> '$nlist'"
+	          case $host in
+	            i[3456]86-*-mingw32*)
+	              eval "$NM \"$func_to_tool_file_result\" 2>/dev/null | $global_symbol_pipe |
+	                $SED -e '/I __imp/d' -e 's/I __nm_/D /;s/_nm__//' >> '$nlist'"
+	            ;;
+	            *)
+	              eval "$NM \"$func_to_tool_file_result\" 2>/dev/null | $global_symbol_pipe |
+	                $SED -e '/I __imp/d' -e 's/I __nm_/D /;s/__nm_//' >> '$nlist'"
+	            ;;
+	          esac
 	        }
 	      else # not an import lib
 	        $opt_dry_run || {
