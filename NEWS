@@ -17,6 +17,27 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Updated documentation for testing.
 
+  - Fix failing test to account for program-prefix usage.
+
+  - Replaced a deprecated macro to remove warning messages in the
+    testsuite logs.
+
+  - Fix number of arguments for AC_CHECK_PROG call.
+
+  - Fix test failures with no-canonical-prefixes flag by checking
+    if the flag is supported first.
+
+  - Fix test failures with no-undefined flag by checking host OS
+    before appending the flag.
+
+  - Skip test when passing CXX flags through libtool to avoid test
+    failure on NetBSD.
+
+  - Remove texinfo warning for period in node name of pxref.
+
+  - Alter syntax in sed command to fix numerous test failures
+    on 64-bit windows/cygwin/mingw.
+
 
 * Noteworthy changes in release 2.5.0 (2024-05-13) [alpha]
 
