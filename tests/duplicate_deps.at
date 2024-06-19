@@ -68,8 +68,7 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC \
 	  $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT liba.la libb.la liba.la \
 	  && exit 77],
 	  [1], [ignore], [ignore])
-# Other systems need special treatment, which currently fails.
-AT_XFAIL_IF([:])
+# Other systems need special treatment, so preserve-dup-deps flag is used.
 AT_CHECK([$LIBTOOL --mode=link --preserve-dup-deps --tag=CC \
 	  $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT liba.la libb.la liba.la],
 	  [0], [ignore], [ignore])
