@@ -60,7 +60,7 @@ esac
 # LT_INIT([OPTIONS])
 # ------------------
 AC_DEFUN([LT_INIT],
-[AC_PREREQ([2.62])dnl We use AC_PATH_PROGS_FEATURE_CHECK
+[AC_PREREQ([2.64])dnl We use AC_PATH_PROGS_FEATURE_CHECK
 AC_REQUIRE([AC_CONFIG_AUX_DIR_DEFAULT])dnl
 AC_BEFORE([$0], [LT_LANG])dnl
 AC_BEFORE([$0], [LT_OUTPUT])dnl
@@ -974,6 +974,7 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 ])# _LT_LINKER_BOILERPLATE
 
+
 # _LT_REQUIRED_DARWIN_CHECKS
 # -------------------------
 m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
@@ -1024,6 +1025,21 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	rm -f conftest.*
       fi])
 
+    # Feature test to disable chained fixups since it is not
+    # compatible with '-undefined dynamic_lookup'
+    AC_CACHE_CHECK([for -no_fixup_chains linker flag],
+      [lt_cv_support_no_fixup_chains],
+      [ save_LDFLAGS=$LDFLAGS
+        LDFLAGS="$LDFLAGS -Wl,-no_fixup_chains"
+        AC_LINK_IFELSE(
+          [AC_LANG_PROGRAM([],[])],
+          lt_cv_support_no_fixup_chains=yes,
+          lt_cv_support_no_fixup_chains=no
+        )
+        LDFLAGS=$save_LDFLAGS
+      ]
+    )
+
     AC_CACHE_CHECK([for -exported_symbols_list linker flag],
       [lt_cv_ld_exported_symbols_list],
       [lt_cv_ld_exported_symbols_list=no
@@ -1073,7 +1089,11 @@ _LT_EOF
         10.[[012]],*|,*powerpc*-darwin[[5-8]]*)
           _lt_dar_allow_undefined='$wl-flat_namespace $wl-undefined ${wl}suppress' ;;
         *)
-          _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup' ;;
+          _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup'
+          if test yes = "$lt_cv_support_no_fixup_chains"; then
+            AS_VAR_APPEND([_lt_dar_allow_undefined], [' $wl-no_fixup_chains'])
+          fi
+        ;;
       esac
     ;;
   esac
