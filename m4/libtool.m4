@@ -1069,11 +1069,29 @@ _LT_EOF
     darwin1.*)
       _lt_dar_allow_undefined='$wl-flat_namespace $wl-undefined ${wl}suppress' ;;
     darwin*)
+      # $MACOSX_DEPLOYMENT_TARGET seems to be deprecated as a darwin
+      # environment variable
       case $MACOSX_DEPLOYMENT_TARGET,$host in
         10.[[012]],*|,*powerpc*-darwin[[5-8]]*)
           _lt_dar_allow_undefined='$wl-flat_namespace $wl-undefined ${wl}suppress' ;;
         *)
           _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup' ;;
+      esac
+      # Disable chained fixups since it is not compatible with
+      # '-undefined dynamic_lookup'
+      macos_version=`sw_vers -productVersion`
+      case $macos_version in
+        11.[[3-7]]*|1[[2-4]]*)
+          xcode_version=`pkgutil --pkg-info=com.apple.pkg.CLTools_Executables`
+          case $xcode_version in
+            *version:\ 1[[3-5]]*)
+              _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup $wl-no_fixup_chains' ;;
+            *)
+            ;;
+          esac
+        ;;
+        *)
+        ;;
       esac
     ;;
   esac
