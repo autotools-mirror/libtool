@@ -974,6 +974,7 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 ])# _LT_LINKER_BOILERPLATE
 
+
 # _LT_REQUIRED_DARWIN_CHECKS
 # -------------------------
 m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
@@ -1024,6 +1025,21 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	rm -f conftest.*
       fi])
 
+    # Feature test to disable chained fixups since it is not
+    # compatible with '-undefined dynamic_lookup'
+    AC_CACHE_CHECK([for -no_fixup_chains linker flag],
+      [lt_cv_support_no_fixup_chains],
+      [ save_LDFLAGS=$LDFLAGS
+        LDFLAGS+=" -Wl,-no_fixup_chains"
+        AC_LINK_IFELSE(
+          [AC_LANG_PROGRAM([],[])],
+          lt_cv_support_no_fixup_chains=yes,
+          lt_cv_support_no_fixup_chains=no
+        )
+        LDFLAGS=$save_LDFLAGS
+      ]
+    )
+
     AC_CACHE_CHECK([for -exported_symbols_list linker flag],
       [lt_cv_ld_exported_symbols_list],
       [lt_cv_ld_exported_symbols_list=no
@@ -1069,28 +1085,14 @@ _LT_EOF
     darwin1.*)
       _lt_dar_allow_undefined='$wl-flat_namespace $wl-undefined ${wl}suppress' ;;
     darwin*)
-      # $MACOSX_DEPLOYMENT_TARGET seems to be deprecated as a darwin
-      # environment variable
       case $MACOSX_DEPLOYMENT_TARGET,$host in
         10.[[012]],*|,*powerpc*-darwin[[5-8]]*)
           _lt_dar_allow_undefined='$wl-flat_namespace $wl-undefined ${wl}suppress' ;;
         *)
-          _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup' ;;
-      esac
-      # Disable chained fixups since it is not compatible with
-      # '-undefined dynamic_lookup'
-      macos_version=`sw_vers -productVersion`
-      case $macos_version in
-        11.[[3-7]]*|1[[2-4]]*)
-          xcode_version=`pkgutil --pkg-info=com.apple.pkg.CLTools_Executables`
-          case $xcode_version in
-            *version:\ 1[[3-5]]*)
-              _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup $wl-no_fixup_chains' ;;
-            *)
-            ;;
-          esac
-        ;;
-        *)
+          _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup'
+          if test yes = "$lt_cv_support_no_fixup_chains"; then
+            _lt_dar_allow_undefined+=' $wl-no_fixup_chains'
+          fi
         ;;
       esac
     ;;

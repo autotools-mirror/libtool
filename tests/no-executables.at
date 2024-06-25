@@ -50,6 +50,7 @@ AM_PROG_GCJ
 lt_cv_shlibpath_overrides_runpath=no
 lt_cv_archive_cmds_need_lc=no
 lt_cv_cc_needs_belf=no
+lt_cv_support_no_fixup_chains=no
 lt_cv_ld_exported_symbols_list=no
 lt_cv_prog_compiler_static_works=no
 lt_cv_aix_libpath=/usr/lib:/lib
