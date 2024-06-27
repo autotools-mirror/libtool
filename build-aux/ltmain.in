@@ -6734,7 +6734,6 @@ func_mode_link ()
 	  #        that some nasty dependency loop isn't accidentally
 	  #        broken: new_libs="$deplib $new_libs"
 	  for deplib in $tmp_libs; do
-	    # Modification for INN in the loop (fix --preserve-dup-deps).
 	    if $opt_preserve_dup_deps; then
 	      new_libs="$deplib $new_libs"
 	    else
