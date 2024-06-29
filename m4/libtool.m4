@@ -1030,7 +1030,7 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
     AC_CACHE_CHECK([for -no_fixup_chains linker flag],
       [lt_cv_support_no_fixup_chains],
       [ save_LDFLAGS=$LDFLAGS
-        LDFLAGS+=" -Wl,-no_fixup_chains"
+        LDFLAGS="$LDFLAGS -Wl,-no_fixup_chains"
         AC_LINK_IFELSE(
           [AC_LANG_PROGRAM([],[])],
           lt_cv_support_no_fixup_chains=yes,
@@ -1091,7 +1091,7 @@ _LT_EOF
         *)
           _lt_dar_allow_undefined='$wl-undefined ${wl}dynamic_lookup'
           if test yes = "$lt_cv_support_no_fixup_chains"; then
-            _lt_dar_allow_undefined+=' $wl-no_fixup_chains'
+            _lt_dar_allow_undefined='$_lt_dar_allow_undefined $wl-no_fixup_chains'
           fi
         ;;
       esac
