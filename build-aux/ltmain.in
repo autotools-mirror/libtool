@@ -4938,7 +4938,7 @@ func_mode_link ()
 	  case $arg in
 	  [\\/]* | [A-Za-z]:[\\/]*) ;;
 	  *)
-	    func_fatal_error "only absolute run-paths are allowed: \"$arg\""
+	    func_fatal_error "argument to -rpath is not absolute: $arg"
 	    ;;
 	  esac
 	  if test rpath = "$prev"; then
@@ -5289,7 +5289,7 @@ func_mode_link ()
 	  dir=$lt_sysroot$func_stripname_result
 	  ;;
 	*)
-	  func_fatal_error "only absolute run-paths are allowed: \"$dir\""
+	  func_fatal_error "argument ($arg) to '-R' is not an absolute path: $dir"
 	  ;;
 	esac
 	case "$xrpath " in
