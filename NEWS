@@ -8,6 +8,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Add sysroot to library path for cross builds.
 
+** Important incompatible changes:
+
+  - Autoconf 2.64 is required for libtool.m4 to use AS_VAR_APPEND.
+
 ** Bug fixes:
 
   - Fix for uninitialized variable in libtoolize.
@@ -37,6 +41,19 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Alter syntax in sed command to fix numerous test failures
     on 64-bit windows/cygwin/mingw.
+
+  - Fix 'Wstrict-prototypes' warnings.
+
+  - Correct DLL Installation Path for mingw multilib builds.
+
+  - Fix '--preserve-dup-deps' stripping duplicates.
+
+  - Disable chained fixups for macOS, since it is not compatible with
+    '-undefined dynamic_lookup'.
+
+** Changes in supported systems or compilers:
+
+  - Support additional flang-based compilers, 'flang-new' and 'ftn'.
 
 
 * Noteworthy changes in release 2.5.0 (2024-05-13) [alpha]
