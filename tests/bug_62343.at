@@ -42,7 +42,7 @@ int main() {
 # So first try to compile without libtool first to test if the current environment
 # supports the -no-canonical-prefixes flag. If it doesn't, skip the test.
 
-g++ -no-canonical-prefixes -c x.cpp
+$CXX -no-canonical-prefixes -c x.cpp
 
 result=$?
 
@@ -50,7 +50,7 @@ if test 0 -ne "$result"; then
     AT_SKIP_IF([:])
 fi
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CXX g++ -no-canonical-prefixes -c x.cpp], [0], [stdout], [stderr])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CXX $CXX -no-canonical-prefixes -c x.cpp], [0], [stdout], [stderr])
 
 AT_CHECK([$GREP -- '-no-canonical-prefixes' stdout], [0], [ignore])
 
@@ -63,7 +63,7 @@ case $host_os in
     ;;
 esac
 
-AT_CHECK([$LIBTOOL --mode=link --tag=CXX g++ -no-canonical-prefixes $host_flags -o libx.la -rpath /usr/lib64/ x.lo], [0], [stdout], [stderr])
+AT_CHECK([$LIBTOOL --mode=link --tag=CXX $CXX -no-canonical-prefixes $host_flags -o libx.la -rpath /usr/lib64/ x.lo], [0], [stdout], [stderr])
 
 AT_CHECK([$GREP -- '-no-canonical-prefixes' stdout], [0], [ignore])
 
