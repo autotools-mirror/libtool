@@ -5594,7 +5594,7 @@ running the @command{libtool} test cases.
 Tests @command{libtool}'s versioning system.  Tests begin with verifying the
 behaviour of @command{libtool} versioning flags @option{-version-info} and
 @option{-version-number}.  Next, this tests installing a library, then updating
-the library with a new revision, a compatible update, and an incompatabile
+the library with a new revision, a compatible update, and an incompatible
 update.  In each case, the tests verify that the original library will link and
 install as expected.
 
