@@ -27,7 +27,7 @@ will generate the instantiations.  For Portland pgCC version5, use
 @code{CXX='pgCC --one_instantiation_per_object'} and avoid parallel @command{make}.
 
 @item
-For C++ code, it may be neccesary to specify a library if it is a dependency
+For C++ code, it may be necessary to specify a library if it is a dependency
 of a link/compile flag. For example in GNU G++, if you want to use
 @code{-fsanitize=address} you need to specify the @code{-lasan} library,
 like so: @code{g++ -o libx.la -fsanitize=address -lasan -rpath [...]}.
