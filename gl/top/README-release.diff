@@ -30,7 +30,7 @@
 +    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
 +    make distcheck DISTCHECK_CONFIGURE_FLAGS=--program-prefix=g
 +    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-shared
-+    make distcheck CC=g++
++    make distcheck CXX=g++
 +
 +  If there are any problems, fix them and start again.
  
