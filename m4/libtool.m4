@@ -2727,7 +2727,21 @@ freebsd* | dragonfly* | midnightbsd*)
       need_version=yes
       ;;
   esac
-  shlibpath_var=LD_LIBRARY_PATH
+  case $host_cpu in
+    powerpc64)
+      # On FreeBSD bi-arch platforms, a different variable is used for 32-bit
+      # binaries.  See <https://man.freebsd.org/cgi/man.cgi?query=ld.so>.
+      AC_COMPILE_IFELSE(
+        [AC_LANG_SOURCE(
+           [[int test_pointer_size[sizeof (void *) - 5];
+           ]])],
+        [shlibpath_var=LD_LIBRARY_PATH],
+        [shlibpath_var=LD_32_LIBRARY_PATH])
+      ;;
+    *)
+      shlibpath_var=LD_LIBRARY_PATH
+      ;;
+  esac
   case $host_os in
   freebsd2.*)
     shlibpath_overrides_runpath=yes
