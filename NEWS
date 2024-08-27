@@ -2,6 +2,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Changes in supported systems or compilers:
+
+  - Add support for 32-bit mode on FreeBSD/powerpc64.
+
 
 * Noteworthy changes in release 2.5.1 (2024-07-25) [beta]
 
