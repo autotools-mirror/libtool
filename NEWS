@@ -2,6 +2,17 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Bug fixes:
+
+  - Use shared objects built in source tree instead of the installed
+    versions for more reliable testing.
+
+  - Fix test in bug_62343.at for confirmed Cygwin/Mingw32 where the
+    incorrect architecture version of a compiler was generating
+    object files that could not be linked with a library file.
+
+  - Fix typos found with codespell.
+
 ** Changes in supported systems or compilers:
 
   - Add support for 32-bit mode on FreeBSD/powerpc64.
