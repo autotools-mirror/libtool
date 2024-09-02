@@ -1491,7 +1491,13 @@ Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 @item -export-symbols @var{symfile}
 Tells the linker to export only the symbols listed in @var{symfile}.
 The symbol file should end in @file{.sym} and must contain the name of one
-symbol per line.  This option has no effect on some platforms.
+symbol per line.  This option has no effect:
+@itemize @bullet
+@item
+on static libraries, and
+@item
+on shared libraries on some platforms, such as AIX and Haiku.
+@end itemize
 By default all symbols are exported.
 
 @item -export-symbols-regex @var{regex}
