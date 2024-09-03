@@ -23,10 +23,7 @@
 ## GNU Lesser General Public License for more details.
 ##
 ## You should have received a copy of the GNU LesserGeneral Public
-## License along with GNU Libltdl; see the file COPYING.LIB.  If not, a
-## copy can be downloaded from http://www.gnu.org/licenses/lgpl.html,
-## or obtained by writing to the Free Software Foundation, Inc.,
-## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+## License along with GNU Libltdl.  If not, see <https://www.gnu.org/licenses/>.
 #####
 
 ## DO NOT REMOVE THIS LINE -- make depends on it
