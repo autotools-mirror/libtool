@@ -1566,7 +1566,7 @@ AC_CHECK_TOOL(STRIP, strip, :)
 test -z "$STRIP" && STRIP=:
 _LT_DECL([], [STRIP], [1], [A symbol stripping program])
 
-AC_CHECK_TOOL(RANLIB, ranlib, :)
+AC_REQUIRE([AC_PROG_RANLIB])
 test -z "$RANLIB" && RANLIB=:
 _LT_DECL([], [RANLIB], [1],
     [Commands used to install an old-style archive])
