@@ -726,6 +726,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/cmdline_wrap.at \
 		  tests/bug_62343.at	\
 		  tests/bug_71489.at \
+		  tests/bug_42313.at \
 		  $(NOTHING_ELSE)
 
 EXTRA_DIST     += $(testsuite) $(TESTSUITE_AT) $(package_m4)
