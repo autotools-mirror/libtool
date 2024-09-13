@@ -13,6 +13,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     --enable-aix-soname.  The old name --with-aix-soname is still
     supported, though, for backward compatibility.
 
+  - Fix conflicting warnings about AC_PROG_RANLIB.
+
+  - Document situations where -export-symbols does not work.
+
+  - Update FSF office address with URL in each file's license block.
+
 
 * Noteworthy changes in release 2.5.2 (2024-08-29) [beta]
 
