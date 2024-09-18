@@ -2,6 +2,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - Add 'aarch64' support to the file magic test, which allows for
+    shared libraries to be built with Mingw for aarch64.
+
 ** Bug fixes:
 
   - The configure options --with-pic and --without-pic have been renamed
