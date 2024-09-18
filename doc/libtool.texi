@@ -5284,9 +5284,18 @@ Tests include a demonstration of various scenarios related to using the
 are correctly linked and executed, and demonstrating flexibility in handling
 different installation paths and adapting to changing directory structures.
 
+@item @file{tests/bug_42313.at}
+Tests that there are no conflicting warnings about AC_PROG_RANLIB by verifying
+no autoscan AC_PROG_RANLIB warning and checking that AC_PROG_RANLIB declaration
+has a warning.
+
 @item @file{tests/bug_62343.at}
-Tests that the -no-canonical-prefixes flag is not removed from the linking
+Tests that the @option{-no-canonical-prefixes} flag is not removed from the linking
 command, but it is instead passed through to the linker.
+
+@item @file{tests/bug_71489.at}
+Tests that the local version of an installed program is used both with and
+without an external library.
 
 @item @file{tests/cdemo.at}
 Tests include a demonstration of @command{libtool} convenience libraries, a
@@ -5446,7 +5455,7 @@ Tests parsing of @file{.la} files including both correctly formed @file{.la}
 files and malformed or bogus @file{.la} files.
 
 @item @file{tests/libtool.at}
-Tests basic libtool functionality including shell meta-character removal, lack
+Tests basic @command{libtool} functionality including shell meta-character removal, lack
 of supplied mode option, file extension handling, simple linking,
 @option{objectlist} flag usage, and @code{LT_SUPPORTED_TAG} usage.
 
@@ -5492,7 +5501,7 @@ Tests @file{libltdl} (a @file{libdl} API for @code{dlopen}) with an extern C++
 function.
 
 @item @file{tests/ltdl-api.at}
-Tests that libtool doesn't mangle @file{gnulib} @code{argv} names.
+Tests that @command{libtool} doesn't mangle @file{gnulib} @code{argv} names.
 
 @item @file{tests/ltdl-libdir.at}
 Tests if @file{ltdl} can find an installed module using the @code{libdir}
