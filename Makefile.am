@@ -566,7 +566,7 @@ ASSORT = LC_ALL=C sort
 prologue = perl -ne '/^\#\#/ and exit; print' $(no_thanks)
 
 # Generate THANKS using git log entries as far as possible, fixing
-# up ommisions and errors from NO-THANKS configuration.
+# up omissions and errors from NO-THANKS configuration.
 $(thanks): FORCE
 	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
 	  { \
