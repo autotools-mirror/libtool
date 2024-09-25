@@ -30,6 +30,7 @@ AT_SETUP([compiling softlinked libltdl])
 
 LT_AT_CHECK_LIBTOOLIZE([--ltdl=.], [], [ignore])
 LT_AT_CONFIGURE
+AT_XFAIL_IF([test no = "$ACLOCAL"])
 LT_AT_MAKE([all $tst_dist])
 
 AT_CHECK([test -f libltdlc.la])
@@ -45,6 +46,7 @@ AT_SETUP([compiling copied libltdl])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --ltdl=.], [], [ignore])
 LT_AT_CONFIGURE
+AT_XFAIL_IF([test no = "$ACLOCAL"])
 LT_AT_MAKE([all $tst_dist])
 
 AT_CHECK([test -f libltdlc.la])
@@ -62,6 +64,7 @@ prefix=`pwd`/_inst
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --ltdl=.], [], [ignore])
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
+AT_XFAIL_IF([test no = "$ACLOCAL"])
 LT_AT_MAKE([all install $tst_dist])
 
 AT_CHECK([test -f "$prefix/lib/libltdl.la"])
@@ -78,6 +81,7 @@ AT_SETUP([linking libltdl without autotools])
 
 _LTDL_PROJECT_FILES([libltdl])
 LT_AT_CHECK_LIBTOOLIZE([--copy --ltdl], [], [ignore])
+AT_XFAIL_IF([test no = "$ACLOCAL"])
 LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" ]dnl
         [CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ]dnl
 	[CONFIGURE_OPTIONS="$configure_options"])
