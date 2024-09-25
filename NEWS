@@ -24,6 +24,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Update FSF office address with URL in each file's license block.
 
+  - Add checks for aclocal in standalone.at and subproject.at test files
+    that report failures in Linux From Scratch and Darwin builds.
+
 
 * Noteworthy changes in release 2.5.2 (2024-08-29) [beta]
 
