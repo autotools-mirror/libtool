@@ -9,6 +9,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix errors when executing 'make distclean' and 'make maintainer-clean'.
 
+  - Fix bug where the constructed rpath omit directories, instead of
+    appending them to the end.
+
 
 * Noteworthy changes in release 2.5.3 (2024-09-25) [stable]
 
