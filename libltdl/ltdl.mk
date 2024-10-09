@@ -131,7 +131,8 @@ EXTRA_DIST	       += libltdl/COPYING.LIB \
 ## Gnulib Makefile.am snippets ##
 ## --------------------------- ##
 
-BUILT_SOURCES	+= libltdl/libltdl/$(LT_ARGZ_H)
+# Ugly conditional for 'make maintainer-clean' when LT_ARGZ_H is empty
+BUILT_SOURCES	+= @LT_DOLLAR_SIGN@(if @LT_DOLLAR_SIGN@(LT_ARGZ_H),libltdl/libltdl/@LT_DOLLAR_SIGN@(LT_ARGZ_H))
 EXTRA_DIST	+= libltdl/libltdl/lt__argz_.h \
 		   libltdl/lt__argz.c
 

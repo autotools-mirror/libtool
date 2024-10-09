@@ -108,7 +108,7 @@ AB_INIT([$autobuild_mode])
 
 
 dnl Make sure config.status is regenerated when the version timestamp changes
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/.version'])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(dotversion)'])
 
 
 ## ------------------------------- ##
@@ -165,6 +165,9 @@ AC_SUBST([to_tool_file_cmd])dnl
 
 # Propagate --enable-aix-soname option to the testsuite.
 AC_SUBST([with_aix_soname])dnl
+
+# Avoid non-POSIX variable name
+AC_SUBST([LT_DOLLAR_SIGN],[$])dnl
 
 ## ---------------------- ##
 ## Gnulib initialisation. ##
