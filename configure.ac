@@ -108,7 +108,7 @@ AB_INIT([$autobuild_mode])
 
 
 dnl Make sure config.status is regenerated when the version timestamp changes
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/.version'])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(dotversion)'])
 
 
 ## ------------------------------- ##

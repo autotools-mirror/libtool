@@ -131,7 +131,9 @@ EXTRA_DIST	       += libltdl/COPYING.LIB \
 ## Gnulib Makefile.am snippets ##
 ## --------------------------- ##
 
+if LTARGZH_EXISTS
 BUILT_SOURCES	+= libltdl/libltdl/$(LT_ARGZ_H)
+endif
 EXTRA_DIST	+= libltdl/libltdl/lt__argz_.h \
 		   libltdl/lt__argz.c
 

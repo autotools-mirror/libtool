@@ -8,7 +8,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 23 LTDL_INIT
+# serial 24 LTDL_INIT
 
 # LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
 # ------------------------------------------
@@ -435,7 +435,8 @@ esac
 
 m4_ifdef([AM_CONDITIONAL],
 [AM_CONDITIONAL(INSTALL_LTDL, test no != "${enable_ltdl_install-no}")
- AM_CONDITIONAL(CONVENIENCE_LTDL, test no != "${enable_ltdl_convenience-no}")])
+ AM_CONDITIONAL(CONVENIENCE_LTDL, test no != "${enable_ltdl_convenience-no}")
+ AM_CONDITIONAL(LTARGZH_EXISTS, test -n "$LT_ARGZ_H")])
 ])# _LT_ENABLE_INSTALL
 
 
