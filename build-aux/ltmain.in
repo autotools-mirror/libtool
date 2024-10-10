@@ -67,6 +67,29 @@ package_revision=@package_revision@
 # Set a version string.
 scriptversion='(GNU @PACKAGE@) @VERSION@'
 
+# func_version
+# ------------
+# Echo version message to standard output and exit.
+func_version ()
+{
+    $debug_cmd
+
+	year=`date +%Y`
+
+	cat <<EOF
+$progname $scriptversion
+Copyright (C) $year Free Software Foundation, Inc.
+License GPLv2+: GNU GPL version 2 or later <https://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Originally written by Gordon Matzigkeit, 1996
+(See AUTHORS for complete contributor listing)
+EOF
+
+    exit $?
+}
+
 
 # func_echo ARG...
 # ----------------
