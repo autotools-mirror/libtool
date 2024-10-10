@@ -1279,7 +1279,7 @@ Do not print out any progress or informational messages.
 @item -v
 @itemx --verbose
 Print out progress and informational messages (enabled by default),
-as well as additional messages not ordinary seen by default.
+as well as additional messages not ordinarily seen by default.
 
 @item --no-quiet
 @itemx --no-silent
@@ -1991,9 +1991,11 @@ mirror, install it, and start using it.
 Learn how to write @file{Makefile} rules by hand.  They're sometimes complex,
 but if you're clever enough to write rules for compiling your old
 libraries, then you should be able to figure out new rules for libtool
-libraries (hint: examine the @file{Makefile.in} in the @file{tests/demo}
-subdirectory of the libtool distribution@dots{} note especially that it
-was automatically generated from the @file{Makefile.am} by Automake).
+libraries (hint: examine the @file{Makefile.in} in the
+@file{tests/testsuite.dir/027} subdirectory, generated from the Autotest
+labeled 'link against a preloaded static library' in @file{tests/demo.at},
+of the libtool distribution; note especially that it was automatically
+generated from the @file{Makefile.am} by Automake).
 @end enumerate
 
 @node Using Automake
@@ -2004,7 +2006,7 @@ Libtool library support is implemented under the @samp{LTLIBRARIES}
 primary.
 
 Here are some samples from the Automake @file{Makefile.am} in the
-libtool distribution's @file{demo} subdirectory.
+libtool distribution's @file{tests/demo.at}.
 
 First, to link a program against a libtool library, just use the
 @samp{program_LDADD}@footnote{@c
@@ -3298,11 +3300,31 @@ Non-ANSI compilers will report errors if functions are prototyped.
 These complications mean that your library interface headers must use
 some C preprocessor magic to be usable by each of the above compilers.
 
-@file{foo.h} in the @file{tests/demo} subdirectory of the libtool
-distribution serves as an example for how to write a header file that
+@file{foo.h}, defined in the @file{tests/demo.at} Autotest of the libtool
+distribution, serves as an example for how to write a header file that
 can be safely installed in a system directory.
 
 Here are the relevant portions of that file:
+
+@example
+#ifndef FOO_H
+#define FOO_H
+
+#ifdef __cplusplus
+extern "C" @{
+#endif
+
+int foo (void);
+int hello (void);
+
+#ifdef __cplusplus
+@}
+#endif
+
+#endif /* !FOO_H */
+@end example
+
+This can also be achieved by utilizing macros:
 
 @example
 /* BEGIN_C_DECLS should be used at the beginning of your declarations,
@@ -3331,11 +3353,11 @@ Here are the relevant portions of that file:
 #endif
 @end example
 
-These macros are used in @file{foo.h} as follows:
+These macros can be used in @file{foo.h} as follows:
 
 @example
 #ifndef FOO_H
-#define FOO_H 1
+#define FOO_H
 
 /* The above macro definitions. */
 #include "@dots{}"

@@ -36,3 +36,16 @@
  
  * To (i) set the date, version number, and release TYPE on line 3 of
    NEWS, (ii) commit that, and (iii) tag the release, run
+@@ -98,4 +115,12 @@
+ 
+   to update the on-line manual accessible at
+ 
+     https://www.gnu.org/software/@PACKAGE@/manual/
++
++  Ensure that the on-line documentation links to the latest stable release:
++
++     https://www.gnu.org/software/@PACKAGE@/
++
++  On-line documentation is updated through the CVS repository:
++
++    https://savannah.gnu.org/cvs/?group=@PACKAGE@
