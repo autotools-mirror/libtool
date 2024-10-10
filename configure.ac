@@ -166,9 +166,6 @@ AC_SUBST([to_tool_file_cmd])dnl
 # Propagate --enable-aix-soname option to the testsuite.
 AC_SUBST([with_aix_soname])dnl
 
-# Avoid non-POSIX variable name
-AC_SUBST([LT_DOLLAR_SIGN],[$])dnl
-
 ## ---------------------- ##
 ## Gnulib initialisation. ##
 ## ---------------------- ##

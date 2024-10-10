@@ -8,7 +8,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 2 ltargz.m4
+# serial 3 ltargz.m4
 
 AC_DEFUN([LT_FUNC_ARGZ], [
 dnl Required for use of '$SED' in Cygwin configuration.
@@ -74,4 +74,7 @@ AS_IF([test -z "$LT_ARGZ_H"],
         AC_LIBOBJ([lt__argz])])])
 
 AC_SUBST([LT_ARGZ_H])
+
+# Avoid non-POSIX variable name
+AC_SUBST([LT_DOLLAR_SIGN],[$])dnl
 ])
