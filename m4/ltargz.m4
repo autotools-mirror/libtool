@@ -71,10 +71,9 @@ AS_IF([test -z "$LT_ARGZ_H"],
         [AC_DEFINE([HAVE_WORKING_ARGZ], 1,
                    [This value is set to 1 to indicate that the system argz facility works])],
         [LT_ARGZ_H=lt__argz.h
+        LT_ARGZ_H_PATH=libltdl/libltdl/$LT_ARGZ_H
         AC_LIBOBJ([lt__argz])])])
 
 AC_SUBST([LT_ARGZ_H])
-
-# Avoid non-POSIX variable name
-AC_SUBST([LT_DOLLAR_SIGN],[$])dnl
+AC_SUBST([LT_ARGZ_H_PATH])
 ])

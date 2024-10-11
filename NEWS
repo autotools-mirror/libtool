@@ -6,7 +6,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix incorrect use of workarounds designed for Darwin versions that
     don't have -single_module support.
-  
+
   - Fix errors when executing 'make distclean' and 'make maintainer-clean'.
 
   - Fix bug where the constructed rpath omit directories, instead of
