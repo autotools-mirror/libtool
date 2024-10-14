@@ -12,6 +12,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix bug where the constructed rpath omit directories, instead of
     appending them to the end.
 
+  - Fix configure error for when variable 'multlib' is unset.
+
 
 * Noteworthy changes in release 2.5.3 (2024-09-25) [stable]
 
