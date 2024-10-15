@@ -8,7 +8,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 3 ltargz.m4
+# serial 2 ltargz.m4
 
 AC_DEFUN([LT_FUNC_ARGZ], [
 dnl Required for use of '$SED' in Cygwin configuration.
@@ -71,9 +71,7 @@ AS_IF([test -z "$LT_ARGZ_H"],
         [AC_DEFINE([HAVE_WORKING_ARGZ], 1,
                    [This value is set to 1 to indicate that the system argz facility works])],
         [LT_ARGZ_H=lt__argz.h
-        LT_ARGZ_H_PATH=libltdl/libltdl/$LT_ARGZ_H
         AC_LIBOBJ([lt__argz])])])
 
 AC_SUBST([LT_ARGZ_H])
-AC_SUBST([LT_ARGZ_H_PATH])
 ])
