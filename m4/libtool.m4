@@ -2584,7 +2584,7 @@ cygwin* | mingw* | windows* | pw32* | cegcc*)
     # If user builds GCC with multilib enabled,
     # it should just install on $(libdir)
     # not on $(libdir)/../bin or 32 bits dlls would override 64 bit ones.
-    if test xyes = x$multilib; then
+    if test xyes = x"$multilib"; then
       postinstall_cmds='base_file=`basename \$file`~
         dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
         dldir=$destdir/`dirname \$dlpath`~
