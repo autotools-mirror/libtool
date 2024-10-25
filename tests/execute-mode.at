@@ -170,6 +170,13 @@ LT_AT_NOINST_EXEC_CHECK([./main], [], [], [stdout], [ignore],
 			["arg  with special chars: \$!&*'\`()"])
 AT_CHECK([$FGREP 'arg  with special chars: $!&*'\''`()' stdout], [], [ignore])
 
+# OpenBSD cwrapper has issues parsing '<' and '>' in execute mode without other
+# characters, so the symbols are escaped during testing in OpenBSD.
+escape=
+case $host_os in openbsd*)
+  escape='\' ;;
+esac
+
 # We always pair two args.  The first one is never the empty string.
 arg1=
 for arg2 in \
@@ -182,7 +189,7 @@ for arg2 in \
    'd\\' '' \
    'd\\\' '' \
    'd\\\\' '' \
-   '<' '>' \
+   "$escape<" "$escape>" \
    '<def>' ''
 do
   if test -z "$arg1"; then
