@@ -164,7 +164,8 @@ m4_define([LT_AT_AUTORECONF],
 [[m4_ifndef([AC_CONFIG_MACRO_DIRS],
 	  [m4_define([AC_CONFIG_MACRO_DIRS], m4_defn([AC_CONFIG_MACRO_DIR]))])
 ]])
-AT_CHECK([$AUTORECONF $1], [0], [ignore], [stderr],
+# This is stdout because its output is used by other test cases.
+AT_CHECK([$AUTORECONF $1], [0], [stdout], [stderr],
   [AT_CHECK([$GREP 'require .*but have' stderr && (exit 77)], [1])])
 AT_XFAIL_IF(
   [case ,$AUTORECONF,$AUTOCONF,$AUTOHEADER,$ACLOCAL,$AUTOMAKE, in *,no,*) :;; *) false;; esac])

@@ -32,7 +32,7 @@ AC_OUTPUT
 ]])
 
 LT_AT_LIBTOOLIZE([--install])
-AT_CHECK([$AUTORECONF --install], [0], [stdout], [stderr])
+LT_AT_AUTORECONF([--install])
 AT_CHECK([autoscan || exit 77], [0], [stdout], [stderr])
 AT_CHECK([$GREP -- 'AC_PROG_RANLIB' stderr], [1], [ignore])
 
@@ -55,7 +55,7 @@ AC_OUTPUT
 ]])
 
 LT_AT_LIBTOOLIZE([--install])
-AT_CHECK([$AUTORECONF --install], [0], [stdout], [stderr])
+LT_AT_AUTORECONF([--install])
 AT_CHECK([$GREP -- 'obsolete' stdout], [0], [ignore])
 
 AT_CLEANUP
