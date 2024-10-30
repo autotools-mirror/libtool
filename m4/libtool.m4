@@ -5091,9 +5091,6 @@ dnl Note also adjust exclude_expsyms for C++ above.
     # we just hope/assume this is gcc and not c89 (= MSVC++ or ICC)
     with_gnu_ld=yes
     ;;
-  openbsd*)
-    with_gnu_ld=no
-    ;;
   esac
 
   _LT_TAGVAR(ld_shlibs, $1)=yes
