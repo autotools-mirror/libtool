@@ -377,6 +377,7 @@ libtool_options_prep ()
     opt_mode=
     opt_preserve_dup_deps=false
     opt_quiet=false
+    opt_testing=true
 
     nonopt=
     preserve_args=
@@ -504,6 +505,11 @@ libtool_parse_options ()
 
         --verbose|-v)   opt_quiet=false
                         opt_verbose=:
+                        func_append preserve_args " $_G_opt"
+                        ;;
+
+        --test|--check)
+                        opt_testing=false
                         func_append preserve_args " $_G_opt"
                         ;;
 
@@ -2144,7 +2150,7 @@ func_mode_finish ()
       fi
     fi
 
-    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs" && $opt_testing; then
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
@@ -2169,6 +2175,12 @@ func_mode_finish ()
       for libdir in $libdirs; do
 	$ECHO "   $libdir"
       done
+      if test "false" = "$opt_testing"; then
+        echo
+        echo "NOTE: finish_cmds were not executed during testing, so you must"
+        echo "manually run ldconfig to add a given test directory, LIBDIR, to"
+        echo "the search path for generated executables."
+      fi
       echo
       echo "If you ever happen to want to link against installed libraries"
       echo "in a given directory, LIBDIR, you must either use libtool, and"

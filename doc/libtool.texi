@@ -1272,6 +1272,12 @@ stripped or the link will fail.  In cases where these duplications are
 required, this option will preserve them, only stripping the libraries
 that libtool knows it can safely.
 
+@item --test
+@itemx --check
+Do not execute finish_cmds (disabled by default). This option is for
+specifying that the testsuite is executing so that ldconfig will not alter
+the shared library cache, which is an issue observed on OpenBSD 7.5.
+
 @item --quiet
 @itemx --silent
 Do not print out any progress or informational messages.
@@ -6855,7 +6861,8 @@ shell does not support the shell option @code{nocaseglob}, making
 
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
-specific directory.
+specific directory. These commands can be disabled during testing local
+changes with @option{--test} or @option{--check}.
 @end defvar
 
 @defvar finish_eval
