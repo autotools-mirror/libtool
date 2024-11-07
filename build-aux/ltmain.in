@@ -141,6 +141,7 @@ usage_message="Options:
        --mode=MODE          use operation mode MODE
        --no-warnings        equivalent to '-Wnone'
        --preserve-dup-deps  don't remove duplicate dependency libraries
+       --test, --check      don't update shared library cache during testing
        --quiet, --silent    don't print informational messages
        --tag=TAG            use configuration variables from tag TAG
    -v, --verbose            print more informational messages than default
