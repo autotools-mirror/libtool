@@ -382,6 +382,16 @@ echo "Building local copy of the project"
     cd build_local
     LT_AT_CONFIGURE([--prefix=$prefix], [$ltb2/configure])
     LT_AT_MAKE([])
+
+    case $host_os in
+    openbsd*)
+      build_local_dir=$(pwd)
+      AT_CHECK(
+      [
+        $LIBTOOL --reorder-cache="$build_local_dir/liba/.libs:$build_local_dir/libb/.libs"
+      ], 0, ignore, ignore);;
+    *) ;;
+    esac
 )
 
 # Although we have installed ltb2, we still expect that we are using the local

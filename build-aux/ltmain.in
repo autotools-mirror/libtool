@@ -141,6 +141,7 @@ usage_message="Options:
        --mode=MODE          use operation mode MODE
        --no-warnings        equivalent to '-Wnone'
        --preserve-dup-deps  don't remove duplicate dependency libraries
+       --reorder-cache=DIRS reorder shared library cache for preferred DIRS
        --test, --check      don't update shared library cache during testing
        --quiet, --silent    don't print informational messages
        --tag=TAG            use configuration variables from tag TAG
@@ -376,6 +377,7 @@ libtool_options_prep ()
     opt_dry_run=false
     opt_help=false
     opt_mode=
+    opt_reorder_cache=false
     opt_preserve_dup_deps=false
     opt_quiet=false
     opt_testing=true
@@ -489,6 +491,24 @@ libtool_parse_options ()
         --no-verbose)
                         opt_verbose=false
                         func_append preserve_args " $_G_opt"
+                        ;;
+
+        --reorder-cache)
+                        opt_reorder_cache=true
+                        shared_lib_dirs=$1
+                        if test -n "$shared_lib_dirs"; then
+                          case $1 in
+                            # Must begin with /:
+                            /*) ;;
+
+                            # Catch anything else as an error (relative paths)
+                            *) func_warning "invalid argument '$1' for $_G_opt"
+                               func_warning "absolute paths are required for $_G_opt"
+                               exit_cmd=exit
+                               break
+                               ;;
+                          esac
+                        fi
                         ;;
 
         --silent|--quiet)
@@ -1061,6 +1081,15 @@ func_convert_path_front_back_pathsep ()
 # end func_convert_path_front_back_pathsep
 
 
+# func_convert_delimited_path PATH ORIG_DELIMITER NEW_DELIMITER
+# Replaces a delimiter for a given path.
+func_convert_delimited_path ()
+{
+	converted_path=`$ECHO "$1" | $SED "s#$2#$3#g"`
+}
+# end func_convert_delimited_path
+
+
 ##################################################
 # $build to $host FILE NAME CONVERSION FUNCTIONS #
 ##################################################
@@ -1393,6 +1422,65 @@ func_dll_def_p ()
     "$1"`
   test DEF = "$func_dll_def_p_tmp"
 }
+
+
+# func_reorder_shared_lib_cache DIRS
+# Reorder the shared library cache by unconfiguring previous shared library cache
+# and configuring preferred search directories before previous search directories.
+# Previous shared library cache: /usr/lib /usr/local/lib
+# Preferred search directories: /tmp/testing
+# Reordered shared library cache: /tmp/testing /usr/lib /usr/local/lib
+func_reorder_shared_lib_cache ()
+{
+	$debug_cmd
+
+	case $host_os in
+	  openbsd*)
+	    get_search_directories=`PATH="$PATH:/sbin" ldconfig -r | $GREP "search directories" | $SED "s#.*search directories:\ ##g"`
+	    func_convert_delimited_path "$get_search_directories" ':' '\ '
+	    save_search_directories=$converted_path
+	    func_convert_delimited_path "$1" ':' '\ '
+
+	    # Ensure directories exist
+	    for dir in $converted_path; do
+	      # Ensure each directory is an absolute path
+	      case $dir in
+	        /*) ;;
+	        *) func_warning "Directory '$dir' is not an absolute path"
+	           exit $EXIT_FAILURE ;;
+	      esac
+	      # Ensure no trailing slashes
+	      func_stripname '' '/' "$dir"
+	      dir=$func_stripname_result
+	      if test -d "$dir"; then
+	        if test -n "$preferred_search_directories"; then
+	          preferred_search_directories="$preferred_search_directories $dir"
+	        else
+	          preferred_search_directories=$dir
+	        fi
+	      else
+	        func_warning "Directory '$dir' does not exist"
+	        exit $EXIT_FAILURE
+	      fi
+	    done
+
+	    PATH="$PATH:/sbin" ldconfig -U $save_search_directories
+	    PATH="$PATH:/sbin" ldconfig -m $preferred_search_directories $save_search_directories
+	    get_search_directories=`PATH="$PATH:/sbin" ldconfig -r | $GREP "search directories" | $SED "s#.*search directories:\ ##g"`
+	    func_convert_delimited_path "$get_search_directories" ':' '\ '
+	    reordered_search_directories=$converted_path
+
+	    $ECHO "Original: $save_search_directories"
+	    $ECHO "Reordered: $reordered_search_directories"
+	    exit $EXIT_SUCCESS
+	  ;;
+	  *)
+	    func_warning "--reorder-cache is not supported for host_os=$host_os."
+	    exit $EXIT_FAILURE
+	  ;;
+	esac
+}
+# end func_reorder_shared_lib_cache
 
 
 # func_mode_compile arg...
@@ -1964,6 +2052,12 @@ if $opt_help; then
       s/^Usage:.*--mode=\([^ ]*\) .*/Description of \1 mode:/'
   fi
   exit $?
+fi
+
+
+# If option '--reorder-cache', reorder the shared library cache and exit.
+if $opt_reorder_cache; then
+    func_reorder_shared_lib_cache $shared_lib_dirs
 fi
 
 
