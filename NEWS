@@ -7,6 +7,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - New libtool command line flag, --no-finish, to skip executing
     finish_cmds that would alter the shared library cache during testing.
 
+  - New libtool command line flag, --reorder-cache=DIRS, to reorder the
+    shared library cache, only on OpenBSD.
+
 ** Bug fixes:
 
   - Fix incorrect use of workarounds designed for Darwin versions that

@@ -1280,7 +1280,53 @@ is an issue observed on OpenBSD 7.5. This option should be combined with
 the usage of @option{--mode=install} and @option{--mode=finish} to have
 any effect. Prior to utilizing this option, the shared library cache must
 not contain links to the listed install directory for shared libraries
-undergoing testing; otherwise, it will have no useful effect.
+undergoing testing; otherwise, it will have no useful effect. In OpenBSD,
+the shared library cache can be reordered to prefer directories for
+testing shared libraries over the directories already listed in the shared
+library cache with @option{--reorder-cache=@var{shared_lib_dirs}}.
+
+@item --reorder-cache=@var{shared_lib_dirs}
+Reorder the shared library cache by providing the preferred directories
+(@var{shared_lib_dirs}) to link shared libraries from. The previous
+shared library cache is unconfigured, and the preferred directories are
+configured with the previous directories appended to the end (if not in
+the preferred directory list)@footnote{Additionally, all directories
+that no longer exist will be removed from the shared library cache.}.
+This option is currently only available on OpenBSD where @code{make
+install} has been required before @code{make check} for the shared
+library cache to be updated.
+
+This option is essentially a wrapper for executing @command{ldconfig},
+and it should be used as an independent option before and after testing
+changes to shared libraries. Below are some usage examples:
+
+@example
+$ @kbd{libtool --reorder-cache=/tmp/testing}
+Original: /usr/lib /usr/X11R6/lib /usr/local/lib
+Reordered: /tmp/testing /usr/lib /usr/X11R6/lib /usr/local/lib
+$ @kbd{libtool --reorder-cache=/usr/lib:/usr/X11R6/lib:/usr/local/lib}
+Original: /tmp/testing /usr/lib /usr/X11R6/lib /usr/local/lib
+Reordered: /usr/lib /usr/X11R6/lib /usr/local/lib /tmp/testing
+@end example
+
+@example
+$ @kbd{libtool --reorder-cache=/tmp/testing}
+Original: /usr/lib /usr/X11R6/lib /usr/local/lib
+Reordered: /tmp/testing /usr/lib /usr/X11R6/lib /usr/local/lib
+$ @kbd{rm -rf /tmp/testing}
+$ @kbd{libtool --reorder-cache=/usr/lib:/usr/X11R6/lib:/usr/local/lib}
+Original: /tmp/testing /usr/lib /usr/X11R6/lib /usr/local/lib
+Reordered: /usr/lib /usr/X11R6/lib /usr/local/lib
+@end example
+
+@example
+$ @kbd{libtool --reorder-cache=/tmp/testing:/usr/local/lib:/home/user/dir}
+Original: /usr/lib /usr/X11R6/lib /usr/local/lib
+Reordered: /tmp/testing /usr/local/lib /home/user/dir /usr/lib /usr/X11R6/lib
+$ @kbd{libtool --reorder-cache=/usr/lib /usr/X11R6/lib /usr/local/lib}
+Original: /tmp/testing /usr/local/lib /home/user/dir /usr/lib /usr/X11R6/lib
+Reordered: /usr/lib /usr/X11R6/lib /usr/local/lib /tmp/testing /home/user/dir
+@end example
 
 @item --quiet
 @itemx --silent
