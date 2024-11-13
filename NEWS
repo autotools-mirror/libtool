@@ -34,6 +34,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Fix linking for mingw with lld by prefering response files over the
     linker script.
 
+  - Fix '-Fe' usage with linking in MSVC.
+
 ** Changes in supported systems or compilers:
 
   - Support additional flang-based compilers, 'f18' and 'f95'.
