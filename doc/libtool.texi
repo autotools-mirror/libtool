@@ -1272,8 +1272,7 @@ stripped or the link will fail.  In cases where these duplications are
 required, this option will preserve them, only stripping the libraries
 that libtool knows it can safely.
 
-@item --test
-@itemx --check
+@item --no-finish
 Do not execute finish_cmds (disabled by default). This option is for
 specifying that testing of local changes to shared libraries is being
 performed so that ldconfig will not alter the shared library cache, which
@@ -1281,10 +1280,10 @@ is an issue observed on OpenBSD 7.5. This option should be combined with
 the usage of @option{--mode=install} and @option{--mode=finish} to have
 any effect. Prior to utilizing this option, the shared library cache must
 not contain links to the listed install directory for shared libraries
-undergoing testing; otherwise, it will have no useful effect. The shared
-library cache can be reordered to prefer directories for testing shared
-libraries over the directories already listed in the shared library cache
-with @option{--reorder-cache=@var{shared_lib_dirs}}.
+undergoing testing; otherwise, it will have no useful effect. In OpenBSD,
+the shared library cache can be reordered to prefer directories for
+testing shared libraries over the directories already listed in the shared
+library cache with @option{--reorder-cache=@var{shared_lib_dirs}}.
 
 @item --reorder-cache=@var{shared_lib_dirs}
 Reorder the shared library cache by providing the preferred directories
@@ -6913,7 +6912,7 @@ shell does not support the shell option @code{nocaseglob}, making
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
 specific directory. These commands can be disabled during testing local
-changes to shared libraries with @option{--test} or @option{--check}.
+changes to shared libraries with @option{--no-finish}.
 @end defvar
 
 @defvar finish_eval

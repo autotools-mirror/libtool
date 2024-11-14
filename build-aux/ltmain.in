@@ -139,10 +139,10 @@ usage_message="Options:
    -n, --dry-run            display commands without modifying any files
        --features           display basic configuration information and exit
        --mode=MODE          use operation mode MODE
+       --no-finish          don't update shared library cache
        --no-warnings        equivalent to '-Wnone'
        --preserve-dup-deps  don't remove duplicate dependency libraries
        --reorder-cache=DIRS reorder shared library cache for preferred DIRS
-       --test, --check      don't update shared library cache during testing
        --quiet, --silent    don't print informational messages
        --tag=TAG            use configuration variables from tag TAG
    -v, --verbose            print more informational messages than default
@@ -380,7 +380,7 @@ libtool_options_prep ()
     opt_reorder_cache=false
     opt_preserve_dup_deps=false
     opt_quiet=false
-    opt_testing=true
+    opt_finishing=true
 
     nonopt=
     preserve_args=
@@ -478,6 +478,11 @@ libtool_parse_options ()
                         shift
                         ;;
 
+        --no-finish)
+                        opt_finishing=false
+                        func_append preserve_args " $_G_opt"
+                        ;;
+
         --no-silent|--no-quiet)
                         opt_quiet=false
                         func_append preserve_args " $_G_opt"
@@ -526,11 +531,6 @@ libtool_parse_options ()
 
         --verbose|-v)   opt_quiet=false
                         opt_verbose=:
-                        func_append preserve_args " $_G_opt"
-                        ;;
-
-        --test|--check)
-                        opt_testing=false
                         func_append preserve_args " $_G_opt"
                         ;;
 
@@ -2245,7 +2245,7 @@ func_mode_finish ()
       fi
     fi
 
-    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs" && $opt_testing; then
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs" && $opt_finishing; then
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
@@ -2270,7 +2270,7 @@ func_mode_finish ()
       for libdir in $libdirs; do
 	$ECHO "   $libdir"
       done
-      if test "false" = "$opt_testing"; then
+      if test "false" = "$opt_finishing"; then
         echo
         echo "NOTE: finish_cmds were not executed during testing, so you must"
         echo "manually run ldconfig to add a given test directory, LIBDIR, to"
