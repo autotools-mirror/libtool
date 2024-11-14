@@ -474,7 +474,6 @@ libtool_parse_options ()
                           # Catch anything else as an error
                           *) func_error "invalid argument '$1' for $_G_opt"
                              exit_cmd=exit
-                             break
                              ;;
                         esac
                         shift
@@ -512,10 +511,10 @@ libtool_parse_options ()
                             *) func_error "invalid argument '$1' for $_G_opt"
                                func_error "absolute paths are required for $_G_opt"
                                exit_cmd=exit
-                               break
                                ;;
                           esac
                         fi
+                        shift
                         ;;
 
         --silent|--quiet)
