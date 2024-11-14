@@ -134,21 +134,23 @@ usage='$progpath [OPTION]... [MODE-ARG]...'
 
 # Short help message in response to '-h'.
 usage_message="Options:
-       --config             show all configuration variables
-       --debug              enable verbose shell tracing
-   -n, --dry-run            display commands without modifying any files
-       --features           display basic configuration information and exit
-       --mode=MODE          use operation mode MODE
-       --no-finish          don't update shared library cache
-       --no-warnings        equivalent to '-Wnone'
-       --preserve-dup-deps  don't remove duplicate dependency libraries
-       --reorder-cache=DIRS reorder shared library cache for preferred DIRS
-       --quiet, --silent    don't print informational messages
-       --tag=TAG            use configuration variables from tag TAG
-   -v, --verbose            print more informational messages than default
-       --version            print version information
-   -W, --warnings=CATEGORY  report the warnings falling in CATEGORY [all]
-   -h, --help, --help-all   print short, long, or detailed help message
+       --config                 show all configuration variables
+       --debug                  enable verbose shell tracing
+   -n, --dry-run                display commands without modifying any files
+       --features               display basic configuration information
+       --finish                 use operation '--mode=finish'
+       --mode=MODE              use operation mode MODE
+       --no-finish              don't update shared library cache
+       --no-quiet, --no-silent  print default informational messages
+       --no-warnings            equivalent to '-Wnone'
+       --preserve-dup-deps      don't remove duplicate dependency libraries
+       --quiet, --silent        don't print informational messages
+       --reorder-cache=DIRS     reorder shared library cache for preferred DIRS
+       --tag=TAG                use configuration variables from tag TAG
+   -v, --verbose                print more informational messages than default
+       --version                print version information
+   -W, --warnings=CATEGORY      report the warnings falling in CATEGORY [all]
+   -h, --help, --help-all       print short, long, or detailed help message
 "
 
 # Additional text appended to 'usage_message' in response to '--help'.
