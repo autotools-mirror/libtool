@@ -472,7 +472,7 @@ libtool_parse_options ()
                           clean|compile|execute|finish|install|link|relink|uninstall) ;;
 
                           # Catch anything else as an error
-                          *) func_error "invalid argument for $_G_opt"
+                          *) func_error "invalid argument '$1' for $_G_opt"
                              exit_cmd=exit
                              break
                              ;;
@@ -509,8 +509,8 @@ libtool_parse_options ()
                             /*) ;;
 
                             # Catch anything else as an error (relative paths)
-                            *) func_warning "invalid argument '$1' for $_G_opt"
-                               func_warning "absolute paths are required for $_G_opt"
+                            *) func_error "invalid argument '$1' for $_G_opt"
+                               func_error "absolute paths are required for $_G_opt"
                                exit_cmd=exit
                                break
                                ;;
@@ -1448,7 +1448,7 @@ func_reorder_shared_lib_cache ()
 	      # Ensure each directory is an absolute path
 	      case $dir in
 	        /*) ;;
-	        *) func_warning "Directory '$dir' is not an absolute path"
+	        *) func_error "Directory '$dir' is not an absolute path"
 	           exit $EXIT_FAILURE ;;
 	      esac
 	      # Ensure no trailing slashes
@@ -1461,7 +1461,7 @@ func_reorder_shared_lib_cache ()
 	          preferred_search_directories=$dir
 	        fi
 	      else
-	        func_warning "Directory '$dir' does not exist"
+	        func_error "Directory '$dir' does not exist"
 	        exit $EXIT_FAILURE
 	      fi
 	    done
@@ -1477,7 +1477,7 @@ func_reorder_shared_lib_cache ()
 	    exit $EXIT_SUCCESS
 	  ;;
 	  *)
-	    func_warning "--reorder-cache is not supported for host_os=$host_os."
+	    func_error "--reorder-cache is not supported for host_os=$host_os."
 	    exit $EXIT_FAILURE
 	  ;;
 	esac
