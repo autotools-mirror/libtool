@@ -251,9 +251,9 @@ AT_DATA([x.cpp],
 void f(int *p) { *p = 21; }
 ]])
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CXX g++ -c x.cpp], [0], [stdout], [stderr])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CXX $CXX -c x.cpp], [0], [stdout], [stderr])
 
-AT_CHECK([$LIBTOOL --no-warnings --mode=link --tag=CXX g++ -o libx.la -no-canonical-prefixes -R /usr/lib64/ -version-info x.lo], [0], [stdout], [stderr])
+AT_CHECK([$LIBTOOL --no-warnings --mode=link --tag=CXX $CXX -o libx.la -no-canonical-prefixes -R /usr/lib64/ -version-info 0:0:0 x.lo], [0], [stdout], [stderr])
 
 AT_CHECK([$GREP -- 'warning' stderr], [1], [ignore])
 
