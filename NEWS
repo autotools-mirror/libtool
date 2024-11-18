@@ -36,6 +36,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix '-Fe' usage with linking in MSVC.
 
+  - Fix '--no-warnings' flag.
+
 ** Changes in supported systems or compilers:
 
   - Support additional flang-based compilers, 'f18' and 'f95'.
