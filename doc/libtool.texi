@@ -203,7 +203,6 @@ Porting libtool to new systems
 
 Platform quirks
 
-* References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
 * Multiple dependencies::       Removing duplicate dependent libraries.
@@ -5926,7 +5925,6 @@ themselves, you should have a better sense of how to improve libtool, or
 write your own.
 
 @menu
-* References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
 * Multiple dependencies::       Removing duplicate dependent libraries.
@@ -5935,36 +5933,6 @@ write your own.
 * File name conversion::        Converting file names between platforms.
 * Windows DLLs::                Windows header defines.
 @end menu
-
-@node References
-@subsection References
-
-The following is a list of valuable documentation references:
-
-@itemize @bullet
-@item
-SGI's IRIX Manual Pages can be found at@*
-@url{http://techpubs.sgi.com/cgi-bin/infosrch.cgi?cmd=browse&db=man}.
-
-@item
-Sun's free service area
-(@url{http://www.sun.com/service/online/free.html}) and documentation
-server (@url{http://docs.sun.com/}).
-
-@item
-Compaq's Tru64 UNIX online documentation is at@*
-(@url{http://tru64unix.compaq.com/faqs/publications/pub_page/doc_list.html})
-with C++ documentation at@*
-(@url{http://tru64unix.compaq.com/cplus/docs/index.htm}).
-
-@item
-Hewlett-Packard has online documentation at
-(@url{http://docs.hp.com/index.html}).
-
-@item
-IBM has online documentation at
-(@url{http://www.rs6000.ibm.com/resource/aix_resource/Pubs/}).
-@end itemize
 
 @node Compilers
 @subsection Compilers
