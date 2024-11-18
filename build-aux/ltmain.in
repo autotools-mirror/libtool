@@ -111,18 +111,6 @@ func_echo ()
 }
 
 
-# func_warning ARG...
-# -------------------
-# Libtool warnings are not categorized, so override funclib.sh
-# func_warning with this simpler definition.
-func_warning ()
-{
-    $debug_cmd
-
-    $warning_func ${1+"$@"}
-}
-
-
 ## ---------------- ##
 ## Options parsing. ##
 ## ---------------- ##
@@ -383,6 +371,7 @@ libtool_options_prep ()
     opt_preserve_dup_deps=false
     opt_quiet=false
     opt_finishing=true
+    opt_warning=
 
     nonopt=
     preserve_args=
@@ -552,6 +541,18 @@ libtool_parse_options ()
 }
 func_add_hook func_parse_options libtool_parse_options
 
+
+# func_warning ARG...
+# -------------------
+# Libtool warnings are not categorized, so override funclib.sh
+# func_warning with this simpler definition.
+func_warning ()
+{
+    if $opt_warning; then
+        $debug_cmd
+        $warning_func ${1+"$@"}
+    fi
+}
 
 
 # libtool_validate_options [ARG]...
