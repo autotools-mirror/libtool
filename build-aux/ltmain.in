@@ -5327,7 +5327,8 @@ func_mode_link ()
       # Tru64 UNIX uses -model [arg] to determine the layout of C++
       # classes, name mangling, and exception handling.
       # Darwin uses the -arch flag to determine output architecture.
-      -model|-arch|-isysroot|--sysroot)
+      # -q <option> for IBM XL C/C++ compiler.
+      -model|-arch|-isysroot|--sysroot|-q)
 	func_append compiler_flags " $arg"
 	func_append compile_command " $arg"
 	func_append finalize_command " $arg"
