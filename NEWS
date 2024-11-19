@@ -38,12 +38,21 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix '--no-warnings' flag.
 
+  - Fix handling xlc(1)-specific options.
+
+  - Fix Haiku support.
+
 ** Changes in supported systems or compilers:
 
   - Support additional flang-based compilers, 'f18' and 'f95'.
 
   - Support for 'netbsdelf*-gnu'.
 
+  - Support for Ironclad.
+
+  - Support for SerenityOS.
+
+  - Support for wasm32-emscripten.
 
 * Noteworthy changes in release 2.5.3 (2024-09-25) [stable]
 
