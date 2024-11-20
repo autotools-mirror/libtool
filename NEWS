@@ -48,7 +48,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Support for 'netbsdelf*-gnu'.
 
-  - Support for Ironclad.
+  - Support for '*-mlibc', and subsequently Ironclad and Managarm.
 
   - Support for SerenityOS.
 
