@@ -2996,7 +2996,7 @@ netbsd*)
   hardcode_into_libs=yes
   ;;
 
-ironclad*)
+*-mlibc)
   version_type=linux # correct to gnu/linux during the next big refactor
   need_lib_prefix=no
   need_version=no
@@ -3674,7 +3674,7 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-ironclad*)
+*-mlibc)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -4563,7 +4563,7 @@ m4_if([$1], [CXX], [
 	;;
       netbsd* | netbsdelf*-gnu)
 	;;
-      ironclad*)
+      *-mlibc)
 	;;
       *qnx* | *nto*)
         # QNX uses GNU C++, but need to define -shared option too, otherwise
@@ -4921,7 +4921,7 @@ m4_if([$1], [CXX], [
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
       ;;
 
-    ironclad*)
+    *-mlibc)
       _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
       _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
@@ -5408,7 +5408,7 @@ _LT_EOF
       fi
       ;;
 
-    ironclad*)
+    *-mlibc)
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
 	_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname $wl-retain-symbols-file $wl$export_symbols -o $lib'
       ;;
@@ -5956,7 +5956,7 @@ _LT_EOF
       esac
       ;;
 
-    ironclad*)
+    *-mlibc)
       ;;
 
     netbsd* | netbsdelf*-gnu)
@@ -7262,9 +7262,9 @@ if test yes != "$_lt_caught_CXX_error"; then
 	esac
 	;;
 
-      ironclad*)
-	    _LT_TAGVAR(ld_shlibs, $1)=yes
-	    ;;
+      *-mlibc)
+        _LT_TAGVAR(ld_shlibs, $1)=yes
+	;;
 
       netbsd*)
         if echo __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
