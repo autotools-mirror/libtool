@@ -29,7 +29,7 @@ update-release-year:
 		m4/libtool.m4
 
 # Set format of NEWS.
-old_NEWS_hash := 61ef5bb8af40dc806027f40d99f8c980
+old_NEWS_hash := d51e62d3a4268be1a7b418b089c528d0
 
 manual_title = Portable Dynamic Shared Object Management
 
