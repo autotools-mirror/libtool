@@ -73,3 +73,4 @@ testsuite
 testsuite.dir
 testsuite.log
 vc-diffs
+/.vs
