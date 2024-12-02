@@ -2925,7 +2925,7 @@ extern \"C\" {
 
 	  # Prepare the list of exported symbols
 	  if test -z "$export_symbols"; then
-	    export_symbols=$output_objdir/$outputname.exp
+	    export_symbols=$output_objdir/$outputname.expsym
 	    $opt_dry_run || {
 	      $RM $export_symbols
 	      eval "$SED -n -e '/^: @PROGRAM@ $/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
@@ -2938,8 +2938,8 @@ extern \"C\" {
 	    }
 	  else
 	    $opt_dry_run || {
-	      eval "$SED -e 's/\([].[*^$]\)/\\\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
-	      eval '$GREP -f "$output_objdir/$outputname.exp" < "$nlist" > "$nlist"T'
+	      eval "$SED -e 's/\([].[*^$]\)/\\\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.expsym"'
+	      eval '$GREP -f "$output_objdir/$outputname.expsym" < "$nlist" > "$nlist"T'
 	      eval '$MV "$nlist"T "$nlist"'
 	      case $host in
 	        *cygwin* | *mingw* | *windows* | *cegcc* )
@@ -7915,7 +7915,7 @@ func_mode_link ()
 	if test -z "$export_symbols"; then
 	  if test yes = "$always_export_symbols" || test -n "$export_symbols_regex"; then
 	    func_verbose "generating symbol list for '$libname.la'"
-	    export_symbols=$output_objdir/$libname.exp
+	    export_symbols=$output_objdir/$libname.expsym
 	    $opt_dry_run || $RM $export_symbols
 	    cmds=$export_symbols_cmds
 	    save_ifs=$IFS; IFS='~'
@@ -8181,7 +8181,7 @@ func_mode_link ()
 
 	    ${skipped_export-false} && {
 	      func_verbose "generating symbol list for '$libname.la'"
-	      export_symbols=$output_objdir/$libname.exp
+	      export_symbols=$output_objdir/$libname.expsym
 	      $opt_dry_run || $RM $export_symbols
 	      libobjs=$output
 	      # Append the command to create the export file.
