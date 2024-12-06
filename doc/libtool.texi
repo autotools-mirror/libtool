@@ -1381,6 +1381,9 @@ Report the warnings falling in category @var{CATEGORY}. The default
 category is @command{all}. To disable warnings, use the category
 @command{none}.
 
+@item --no-warnings
+Do not print out any warning messages.
+
 @end table
 
 The current @command{libtool} implementation is done with a shell script
