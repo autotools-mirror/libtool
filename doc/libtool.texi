@@ -1587,7 +1587,10 @@ if the program won't be necessarily installed.
 Link an executable @var{output-file} that can't be installed and
 therefore doesn't need a wrapper script on systems that allow hardcoding
 of library paths.  Useful if the program is only used in the build tree,
-e.g., for testing or generating other files.
+e.g., for testing or generating other files. For Windows and Darwin hosts,
+@option{-no-install} is ignored, and @option{-no-fast-install} is assumed.
+@footnote{The PATH hackery in wrapper scripts is required on Windows and
+Darwin in order for the loader to find any dlls it needs.}
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any libraries other
