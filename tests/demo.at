@@ -152,7 +152,7 @@ AT_DATA([foo.h],
 #  endif
 #endif
 
-#if (defined _WIN32 || defined _WIN32_WCE) && !defined __GNUC__
+#if (defined _WIN32 || defined _WIN32_WCE || __CYGWIN__) && !defined __GNUC__
 # ifdef BUILDING_LIBHELLO
 #  ifdef DLL_EXPORT
 #   define LIBHELLO_SCOPE extern __declspec (dllexport)

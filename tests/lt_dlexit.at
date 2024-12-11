@@ -115,8 +115,12 @@ AT_DATA([b1.c],
 [[#ifdef __cplusplus
 extern "C" {
 #endif
-#if defined DLL_EXPORT && defined _WIN32 && defined _MSC_VER
-#  define LIBA1_SCOPE extern __declspec (dllimport)
+#if defined DLL_EXPORT
+#  if defined __CYGWIN__ || defined _WIN32 || defined WIN32
+#    if defined _MSC_VER
+#      define LIBA1_SCOPE extern __declspec (dllimport)
+#    endif
+#  endif
 #endif
 #if !defined LIBA1_SCOPE
 #  define LIBA1_SCOPE extern
