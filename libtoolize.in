@@ -437,6 +437,33 @@ func_copy ()
     else
       my_copycmd=$LN_S
       my_copy_type=linking
+
+      # The Windows linker, mklink, swaps link_name and target.
+      case $my_copycmd in
+      *mklink*)
+        my_temp=$my_destfile
+        my_destfile=$my_srcfile
+        my_srcfile=$my_temp
+
+        my_copy_msg="$my_copy_type file '$my_destfile'"
+        $opt_verbose && my_copy_msg="$my_copycmd $my_srcfile $my_destdir"
+
+        my_destfile=`cygpath -aw "$my_destfile"`
+        my_srcfile=`cygpath -aw "$my_srcfile"`
+
+        if test -d "$my_destfile"; then
+          case $host_os,$build_os in
+          mingw*,cygwin*)
+            my_copycmd="$my_copycmd /d" ;;
+          mingw*,*) # MSYS
+            my_copycmd="$my_copycmd //d" ;;
+          *)
+            my_copycmd="$my_copycmd /d" ;;
+          esac
+        fi
+      ;;
+      *) ;;
+      esac
     fi
     my_copy_msg="$my_copy_type file '$my_destfile'"
     $opt_verbose && my_copy_msg="$my_copycmd $my_srcfile $my_destdir"
