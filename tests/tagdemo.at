@@ -42,26 +42,24 @@ AC_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
-# Check for namespace support and new-style headers
 AC_LANG_PUSH([C++])
-AC_MSG_CHECKING([whether the compiler implements namespaces])
-AC_COMPILE_IFELSE(
-    [AC_LANG_PROGRAM([[namespace A { namespace B { int i = 0; }}]],
-		     [[using namespace A::B; return i;]])],
-    [AC_MSG_RESULT([yes])
-     AC_DEFINE([HAVE_NAMESPACES],[1],
-	       [define if the compiler implements namespaces])],
-    [AC_MSG_RESULT([no])])
 
 AC_MSG_CHECKING([whether the compiler has ISO C++ iostream])
 AC_COMPILE_IFELSE(
     [AC_LANG_PROGRAM([[#include <iostream>
-#ifdef HAVE_NAMESPACES
-using namespace std;
-#endif ]], [[cout << "bingo\n"; return 0;]])],
+ ]], [[std::cout << "bingo\n"; return 0;]])],
     [AC_MSG_RESULT([yes])
      AC_DEFINE([HAVE_IOSTREAM],[1],
 	       [define if the compiler has ISO C++ iostream])],
+    [AC_MSG_RESULT([no])])
+
+AC_MSG_CHECKING([whether the compiler has iostream.h])
+AC_COMPILE_IFELSE(
+    [AC_LANG_PROGRAM([[#include <iostream.h>
+ ]], [[std::cout << "bingo\n"; return 0;]])],
+    [AC_MSG_RESULT([yes])
+     AC_DEFINE([HAVE_IOSTREAM_H],[1],
+	       [define if the compiler has iostream.h])],
     [AC_MSG_RESULT([no])])
 AC_LANG_POP([C++])
 
@@ -109,22 +107,19 @@ AT_DATA([main.cpp],
 [[#include <config.h>
 #if HAVE_IOSTREAM
 # include <iostream>
-#else
+#elif HAVE_IOSTREAM_H
 # include <iostream.h>
+#else
+# include <iostream>
 #endif
 
 #include "foo.h"
 #include "baz.h"
 #include "conv.h"
 
-#if HAVE_NAMESPACES
-namespace std { }
-using namespace std;
-#endif
-
 int main (int, char *[])
 {
-  cout << "Welcome to GNU libtool tagdemo C++!" << endl;
+  std::cout << "Welcome to GNU libtool tagdemo C++!" << std::endl;
 
   foobar_derived FB;
   // Instantiate the derived class.
@@ -134,12 +129,12 @@ int main (int, char *[])
 
   int value = fb->hello();
 
-  cout << "foobar::hello returned: " << value << endl;
+  std::cout << "foobar::hello returned: " << value << std::endl;
   if (value = HELLO_RET)
-    cout << "foobar::hello is ok!" << endl;
+    std::cout << "foobar::hello is ok!" << std::endl;
 
   if (fb->foo() == FOO_RET)
-    cout << "foobar::foo is ok!" << endl;
+    std::cout << "foobar::foo is ok!" << std::endl;
 
   // --------------
 
@@ -152,12 +147,12 @@ int main (int, char *[])
   // barbaz_derived::baz() should return FOO_RET since it calls
   // foobar_derived::foo(), which in turn calls ::foo().
   if (bb->baz() == FOO_RET)
-    cout << "barbaz::baz is ok!" << endl;
+    std::cout << "barbaz::baz is ok!" << std::endl;
 
   // --------------
 
   if (convenience())
-    cout << "convenience is ok!" << endl;
+    std::cout << "convenience is ok!" << std::endl;
 
   return 0;
 }
@@ -201,15 +196,12 @@ public:
 
 AT_DATA([foo.cpp],
 [[#include <config.h>
-#ifdef HAVE_IOSTREAM
+#if HAVE_IOSTREAM
 # include <iostream>
-#else
+#elif HAVE_IOSTREAM_H
 # include <iostream.h>
-#endif
-
-#ifdef HAVE_NAMESPACES
-namespace std { }
-using namespace std;
+#else
+# include <iostream>
 #endif
 
 #include <math.h>
@@ -220,14 +212,14 @@ using namespace std;
 int
 foo(void)
 {
-  cout << "cos (0.0) = " << (double) cos ((double) 0.0) << endl;
+  std::cout << "cos (0.0) = " << (double) cos ((double) 0.0) << std::endl;
   return FOO_RET;
 }
 
 int
 hello(void)
 {
-  cout << "** This is libfoo (tagdemo) **" << endl;
+  std::cout << "** This is libfoo (tagdemo) **" << std::endl;
   return HELLO_RET;
 }
 
