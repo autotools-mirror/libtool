@@ -32,7 +32,7 @@ for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
 done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
 eval `$LIBTOOL --config | $EGREP '^(objdir|objext)'`
-eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_file_cmd|to_tool_file_cmd)='`
+eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_os|build_alias|to_host_file_cmd|to_tool_file_cmd)='`
 configure_options=--prefix=/nonexistent
 if test -n "$host_alias"; then
   configure_options="$configure_options --host $host_alias"
@@ -72,6 +72,18 @@ unset MFLAGS MAKEFLAGS MAKELEVEL __MKLVL__ MAKE_JOBS_FIFO
 case $host_os in
 aix*) umask o-rwx ;;
 esac
+
+# Use mklink when symlinking for MSVC
+if $LIBTOOL --config | $EGREP '^nm_interface="MS dumpbin"' >/dev/null; then
+  case $host_os,$build_os in
+  mingw*,cygwin*)
+    LN_S="cmd /c mklink" ;;
+  mingw*,*) # MSYS
+    LN_S="cmd //c mklink" ;;
+  *)
+    LN_S="cmd /c mklink" ;;
+  esac
+fi
 m4_divert_pop([PREPARE_TESTS])dnl
 
 
