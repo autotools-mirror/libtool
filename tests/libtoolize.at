@@ -521,7 +521,12 @@ AT_SETUP([copy ltdl.m4 with shared macro directory])
 
 _LT_AT_LTDL_SETUP
 
-LT_AT_CHECK_LIBTOOLIZE([--ltdl], 0, expout)
+case $LN_S in
+*mklink*)
+  LT_AT_CHECK_LIBTOOLIZE([--ltdl], 0, stdout) ;;
+*)
+  LT_AT_CHECK_LIBTOOLIZE([--ltdl], 0, expout) ;;
+esac
 
 AT_CLEANUP
 
@@ -533,7 +538,12 @@ AT_SETUP([correctly parse LTDL_INIT from configure.ac])
 
 _LT_AT_LTDL_SETUP
 
-LT_AT_CHECK_LIBTOOLIZE([], 0, expout)
+case $LN_S in
+*mklink*)
+  LT_AT_CHECK_LIBTOOLIZE([], 0, stdout) ;;
+*)
+  LT_AT_CHECK_LIBTOOLIZE([], 0, expout) ;;
+esac
 
 AT_CLEANUP
 
@@ -1082,7 +1092,12 @@ exit 1
 ]])
 chmod a+x ./no-m4
 
-AT_CHECK([PATH=`pwd`:$PATH M4=`pwd`/no-m4 $LIBTOOLIZE --ltdl=ltdl], 0, expout)
+case $LN_S in
+*mklink*)
+  AT_CHECK([PATH=`pwd`:$PATH M4=`pwd`/no-m4 $LIBTOOLIZE --ltdl=ltdl], 0, stdout) ;;
+*)
+  AT_CHECK([PATH=`pwd`:$PATH M4=`pwd`/no-m4 $LIBTOOLIZE --ltdl=ltdl], 0, expout) ;;
+esac
 
 AT_CLEANUP
 
