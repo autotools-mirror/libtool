@@ -1,6 +1,6 @@
 # pic_flag.at -- override the pic_flag at configure time   -*- Autotest -*-
 
-#   Copyright (C) 2010-2019, 2021-2024 Free Software Foundation, Inc.
+#   Copyright (C) 2010-2019, 2021-2025 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
