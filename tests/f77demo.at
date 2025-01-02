@@ -1,6 +1,6 @@
 # f77demo.at -- Fortran 77 language support.		-*- Autotest -*-
 #
-#   Copyright (C) 2003, 2005-2006, 2011-2019, 2021-2024 Free Software
+#   Copyright (C) 2003, 2005-2006, 2011-2019, 2021-2025 Free Software
 #   Foundation, Inc.
 #   Written by Eric Lindahl, 2002
 #   Written by Gary V. Vaughan, 2003

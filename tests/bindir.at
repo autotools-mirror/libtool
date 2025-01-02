@@ -1,6 +1,6 @@
 # bindir.at -  Test the -bindir option
 #
-#   Copyright (C) 2009-2019, 2021-2024 Free Software Foundation, Inc.
+#   Copyright (C) 2009-2019, 2021-2025 Free Software Foundation, Inc.
 #   Written by Dave Korn, 2009
 #
 #   This file is part of GNU Libtool.
