@@ -149,6 +149,20 @@ func_help ()
     func_usage_message
     $ECHO "$long_help_message
 
+If a TAG is supplied, it must use one of the tag names below:
+
+    Tag Name        Language Name
+       CC              C
+       CXX             C++
+       GCJ             Java
+       F77             Fortran 77
+       FC              Fortran
+       GO              Go
+       RC              Windows Resource
+
+If you do not see a tag name associated with your programming language, then
+you are using a compiler that $progname does not support.
+
 MODE must be one of the following:
 
        clean           remove files from the build directory
@@ -849,8 +863,9 @@ func_infer_tag ()
 	# was found and let the user know that the "--tag" command
 	# line option must be used.
 	if test -z "$tagname"; then
-	  func_echo "unable to infer tagged configuration"
-	  func_fatal_error "specify a tag with '--tag'"
+	  func_echo "unable to infer tagged configuration with compiler."
+	  func_echo "Possible use of unsupported compiler."
+	  func_fatal_error "specify a tag with '--tag'. For more information, try '$progname --help'."
 #	else
 #	  func_verbose "using $tagname tagged configuration"
 	fi
