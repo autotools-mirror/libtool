@@ -93,3 +93,20 @@ AT_CHECK([$LIBTOOL --mode=compile $GCJ $GCJCFLAGS -c A.java],
 	 [], [ignore], [ignore])
 
 AT_CLEANUP
+
+# Unsupported compiler check
+AT_SETUP([Unsupported compiler inferred tag check])
+AT_KEYWORDS([libtool])
+
+AT_DATA([a.asm],
+[[section .text
+     global _start
+  _start:
+     mov eax,1
+]])
+
+AT_XFAIL_IF([:])
+AT_CHECK([$LIBTOOL --mode=compile nasm -felf64 a.asm],
+	 [0], [ignore], [ignore])
+
+AT_CLEANUP
