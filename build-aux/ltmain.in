@@ -5155,8 +5155,13 @@ func_mode_link ()
 	  continue
 	  ;;
 	xlinker)
-	  func_append linker_flags " $qarg"
-	  func_append compiler_flags " $wl$qarg"
+	  func_append linker_flags "$qarg,"
+	  # Args in the var 'compiler_flags' causes warnings in MSVC
+	  func_cc_basename "$CC"
+	  case $func_cc_basename_result in
+	    cl|cl.exe) ;;
+	    *) func_append compiler_flags " $wl$qarg" ;;
+	  esac
 	  prev=
 	  func_append compile_command " $wl$qarg"
 	  func_append finalize_command " $wl$qarg"
@@ -5530,8 +5535,13 @@ func_mode_link ()
 	  IFS=$save_ifs
           func_quote_arg pretty "$flag"
 	  func_append arg " $wl$func_quote_arg_result"
-	  func_append compiler_flags " $wl$func_quote_arg_result"
-	  func_append linker_flags " $func_quote_arg_result"
+	  # Args in the var 'compiler_flags' causes warnings in MSVC
+	  func_cc_basename "$CC"
+	  case $func_cc_basename_result in
+	     cl|cl.exe) ;;
+	     *) func_append compiler_flags " $wl$func_quote_arg_result" ;;
+	  esac
+	  func_append linker_flags "$func_quote_arg_result,"
 	done
 	IFS=$save_ifs
 	func_stripname ' ' '' "$arg"

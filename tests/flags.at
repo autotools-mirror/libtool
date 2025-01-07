@@ -129,7 +129,7 @@ for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
   -Wc, | -Xcompiler\ )
     AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=compile $compile ]dnl
 	     [$flag-foo -c $source], [], [stdout], [ignore])
-    AT_CHECK([$FGREP " -foo" stdout], [], [ignore])
+    AT_CHECK([$GREP -- " -foo" stdout], [], [ignore])
     flag_prefix_prog=
     flag_prefix_lib=
     flags_in_liblink=$compiler_flags_in_liblink
@@ -143,7 +143,7 @@ for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
 
   AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=link $link ]dnl
 	   [-o program$EXEEXT a.lo $flag-foo], [], [stdout], [ignore])
-  AT_CHECK([$FGREP " $flag_prefix_prog-foo" stdout], [], [ignore])
+  AT_CHECK([$GREP -- "$flag_prefix_prog-foo" stdout], [], [ignore])
 
   eval set x "$library_and_module"
   for output
@@ -152,9 +152,9 @@ for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
     AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=link $link ]dnl
 	     [-o $output a.lo -rpath /nowhere $flag-foo], [], [stdout], [ignore])
     if $flags_in_liblink; then
-      AT_CHECK([$FGREP " $flag_prefix_lib-foo" stdout], [], [ignore])
+      AT_CHECK([$GREP -- "$flag_prefix_lib-foo" stdout], [], [ignore])
     else
-      AT_CHECK([$FGREP " $flag_prefix_lib-foo" stdout], [1])
+      AT_CHECK([$GREP -- " $flag_prefix_lib-foo" stdout], [1])
     fi
   done
 done
