@@ -434,6 +434,9 @@ AT_CLEANUP
 
 AT_SETUP([deplibs_check_method])
 
+# Skip test if deplibs_check_method is not pass_all
+AT_CHECK([$LIBTOOL --config | $EGREP '^deplibs_check_method="pass_all' || exit 77], [], [ignore], [ignore])
+
 _LT_DEMO_SETUP
 
 AT_DATA([demo.mk],
