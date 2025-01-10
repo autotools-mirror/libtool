@@ -50,6 +50,74 @@ AT_CHECK([$LIBTOOL --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c a.cpp],
 
 AT_CLEANUP
 
+AT_SETUP([OBJC inferred tag])
+LT_AT_TAG([OBJC])
+AT_KEYWORDS([libtool])
+
+AT_CHECK([$LIBTOOL --config | $EGREP '^objc_compiles="no"' && (exit 77)], 1)
+
+AT_DATA([a.m],
+[[
+#import <Foundation/Foundation.h>
+
+@interface Addition : NSObject
+- (int)this:(int)a that:(int)b;
+@end
+
+@implementation Addition
+- (int)this:(int)a that:(int)b
+{
+  return a + b;
+}
+@end
+
+int main() {
+    Addition *add = [[Addition alloc] init];
+    int result = [add this:10 that:20];
+    printf("add this:10 that:20 = %d", result);
+    return 0;
+}
+]])
+
+AT_CHECK([$LIBTOOL --mode=compile $OBJC $CPPFLAGS $OBJCFLAGS -c a.m],
+	 [], [ignore], [ignore])
+
+AT_CLEANUP
+
+AT_SETUP([OBJCXX inferred tag])
+LT_AT_TAG([OBJCXX])
+AT_KEYWORDS([libtool])
+
+AT_CHECK([$LIBTOOL --config | $EGREP '^objc_compiles="no"' && (exit 77)], 1)
+
+AT_DATA([a.mm],
+[[
+#import <Foundation/Foundation.h>
+
+@interface Addition : NSObject
+- (int)this:(int)a that:(int)b;
+@end
+
+@implementation Addition
+- (int)this:(int)a that:(int)b
+{
+  return a + b;
+}
+@end
+
+int main() {
+    Addition *add = [[Addition alloc] init];
+    int result = [add this:10 that:20];
+    printf("add this:10 that:20 = %d", result);
+    return 0;
+}
+]])
+
+AT_CHECK([$LIBTOOL --mode=compile $OBJCXX $CPPFLAGS $OBJCXXFLAGS -c a.mm -o a.o],
+	 [], [ignore], [ignore])
+
+AT_CLEANUP
+
 AT_SETUP([F77 inferred tag])
 LT_AT_TAG([F77])
 AT_KEYWORDS([libtool])

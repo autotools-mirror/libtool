@@ -154,6 +154,8 @@ If a TAG is supplied, it must use one of the tag names below:
     Tag Name        Language Name
        CC              C
        CXX             C++
+       OBJC            Objective-C
+       OBJCXX          Objective-C++
        GCJ             Java
        F77             Fortran 77
        FC              Fortran

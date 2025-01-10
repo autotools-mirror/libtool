@@ -2,6 +2,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** New features:
+
+  - Add tagging for Objective-C and Objective-C++, OBJC and OBJCXX.
+
 
 * Noteworthy changes in release 2.5.4 (2024-11-20) [stable]
 
