@@ -152,6 +152,8 @@ _LTDL_SETUP
 
 # Enable all the language support we can
 LT_LANG(C++)
+LT_LANG(Objective-C)
+LT_LANG(Objective-C++)
 LT_LANG(Fortran 77)
 LT_LANG(Fortran)
 LT_LANG(Go)

@@ -18,7 +18,7 @@
 # along with GNU Libtool.  If not, see <https://www.gnu.org/licenses/>.
 ####
 
-m4_foreach([lt_tag], [CC, CXX, F77, FC, GCJ],
+m4_foreach([lt_tag], [CC, CXX, OBJC, OBJCXX, F77, FC, GCJ],
 [AT_SETUP([passing lt_tag flags through libtool])
 AT_KEYWORDS([libtool])
 LT_AT_TAG(m4_defn([lt_tag]))
@@ -47,6 +47,52 @@ compile="$CC $CPPFLAGS $CFLAGS" link="$CC $CFLAGS $LDFLAGS" source=a.c
 ]])
 compile="$CXX $CPPFLAGS $CXXFLAGS" link="$CXX $CXXFLAGS $LDFLAGS" source=a.cpp
 ],
+[OBJC], [AT_DATA([a.m],
+[[#import <Foundation/Foundation.h>
+
+@interface Addition : NSObject
+- (int)this:(int)a that:(int)b;
+@end
+
+@implementation Addition
+- (int)this:(int)a that:(int)b
+{
+  return a + b;
+}
+@end
+
+int main() {
+    Addition *add = [[Addition alloc] init];
+    int result = [add this:10 that:20];
+    printf("add this:10 that:20 = %d", result);
+    return 0;
+}
+]])
+compile="$OBJC $CPPFLAGS $OBJCFLAGS" link="$OBJC $OBJCFLAGS $LDFLAGS" source=a.m
+],
+[OBJCXX], [AT_DATA([a.mm],
+[[#import <Foundation/Foundation.h>
+
+@interface Addition : NSObject
+- (int)this:(int)a that:(int)b;
+@end
+
+@implementation Addition
+- (int)this:(int)a that:(int)b
+{
+  return a + b;
+}
+@end
+
+int main() {
+    Addition *add = [[Addition alloc] init];
+    int result = [add this:10 that:20];
+    printf("add this:10 that:20 = %d", result);
+    return 0;
+}
+]])
+compile="$OBJCXX $CPPFLAGS $OBJCXXFLAGS" link="$OBJCXX $OBJCXXFLAGS $LDFLAGS" source="a.mm -o a.o"
+],
 [F77], [AT_DATA([a.f],
 [[      program main
       end
@@ -73,6 +119,10 @@ else
 fi
 
 eval "`$LIBTOOL --tag=lt_tag --config | $EGREP '^(wl|archive_cmds)='`"
+
+if test OBJC = lt_tag || test OBJCXX = lt_tag; then
+  AT_CHECK([$LIBTOOL --config | $EGREP '^objc_compiles="no"' && (exit 77)], 1)
+fi
 
 AT_CHECK([$LIBTOOL --tag=lt_tag --mode=compile $compile -c $source],
 	 [], [ignore], [ignore])

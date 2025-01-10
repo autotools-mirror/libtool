@@ -506,6 +506,36 @@ m4_define([_LT_LIBTOOL_TAG_VARS],
 # ------------------------------
 m4_define([_LT_TAGVAR], [m4_ifval([$2], [$1_$2], [$1])])
 
+# _LT_OBJECTIVE_C
+# ------------------------------
+m4_defun([_LT_OBJECTIVE_C], [
+  AC_CACHE_CHECK([for Objective C compilation],
+    [lt_cv_objc_compiles],
+    [ save_CFLAGS=$CFLAGS
+      CFLAGS=$OBJCFLAGS
+      AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM([#import <Foundation/Foundation.h>
+@interface Addition : NSObject
+- (int)this:(int)a that:(int)b;
+@end
+
+@implementation Addition
+- (int)this:(int)a that:(int)b
+{
+  return a + b;
+}
+@end
+],[])],
+        lt_cv_objc_compiles=yes,
+        lt_cv_objc_compiles=no
+      )
+      CFLAGS=$save_CFLAGS
+    ]
+  )
+  objc_compiles=$lt_cv_objc_compiles
+  _LT_DECL([], [objc_compiles], [1],
+    [Check for compiling Objective C and C++ code])
+])
 
 # _LT_CONFIG_COMMANDS
 # -------------------
@@ -826,6 +856,8 @@ AC_DEFUN([LT_LANG],
 m4_case([$1],
   [C],			[_LT_LANG(C)],
   [C++],		[_LT_LANG(CXX)],
+  [Objective-C],		[_LT_LANG(OBJC)],
+  [Objective-C++],	[_LT_LANG(OBJCXX)],
   [Go],			[_LT_LANG(GO)],
   [Java],		[_LT_LANG(GCJ)],
   [Fortran 77],		[_LT_LANG(F77)],
@@ -906,6 +938,14 @@ AC_PROVIDE_IFELSE([AC_PROG_GCJ],
 AC_PROVIDE_IFELSE([AC_PROG_GO],
   [LT_LANG(GO)],
   [m4_define([AC_PROG_GO], defn([AC_PROG_GO])[LT_LANG(GO)])])
+
+AC_PROVIDE_IFELSE([AC_PROG_OBJC],
+  [LT_LANG(OBJC)],
+  [m4_define([AC_PROG_OBJC], defn([AC_PROG_OBJC])[LT_LANG(OBJC)])])
+
+AC_PROVIDE_IFELSE([AC_PROG_OBJCXX],
+  [LT_LANG(OBJCXX)],
+  [m4_define([AC_PROG_OBJCXX], defn([AC_PROG_OBJCXX])[LT_LANG(OBJCXX)])])
 
 AC_PROVIDE_IFELSE([LT_PROG_RC],
   [LT_LANG(RC)],
@@ -8242,6 +8282,151 @@ CFLAGS=$lt_save_CFLAGS
 ])# _LT_LANG_GO_CONFIG
 
 
+# _LT_LANG_OBJC_CONFIG([TAG])
+# --------------------------
+# Ensure that the configuration variables for the GNU Objective-C compiler
+# are suitably defined.  These variables are subsequently used by _LT_CONFIG
+# to write the compiler configuration to 'libtool'.
+m4_defun([_LT_LANG_OBJC_CONFIG],
+[AC_REQUIRE([LT_PROG_OBJC])dnl
+AC_LANG_SAVE
+
+# Source file extension for OBJC test sources.
+ac_ext=m
+
+# Object file extension for compiled OBJC test sources.
+objext=o
+_LT_TAGVAR(objext, $1)=$objext
+
+# Code to be used in simple compile tests
+lt_simple_compile_test_code="int some_variable = 0;"
+
+# Code to be used in simple link tests
+lt_simple_link_test_code='int main(void){return(0);}'
+
+# ltmain only uses $CC for tagged configurations so make sure $CC is set.
+_LT_TAG_COMPILER
+
+# save warnings/boilerplate of simple test code
+_LT_COMPILER_BOILERPLATE
+_LT_LINKER_BOILERPLATE
+
+# Check for compilation issues with OBJC flags
+_LT_OBJECTIVE_C
+if test "yes" = "$lt_cv_gnustep_exists"; then
+  OBJCFLAGS="$OBJCFLAGS `gnustep-config --objc-flags`"
+fi
+
+# Allow CC to be a program name with arguments.
+lt_save_CC=$CC
+lt_save_CFLAGS=$CFLAGS
+lt_save_GCC=$GCC
+GCC=yes
+CC=${OBJC-"gcc"}
+CFLAGS=$OBJCFLAGS
+compiler=$CC
+_LT_TAGVAR(compiler, $1)=$CC
+_LT_TAGVAR(LD, $1)=$LD
+_LT_CC_BASENAME([$compiler])
+
+_LT_TAGVAR(old_archive_cmds, $1)=$old_archive_cmds
+_LT_TAGVAR(reload_flag, $1)=$reload_flag
+_LT_TAGVAR(reload_cmds, $1)=$reload_cmds
+
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
+if test -n "$compiler"; then
+  _LT_COMPILER_NO_RTTI($1)
+  _LT_COMPILER_PIC($1)
+  _LT_COMPILER_C_O($1)
+  _LT_COMPILER_FILE_LOCKS($1)
+  _LT_LINKER_SHLIBS($1)
+  _LT_LINKER_HARDCODE_LIBPATH($1)
+
+  _LT_CONFIG($1)
+fi
+
+AC_LANG_RESTORE
+
+GCC=$lt_save_GCC
+CC=$lt_save_CC
+CFLAGS=$lt_save_CFLAGS
+])# _LT_LANG_OBJC_CONFIG
+
+
+# _LT_LANG_OBJCXX_CONFIG([TAG])
+# --------------------------
+# Ensure that the configuration variables for the GNU Objective-C++ compiler
+# are suitably defined.  These variables are subsequently used by _LT_CONFIG
+# to write the compiler configuration to 'libtool'.
+m4_defun([_LT_LANG_OBJCXX_CONFIG],
+[AC_REQUIRE([LT_PROG_OBJCXX])dnl
+AC_LANG_SAVE
+
+# Source file extension for OBJCXX test sources.
+ac_ext=mm
+
+# Object file extension for compiled OBJCXX test sources.
+objext=o
+_LT_TAGVAR(objext, $1)=$objext
+
+# Code to be used in simple compile tests
+lt_simple_compile_test_code="int some_variable = 0;"
+
+# Code to be used in simple link tests
+lt_simple_link_test_code='int main(int, char *[[]]) { return(0); }'
+
+# ltmain only uses $CC for tagged configurations so make sure $CC is set.
+_LT_TAG_COMPILER
+
+# save warnings/boilerplate of simple test code
+_LT_COMPILER_BOILERPLATE
+_LT_LINKER_BOILERPLATE
+
+# Check for compilation issues with OBJCXX flags
+_LT_OBJECTIVE_C
+
+# Allow CC to be a program name with arguments.
+lt_save_CC=$CC
+lt_save_CFLAGS=$CFLAGS
+lt_save_GCC=$GCC
+GCC=yes
+CC=${OBJCXX-"g++"}
+CFLAGS=$OBJCXXFLAGS
+compiler=$CC
+_LT_TAGVAR(compiler, $1)=$CC
+_LT_TAGVAR(LD, $1)=$LD
+_LT_CC_BASENAME([$compiler])
+
+_LT_TAGVAR(old_archive_cmds, $1)=$old_archive_cmds
+_LT_TAGVAR(reload_flag, $1)=$reload_flag
+_LT_TAGVAR(reload_cmds, $1)=$reload_cmds
+
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
+if test -n "$compiler"; then
+  _LT_COMPILER_NO_RTTI($1)
+  _LT_COMPILER_PIC($1)
+  _LT_COMPILER_C_O($1)
+  _LT_COMPILER_FILE_LOCKS($1)
+  _LT_LINKER_SHLIBS($1)
+  _LT_LINKER_HARDCODE_LIBPATH($1)
+
+  _LT_CONFIG($1)
+fi
+
+AC_LANG_RESTORE
+
+GCC=$lt_save_GCC
+CC=$lt_save_CC
+CFLAGS=$lt_save_CFLAGS
+])# _LT_LANG_OBJCXX_CONFIG
+
+
 # _LT_LANG_RC_CONFIG([TAG])
 # -------------------------
 # Ensure that the configuration variables for the Windows resource compiler
@@ -8294,6 +8479,28 @@ CC=$lt_save_CC
 CFLAGS=$lt_save_CFLAGS
 ])# _LT_LANG_RC_CONFIG
 
+
+# LT_PROG_OBJC
+# -----------
+AC_DEFUN([LT_PROG_OBJC],
+[AC_CHECK_TOOL(OBJC, gcc,)
+  AC_CHECK_TOOL(GNUSTEP_CONFIG, gnustep-config,)
+  if test Xgnustep-config = X"$GNUSTEP_CONFIG"; then
+    test set = "${OBJCFLAGS+set}" || OBJCFLAGS="`gnustep-config --objc-flags`"
+  fi
+  AC_SUBST(OBJCFLAGS)])])[]dnl
+])
+
+# LT_PROG_OBJCXX
+# -----------
+AC_DEFUN([LT_PROG_OBJCXX],
+[AC_CHECK_TOOL(OBJCXX, g++,)
+  AC_CHECK_TOOL(GNUSTEP_CONFIG, gnustep-config,)
+  if test Xgnustep-config = X"$GNUSTEP_CONFIG"; then
+    test set = "${OBJCXXFLAGS+set}" || OBJCXXFLAGS="`gnustep-config --objc-flags`"
+  fi
+  AC_SUBST(OBJCXXFLAGS)])])[]dnl
+])
 
 # LT_PROG_GCJ
 # -----------
