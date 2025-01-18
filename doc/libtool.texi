@@ -2332,6 +2332,9 @@ kinds of shared archives are built. The @code{.la} pseudo-archive specifies
 one or the other depending on whether @option{-brtl} is specified in
 @code{LDFLAGS} when the library is built.
 
+When using @code{LT_INIT}, the @code{shared} option must be set before the
+@code{aix-soname=(svr4|both)} option to ensure shared libraries are built.
+
 @item disable-fast-install
 Change the default behaviour for @code{LT_INIT} to disable
 optimization for fast installation.  The user may still override this

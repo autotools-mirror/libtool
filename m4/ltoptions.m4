@@ -370,8 +370,16 @@ power*-*-aix[[5-9]]*,yes)
     fi
   fi
   ;;
-*)
+power*-*-aix[[5-9]]*,'')
+  AC_MSG_WARN([for $host, specify if building shared libraries for versioning (svr4|both)])
+  AC_MSG_CHECKING([which variant of shared library versioning to provide])
   with_aix_soname=aix
+  AC_MSG_RESULT([(default) $with_aix_soname])
+  ;;
+*)
+  AC_MSG_CHECKING([which variant of shared library versioning to provide])
+  with_aix_soname=aix
+  AC_MSG_RESULT([(default) $with_aix_soname])
   ;;
 esac
 
