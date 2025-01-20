@@ -3628,7 +3628,7 @@ bsdi[[45]]*)
 
 cygwin*)
   # func_win32_libid is a shell function defined in ltmain.sh
-  lt_cv_deplibs_check_method='file_magic ^x86 archive import|^x86 DLL|^x86 archive static'
+  lt_cv_deplibs_check_method='file_magic ^x86 archive import|^x86 DLL'
   lt_cv_file_magic_cmd='func_win32_libid'
   ;;
 
@@ -3637,7 +3637,7 @@ mingw* | windows* | pw32*)
   # func_win32_libid shell function, so use a weaker test based on 'objdump',
   # unless we find 'file', for example because we are cross-compiling.
   if ( file / ) >/dev/null 2>&1; then
-    lt_cv_deplibs_check_method='file_magic ^x86 archive import|^x86 DLL|^x86 archive static'
+    lt_cv_deplibs_check_method='file_magic ^x86 archive import|^x86 DLL'
     lt_cv_file_magic_cmd='func_win32_libid'
   else
     # Keep this pattern in sync with the one in func_win32_libid.
