@@ -120,7 +120,7 @@ done
 # and large ones.
 # TODO: check something like 1001:2419:189 after fixing issues
 # for 'version_type's of 'irix', 'nonstopux', or 'osf'.
-for version_info in 1 1:2 0:0:0 1:1:1 13:241:7; do
+for version_info in 1 1:2 0:0:0 1:1:1 13:241:7 55555:1234567890123456789:55555; do
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba1.lo ]dnl
 	   [-version-info $version_info -rpath $libdir], [], [ignore], [ignore])
 done
@@ -131,7 +131,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba1.lo ]dnl
 AT_CHECK([$GREP 'AGE.*is greater than' stderr], [], [ignore])
 
 # Hypothesis: we diagnose invalid values.
-for version_info in 1:2:3:4 -1 0:-1 0:0:-1; do
+for version_info in 1:2:3:4 -1 0:-1 0:0:-1 666666:1:1 1:1:666666 0:12345678901234567890:0; do
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba1.lo ]dnl
 	   [-version-info $version_info -rpath $libdir], [1], [ignore], [ignore])
 done

@@ -6,6 +6,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Add tagging for Objective-C and Objective-C++, OBJC and OBJCXX.
 
+  - Increase 5 digit limit on revision value for libraries to 19 digits,
+    which is referencing Unix epoch time in nanoseconds.
+
 ** Bug fixes:
 
   - Fix wrongly deduplicated compiler dependencies on linux.
