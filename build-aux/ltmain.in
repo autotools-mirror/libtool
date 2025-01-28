@@ -7177,29 +7177,21 @@ func_mode_link ()
 	esac
 
 	# Check that each of the things are valid numbers.
-	case $current in
-	0|[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9]) ;;
-	*)
-	  func_error "CURRENT '$current' must be a nonnegative integer"
+	if echo "$current" | $EGREP -v '(^0$)|(^[1-9]$)|(^[1-9][0-9]{1,4}$)' > /dev/null; then
+	  func_error "CURRENT '$current' must be a nonnegative integer and <= 5 digits"
 	  func_fatal_error "'$vinfo' is not valid version information"
-	  ;;
-	esac
+	fi
 
-	case $revision in
-	0|[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9]) ;;
-	*)
-	  func_error "REVISION '$revision' must be a nonnegative integer"
+	# Currently limiting revision length by Unix epoch time in nanoseconds.
+	if echo "$revision" | $EGREP -v '(^0$)|(^[1-9]$)|(^[1-9][0-9]{1,18}$)' > /dev/null; then
+	  func_error "REVISION '$revision' must be a nonnegative integer and <= 19 digits"
 	  func_fatal_error "'$vinfo' is not valid version information"
-	  ;;
-	esac
+	fi
 
-	case $age in
-	0|[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9]) ;;
-	*)
-	  func_error "AGE '$age' must be a nonnegative integer"
+	if echo "$age" | $EGREP -v '(^0$)|(^[1-9]$)|(^[1-9][0-9]{1,4}$)' > /dev/null; then
+	  func_error "AGE '$age' must be a nonnegative integer and <= 5 digits"
 	  func_fatal_error "'$vinfo' is not valid version information"
-	  ;;
-	esac
+	fi
 
 	if test "$age" -gt "$current"; then
 	  func_error "AGE '$age' is greater than the current interface number '$current'"
