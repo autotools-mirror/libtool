@@ -23,17 +23,7 @@ m4_foreach([lt_tag], [CC, CXX, OBJC, OBJCXX, F77, FC, GCJ],
 AT_KEYWORDS([libtool])
 LT_AT_TAG(m4_defn([lt_tag]))
 
-case $host_os in
-  # FIXME: Locate shared version of gcc library for NetBSD.
-  netbsd*)
-    if test "CXX" = "lt_tag"; then
-      AT_SKIP_IF([:])
-    fi
-    ;;
-  *)
-    LDFLAGS="$LDFLAGS -no-undefined"
-    ;;
-esac
+LDFLAGS="$LDFLAGS -no-undefined"
 eval "`$LIBTOOL --config | $EGREP '^(FGREP)='`"
 
 m4_case(lt_tag,
