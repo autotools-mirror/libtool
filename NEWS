@@ -13,6 +13,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix wrongly deduplicated compiler dependencies on linux.
 
+  - Fix NetBSD postdeps for shared libraries.
+
 
 * Noteworthy changes in release 2.5.4 (2024-11-20) [stable]
 
