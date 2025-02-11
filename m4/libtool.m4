@@ -7315,7 +7315,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	  _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
 	fi
 	# Workaround some broken pre-1.5 toolchains
-	output_verbose_link_cmd='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP conftest.$objext | $SED -e "s:--as-needed -lgcc_s --no-as-needed -lgcc -lc --as-needed -lgcc_s --no-as-needed -lgcc:--as-needed -lgcc_s:"'
+	output_verbose_link_cmd='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP conftest.$objext | $SED -e "s:--as-needed -lgcc_s --no-as-needed -lgcc -lc --as-needed -lgcc_s --no-as-needed -lgcc::"'
 	;;
 
       *nto* | *qnx*)
