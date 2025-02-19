@@ -4241,7 +4241,7 @@ check_executable (const char *path)
   if ((!path) || (!*path))
     return 0;
 
-  if ((stat (path, &st) >= 0)
+  if ((stat (path, &st) >= 0) && !S_ISDIR (st.st_mode)
       && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
     return 1;
   else
