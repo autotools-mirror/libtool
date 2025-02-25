@@ -33,7 +33,7 @@ int main() { return 0;}
 ]])
 
 $noskip && {
-$CC $CPPFLAGS $CFLAGS -arch x86_64 -arch i386 -o simple simple.c 2>&1 > /dev/null || noskip=false
+$CC $CPPFLAGS $CFLAGS -arch x86_64 -arch arm64 -o simple simple.c 2>&1 > /dev/null || noskip=false
 rm -f simple
 }
 
@@ -80,19 +80,21 @@ save_PATH=$PATH
 PATH=`pwd`/bin:$PATH
 export PATH
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o foo.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch i386 foo.c],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o foo.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch arm64 foo.c],[0],[ignore],[ignore])
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o baz.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch i386 baz.c],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o foo.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch arm64 foo.c],[0],[ignore],[ignore])
 
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC -o libfoo.la $CPPFLAGS $CFLAGS $LDFLAGS -arch x86_64 -arch i386 foo.lo baz.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o baz.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch arm64 baz.c],[0],[ignore],[ignore])
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o bar.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch i386 bar.c],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC -o libfoo.la $CPPFLAGS $CFLAGS $LDFLAGS -arch x86_64 -arch arm64 foo.lo baz.lo],[0],[ignore],[ignore])
 
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC  -o libbar.la $CPPFLAGS $CFLAGS $LDFLAGS -arch x86_64 -arch i386 bar.lo libfoo.la -rpath /nonexistent],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o bar.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch arm64 bar.c],[0],[ignore],[ignore])
 
-AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o main.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch i386 main.c],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC  -o libbar.la $CPPFLAGS $CFLAGS $LDFLAGS -arch x86_64 -arch arm64 bar.lo libfoo.la -rpath /nonexistent],[0],[ignore],[ignore])
 
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC  -o main$EXEEXT $CPPFLAGS $CFLAGS $LDFLAGS -arch x86_64 -arch i386 main.lo libbar.la],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC -c -o main.lo $CPPFLAGS $CFLAGS -arch x86_64 -arch arm64 main.c],[0],[ignore],[ignore])
+
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC  -o main$EXEEXT $CPPFLAGS $CFLAGS $LDFLAGS -arch x86_64 -arch arm64 main.lo libbar.la],[0],[ignore],[ignore])
 
 PATH=$save_PATH
 AT_CLEANUP
