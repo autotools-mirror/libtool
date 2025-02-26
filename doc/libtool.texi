@@ -3257,12 +3257,11 @@ It gives a couple of additional explanations and hints.
 @end itemize
 
 Before invoking the wizard,
-you need to build and install
-the previous release and the current release candidate of your package
-into different directories.
+you need to build and install the previous release and the current release
+candidate of your package into different directories.
 For example, assume the last release was @code{libfoo-1.4.tar.gz},
-and before preparing @code{libfoo-1.5.tar.gz}, your current release candidate
-is @code{libfoo-1.4.99.tar.gz}.
+and before preparing @code{libfoo-1.5.tar.gz},
+your current release candidate is @code{libfoo-1.4.99.tar.gz}.
 You build them like this:
 @example
 $ rm -rf /tmp/prev /tmp/curr
@@ -3290,21 +3289,19 @@ $ libtool-next-version /tmp/prev/lib/libfoo.so /tmp/curr/lib/libfoo.so
 @cindex command options, libtool-next-version
 @cindex options, libtool-next-version command
 
-The @code{libtool-next-version} program
-determines the next version to use for a libtool library.
+The @code{libtool-next-version} program determines the next version to use
+for a libtool library.
 
 It is invoked as follows:
 @example
 libtool-next-version [@var{option}]... @var{previous-library} @var{current-library}
 @end example
 
-@var{previous-library} is
-the installed library (in @code{.a} or @code{.so} format)
-of the previous release.
+@var{previous-library} is the installed library (in @code{.a} or @code{.so}
+format) of the previous release.
 
-@var{current-library} is
-the installed library (in @code{.a} or @code{.so} format)
-of the current release candidate.
+@var{current-library} is the installed library (in @code{.a} or @code{.so}
+format) of the current release candidate.
 
 It accepts the following options:
 
