@@ -28,7 +28,7 @@ SUBDIRS			= . gnulib-tests
 DIST_SUBDIRS		= $(SUBDIRS)
 EXTRA_DIST		=
 
-BUILT_SOURCES		= libtool libtoolize
+BUILT_SOURCES		= libtool libtoolize libtool-next-version
 
 CLEANFILES		=
 MOSTLYCLEANFILES	=
@@ -64,7 +64,7 @@ build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 
 EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
 		  GNUmakefile
-CLEANFILES     += libtool libtoolize
+CLEANFILES     += libtool libtoolize libtool-next-version
 
 ## If a file is named several times below, and especially if it
 ## is a distributed file created during Libtool bootstrap, we
@@ -78,6 +78,7 @@ extract_trace	= $(srcdir)/$(aux_dir)/extract-trace
 funclib_sh	= $(srcdir)/$(aux_dir)/funclib.sh
 inline_source	= $(srcdir)/$(aux_dir)/inline-source
 libtoolize_in	= $(srcdir)/libtoolize.in
+libtoolnextv_in	= $(srcdir)/libtool-next-version.in
 ltmain_sh	= $(srcdir)/$(aux_dir)/ltmain.sh
 ltmain_in	= $(srcdir)/$(aux_dir)/ltmain.in
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
@@ -88,7 +89,8 @@ options_parser	= $(srcdir)/$(aux_dir)/options-parser
 u2d_copyright	= $(srcdir)/$(aux_dir)/update-copyright
 
 EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
-		  $(libtoolize_in) $(ltmain_in) $(ltmain_sh) \
+		  $(libtoolize_in) $(libtoolnextv_in) \
+		  $(ltmain_in) $(ltmain_sh) \
 		  $(ltversion_in) $(ltversion_m4) $(no_bogus_macros) \
 		  $(options_parser) $(u2d_copyright)
 
@@ -280,10 +282,18 @@ configure_edit = $(bootstrap_edit) \
 
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtool
+# The "Update version info" wizard.
+bin_SCRIPTS += libtool-next-version
 
 libtoolize: $(libtoolize_in) $(config_status)
 	$(AM_V_at)rm -f '$@'
 	$(AM_V_GEN)$(configure_edit) '$(libtoolize_in)' > '$@'
+	$(AM_V_at)chmod a+x '$@'
+	$(AM_V_at)chmod a-w '$@'
+
+libtool-next-version: $(libtoolnextv_in) $(config_status)
+	$(AM_V_at)rm -f '$@'
+	$(AM_V_GEN)$(bootstrap_edit) '$(libtoolnextv_in)' > '$@'
 	$(AM_V_at)chmod a+x '$@'
 	$(AM_V_at)chmod a-w '$@'
 
@@ -383,6 +393,7 @@ doc_dir		= $(srcdir)/doc
 
 libtool_1	= $(doc_dir)/libtool.1
 libtoolize_1	= $(doc_dir)/libtoolize.1
+libtoolnextv_1	= $(doc_dir)/libtool-next-version.1
 notes_texi	= $(doc_dir)/notes.texi
 notes_txt	= $(doc_dir)/notes.txt
 
@@ -408,7 +419,7 @@ $(notes_txt): $(notes_texi)
 	$(AM_V_GEN)$(MAKEINFO) -P '$(srcdir)/doc' --no-headers \
 	    $(MAKEINFOFLAGS) -o '$@' '$(notes_texi)'
 
-dist_man1_MANS		= $(libtool_1) $(libtoolize_1)
+dist_man1_MANS		= $(libtool_1) $(libtoolize_1) $(libtoolnextv_1)
 MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
 update_mans = \
   PATH=".$(PATH_SEPARATOR)$$PATH"; export PATH; \
@@ -422,6 +433,8 @@ $(libtool_1): $(ltmain_sh)
 	$(AM_V_GEN)$(update_mans) -n 'Provide generalized library-building support services' --help-option=--help-all libtool
 $(libtoolize_1): $(libtoolize_in)
 	$(AM_V_GEN)$(update_mans) -n 'Prepare a package to use libtool' libtoolize
+$(libtoolnextv_1): $(libtoolnextv_in)
+	$(AM_V_GEN)$(update_mans) -n 'Determines next version to use for a libtool library' libtool-next-version
 
 
 

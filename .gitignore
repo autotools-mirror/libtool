@@ -43,7 +43,7 @@
 /gnulib-local
 /gnulib-tests
 /libtoolize
-/libtoolize.in
+/libtool-next-version
 /maint.mk
 /patches
 /release

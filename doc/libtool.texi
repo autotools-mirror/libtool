@@ -40,6 +40,7 @@ the section entitled ``GNU Free Documentation License''.
 @direntry
 * libtool-invocation: (libtool)Invoking libtool. Running the @code{libtool} script.
 * libtoolize: (libtool)Invoking libtoolize.      Adding libtool support.
+* libtool-next-version: (libtool)Invoking libtool-next-version. Running the @code{libtool-next-version} wizard.
 @end direntry
 
 @titlepage
@@ -3158,7 +3159,7 @@ interface number.
 Here are a set of rules to help you update your library version
 information:
 
-@enumerate 1
+@itemize @bullet
 @item
 Start with version information of @samp{0:0:0} for each libtool library.
 
@@ -3167,6 +3168,31 @@ Update the version information only immediately before a public release
 of your software.  More frequent updates are unnecessary, and only
 guarantee that the current interface number gets larger faster.
 
+@item
+Do the update either manually, or guided by the @samp{libtool-next-version}
+wizard.
+@end itemize
+
+@strong{@emph{Never}} try to set the interface numbers so that they
+correspond to the release number of your package.  This is an abuse that
+only fosters misunderstanding of the purpose of library versions.
+Instead, use the @option{-release} flag (@pxref{Release numbers}), but be
+warned that every release of your package will not be binary compatible
+with any other release.
+
+@menu
+* Manual version info update::    Updating version info manually.
+* Guided version info update::    Using the libtool-next-version program.
+* Invoking libtool-next-version:: @code{libtool-next-version} command line options.
+@end menu
+
+@node Manual version info update
+@subsection Updating the version info manually
+
+Here are the steps that you need to do, to update your library version
+information:
+
+@enumerate 1
 @item
 If the library source code has changed at all since the last update,
 then increment @var{revision} (@samp{@var{c}:@var{r}:@var{a}} becomes
@@ -3185,14 +3211,7 @@ If any interfaces have been removed or changed since the last public
 release, then set @var{age} to 0.
 @end enumerate
 
-@strong{@emph{Never}} try to set the interface numbers so that they
-correspond to the release number of your package.  This is an abuse that
-only fosters misunderstanding of the purpose of library versions.
-Instead, use the @option{-release} flag (@pxref{Release numbers}), but be
-warned that every release of your package will not be binary compatible
-with any other release.
-
-The following explanation may help to understand the above rules a bit
+The following explanation may help to understand the steps above a bit
 better: consider that there are three possible kinds of reactions from
 users of your library to changes in a shared library:
 
@@ -3222,6 +3241,79 @@ to 0.
 In the above description, @emph{programs} using the library in question
 may also be replaced by other libraries using it.
 
+@node Guided version info update
+@subsection Updating the version info, guided by the libtool-next-version program
+
+The @samp{libtool-next-version} program is a wizard-like interactive tool,
+that is designed to avoid mistakes in the process of the manual update:
+
+@itemize @bullet
+@item
+It asks you questions, one by one, so that you can focus on one thing at a time.
+@item
+It prepares default answers, based on the set of symbols exported by library.
+@item
+It gives a couple of additional explanations and hints.
+@end itemize
+
+Before invoking the wizard,
+you need to build and install the previous release and the current release
+candidate of your package into different directories.
+For example, assume the last release was @code{libfoo-1.4.tar.gz},
+and before preparing @code{libfoo-1.5.tar.gz},
+your current release candidate is @code{libfoo-1.4.99.tar.gz}.
+You build them like this:
+@example
+$ rm -rf /tmp/prev /tmp/curr
+$ tar xfz libfoo-1.4.tar.gz
+$ (cd libfoo-1.4
+   && ./configure --prefix=/tmp/prev
+   && make
+   && make install)
+$ tar xfz libfoo-1.4.99.tar.gz
+$ (cd libfoo-1.4.99
+   && ./configure --prefix=/tmp/curr
+   && make
+   && make install)
+@end example
+
+Then you are ready to invoke the wizard like this:
+@example
+$ libtool-next-version /tmp/prev/lib/libfoo.so /tmp/curr/lib/libfoo.so
+@end example
+
+@node Invoking libtool-next-version
+@subsection Invoking @command{libtool-next-version}
+@pindex libtool-next-version
+@cindex libtool-next-version command options
+@cindex command options, libtool-next-version
+@cindex options, libtool-next-version command
+
+The @code{libtool-next-version} program determines the next version to use
+for a libtool library.
+
+It is invoked as follows:
+@example
+libtool-next-version [@var{option}]... @var{previous-library} @var{current-library}
+@end example
+
+@var{previous-library} is the installed library (in @code{.a} or @code{.so}
+format) of the previous release.
+
+@var{current-library} is the installed library (in @code{.a} or @code{.so}
+format) of the current release candidate.
+
+It accepts the following options:
+
+@table @option
+
+@item --help
+Print a help message and exit.
+
+@item --version
+Print version information and exit.
+
+@end table
 
 @node Release numbers
 @section Managing release information
