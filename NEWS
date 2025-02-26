@@ -4,6 +4,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 ** New features:
 
+  - Add a new tool, libtool-next-version, to guide users through updating
+    library versions.
+
   - Add tagging for Objective-C and Objective-C++, OBJC and OBJCXX.
 
   - Increase 5 digit limit on revision value for libraries to 19 digits,
