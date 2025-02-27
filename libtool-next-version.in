@@ -74,7 +74,7 @@ q
 }'
   copyright_year=`sed -n -e "$sed_extract_copyright_year" < "$0"`
   echo "libtool-next-version (GNU @PACKAGE@) @VERSION@"
-  echo "Copyright (C) ${copyright_year} Free Software Foundation, Inc.
+  echo "Copyright (C) $copyright_year Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law."
@@ -139,7 +139,7 @@ func_read_yesno ()
 
 # Command-line option processing.
 while test $# -gt 0; do
-  case "$1" in
+  case $1 in
     --help | --hel | --he | --h )
       func_usage
       exit 0 ;;
@@ -221,7 +221,7 @@ else
   echo "Please answer yes or no (probably yes)."
 fi
 func_read_yesno
-if test "$ans" = yes; then
+if test yes = "$ans"; then
 
   revision=`expr $revision + 1`
 
@@ -239,7 +239,7 @@ if test "$ans" = yes; then
   fi
   func_read_yesno
 
-  if test "$ans" = yes; then
+  if test yes = "$ans"; then
 
     current=`expr $current + 1`
     revision=0
@@ -256,7 +256,7 @@ if test "$ans" = yes; then
     echo "Please answer yes or no."
     func_read_yesno
 
-    if test "$ans" = yes; then
+    if test yes = "$ans"; then
 
       current=`expr $current + 1`
       revision=0
@@ -278,7 +278,7 @@ if test "$ans" = yes; then
       fi
       func_read_yesno
 
-      if test "$ans" = yes; then
+      if test yes = "$ans"; then
 
         current=`expr $current + 1`
         revision=0
