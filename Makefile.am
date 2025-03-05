@@ -64,7 +64,7 @@ build_scripts	= $(srcdir)/$(aux_dir)/announce-gen \
 
 EXTRA_DIST     += bootstrap bootstrap.conf $(build_scripts) cfg.mk maint.mk \
 		  GNUmakefile
-CLEANFILES     += libtool libtoolize
+CLEANFILES     += libtool libtoolize libtool-next-version
 
 ## If a file is named several times below, and especially if it
 ## is a distributed file created during Libtool bootstrap, we
