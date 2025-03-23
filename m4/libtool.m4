@@ -7313,9 +7313,11 @@ if test yes != "$_lt_caught_CXX_error"; then
 	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
 	  _LT_TAGVAR(hardcode_direct, $1)=yes
 	  _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
+	else
+	  _LT_TAGVAR(archive_cmds, $1)='$CC $pic_flag -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags $wl-soname $wl$soname -o $lib'
+	  _LT_TAGVAR(archive_expsym_cmds, $1)='$CC $pic_flag -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags $wl-soname $wl$soname $wl-retain-symbols-file $wl$export_symbols -o $lib'
 	fi
-	# Workaround some broken pre-1.5 toolchains
-	output_verbose_link_cmd='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP conftest.$objext | $SED -e "s:--as-needed -lgcc_s --no-as-needed -lgcc -lc --as-needed -lgcc_s --no-as-needed -lgcc::"'
+	output_verbose_link_cmd=func_echo_all
 	;;
 
       *nto* | *qnx*)
