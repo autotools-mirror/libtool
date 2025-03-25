@@ -12,6 +12,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Increase 5 digit limit on revision value for libraries to 19 digits,
     which is referencing Unix epoch time in nanoseconds.
 
+  - Add configuration options to choose whether to use '-nostdlib' to let
+    the compiler frontend decide what standard libraries to link when
+    building C++ shared libraries and modules, --enable-cxx-stdlib and
+    --disable-cxx-stdlib.
+
 ** Bug fixes:
 
   - Fix wrongly deduplicated compiler dependencies on linux.
