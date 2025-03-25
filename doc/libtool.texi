@@ -2378,6 +2378,19 @@ Change the default behaviour of @command{libtool} to try to use only
 non-PIC objects.  The user may still override this default by
 specifying @option{--enable-pic} to @command{configure}.
 
+@item cxx-stdlib
+Change the default behaviour for @command{libtool} to let the compiler
+frontend decide what standard libraries to link when building C++ shared
+libraries and modules.
+The user may still override this default by specifying
+@option{--disable-cxx-stdlib} to @command{configure}.
+
+@item no-cxx-stdlib
+Change the default behaviour for @command{libtool} to not link
+standard libraries when building C++ shared libraries and modules.
+The user may still override this default by specifying
+@option{--enable-cxx-stdlib} to @command{configure}.
+
 @end table
 
 @end defmac
