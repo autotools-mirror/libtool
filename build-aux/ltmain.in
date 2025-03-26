@@ -3859,6 +3859,7 @@ int setenv (const char *, const char *, int);
 # define getcwd  _getcwd
 # define putenv  _putenv
 # define S_IXUSR _S_IEXEC
+# define MSVC_ISDIR(m)(((m) & S_IFMT) == S_IFDIR)
 #elif defined __MINGW32__
 # define setmode _setmode
 # define stat    _stat
@@ -4254,8 +4255,13 @@ check_executable (const char *path)
   if ((!path) || (!*path))
     return 0;
 
+#ifdef _MSC_VER
+  if ((stat (path, &st) >= 0) && !MSVC_ISDIR (st.st_mode)
+      && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+#else
   if ((stat (path, &st) >= 0) && !S_ISDIR (st.st_mode)
       && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+#endif
     return 1;
   else
     return 0;
