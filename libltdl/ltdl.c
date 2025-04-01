@@ -785,10 +785,9 @@ find_handle_callback (char *filename, void *data, void *data2)
   if (notfound)
     return 0;
 
-  /* Try to dlopen the file, but do not continue searching in any
-     case.  */
+  /* Try to dlopen the file. */
   if (tryall_dlopen (phandle, filename, advise, 0) != 0)
-    *phandle = 0;
+    return 0;
 
   return 1;
 }
