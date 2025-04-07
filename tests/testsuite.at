@@ -284,7 +284,9 @@ AT_CHECK([test -z "$leftovers"])
 m4_define([LT_AT_HOST_DATA],
 [AT_DATA([$1], [$2])
 case $host_os in mingw* | windows*)
-  awk '{printf ("%s\r\n", [$]0);}' < $1 > $1.t && mv -f $1.t $1 ;;
+   awk '{printf ("%s\r\n", [$]0);}' < $1 > $1.t && mv -f $1.t $1;;
+cygwin*)
+   awk '{printf ("%s\n", [$]0);}' < $1 > $1.t && mv -f $1.t $1;;
 esac])
 
 
