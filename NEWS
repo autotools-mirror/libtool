@@ -23,6 +23,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix NetBSD postdeps for shared libraries.
 
+  - Fix statically linking dependencies into shared C++ libraries when
+    utilizing clang builtins or g++ options like, -static-libstdc++, by
+    using a new configuration option, --enable-cxx-stdlib.
+
 
 * Noteworthy changes in release 2.5.4 (2024-11-20) [stable]
 
