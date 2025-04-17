@@ -24,6 +24,9 @@
 AT_SETUP([inherited_linker_flags])
 AT_KEYWORDS([libtool])
 
+# Skip if "disable shared libraries" feature is set
+AT_CHECK([$LIBTOOL --features | $GREP 'disable shared libraries' && (exit 77)], [1], [ignore])
+
 AT_DATA([foo.c],
 [
 int foo() { return 1;}
@@ -77,7 +80,6 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo
 # 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'
 # here.  This fails on win32/MSVC because the generated command lines have a
 # different syntax.  So drop the first 'l'.
-AT_CHECK([$LIBTOOL --features | $GREP 'disable shared libraries' && (exit 77)], [1], [ignore])
 AT_CHECK([$GREP 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la],
@@ -85,18 +87,19 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main
 AT_CHECK([$GREP 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
 
-# now check for duplicates
+# If duplicate -l flags occur in a single link command, error.
+# For MSVC, multiple link commands are wrapped in, so limit grep.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /nonexistent ./libfoo.la ./libbar.la ./libboth.la],
 	 [ignore],[stdout],[ignore])
-AT_CHECK([$GREP 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_inlikely_existing_lib[^;]*lt_inlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
-AT_CHECK([$GREP 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_unlikely_existing_lib[^;]*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la ./libboth.la],
 	[ignore],[stdout],[ignore])
-AT_CHECK([$GREP 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_inlikely_existing_lib[^;]*lt_inlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
-AT_CHECK([$GREP 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
+AT_CHECK([$GREP 'lt_unlikely_existing_lib[^;]*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 
 mv libboth.la libboth.la.bak
