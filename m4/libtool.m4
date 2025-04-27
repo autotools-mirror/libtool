@@ -2929,6 +2929,18 @@ irix5* | irix6* | nonstopux*)
   hardcode_into_libs=yes
   ;;
 
+*-mlibc)
+  version_type=linux # correct to gnu/linux during the next big refactor
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+  soname_spec='$libname$release$shared_ext$major'
+  dynamic_linker='mlibc ld.so'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  hardcode_into_libs=yes
+  ;;
+
 # No shared lib support for Linux oldld, aout, or coff.
 linux*oldld* | linux*aout* | linux*coff*)
   dynamic_linker=no
@@ -3038,18 +3050,6 @@ netbsd*)
   hardcode_into_libs=yes
   enable_cxx_stdlib=yes
   stdlibflag=
-  ;;
-
-*-mlibc)
-  version_type=linux # correct to gnu/linux during the next big refactor
-  need_lib_prefix=no
-  need_version=no
-  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
-  soname_spec='$libname$release$shared_ext$major'
-  dynamic_linker='mlibc ld.so'
-  shlibpath_var=LD_LIBRARY_PATH
-  shlibpath_overrides_runpath=no
-  hardcode_into_libs=yes
   ;;
 
 newsos6)
@@ -3713,12 +3713,12 @@ irix5* | irix6* | nonstopux*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-# This must be glibc/ELF.
-linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
+*-mlibc)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-*-mlibc)
+# This must be glibc/ELF.
+linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -4541,6 +4541,8 @@ m4_if([$1], [CXX], [
 	    ;;
 	esac
 	;;
+      *-mlibc)
+	;;
       linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
 	case $cc_basename in
 	  KCC*)
@@ -4606,8 +4608,6 @@ m4_if([$1], [CXX], [
 	esac
 	;;
       netbsd* | netbsdelf*-gnu)
-	;;
-      *-mlibc)
 	;;
       *qnx* | *nto*)
         # QNX uses GNU C++, but need to define -shared option too, otherwise
@@ -4869,6 +4869,12 @@ m4_if([$1], [CXX], [
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
       ;;
 
+    *-mlibc)
+      _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
+      _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
+      _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
+      ;;
+
     linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
       case $cc_basename in
       # old Intel for x86_64, which still supported -KPIC.
@@ -4963,12 +4969,6 @@ m4_if([$1], [CXX], [
     newsos6)
       _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
-      ;;
-
-    *-mlibc)
-      _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-      _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
-      _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
       ;;
 
     *nto* | *qnx*)
@@ -5372,6 +5372,11 @@ _LT_EOF
       _LT_TAGVAR(archive_expsym_cmds, $1)='$SED "s|^|_|" $export_symbols >$output_objdir/$soname.expsym~$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-h,$soname $wl--retain-symbols-file,$output_objdir/$soname.expsym $wl--image-base,`expr ${RANDOM-$$} % 4096 / 2 \* 262144 + 1342177280` -o $lib'
       ;;
 
+    *-mlibc)
+	_LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
+	_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname $wl-retain-symbols-file $wl$export_symbols -o $lib'
+      ;;
+
     gnu* | linux* | tpf* | k*bsd*-gnu | kopensolaris*-gnu)
       tmp_diet=no
       if test linux-dietlibc = "$host_os"; then
@@ -5450,11 +5455,6 @@ _LT_EOF
       else
         _LT_TAGVAR(ld_shlibs, $1)=no
       fi
-      ;;
-
-    *-mlibc)
-	_LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
-	_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname $wl-retain-symbols-file $wl$export_symbols -o $lib'
       ;;
 
     netbsd* | netbsdelf*-gnu)
@@ -5989,6 +5989,9 @@ _LT_EOF
       _LT_TAGVAR(link_all_deplibs, $1)=yes
       ;;
 
+    *-mlibc)
+      ;;
+
     linux*)
       case $cc_basename in
       tcc*)
@@ -5998,9 +6001,6 @@ _LT_EOF
 	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)='$wl-rpath $wl$libdir'
 	;;
       esac
-      ;;
-
-    *-mlibc)
       ;;
 
     netbsd* | netbsdelf*-gnu)
@@ -7141,6 +7141,10 @@ if test yes != "$_lt_caught_CXX_error"; then
         _LT_TAGVAR(inherit_rpath, $1)=yes
         ;;
 
+      *-mlibc)
+        _LT_TAGVAR(ld_shlibs, $1)=yes
+	;;
+
       linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
         case $cc_basename in
           KCC*)
@@ -7304,10 +7308,6 @@ if test yes != "$_lt_caught_CXX_error"; then
 	    _LT_TAGVAR(ld_shlibs, $1)=no
 	    ;;
 	esac
-	;;
-
-      *-mlibc)
-        _LT_TAGVAR(ld_shlibs, $1)=yes
 	;;
 
       netbsd*)
