@@ -1708,6 +1708,11 @@ Pass a linker-specific flag directly to the linker.
 Pass a link-specific flag to the compiler driver (@code{CC}) during linking.
 @end table
 
+Note: When the output file shall depend on an installed library, you
+cannot specify the library name as @code{@var{dir}/lib@var{name}.a} or
+@code{@var{dir}/lib@var{name}.so} as part of the @var{mode-args}.
+Instead, pass the arguments @code{-L@var{dir}} and @code{-l@var{name}}.
+
 If the @var{output-file} ends in @file{.la}, then a libtool library is
 created, which must be built only from library objects (@file{.lo} files).
 The @option{-rpath} option is required.  In the current implementation,
