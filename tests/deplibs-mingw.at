@@ -24,6 +24,11 @@
 AT_SETUP([deplibs without file command])
 AT_KEYWORDS([libtool])
 
+# Skip failing test on MSVC
+if $LIBTOOL --config | $EGREP '^nm_interface="MS dumpbin"' >/dev/null; then
+  AT_CHECK([exit 77])
+fi
+
 cwd=`pwd`
 instdir=$cwd/inst
 libdir=$instdir/lib
