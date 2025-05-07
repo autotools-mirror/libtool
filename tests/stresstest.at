@@ -28,6 +28,12 @@
 AT_BANNER([Libtool stress test.])
 AT_SETUP([Link option thorough search test])
 AT_KEYWORDS([libtool expensive])
+
+# Skip failing test on MSVC
+if $LIBTOOL --config | $EGREP '^nm_interface="MS dumpbin"' >/dev/null; then
+  AT_CHECK([exit 77])
+fi
+
 eval `$LIBTOOL --config | $EGREP '^(CC|objdir|allow_undefined_flag)='`
 
 mkdir sub sub2 sub3 2>/dev/null
