@@ -82,4 +82,28 @@ default. If this occurs for the dynamic library path, you may use the
 @command{autoconf} cache variables @code{lt_cv_sys_lib_search_path_spec} and
 @code{lt_cv_sys_lib_dlsearch_path_spec} respectively.
 
+@item
+For many GNU/Linux systems, the shared library cache is not updated after a
+@command{make install}. Instead, the user will need to manually execute
+@command{ldconfig 'LIBDIR'} to locate newly installed libraries. Users
+should consult a system administrator as this should be done with great
+care. Here are some considerations:
+
+@itemize
+@item
+Libtool is designed to be portable to many different operating systems, and
+these OSs behave in various ways. Some OSs will find a new library
+automatically if it is installed in the existing configured library paths.
+
+@item
+The library installed might not ever be intended to be used by the currently
+executing OS because it is part of new distribution builds.
+
+@item
+Sometimes libraries are installed privately, using hard-coded run-paths in
+their dependent binaries. This is very common when a different version of
+the software is to be run than the OS is designed to support.
+
+@end itemize
+
 @end itemize

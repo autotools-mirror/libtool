@@ -2322,6 +2322,14 @@ func_mode_finish ()
       fi
       echo
 
+      echo "After a 'make install' for many GNU/Linux systems, 'ldconfig LIBDIR'"
+      echo "may need to be executed to help locate newly installed libraries,"
+      echo "but you should consult with a system administrator before updating"
+      echo "the shared library cache as this should be done with great care"
+      echo "and consideration. (See the 'Platform-specific configuration notes'"
+      echo "section of the documentation for more information.)"
+      echo
+
       echo "See any operating system documentation about shared libraries for"
       case $host in
 	solaris2.[6789]|solaris2.1[0-9])
