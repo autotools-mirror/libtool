@@ -17,6 +17,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
     building C++ shared libraries and modules, --enable-cxx-stdlib and
     --disable-cxx-stdlib.
 
+  - Allow statically linking GCC and Clang compiler support libraries
+    into shared libraries.
+
+  - Add linking clang_rt static archives compiler internal libraries by
+    their absolute path.
+
 ** Bug fixes:
 
   - Fix wrongly deduplicated compiler dependencies on linux.
