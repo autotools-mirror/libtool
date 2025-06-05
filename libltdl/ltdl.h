@@ -34,6 +34,10 @@ License along with GNU Libltdl.  If not, see <https://www.gnu.org/licenses/>.
 #include <libltdl/lt_error.h>
 #include <libltdl/lt_dlloader.h>
 
+#if defined _WIN32 && !defined __CYGWIN__
+#include <io.h>
+#endif
+
 LT_BEGIN_C_DECLS
 
 
