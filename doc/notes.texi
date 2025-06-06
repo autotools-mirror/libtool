@@ -106,4 +106,9 @@ the software is to be run than the OS is designed to support.
 
 @end itemize
 
+@item
+When using the MSVC toolchain, users should set Fortran environment variables
+to the following F77="no" and FC="no". This should avoid possible issues for
+symbols not being found when linking libltdl.
+
 @end itemize
