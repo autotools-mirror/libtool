@@ -1029,6 +1029,24 @@ func_convert_core_msys_to_w32 ()
 {
   $debug_cmd
 
+  # Compatibility for original MSYS
+  func_convert_core_msys_to_w32_result=`( cmd //c echo "$1" ) 2>/dev/null |
+    $SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
+  if test "$?" -ne 0; then
+      # on failure, ensure result is empty
+      func_convert_core_msys_to_w32_result=
+  fi
+}
+#end: func_convert_core_msys_to_w32
+
+
+# func_convert_core_msys_to_w32_with_cygpath ARG
+# Convert file name or path ARG with cygpath from MSYS format to w32
+# format. Return result in func_convert_core_msys_to_w32_with_cygpath_result.
+func_convert_core_msys_to_w32_with_cygpath ()
+{
+  $debug_cmd
+
   # Since MSYS2 is packaged with cygpath, call cygpath in $PATH; no need
   # to use LT_CYGPATH in this case.
   func_convert_core_msys_to_w32_result=`cygpath "$@" 2>/dev/null |
@@ -1038,7 +1056,7 @@ func_convert_core_msys_to_w32 ()
       func_convert_core_msys_to_w32_result=
   fi
 }
-#end: func_convert_core_msys_to_w32
+#end: func_convert_core_msys_to_w32_with_cygpath
 
 
 # func_convert_file_check ARG1 ARG2
@@ -1175,8 +1193,13 @@ func_convert_file_msys_to_w32 ()
 
   func_to_host_file_result=$1
   if test -n "$1"; then
-    func_convert_core_msys_to_w32 -w "$1"
-    func_to_host_file_result=$func_convert_core_msys_to_w32_result
+    if test "yes" = "$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w "$1"
+      func_to_host_file_result=$func_convert_core_msys_to_w32_with_cygpath_result
+    else
+      func_convert_core_msys_to_w32 "$1"
+      func_to_host_file_result=$func_convert_core_msys_to_w32_result
+    fi
   fi
   func_convert_file_check "$1" "$func_to_host_file_result"
 }
@@ -1227,8 +1250,13 @@ func_convert_file_msys_to_cygwin ()
 
   func_to_host_file_result=$1
   if test -n "$1"; then
-    func_convert_core_msys_to_w32 -w "$1"
-    func_cygpath -u "$func_convert_core_msys_to_w32_result"
+    if test "yes" = "$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w "$1"
+      func_cygpath -u "$func_convert_core_msys_to_w32_with_cygpath_result"
+    else
+      func_convert_core_msys_to_w32 "$1"
+      func_cygpath -u "$func_convert_core_msys_to_w32_result"
+    fi
     func_to_host_file_result=$func_cygpath_result
   fi
   func_convert_file_check "$1" "$func_to_host_file_result"
@@ -1329,8 +1357,13 @@ func_convert_path_msys_to_w32 ()
     # and winepath ignores them completely.
     func_stripname : : "$1"
     func_to_host_path_tmp1=$func_stripname_result
-    func_convert_core_msys_to_w32 -w -p "$func_to_host_path_tmp1"
-    func_to_host_path_result=$func_convert_core_msys_to_w32_result
+    if test "yes" = "$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w -p "$func_to_host_path_tmp1"
+      func_to_host_path_result=$func_convert_core_msys_to_w32_with_cygpath_result
+    else
+      func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
+      func_to_host_path_result=$func_convert_core_msys_to_w32_result
+    fi
     func_convert_path_check : ";" \
       "$func_to_host_path_tmp1" "$func_to_host_path_result"
     func_convert_path_front_back_pathsep ":*" "*:" ";" "$1"
@@ -1394,8 +1427,13 @@ func_convert_path_msys_to_cygwin ()
     # See func_convert_path_msys_to_w32:
     func_stripname : : "$1"
     func_to_host_path_tmp1=$func_stripname_result
-    func_convert_core_msys_to_w32 -w -p "$func_to_host_path_tmp1"
-    func_cygpath -u -p "$func_convert_core_msys_to_w32_result"
+    if test "yes" = "$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w -p "$func_to_host_path_tmp1"
+      func_cygpath -u -p "$func_convert_core_msys_to_w32_with_cygpath_result"
+    else
+      func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
+      func_cygpath -u -p "$func_convert_core_msys_to_w32_result"
+    fi
     func_to_host_path_result=$func_cygpath_result
     func_convert_path_check : : \
       "$func_to_host_path_tmp1" "$func_to_host_path_result"
