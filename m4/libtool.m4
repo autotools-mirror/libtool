@@ -8716,4 +8716,27 @@ to_tool_file_cmd=$lt_cv_to_tool_file_cmd
 AC_MSG_RESULT([$lt_cv_to_tool_file_cmd])
 _LT_DECL([to_tool_file_cmd], [lt_cv_to_tool_file_cmd],
          [0], [convert $build files to toolchain format])dnl
+
+AC_MSG_CHECKING([whether cygpath is installed])
+AC_CACHE_VAL(lt_cv_cygpath_installed,
+[lt_cv_cygpath_installed=ignoring;
+case $host in
+  *-*-mingw* | *-*-windows* | *-*-cygwin*)
+    case $build in
+      *-*-mingw* | *-*-windows* | *-*-cygwin*)
+        cygpath --help &> /dev/null
+        _lt_result=$?
+        if test 0 = "$_lt_result"; then
+          lt_cv_cygpath_installed=yes;
+        else
+          lt_cv_cygpath_installed=no;
+        fi
+        ;;
+    esac
+    ;;
+esac
+])
+AC_MSG_RESULT([$lt_cv_cygpath_installed])
+_LT_DECL([cygpath_installed], [lt_cv_cygpath_installed],
+         [0], [whether cygpath is installed])dnl
 ])# _LT_PATH_CONVERSION_FUNCTIONS
