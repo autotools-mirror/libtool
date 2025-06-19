@@ -1577,7 +1577,7 @@ _LT_DECL([], [AR], [1], [The archiver])
 
 test ${AR_FLAGS+y} || AR_FLAGS=${ARFLAGS-cr}
 lt_ar_flags=$AR_FLAGS
-_LT_DECL([], [lt_ar_flags], [0], [Flags to create an archive (by configure)])
+_LT_DECL([], [lt_ar_flags], [1], [Flags to create an archive (by configure)])
 
 # Make AR_FLAGS overridable by 'make ARFLAGS='.  Don't try to run-time override
 # by AR_FLAGS because that was never working and AR_FLAGS is about to die.
