@@ -8717,26 +8717,39 @@ AC_MSG_RESULT([$lt_cv_to_tool_file_cmd])
 _LT_DECL([to_tool_file_cmd], [lt_cv_to_tool_file_cmd],
          [0], [convert $build files to toolchain format])dnl
 
-AC_MSG_CHECKING([whether cygpath is installed])
-AC_CACHE_VAL(lt_cv_cygpath_installed,
-[lt_cv_cygpath_installed=ignoring;
-case $host in
-  *-*-mingw* | *-*-windows* | *-*-cygwin*)
-    case $build in
-      *-*-mingw* | *-*-windows* | *-*-cygwin*)
-        cygpath --help &> /dev/null
-        _lt_result=$?
-        if test 0 = "$_lt_result"; then
-          lt_cv_cygpath_installed=yes;
-        else
-          lt_cv_cygpath_installed=no;
-        fi
-        ;;
-    esac
-    ;;
-esac
-])
-AC_MSG_RESULT([$lt_cv_cygpath_installed])
-_LT_DECL([cygpath_installed], [lt_cv_cygpath_installed],
-         [0], [whether cygpath is installed])dnl
+AS_CASE([$host],
+  [*-*-mingw* | *-*-windows* | *-*-cygwin*],
+  [AS_CASE([$build],
+    [*-*-mingw* | *-*-windows* | *-*-cygwin*],
+    [AC_MSG_CHECKING([whether cygpath is installed])
+      AC_CACHE_VAL([lt_cv_cygpath_installed],
+        [lt_cv_cygpath_installed=ignoring
+          cygpath --help &> /dev/null
+          _lt_result=$?
+          AS_IF([test 0 = "$_lt_result"],
+            [lt_cv_cygpath_installed=yes],
+            [lt_cv_cygpath_installed=no])
+        ])
+      AC_MSG_RESULT([$lt_cv_cygpath_installed])
+      _LT_DECL([cygpath_installed], [lt_cv_cygpath_installed],
+               [0], [whether cygpath is installed])dnl
+      AS_IF([test "xyes" != "x$lt_cv_cygpath_installed"],
+        [
+          AC_MSG_CHECKING([whether to use cmd with one slash or two slashes])
+          AC_CACHE_VAL([lt_cv_cmd_slashes],
+            [
+              _lt_result=`cmd /c echo one-slash works. Not checked //c echo two-slashes 2>/dev/null`
+              AS_IF([test 0 != $?],
+                [AC_MSG_ERROR([Do not know how to convert paths])])
+              AS_CASE([$_lt_result],
+                [one-slash*],[lt_cv_cmd_slashes="one"],
+                [two-slashes*],[lt_cv_cmd_slashes="two"],
+                [AC_MSG_ERROR([Do not know how to convert paths])]
+              )
+            ])
+          AC_MSG_RESULT([$lt_cv_cmd_slashes])
+        ])
+    ])
+  ]
+)dnl
 ])# _LT_PATH_CONVERSION_FUNCTIONS
