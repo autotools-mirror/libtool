@@ -1030,8 +1030,13 @@ func_convert_core_msys_to_w32 ()
   $debug_cmd
 
   # Compatibility for original MSYS
+  if test "Xone" = "X$lt_cv_cmd_slashes"; then
+  func_convert_core_msys_to_w32_result=`( cmd /c echo "$1" ) 2>/dev/null |
+    $SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
+  else # Assume 'lt_cv_cmd_slashes = "two"'
   func_convert_core_msys_to_w32_result=`( cmd //c echo "$1" ) 2>/dev/null |
     $SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
+  fi
   if test "$?" -ne 0; then
       # on failure, ensure result is empty
       func_convert_core_msys_to_w32_result=
@@ -1193,7 +1198,7 @@ func_convert_file_msys_to_w32 ()
 
   func_to_host_file_result=$1
   if test -n "$1"; then
-    if test "yes" = "$cygpath_installed"; then
+    if test "Xyes" = "X$cygpath_installed"; then
       func_convert_core_msys_to_w32_with_cygpath -w "$1"
       func_to_host_file_result=$func_convert_core_msys_to_w32_with_cygpath_result
     else
@@ -1250,7 +1255,7 @@ func_convert_file_msys_to_cygwin ()
 
   func_to_host_file_result=$1
   if test -n "$1"; then
-    if test "yes" = "$cygpath_installed"; then
+    if test "Xyes" = "X$cygpath_installed"; then
       func_convert_core_msys_to_w32_with_cygpath -w "$1"
       func_cygpath -u "$func_convert_core_msys_to_w32_with_cygpath_result"
     else
@@ -1357,7 +1362,7 @@ func_convert_path_msys_to_w32 ()
     # and winepath ignores them completely.
     func_stripname : : "$1"
     func_to_host_path_tmp1=$func_stripname_result
-    if test "yes" = "$cygpath_installed"; then
+    if test "Xyes" = "X$cygpath_installed"; then
       func_convert_core_msys_to_w32_with_cygpath -w -p "$func_to_host_path_tmp1"
       func_to_host_path_result=$func_convert_core_msys_to_w32_with_cygpath_result
     else
@@ -1427,7 +1432,7 @@ func_convert_path_msys_to_cygwin ()
     # See func_convert_path_msys_to_w32:
     func_stripname : : "$1"
     func_to_host_path_tmp1=$func_stripname_result
-    if test "yes" = "$cygpath_installed"; then
+    if test "Xyes" = "X$cygpath_installed"; then
       func_convert_core_msys_to_w32_with_cygpath -w -p "$func_to_host_path_tmp1"
       func_cygpath -u -p "$func_convert_core_msys_to_w32_with_cygpath_result"
     else
