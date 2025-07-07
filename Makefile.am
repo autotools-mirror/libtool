@@ -576,15 +576,12 @@ $(changelog): FORCE
 # current locale considers to be equal.
 ASSORT = LC_ALL=C sort
 
-# Extract all lines up to the first one starting with "##".
-prologue = perl -ne '/^\#\#/ and exit; print' $(no_thanks)
-
 # Generate THANKS using git log entries as far as possible, fixing
 # up omissions and errors from NO-THANKS configuration.
 $(thanks): FORCE
 	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
 	  { \
-	    $(prologue); echo; \
+	    perl -ne '/^\#\#/ and exit; print' $(no_thanks); echo; \
 	    { perl -ne '/^$$/.../^$$/ and print' $(no_thanks) \
 	      | grep -v '^$$' | perl -pe 's/  +/\0/'; \
 	      {  sed -e '1,/\#\# /d' -e '/^\#\# /d' \
