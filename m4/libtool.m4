@@ -8738,7 +8738,7 @@ AS_CASE([$host],
           AC_MSG_CHECKING([whether to use cmd with one slash or two slashes])
           AC_CACHE_VAL([lt_cv_cmd_slashes],
             [
-              _lt_result=`"${COMSPEC-cmd}" /c echo one-slash works. Not checked //c echo two-slashes 2>/dev/null`
+              _lt_result=`cmd /c echo one-slash works. Not checked //c echo two-slashes 2>/dev/null`
               AS_IF([test 0 != $?],
                 [AC_MSG_ERROR([Do not know how to convert paths])])
               AS_CASE([$_lt_result],
