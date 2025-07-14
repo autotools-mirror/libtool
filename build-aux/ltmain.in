@@ -5641,6 +5641,7 @@ func_mode_link ()
       # @file                GCC response files
       # -tp=*                Portland pgcc target processor selection
       # --sysroot=*          for sysroot support
+      # --target=*           for target architecture support
       # -O*, -g*, -flto*, -fwhopr*, -fuse-linker-plugin GCC link-time optimization
       # -specs=*             GCC specs files
       # -stdlib=*            select c++ std lib with clang
@@ -5660,7 +5661,7 @@ func_mode_link ()
       # -Wa,*                Pass flags directly to the assembler
       # -Werror, -Werror=*   Report (specified) warnings as errors
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
+      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*|--target=*| \
       -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-no-canonical-prefixes| \
       -stdlib=*|-rtlib=*|--unwindlib=*| \
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
