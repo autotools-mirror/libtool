@@ -79,7 +79,7 @@ int main() {
 }
 ]])
 
-AT_CHECK([$LIBTOOL --mode=compile $OBJC $CPPFLAGS $OBJCFLAGS -c a.m],
+AT_CHECK([$LIBTOOL --mode=compile $OBJC $OBJCFLAGS -c a.m],
 	 [], [ignore], [ignore])
 
 AT_CLEANUP
@@ -113,7 +113,7 @@ int main() {
 }
 ]])
 
-AT_CHECK([$LIBTOOL --mode=compile $OBJCXX $CPPFLAGS $OBJCXXFLAGS -c a.mm -o a.o],
+AT_CHECK([$LIBTOOL --mode=compile $OBJCXX $OBJCXXFLAGS -c a.mm -o a.o],
 	 [], [ignore], [ignore])
 
 AT_CLEANUP
