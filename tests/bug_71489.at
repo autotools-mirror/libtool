@@ -23,7 +23,7 @@
 
 AT_BANNER([Testing bug 71489:])
 
-AT_SETUP([Use local version])
+AT_SETUP([Local version of program with local library])
 
 AT_KEYWORDS([bug_71489])
 
@@ -111,7 +111,7 @@ fi
 AC_DEFINE_UNQUOTED([LTBUG_ID],["$LTBUG_ID"],
  [Text string identifying the library])
 
-AC_SUBST([CF_LIB_FLAGS],['-L$(libdir) -Wl,-rpath -Wl,$(libdir)'])
+AC_SUBST([CF_LIB_FLAGS],['-L$(libdir) -rpath $(libdir)'])
 
 AC_CONFIG_FILES([Makefile lib/Makefile src/Makefile])
 
@@ -172,8 +172,10 @@ build_local/src/ltb1 > stdout
 
 echo "Comparing expout to the build binary"
 AT_CHECK([cmp -s stdout expout], [0])
+AT_CLEANUP
 
-rm -rf $top_dir $lib $src build_inst build_local prefix_dir
+
+AT_SETUP([Local version of program with external library])
 
 # Test local version of installed program is used with external library.
 
