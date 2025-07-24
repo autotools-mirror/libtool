@@ -58,7 +58,7 @@ int main() {
     return 0;
 }
 ]])
-compile="$OBJC $CPPFLAGS $OBJCFLAGS" link="$OBJC $OBJCFLAGS $LDFLAGS" source=a.m
+compile="$OBJC $OBJCFLAGS" link="$OBJC $OBJCFLAGS $LDFLAGS" source=a.m
 ],
 [OBJCXX], [AT_DATA([a.mm],
 [[#import <Foundation/Foundation.h>
@@ -81,7 +81,7 @@ int main() {
     return 0;
 }
 ]])
-compile="$OBJCXX $CPPFLAGS $OBJCXXFLAGS" link="$OBJCXX $OBJCXXFLAGS $LDFLAGS" source="a.mm -o a.o"
+compile="$OBJCXX $OBJCXXFLAGS" link="$OBJCXX $OBJCXXFLAGS $LDFLAGS" source="a.mm -o a.o"
 ],
 [F77], [AT_DATA([a.f],
 [[      program main
