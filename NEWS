@@ -23,6 +23,12 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Add linking clang_rt static archives compiler internal libraries by
     their absolute path.
 
+  - Set 'mklink' as the symlinking tool for MSVC.
+
+  - Pass '--target' architecture flag for Clang.
+
+  - Support MSYS and MSYS2 file path conversions.
+
 ** Bug fixes:
 
   - Fix wrongly deduplicated compiler dependencies on linux.
@@ -35,6 +41,19 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Ensure *-linux-mlibc host matches to mlibc userland rather than
     matching to GNU/Linux and similar userlands.
+
+  - Fix hang with cmd.exe in MSYS.
+
+  - For MSVC, fix mishandling compiler flags, symlinking, cl.exe '.exp'
+    extension collision, symbol names, and numerous testsuite bugs.
+
+  - Fix undeclared reference to access on Windows in libltdl.
+
+  - Fix flang -Wl flags on FreeBSD.
+
+  - Fix reordering '--as-needed' flag.
+
+  - Fix libltdl early failures for multi-arch.
 
 
 * Noteworthy changes in release 2.5.4 (2024-11-20) [stable]
