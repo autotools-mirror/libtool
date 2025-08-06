@@ -57,7 +57,8 @@ local-checks-to-skip =				\
 	sc_prohibit_always_true_header_tests	\
 	sc_prohibit_strncpy			\
 	sc_trailing_blank			\
-	sc_unmarked_diagnostics
+	sc_unmarked_diagnostics			\
+	sc_codespell
 
 # GPL_version: checks for GPLv3, which we don't use
 # cast_of_x_alloc_return_value:
