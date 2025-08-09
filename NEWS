@@ -55,6 +55,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix libltdl early failures for multi-arch.
 
+** Changes in supported systems or compilers:
+
+  - Support additional Intel OneAPI compilers, 'icx', 'icpx', and 'ifx'.
+
 
 * Noteworthy changes in release 2.5.4 (2024-11-20) [stable]
 

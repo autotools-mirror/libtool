@@ -2668,8 +2668,8 @@ m4_if([$1], [],[
     dynamic_linker='Win32 ld.exe'
     ;;
 
-  *,cl* | *,icl*)
-    # Native MSVC or ICC
+  *,cl* | *,icl* | *,icx*)
+    # Native MSVC and Intel compilers
     libname_spec='$name'
     soname_spec='$libname`echo $release | $SED -e 's/[[.]]/-/g'`$versuffix$shared_ext'
     library_names_spec='$libname.dll.lib'
@@ -4558,7 +4558,7 @@ m4_if([$1], [CXX], [
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
 	    ;;
-	  icpc* )
+	  icpc* | icpx*)
 	    # Intel C++, used to be incompatible with GCC.
 	    # ICC 10 doesn't accept -KPIC any more.
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -4893,7 +4893,7 @@ m4_if([$1], [CXX], [
         ;;
       # icc used to be incompatible with GCC.
       # ICC 10 doesn't accept -KPIC any more.
-      icc* | ifort*)
+      icc* | ifort* | icx* | ifx*)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
@@ -5129,7 +5129,8 @@ m4_if([$1], [CXX], [
     ;;
   cygwin* | mingw* | windows* | cegcc*)
     case $cc_basename in
-    cl* | icl*)
+    cl* | icl* | icx* | icpx*)
+      # Native MSVC and Intel compilers
       _LT_TAGVAR(exclude_expsyms, $1)='_NULL_IMPORT_DESCRIPTOR|_IMPORT_DESCRIPTOR_.*'
       ;;
     *)
@@ -5404,7 +5405,7 @@ _LT_EOF
 	  tmp_addflag=' -i_dynamic' ;;
 	efc*,ia64* | ifort*,ia64*)	# Intel Fortran compiler on ia64
 	  tmp_addflag=' -i_dynamic -nofor_main' ;;
-	ifc* | ifort*)			# Intel Fortran compiler
+	ifc* | ifort* | ifx*)		# Intel Fortran compiler
 	  tmp_addflag=' -nofor_main' ;;
 	lf95*)				# Lahey Fortran 8.1
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)=
@@ -5767,8 +5768,8 @@ _LT_EOF
       # hardcode_libdir_flag_spec is actually meaningless, as there is
       # no search path for DLLs.
       case $cc_basename in
-      cl* | icl*)
-	# Native MSVC or ICC
+      cl* | icl* | icx* | icpx*)
+	# Native MSVC and Intel compilers
 	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)=' '
 	_LT_TAGVAR(allow_undefined_flag, $1)=unsupported
 	_LT_TAGVAR(always_export_symbols, $1)=yes
@@ -6851,8 +6852,8 @@ if test yes != "$_lt_caught_CXX_error"; then
 
       cygwin* | mingw* | windows* | pw32* | cegcc*)
 	case $GXX,$cc_basename in
-	,cl* | no,cl* | ,icl* | no,icl*)
-	  # Native MSVC or ICC
+	,cl* | no,cl* | ,icl* | no,icl* | ,icx* | no,icx* | ,icpx* | no,icpx*)
+	  # Native MSVC and Intel compilers
 	  # hardcode_libdir_flag_spec is actually meaningless, as there is
 	  # no search path for DLLs.
 	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=' '
@@ -7186,7 +7187,7 @@ if test yes != "$_lt_caught_CXX_error"; then
 	    # "CC -Bstatic", where "CC" is the KAI C++ compiler.
 	    _LT_TAGVAR(old_archive_cmds, $1)='$CC -Bstatic -o $oldlib $oldobjs'
 	    ;;
-	  icpc* | ecpc* )
+	  icpc* | ecpc* | icpx*)
 	    # Intel C++
 	    with_gnu_ld=yes
 	    # version 8.0 and above of icpc choke on multiply defined symbols
