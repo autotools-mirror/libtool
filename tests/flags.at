@@ -18,7 +18,7 @@
 # along with GNU Libtool.  If not, see <https://www.gnu.org/licenses/>.
 ####
 
-m4_foreach([lt_tag], [CC, CXX, OBJC, OBJCXX, F77, FC, GCJ],
+m4_foreach([lt_tag], [CC, CXX, OBJC, OBJCXX, F77, FC, GCJ, ML64],
 [AT_SETUP([passing lt_tag flags through libtool])
 AT_KEYWORDS([libtool])
 LT_AT_TAG(m4_defn([lt_tag]))
@@ -99,7 +99,25 @@ compile="$FC $FCFLAGS" link="$FC $FCFLAGS $LDFLAGS" source=a.f90
 [[class a {}
 ]])
 compile="$GCJ $GCJFLAGS" link="$GCJ $GCJFLAGS $LDFLAGS" source=a.java
+],
+[ML64], [AT_DATA([a.asm],
+[[
+.data
+value QWORD 5 ; Define variable named value = 5.
+
+.code
+main PROC
+  mov rax, value ; :Load value into memory
+  inc rax ; Increment value by one
+  mov value, rax ; Store the incrememnted result back into 'value'
+  mov eax, dword ptr value ; Load the lower 32 bits of 'value' into EAX to use as the return code
+  ret
+main ENDP
+END
+]])
+compile="$ML64 $ML64FLAGS" link="$ML64 $ML64FLAGS $LDFLAGS" source=a.asm
 ])
+
 
 # Linker flags are not passed to the archiver, so don't test static libraries.
 if $LIBTOOL --features | $GREP 'enable shared libraries'; then

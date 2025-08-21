@@ -2403,7 +2403,7 @@ The user may still override this default by specifying
 @defmac LT_LANG (@var{language})
 Enable @command{libtool} support for the language given if it
 has not yet already been enabled.  Languages accepted are ``C++'',
-``Objective-C'', ``Objective-C++'', ``Fortran 77'', ``Java'', ``Go'',
+``Objective-C'', ``Objective-C++'', ``ML64``, ``Fortran 77'', ``Java'', ``Go'',
 and ``Windows Resource''.
 
 If Autoconf language support macros such as @code{AC_PROG_CXX} are
@@ -5629,7 +5629,7 @@ Automake.
 @item @file{tests/flags.at}
 Tests include checks that compile and linker flags get passed through
 @command{libtool}.  Tests flags for C, C++, Objective-C, Objective-C++,
-Fortran 77, Fortran 90, and Java.
+ML64, Fortran 77, Fortran 90, and Java.
 
 @item @file{tests/help.at}
 Tests a variety of mode commands, including mode short-hands, to ensure basic
@@ -5642,7 +5642,7 @@ on @file{libconv}, which depends on @file{libb}, which depends on @file{liba}.
 
 @item @file{tests/infer-tag.at}
 Tests that @code{func_infer_tag} works by compiling various code snippets in
-various languages (C, C++, Objective-C, Objective-C++, Fortran, Java) without
+various languages (C, C++, Objective-C, Objective-C++, ML64, Fortran, Java) without
 a @option{--tag} flag.
 
 @item @file{tests/inherited_flags.at}
