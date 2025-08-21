@@ -162,6 +162,25 @@ AT_CHECK([$LIBTOOL --mode=compile $GCJ $GCJCFLAGS -c A.java],
 
 AT_CLEANUP
 
+AT_SETUP([ML64 inferred tag])
+LT_AT_TAG([ML64])
+AT_KEYWORDS([libtool])
+
+AT_DATA([a.asm],
+[[.code
+main PROC
+  mov eax, 5 ; Load constant value
+  inc eax ; Increment
+  ret ; Return result
+main ENDP
+end
+]])
+
+AT_CHECK([$LIBTOOL --mode=compile $ML64 $ML64FLAGS -c a.asm],
+	 [], [ignore], [ignore])
+
+AT_CLEANUP
+
 # Unsupported compiler check
 AT_SETUP([Unsupported compiler inferred tag check])
 AT_KEYWORDS([libtool])

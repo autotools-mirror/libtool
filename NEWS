@@ -59,6 +59,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Support additional Intel OneAPI compilers, 'icx', 'icpx', and 'ifx'.
 
+  - Support ML64 (Microsoft Macro Assembler).
+
 
 * Noteworthy changes in release 2.5.4 (2024-11-20) [stable]
 
