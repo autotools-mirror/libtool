@@ -5809,6 +5809,10 @@ Tests that @command{libtool} can handle C++ code utilizing templates.
 Main testsuite framework file processed by @command{autom4te} processes enable
 running the @command{libtool} test cases.
 
+@item @file{tests/versioning_script.at}
+Tests @command{libtool-next-version} for verifying the helper script determines
+the next version to use for a @command{libtool} library correctly.
+
 @item @file{tests/versioning.at}
 Tests @command{libtool}'s versioning system.  Tests begin with verifying the
 behaviour of @command{libtool} versioning flags @option{-version-info} and
