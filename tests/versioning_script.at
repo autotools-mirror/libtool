@@ -1,0 +1,303 @@
+# versioning_script.at -- test the libtool versioning script: libtool-next-version         -*- Autotest -*-
+#
+#   Copyright (C) 2025 Free Software Foundation, Inc.
+#
+#   This file is part of GNU Libtool.
+#
+# GNU Libtool is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# GNU Libtool is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Libtool.  If not, see <https://www.gnu.org/licenses/>.
+####
+####
+
+AT_SETUP([Test libtool-next-version script])
+AT_KEYWORDS([libtool])
+# Testing the script. Let's create an old library and a new library.
+
+eval `$LIBTOOL --config | $EGREP '^(libname_spec|libext)='`
+
+mkdir -p libexample/src
+mkdir -p new_libexample/src
+
+mkdir libexample/m4
+mkdir new_libexample/m4
+
+touch libexample/src/Makefile.am new_libexample/src/Makefile.am
+
+AT_DATA([libexample/Makefile.am], [[
+# Makefile.am
+ACLOCAL_AMFLAGS = -I m4
+SUBDIRS = src
+
+# Enable subdir-objects option
+AM_CFLAGS = -I$(srcdir)/src
+
+# Enable subdir-objects
+AUTOMAKE_OPTIONS = subdir-objects
+
+lib_LTLIBRARIES = libexample.la
+
+libexample_la_SOURCES = src/example.c src/example.h
+]])
+
+AT_DATA([new_libexample/Makefile.am], [[
+# Makefile.am
+ACLOCAL_AMFLAGS = -I m4
+SUBDIRS = src
+
+# Enable subdir-objects option
+AM_CFLAGS = -I$(srcdir)/src
+
+# Enable subdir-objects
+AUTOMAKE_OPTIONS = subdir-objects
+
+lib_LTLIBRARIES = libexample.la
+
+libexample_la_SOURCES = src/example.c src/example.h
+]])
+
+AT_DATA([libexample/configure.ac], [[
+# configure.ac
+AC_INIT([libexample], [1.0])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+# Add the macro directory
+AC_CONFIG_MACRO_DIRS([m4])
+
+# Initialize the archiver
+AM_PROG_AR
+
+AC_PROG_CC
+
+# Set Libtool versioning
+LT_INIT
+
+AC_CONFIG_SRCDIR([src/example.c])
+AC_CONFIG_HEADERS([config.h])
+
+AC_CONFIG_FILES([Makefile src/Makefile])
+AC_OUTPUT
+]])
+
+AT_DATA([new_libexample/configure.ac], [[
+# configure.ac
+AC_INIT([libexample], [1.0])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+# Add the macro directory
+AC_CONFIG_MACRO_DIRS([m4])
+
+# Initialize the archiver
+AM_PROG_AR
+
+AC_PROG_CC
+
+# Set Libtool versioning
+LT_INIT
+AC_CONFIG_SRCDIR([src/example.c])
+AC_CONFIG_HEADERS([config.h])
+
+AC_CONFIG_FILES([Makefile src/Makefile])
+AC_OUTPUT
+]])
+
+AT_DATA([libexample/src/example.c], [[
+// src/example.c
+#include <stdio.h>
+
+void example_function() {
+    printf("Hello from example_function!\n");
+}
+]])
+
+AT_DATA([libexample/src/example.h], [[
+// src/example.h
+#ifndef EXAMPLE_H
+#define EXAMPLE_H
+
+void example_function();
+
+#endif // EXAMPLE_H
+]])
+
+
+AT_DATA([new_libexample/src/example.c], [[
+// src/example.c
+#include <stdio.h>
+
+void example_function() {
+    printf("Hello from example_function!\n");
+}
+
+void new_function() {
+	printf("new\n");
+}
+]])
+
+AT_DATA([new_libexample/src/example.h], [[
+// src/example.h
+//
+#ifndef EXAMPLE_H
+#define EXAMPLE_H
+
+void example_function();
+void new_function();
+#endif // EXAMPLE_H
+]])
+
+echo "Running autoreconf on libexample directory, the original library"
+(
+    cd libexample
+    LT_AT_LIBTOOLIZE([--copy --ltdl])
+    LT_AT_AUTORECONF([-ivf])
+    LT_AT_CONFIGURE([], [configure])
+    LT_AT_MAKE([])
+)
+
+echo "Running autoreconf on new_libexample directory, the updated library"
+(
+    cd new_libexample
+    LT_AT_LIBTOOLIZE([--copy --ltdl])
+    LT_AT_AUTORECONF([-ivf])
+    LT_AT_CONFIGURE([], [configure])
+    LT_AT_MAKE([])
+)
+
+remove_whitespace() {
+    input_string=$1
+    echo "$input_string" | tr -d '[[:space:]]'
+}
+
+# Check if the version script exists
+if test -f "$_lt_pkgdatadir/libtool-next-version"; then
+    script_path=$_lt_pkgdatadir/libtool-next-version
+elif test -f "$abs_builddir/../libtool-next-version"; then
+    script_path=$abs_builddir/../libtool-next-version
+elif test -f "../../../libtool-next-version"; then
+    script_path=../../../libtool-next-version
+else
+    echo "Couldn't find script"
+fi
+
+AT_CHECK([test -f "$script_path"])
+
+name=example
+eval libname=\"$libname_spec\"
+
+# Set version to 1.0.0. Select the default options for determining the new version of the library.
+(echo "1"; echo "0"; echo "0"; echo yes; echo no; echo no; echo yes) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext > actual
+
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+
+# Verify --help works
+$script_path --help > actual
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+
+expected="Options: --help print this help and exit --version print version information and exit"
+expected=$(remove_whitespace "$expected")
+echo "expected is $expected"
+AT_CHECK([$GREP -i $expected actual],
+         [0], [ignore])
+
+# Verify --version works
+$script_path --version > actual
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+expected="libtool-next-version (GNU libtool)"
+expected=$(remove_whitespace "$expected")
+echo "expected is $expected"
+AT_CHECK([$GREP -i $expected actual],
+         [0], [ignore])
+
+# Try each possible answer to the version script.
+
+# Case 1: Indicate to the script that there has not been any code change.
+(echo "1"; echo "0"; echo "0"; echo no) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext > actual
+
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+expected_version="This is the libtool version of the library for the new release: LTV_CURRENT=1 LTV_REVISION=0 LTV_AGE=0"
+expected_version=$(echo "$expected_version" | tr -d '[[:space:]]')
+AT_CHECK([$GREP -i $expected_version actual],
+         [0], [ignore])
+
+# Case 2: There is a code change. An interface has been removed.
+(echo "1"; echo "0"; echo "0"; echo yes; echo yes) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext > actual
+
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+expected_version="This is the libtool version of the library for the new release: LTV_CURRENT=2 LTV_REVISION=0 LTV_AGE=0"
+expected_version=$(echo "$expected_version" | tr -d '[[:space:]]')
+AT_CHECK([$GREP -i $expected_version actual],
+         [0], [ignore])
+
+# Case 3: There is a code change. No interfaces have been removed. An interface has changed.
+(echo "1"; echo "0"; echo "0"; echo yes; echo no; echo yes) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext> actual
+
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+expected_version="This is the libtool version of the library for the new release: LTV_CURRENT=2 LTV_REVISION=0 LTV_AGE=0"
+expected_version=$(echo "$expected_version" | tr -d '[[:space:]]')
+AT_CHECK([$GREP -i $expected_version actual],
+         [0], [ignore])
+
+ # Case 4: There is a code change. No interfaces have been removed. No interfaces have changed. An interface has been added.
+(echo "1"; echo "0"; echo "0"; echo yes; echo no; echo no; echo yes) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext > actual
+
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+expected_version="This is the libtool version of the library for the new release: LTV_CURRENT=2 LTV_REVISION=0 LTV_AGE=1"
+expected_version=$(echo "$expected_version" | tr -d '[[:space:]]')
+AT_CHECK([$GREP -i $expected_version actual],
+         [0], [ignore])
+
+# Case 5: There is a code change. No interfaces have been removed. No interfaces have changed. No interfaces have been added.
+(echo "1"; echo "0"; echo "0"; echo yes; echo no; echo no; echo no; echo yes) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext > actual
+
+tr -d '[[:space:]]' < actual > temp && mv temp actual
+expected_version="This is the libtool version of the library for the new release: LTV_CURRENT=1 LTV_REVISION=1 LTV_AGE=0"
+expected_version=$(echo "$expected_version" | tr -d '[[:space:]]')
+AT_CHECK([$GREP -i $expected_version actual],
+         [0], [ignore])
+
+case $host_os in
+mingw* | windows* | cygwin* | solaris* | linux-musl*)
+    echo "Version script not testing code change differences on Solaris, Alpine Linux, and Windows platforms".
+  ;;
+*)
+    echo "Version script testing code change differences on $host_os"
+    # Test on differences from the old library to the new library
+    (echo "1"; echo "0"; echo "0"; echo yes; echo no; echo no; echo yes) \
+    | $script_path libexample/.libs/$libname.$libext new_libexample/.libs/$libname.$libext > actual
+
+    tr -d '[[:space:]]' < actual > temp && mv temp actual
+
+    # If the symbol list has changed and something has been added, roll the CURRENT and AGE version.
+    # That is, the new version is 2.0.1
+    expected_version="This is the libtool version of the library for the new release: LTV_CURRENT=2 LTV_REVISION=0 LTV_AGE=1"
+    expected_version=$(echo "$expected_version" | tr -d '[[:space:]]')
+    AT_CHECK([$GREP -i $expected_version actual],
+            [0], [ignore])
+
+    # Verify the symbol list has changed and is a new_function
+    expected_1="The symbol list changed. Here are the differences:"
+    expected_2=new_function
+    expected_1=$(remove_whitespace "$expected_1")
+    expected_2=$(remove_whitespace "$expected_2")
+    echo "expected is $expected_1 && $expected_2"
+    AT_CHECK([$GREP -i $expected_1 actual && $GREP -i $expected_2 actual],
+            [0], [ignore])
+esac
+
+
+AT_CLEANUP
