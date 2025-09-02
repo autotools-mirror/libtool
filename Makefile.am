@@ -698,6 +698,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/nocase.at \
 		  tests/install.at \
 		  tests/versioning.at \
+		  tests/versioning_script.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
 		  tests/am-subdir.at \
@@ -733,12 +734,11 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/dumpbin-symbols.at \
 		  tests/deplibs-mingw.at \
 		  tests/sysroot.at \
-		  tests/stresstest.at \
-		  tests/cmdline_wrap.at \
 		  tests/bug_62343.at	\
 		  tests/bug_71489.at \
 		  tests/bug_42313.at \
-		  tests/versioning_script.at \
+		  tests/stresstest.at \
+		  tests/cmdline_wrap.at \
 		  $(NOTHING_ELSE)
 
 EXTRA_DIST     += $(testsuite) $(TESTSUITE_AT) $(package_m4)
