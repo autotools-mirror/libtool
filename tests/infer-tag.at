@@ -88,7 +88,7 @@ AT_SETUP([OBJCXX inferred tag])
 LT_AT_TAG([OBJCXX])
 AT_KEYWORDS([libtool])
 
-AT_CHECK([$LIBTOOL --config | $EGREP '^objc_compiles="no"' && (exit 77)], 1)
+AT_CHECK([$LIBTOOL --config | $EGREP '^objcxx_compiles="no"' && (exit 77)], 1)
 
 AT_DATA([a.mm],
 [[
