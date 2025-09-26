@@ -534,7 +534,38 @@ m4_defun([_LT_OBJECTIVE_C], [
   )
   objc_compiles=$lt_cv_objc_compiles
   _LT_DECL([], [objc_compiles], [1],
-    [Check for compiling Objective C and C++ code])
+    [Check for compiling Objective C code])
+])
+
+# _LT_OBJECTIVE_CXX
+# ------------------------------
+m4_defun([_LT_OBJECTIVE_CXX], [
+  AC_CACHE_CHECK([for Objective C++ compilation],
+    [lt_cv_objcxx_compiles],
+    [ save_CFLAGS=$CFLAGS
+      CFLAGS=$OBJCXXFLAGS
+      AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM([#import <Foundation/Foundation.h>
+@interface Addition : NSObject
+- (int)this:(int)a that:(int)b;
+@end
+
+@implementation Addition
+- (int)this:(int)a that:(int)b
+{
+  return a + b;
+}
+@end
+],[])],
+        lt_cv_objcxx_compiles=yes,
+        lt_cv_objcxx_compiles=no
+      )
+      CFLAGS=$save_CFLAGS
+    ]
+  )
+  objcxx_compiles=$lt_cv_objcxx_compiles
+  _LT_DECL([], [objcxx_compiles], [1],
+    [Check for compiling Objective C++ code])
 ])
 
 m4_defun([_LT_ML64], [
@@ -8529,7 +8560,10 @@ _LT_COMPILER_BOILERPLATE
 _LT_LINKER_BOILERPLATE
 
 # Check for compilation issues with OBJCXX flags
-_LT_OBJECTIVE_C
+_LT_OBJECTIVE_CXX
+if test "yes" = "$lt_cv_gnustep_exists"; then
+  OBJCXXFLAGS="$OBJCXXFLAGS `gnustep-config --objc-flags`"
+fi
 
 # Allow CC to be a program name with arguments.
 lt_save_CC=$CC
@@ -8637,7 +8671,7 @@ AC_DEFUN([LT_PROG_OBJC],
   if test Xgnustep-config = X"$GNUSTEP_CONFIG"; then
     test set = "${OBJCFLAGS+set}" || OBJCFLAGS="`gnustep-config --objc-flags`"
   fi
-  AC_SUBST(OBJCFLAGS)])])[]dnl
+  AC_SUBST(OBJCFLAGS)])[]dnl
 ])
 
 # LT_PROG_OBJCXX
@@ -8648,7 +8682,7 @@ AC_DEFUN([LT_PROG_OBJCXX],
   if test Xgnustep-config = X"$GNUSTEP_CONFIG"; then
     test set = "${OBJCXXFLAGS+set}" || OBJCXXFLAGS="`gnustep-config --objc-flags`"
   fi
-  AC_SUBST(OBJCXXFLAGS)])])[]dnl
+  AC_SUBST(OBJCXXFLAGS)])[]dnl
 ])
 
 # LT_PROG_GCJ

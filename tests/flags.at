@@ -128,8 +128,10 @@ fi
 
 eval "`$LIBTOOL --tag=lt_tag --config | $EGREP '^(wl|archive_cmds)='`"
 
-if test OBJC = lt_tag || test OBJCXX = lt_tag; then
+if test OBJC = lt_tag; then
   AT_CHECK([$LIBTOOL --config | $EGREP '^objc_compiles="no"' && (exit 77)], 1)
+elif test OBJCXX = lt_tag; then
+  AT_CHECK([$LIBTOOL --config | $EGREP '^objcxx_compiles="no"' && (exit 77)], 1)
 fi
 
 AT_CHECK([$LIBTOOL --tag=lt_tag --mode=compile $compile -c $source],
