@@ -8671,7 +8671,7 @@ AC_DEFUN([LT_PROG_OBJC],
   if test Xgnustep-config = X"$GNUSTEP_CONFIG"; then
     test set = "${OBJCFLAGS+set}" || OBJCFLAGS="`gnustep-config --objc-flags`"
   fi
-  AC_SUBST(OBJCFLAGS)])[]dnl
+  AC_SUBST(OBJCFLAGS)[]dnl
 ])
 
 # LT_PROG_OBJCXX
@@ -8682,7 +8682,7 @@ AC_DEFUN([LT_PROG_OBJCXX],
   if test Xgnustep-config = X"$GNUSTEP_CONFIG"; then
     test set = "${OBJCXXFLAGS+set}" || OBJCXXFLAGS="`gnustep-config --objc-flags`"
   fi
-  AC_SUBST(OBJCXXFLAGS)])[]dnl
+  AC_SUBST(OBJCXXFLAGS)[]dnl
 ])
 
 # LT_PROG_GCJ
