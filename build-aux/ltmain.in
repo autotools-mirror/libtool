@@ -4910,7 +4910,7 @@ func_mode_link ()
 	build_old_libs=no
 	break
 	;;
-      -all-static | -static | -static-libtool-libs)
+      -all-static | -static | -static-libtool-libs | --static | -Bstatic)
 	case $arg in
 	-all-static)
 	  if test yes = "$build_libtool_libs" && test -z "$link_static_flag"; then
@@ -4927,7 +4927,7 @@ func_mode_link ()
 	  fi
 	  prefer_static_libs=built
 	  ;;
-	-static-libtool-libs)
+	-static-libtool-libs | --static | -Bstatic)
 	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
 	    dlopen_self=$dlopen_self_static
 	  fi

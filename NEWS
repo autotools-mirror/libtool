@@ -18,6 +18,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Remove unused variable on OS/2, which could cause issues with static
     library generation if defined.
 
+  - Recognise more static linking options for Clang.
+
 ** Changes in supported systems or compilers:
 
   - Add support for SlimCC compiler.
