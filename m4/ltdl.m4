@@ -1,6 +1,6 @@
 # ltdl.m4 - Configure ltdl for the target system. -*-Autoconf-*-
 #
-#   Copyright (C) 1999-2008, 2011-2019, 2021-2025 Free Software
+#   Copyright (C) 1999-2008, 2011-2019, 2021-2026 Free Software
 #   Foundation, Inc.
 #   Written by Thomas Tanner, 1999
 #

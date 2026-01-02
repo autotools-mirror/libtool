@@ -1,6 +1,6 @@
 ## ltdl.mk -- includable Makefile snippet
 ##
-##   Copyright (C) 2003-2005, 2007, 2011-2019, 2021-2025 Free Software
+##   Copyright (C) 2003-2005, 2007, 2011-2019, 2021-2026 Free Software
 ##   Foundation, Inc.
 ##   Written by Gary V. Vaughan, 2003
 ##
