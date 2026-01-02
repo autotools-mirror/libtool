@@ -4,6 +4,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 ** Bug fixes:
 
+  - Store cygpath file path conversions correctly for MSYS2 and MSVC.
+
   - Fix syntax error in LT_PROG_OBJC and LT_PROG_OBJCXX.
 
   - Separate Objective C and C++ cache check for proper tagging support.

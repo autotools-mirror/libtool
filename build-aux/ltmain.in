@@ -1054,11 +1054,11 @@ func_convert_core_msys_to_w32_with_cygpath ()
 
   # Since MSYS2 is packaged with cygpath, call cygpath in $PATH; no need
   # to use LT_CYGPATH in this case.
-  func_convert_core_msys_to_w32_result=`cygpath "$@" 2>/dev/null |
+  func_convert_core_msys_to_w32_with_cygpath_result=`cygpath "$@" 2>/dev/null |
 	$SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
   if test "$?" -ne 0; then
       # on failure, ensure result is empty
-      func_convert_core_msys_to_w32_result=
+      func_convert_core_msys_to_w32_with_cygpath_result=
   fi
 }
 #end: func_convert_core_msys_to_w32_with_cygpath
