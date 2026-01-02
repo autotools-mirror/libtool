@@ -2,6 +2,24 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Bug fixes:
+
+  - Fix syntax error in LT_PROG_OBJC and LT_PROG_OBJCXX.
+
+  - Separate Objective C and C++ cache check for proper tagging support.
+
+  - Fix in darwin to support values with spaces.
+
+  - Limit the length of DLL name to 8.3 correctly to avoid corrupting a
+    generated DLL on OS/2.
+
+  - Remove unused variable on OS/2, which could cause issues with static
+    library generation if defined.
+
+** Changes in supported systems or compilers:
+
+  - Add support for SlimCC compiler.
+
 
 * Noteworthy changes in release 2.6.0 (2025-09-18) [alpha]
 
