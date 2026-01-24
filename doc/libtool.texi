@@ -1515,7 +1515,7 @@ Tries to avoid versioning (@pxref{Versioning}) for libraries and modules,
 i.e.@: no version information is stored and no symbolic links are created.
 If the platform requires versioning, this option has no effect.
 
-@item -bindir
+@item -bindir @var{directory}
 Pass the absolute name of the directory for installing executable
 programs (@pxref{Directory Variables, , Directory Variables, standards,
 The GNU Coding Standards}).  @command{libtool} may use this value to
