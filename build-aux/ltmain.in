@@ -5660,6 +5660,7 @@ func_mode_link ()
       # -fuse-ld=*           Linker select flags for GCC
       # -static-*            direct GCC to link specific libraries statically
       # -fcilkplus           Cilk Plus language extension features for C/C++
+      # -resource-dir=*      for selecting compiler resource directory with clang
       # -rtlib=*             select c runtime lib with clang
       # --unwindlib=*        select unwinder library with clang
       # -f{file|debug|macro|profile}-prefix-map=* needed for lto linking
@@ -5668,7 +5669,7 @@ func_mode_link ()
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
       -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*|--target=*| \
       -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-no-canonical-prefixes| \
-      -stdlib=*|-rtlib=*|--unwindlib=*| \
+      -stdlib=*|-resource-dir=*|-rtlib=*|--unwindlib=*| \
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
       -ffile-prefix-map=*|-fdebug-prefix-map=*|-fmacro-prefix-map=*|-fprofile-prefix-map=*| \
       -fdiagnostics-color*|-frecord-gcc-switches| \
