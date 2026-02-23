@@ -693,6 +693,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/execute-mode.at \
 		  tests/bindir.at \
 		  tests/cwrapper.at \
+		  tests/deplib-path.at \
 		  tests/deplib-in-subdir.at \
 		  tests/infer-tag.at \
 		  tests/localization.at \

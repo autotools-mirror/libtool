@@ -1,0 +1,89 @@
+# deplib-path.at -- test shared linking deplibs by libN.so name -*- Autotest -*-
+#
+#   Copyright (C) 2020-2026 Free Software Foundation, Inc.
+#   Written by Nicolas Boulenguez, 2020-2026
+#
+#   This file is part of GNU Libtool.
+#
+# GNU Libtool is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# GNU Libtool is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Libtool.  If not, see <https://www.gnu.org/licenses/>.
+####
+
+# Ensures libN.so -l:libN.so -lN are equivalent
+
+AT_SETUP([shared linking deplibs by libN.so name])
+
+case $host_os in
+linux*) ;;
+*) noskip=false ;;
+esac
+
+AT_CHECK([$noskip || (exit 77)])
+
+AT_DATA([one.c],
+[[
+int one(void) { return 1; }
+]])
+
+AT_DATA([two.c],
+[[
+int two(void) { return 2; }
+]])
+
+AT_DATA([three.c],
+[[
+int three(void) { return 3; }
+]])
+
+AT_DATA([sum.c],
+[[
+extern int one(void);
+extern int two(void);
+extern int three(void);
+int sum(void) { return one()+two()+three(); }
+]])
+
+AT_DATA([configure.ac],
+[[
+AC_INIT([deplib-path], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE
+AC_PROG_CC
+LT_INIT
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+]])
+
+AT_DATA([Makefile.am],
+[[
+AUTOMAKE_OPTIONS = no-dependencies foreign
+ACLOCAL_AMFLAGS = -I m4
+AM_LDFLAGS = -no-undefined
+lib_LTLIBRARIES = libsum.la
+libsum_la_SOURCES = sum.c
+libsum_la_LIBADD = libone.so -L. -l:libtwo.so -lthree
+EXTRA_libsum_la_DEPENDENCIES = libtwo.so libthree.so
+libone.so libtwo.so libthree.so: CFLAGS += -fPIC
+libone.so libtwo.so libthree.so: lib%.so: %.o
+	$(LINK.c) -shared -o $@ $^
+]])
+
+LT_AT_LIBTOOLIZE
+LT_AT_ACLOCAL([-I m4])
+LT_AT_AUTOMAKE([--add-missing])
+LT_AT_AUTOCONF
+LT_AT_CONFIGURE
+LT_AT_MAKE
+
+AT_CLEANUP
