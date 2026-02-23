@@ -5795,8 +5795,8 @@ func_mode_link ()
 	fi
 	;;
 
-      *.$libext)
-	# An archive.
+      *.$libext|*.so)
+	# An archive or an explicit shared library.
 	func_append deplibs " $arg"
 	func_append old_deplibs " $arg"
 	continue
@@ -6174,6 +6174,25 @@ func_mode_link ()
 	  func_resolve_sysroot "$deplib"
 	  lib=$func_resolve_sysroot_result
 	  ;;
+	 *.so)
+	   case $linkmode,$pass in
+	     lib,*)
+	       deplibs="$deplib $deplibs"
+	       newdependency_libs="$deplib $newdependency_libs"
+	       ;;
+	     prog,link)
+	       compile_deplibs="$deplib $compile_deplibs"
+	       finalize_deplibs="$deplib $finalize_deplibs"
+	       ;;
+	     prog,*)
+	       deplibs="$deplib $deplibs"
+	       ;;
+	     *)
+	       func_warning "'$deplib' is ignored for archives/objects"
+	       ;;
+	   esac
+	   continue
+	   ;;
 	*.$libext)
 	  if test conv = "$pass"; then
 	    deplibs="$deplib $deplibs"

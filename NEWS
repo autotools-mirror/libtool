@@ -6,6 +6,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Pass 'resource-dir=*' flag for Clang.
 
+  - Recognise explicit shared library arguments when linking dependency
+    libraries to a shared library, like exists when linking a program.
+
 ** Bug fixes:
 
   - Store cygpath file path conversions correctly for MSYS2 and MSVC.
