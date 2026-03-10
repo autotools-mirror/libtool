@@ -30,6 +30,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Recognise more static linking options for Clang.
 
+  - Fix emscripten CXX postdeps using non-PIC sysroot.
+
 ** Changes in supported systems or compilers:
 
   - Add support for SlimCC compiler.
