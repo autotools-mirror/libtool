@@ -7704,6 +7704,14 @@ if test yes != "$_lt_caught_CXX_error"; then
         _LT_TAGVAR(ld_shlibs, $1)=no
         ;;
 
+      emscripten*)
+        # Emscripten side modules (-sSIDE_MODULE=2) use a separate PIC sysroot
+        # and do not link system libraries (they are imported from the main module
+        # at runtime).  Re-run the verbose link with -sSIDE_MODULE=2 so that the
+        # detected paths point to the PIC sysroot instead of the non-PIC one.
+        output_verbose_link_cmd='$CC -sSIDE_MODULE=2 -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP " [[-]]L"'
+        ;;
+
       *)
         # FIXME: insert proper C++ library support
         _LT_TAGVAR(ld_shlibs, $1)=no
