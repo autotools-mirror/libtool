@@ -4838,7 +4838,15 @@ func_mode_link ()
       # even a static library is built.  For now, we need to specify
       # -no-undefined on the libtool link line when we can be certain
       # that all symbols are satisfied, otherwise we get a static library.
-      allow_undefined=yes
+      case $host in
+      *-*-os2*)
+        # OS/2 does not allow undefined symbols at all when linking a dll.
+        allow_undefined=no
+        ;;
+      *)
+        allow_undefined=yes
+        ;;
+      esac
       ;;
     *)
       allow_undefined=yes
