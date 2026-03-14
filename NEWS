@@ -9,6 +9,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
   - Support OpenMP with macOS clang by processing '-Xpreprocessor
     -fopenmp' as one token.
 
+  - Recognise explicit shared library arguments when linking dependency
+    libraries to a shared library, like exists when linking a program.
+
 ** Bug fixes:
 
   - Store cygpath file path conversions correctly for MSYS2 and MSVC.
