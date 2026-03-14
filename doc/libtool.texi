@@ -5552,6 +5552,10 @@ installing these libraries and programs; however, use consistent relative paths
 between @command{libtool} @option{--mode=link} and @command{libtool}
 @option{--mode=install} in this test.
 
+@item @file{tests/deplib-path.at}
+Tests linking shared deplibs by @file{libN.so} name and ensures linking
+@file{libN.so}, @file{-l:libN.so} and @file{-lN} is equivalent.
+
 @item @file{tests/deplibs-ident.at}
 Tests the correct detection and handling of identical dependency libraries when
 using @command{libtool}.
@@ -5765,6 +5769,9 @@ the variable responsible for telling the linker where to find shared libraries.
 Additionally, this tests the behaviour of the @code{shlibpath_overrides_runpath}
 variable, which determines if it possible to override an executable's
 hardcoded library search path with an environment variable.
+
+@item @file{tests/slimcc.at}
+Tests for issues linking libraries in different order with the slimcc compiler.
 
 @item @file{tests/slist.at}
 Tests the functionality of the SList datastructure, which is an implementation
