@@ -6,11 +6,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Pass 'resource-dir=*' flag for Clang.
 
-  - Support OpenMP with macOS clang by processing '-Xpreprocessor
-    -fopenmp' as one token.
-
   - Recognise explicit shared library arguments when linking dependency
     libraries to a shared library, like exists when linking a program.
+
+  - Support OpenMP with macOS clang by processing '-Xpreprocessor
+    -fopenmp' as one token.
 
 ** Bug fixes:
 
