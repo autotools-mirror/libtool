@@ -31,7 +31,14 @@ int foo() { return 1;}
 
 AT_DATA([bar.c],
 [
-int bar() { return 1;}
+extern int foo();
+int bar() { return foo();}
+])
+
+AT_DATA([main.c],
+[
+extern int bar();
+int main() { return !bar();}
 ])
 
 thisdir=`cd . && pwd`
@@ -54,4 +61,13 @@ AT_CHECK([$AR -t $libbar | $GREP $libfoo],[1],[ignore],[ignore])
 AT_CHECK([$AR -t $libbar | $GREP foo.$OBJEXT],[1],[ignore],[ignore])
 # bar's own object must still be present.
 AT_CHECK([$AR -t $libbar | $GREP bar.$OBJEXT],[],[ignore],[ignore])
+# libfoo must be forwarded in dependency_libs of libbar.la.
+AT_CHECK([$GREP 'dependency_libs=.*foo' libbar.la],[],[ignore],[ignore])
+# Link an executable against libbar.la; the forwarded dependency must
+# allow the linker to resolve foo().
+$CC $CPPFLAGS $CFLAGS -c -o main.$OBJEXT main.c
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS \
+	 -o main$EXEEXT main.$OBJEXT libbar.la],
+	 [], [ignore], [ignore])
+LT_AT_EXEC_CHECK([./main])
 AT_CLEANUP
