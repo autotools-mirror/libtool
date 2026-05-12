@@ -8907,7 +8907,13 @@ func_mode_link ()
 	    # compiling, it, like the target executable, must be
 	    # executed on the $host or under an emulation environment.
 	    $opt_dry_run || {
-	      $LTCC $LTCFLAGS -o $cwrapper $cwrappersource
+	      func_cc_basename "$LTCC"
+	      case $func_cc_basename_result in
+		cl|cl.exe)
+		  $LTCC $LTCFLAGS -Fe$cwrapper $cwrappersource ;;
+		*)
+		  $LTCC $LTCFLAGS -o $cwrapper $cwrappersource ;;
+	      esac
 	      $STRIP $cwrapper
 	    }
 
