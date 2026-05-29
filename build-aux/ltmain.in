@@ -24,7 +24,7 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 PROGRAM=libtool
@@ -587,8 +587,8 @@ libtool_validate_options ()
     test : = "$debug_cmd" || func_append preserve_args " --debug"
 
     case $host_os in
-      # Solaris2 added to fix http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
-      # see also: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
+      # Solaris2 added to fix https://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
+      # see also: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
       cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2* | *linux*)
         # don't eliminate duplications in $postdeps and $predeps
         opt_duplicate_compiler_generated_deps=:

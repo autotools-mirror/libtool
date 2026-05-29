@@ -469,7 +469,6 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
     ;;
   darwin*)
     # Assuming the user has installed a libdl from somewhere, this is true
-    # If you are looking for one http://www.opendarwin.org/projects/dlcompat
     lt_cv_sys_dlopen_deplibs=yes
     ;;
   freebsd* | dragonfly* | midnightbsd*)

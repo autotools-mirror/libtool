@@ -256,7 +256,7 @@ GNU Libtool
 * QoI for file name and path conversion functions. Currently, these are
   implemented as MxN different functions; this has quadratic complexity. If
   possible, it would be preferred to implement then as M+N functions.  However:
-    http://lists.gnu.org/archive/html/libtool-patches/2010-08/msg00224.html
+    https://lists.gnu.org/archive/html/libtool-patches/2010-08/msg00224.html
     The main issue is you don't know what the "native" (e.g. "central")
     path-type is; e.g. "from-X (to what?)" and "(from what?) to-Y". Right
     now there are only four "platforms" involved: *nix, mingw, msys, and
