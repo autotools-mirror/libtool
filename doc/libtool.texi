@@ -2934,7 +2934,7 @@ You may want to put a small note in your package @file{README} to let
 other developers know that @option{--disable-shared} can save them time.
 The following example note is taken from the GIMP@footnote{GNU Image
 Manipulation Program, for those who haven't taken the plunge.  See
-@url{http://www.gimp.org/}.} distribution @file{README}:
+@url{https://www.gimp.org/}.} distribution @file{README}:
 
 @example
 The GIMP uses GNU Libtool to build shared libraries on a
@@ -6201,7 +6201,7 @@ single Windows instance, so Cygwin applications can be launched from a MinGW
 context, and vice versa---provided certain care is taken.  Another example
 would be if the build platform were GNU/Linux on an x86 32bit processor, and
 the host platform were MinGW.  In this situation, the
-@uref{http://www.winehq.org/, Wine} environment can be used to launch Windows
+@uref{https://www.winehq.org/, Wine} environment can be used to launch Windows
 applications from the GNU/Linux operating system; again, provided certain care
 is taken.
 
@@ -6417,7 +6417,7 @@ required. @xref{LT_CYGPATH}.
 @cindex Path Conversion - Unix to Windows
 
 
-@uref{http://www.winehq.org/, Wine} provides an interpretation environment for
+@uref{https://www.winehq.org/, Wine} provides an interpretation environment for
 some Unix platforms where Windows applications can be executed.  It provides
 a mapping between the Unix file system and a virtual Windows file system used
 by the Windows programs.  For the file name conversion to work, Wine must be

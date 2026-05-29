@@ -67,8 +67,8 @@ CPPFLAGS="$LTDLINCL $CPPFLAGS"
 # __declspec (dllimport) flags when building the DLLs and the clients.
 #
 # For more information, see these two threads:
-#   http://lists.gnu.org/archive/html/bug-libtool/2010-06/msg00069.html
-#   http://cygwin.com/ml/cygwin/2010-06/msg00392.html
+#   https://lists.gnu.org/archive/html/bug-libtool/2010-06/msg00069.html
+#   https://sourceware.org/legacy-ml/cygwin/2010-06/msg00392.html
 # To sum up: C++ is complicated.
 AT_DATA([common.h],
 [[#ifndef LIBTOOL_TEST_COMMON_HEADER

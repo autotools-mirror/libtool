@@ -29,8 +29,8 @@ AT_SETUP([lt_dlexit unloading libs])
 AT_KEYWORDS([libltdl])
 
 # Test for
-# http://lists.gnu.org/archive/html/bug-libtool/2007-01/msg00014.html
-# http://lists.gnu.org/archive/html/bug-libtool/2008-03/msg00013.html
+# https://lists.gnu.org/archive/html/bug-libtool/2007-01/msg00014.html
+# https://lists.gnu.org/archive/html/bug-libtool/2008-03/msg00013.html
 
 AT_DATA([main.c],
 [[#include <ltdl.h>

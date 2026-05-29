@@ -260,7 +260,7 @@ bindir=$prefix/bin
 mkdir $prefix $libdir $bindir
 
 # This code is copied from the Autobook:
-# <http://sources.redhat.com/autobook/autobook/autobook_169.html>
+# <https://www.sourceware.org/autobook/autobook/autobook_98.html>
 # so if it needs changes, be sure to notify the Autobook authors
 # about them.
 
