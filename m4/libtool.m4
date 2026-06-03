@@ -32,7 +32,7 @@ m4_define([_LT_COPYING], [dnl
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ])
 
-# serial 66 LT_INIT
+# serial 67 LT_INIT
 
 
 # LT_PREREQ(VERSION)
