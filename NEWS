@@ -32,9 +32,17 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
   - Fix emscripten CXX postdeps using non-PIC sysroot.
 
+  - Avoid deprecated option '-o' with MSVC compilers and replace with '-Fe'.
+
+  - Avoid overlinking of dependency libraries on ELF systems.
+
+  - Ensure old libraries are not archived.
+
 ** Changes in supported systems or compilers:
 
   - Add support for SlimCC compiler.
+
+  - Add support for *-ironclad-gnu.
 
 
 * Noteworthy changes in release 2.6.0 (2025-09-18) [alpha]
