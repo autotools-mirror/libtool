@@ -2,6 +2,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Changes in supported systems or compilers:
+
+  - Support AOCC Fortran compiler 'aof'.
+
 
 * Noteworthy changes in release 2.6.2 (2026-07-16) [stable]
 
