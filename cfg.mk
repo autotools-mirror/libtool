@@ -33,6 +33,9 @@ old_NEWS_hash := e6216384cc3760013b7ba2ae1b3872f3
 
 manual_title = Portable Dynamic Shared Object Management
 
+# Update libtool-latest.tar.* symlinks
+GNUPLOADFLAGS = --symlink-regex
+
 # Set the release announcement email addresses, maint.mk will email the
 # translation-project instead of autotools-announce otherwise.
 ifeq ($(RELEASE_TYPE),stable)
